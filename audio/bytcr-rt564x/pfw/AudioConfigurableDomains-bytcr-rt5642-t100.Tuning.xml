@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfigurableDomains xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/etc/parameter-framework/Schemas/ConfigurableDomains.xsd" SystemClassName="Audio">
+  <ConfigurableDomain Name="AudioConfiguration">
+    <Configurations>
+      <Configuration Name="Default">
+        <CompoundRule Type="All"/>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/CONFIGURATION/VOICE_VOLUME_CTRL_PARAMETER"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Default">
+        <ConfigurableElement Path="/Audio/CONFIGURATION/VOICE_VOLUME_CTRL_PARAMETER">
+          <StringParameter Name="VOICE_VOLUME_CTRL_PARAMETER">/Audio/lpe/pipe/rx_speech_loop/out_gain/level</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="Calibration.LPE" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Default">
+        <CompoundRule Type="All"/>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Default">
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+</ConfigurableDomains>
