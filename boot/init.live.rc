@@ -1,0 +1,7 @@
+on fs
+    mount squashfs loop@/installmedia/images.sfs /installmedia/images ro
+    mount ext4 loop@/installmedia/images/system.img /system ro nodev
+    mount tmpfs tmpfs /tmp
+    mount tmpfs tmpfs /data
+    mount tmpfs tmpfs /cache
+
