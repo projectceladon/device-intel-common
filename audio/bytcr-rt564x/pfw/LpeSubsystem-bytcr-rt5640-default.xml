@@ -3,7 +3,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd"
 	Name="lpe" Type="AMIXER" Endianness="Little"
-	Mapping="Card:bytcrrt5640mrd7,Debug">
+	Mapping="Card:bytcrrt5640,Debug">
 
    <ComponentLibrary>
         <xi:include href="LpeSubsystem-bytcr-rt564x-common.xml"/>
