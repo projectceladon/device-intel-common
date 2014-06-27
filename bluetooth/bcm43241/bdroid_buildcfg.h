@@ -21,4 +21,14 @@
                             // Bluetooth Low Power Mode is supported on BT4.0
 #define HCILP_INCLUDED                 FALSE
 
+/* Default class of device
+* {SERVICE_CLASS, MAJOR_CLASS, MINOR_CLASS}
+*
+* SERVICE_CLASS:0x1A (Bit17 -Networking,Bit19 - Capturing,Bit20 -Object Transfer)
+* MAJOR_CLASS:0x01 - COMPUTER
+* MINOR_CLASS:0x1C - TABLET
+*/
+
+#define BTA_DM_COD {0x1A, 0x01, 0x1C}
+
 #endif
