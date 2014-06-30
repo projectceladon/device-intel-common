@@ -17,4 +17,7 @@
          The default is false. -->
     <bool name="config_lidControlsSleep">true</bool>
 
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
+
 </resources>
