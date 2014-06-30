@@ -42,43 +42,43 @@
     <Settings>
       <Configuration Name="Default">
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_regular/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_deep/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm_compressed/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm0_in/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/pcm1_out/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/ramp_duration">
-          <IntegerParameter Name="ramp_duration">50</IntegerParameter>
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
