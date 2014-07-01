@@ -1,6 +1,6 @@
 # pstore-clean
 /dev/pstore                 u:object_r:pstore_dev:s0
-/data/kpanic/pstore/(/.*)?  u:object_r:pstore-clean_data_file:s0
+/data/dontpanic(/.*)?       u:object_r:pstore-clean_data_file:s0
 /system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
 
 # userfastboot
