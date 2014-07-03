@@ -13,14 +13,11 @@ verbatim_targets = []
 patch_list = []
 delete_files = None
 target_data = None
+bootloader_update = False
 source_data = None
 OPTIONS = common.OPTIONS
-bcb_device = None
 
-def SetBcbDevice(info):
-    global bcb_device
-    fstab = info.script.info.get("fstab", None)
-    bcb_device = fstab["/misc"].device
+sfu_path = "SYSTEM/etc/firmware/BIOSUPDATE.fv"
 
 def LoadBootloaderFiles(tfpdir):
     out = {}
@@ -35,6 +32,7 @@ def IncrementalEspUpdateInit(info):
     global target_data
     global source_data
     global delete_files
+    global bootloader_update
 
     target_data = LoadBootloaderFiles(OPTIONS.target_tmp)
     source_data = LoadBootloaderFiles(OPTIONS.source_tmp)
@@ -65,13 +63,19 @@ def IncrementalEspUpdateInit(info):
     delete_files = (["/"+i[0] for i in verbatim_targets] +
                      ["/"+i for i in sorted(source_data) if i not in target_data])
 
+    if (delete_files or patch_list or verbatim_targets or
+            os.path.exists(os.path.join(OPTIONS.target_tmp, sfu_path))):
+        print "EFI System Partition will be updated"
+        bootloader_update = True
 
-def MountEsp(info):
+
+def MountEsp(info, copy):
     # AOSP edify generator in build/ does not support vfat.
     # So we need to generate the full command to mount here.
     fstab = info.script.info.get("fstab", None)
-    info.script.script.append('copy_partition("%s", "%s");' %
-            (fstab['/bootloader'].device, fstab['/bootloader2'].device))
+    if copy:
+        info.script.script.append('copy_partition("%s", "%s");' %
+                (fstab['/bootloader'].device, fstab['/bootloader2'].device))
     info.script.script.append('mount("vfat", "EMMC", "%s", "/bootloader");' % (fstab['/bootloader2'].device))
 
 
@@ -97,10 +101,8 @@ def IncrementalOTA_Assertions(info):
         fastboot["verbatim"] = False
 
     IncrementalEspUpdateInit(info)
-    if patch_list or verbatim_targets or delete_files:
-        MountEsp(info)
-    else:
-        print "No bootloader changes."
+    if bootloader_update:
+        MountEsp(info, True)
 
 
 def IncrementalOTA_VerifyEnd(info):
@@ -127,16 +129,11 @@ def IncrementalOTA_VerifyEnd(info):
     for fn, tf, sf, size, patch_sha in patch_list:
         info.script.PatchCheck("/"+fn, tf.sha1, sf.sha1)
 
+
 def swap_entries(info):
     fstab = info.script.info.get("fstab", None)
     info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
             (fstab['/bootloader'].device,))
-
-
-def finalize_esp(info):
-    info.script.script.append('copy_shim();')
-    info.script.script.append('unmount("/bootloader");')
-    swap_entries(info)
 
 
 def IncrementalOTA_InstallEnd(info):
@@ -161,6 +158,9 @@ def IncrementalOTA_InstallEnd(info):
     else:
         print "skipping fastboot update"
 
+    if not bootloader_update:
+        return
+
     if delete_files:
         info.script.Print("Removing unnecessary bootloader files...")
         info.script.DeleteFiles(delete_files)
@@ -175,8 +175,11 @@ def IncrementalOTA_InstallEnd(info):
         info.script.Print("Adding new bootloader files...")
         info.script.UnpackPackageDir("bootloader", "/bootloader")
 
-    if patch_list or verbatim_targets or delete_files:
-        finalize_esp(info)
+    info.script.script.append('copy_shim();')
+    info.script.script.append('copy_sfu();')
+    info.script.script.append('unmount("/bootloader");')
+    swap_entries(info)
+
 
 def FullOTA_InstallEnd(info):
     fastboot_img = intel_common.GetFastbootImage(OPTIONS.input_tmp, OPTIONS.info_dict)
@@ -200,6 +203,11 @@ def FullOTA_InstallEnd(info):
     common.ZipWriteStr(info.output_zip, "bootloader.img", data)
     info.script.Print("Writing updated bootloader image...")
     info.script.WriteRawImage("/bootloader2", "bootloader.img")
+
+    if os.path.exists(os.path.join(OPTIONS.input_tmp, sfu_path)):
+        MountEsp(info, False)
+        info.script.script.append('copy_sfu();')
+        info.script.script.append('unmount("/bootloader");')
 
     swap_entries(info)
 

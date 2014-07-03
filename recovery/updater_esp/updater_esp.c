@@ -390,6 +390,26 @@ int delete_cb(const char *fpath, const struct stat *sb __unused,
     return 0;
 }
 
+static const char *SFU_SRC = "/system/etc/firmware/BIOSUPDATE.fv";
+static const char *SFU_DST = "/bootloader/BIOSUPDATE.fv";
+
+static Value *CopySFUFn(const char *name __unused, State *state, int argc __unused,
+        Expr *argv[] __unused)
+{
+    struct stat sb;
+
+    if (!stat(SFU_SRC, &sb)) {
+        if (copy_file(SFU_SRC, SFU_DST)) {
+            ErrorAbort(state, "Couldn't copy SFU capsule to ESP");
+            return NULL;
+        }
+        printf("Copied SFU capsule from %s to %s\n", SFU_SRC, SFU_DST);
+    } else {
+        printf("No SFU capsules to stage\n");
+    }
+    return StringValue(strdup(""));
+}
+
 static const char *CAP_DEST = "/bootloader/fwupdate";
 
 static Value *CopyCapsulesFn(const char* name, State* state, int argc, Expr* argv[])
@@ -484,6 +504,7 @@ void Register_libupdater_esp(void)
     RegisterFunction("swap_entries", SwapEntriesFn);
     RegisterFunction("copy_partition", CopyPartFn);
     RegisterFunction("copy_capsules", CopyCapsulesFn);
+    RegisterFunction("copy_sfu", CopySFUFn);
     RegisterFunction("set_bcb_command", SetBCBCommand);
     RegisterFunction("get_bcb_status", GetBCBStatus);
     RegisterFunction("copy_shim", CopyShimFn);
