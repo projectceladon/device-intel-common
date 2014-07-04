@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd"
+	Name="lpe" Type="ALSA_CUSTOM" Endianness="Little"
+	Mapping="Card:bytcrrt5651,Debug">
+
+   <ComponentLibrary>
+        <xi:include href="LpeSubsystem-bytcr-rt5651-common.xml"/>
+   </ComponentLibrary>
+
+    <InstanceDefinition>
+        <Component Name="pipe" Type="Pipes"/>
+        <Component Name="main_mixer" Type="MainMixerMatrix"/>
+        <Component Name="media_mixer" Type="MediaMixerMatrix"/>
+        <Component Name="sample_spec_domain" Type="SampleSpecDomains"/>
+    </InstanceDefinition>
+</Subsystem>
