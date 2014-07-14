@@ -2,7 +2,7 @@
 <Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd"
-	Name="lpe" Type="AMIXER" Endianness="Little"
+	Name="lpe" Type="ALSA_CUSTOM" Endianness="Little"
 	Mapping="Card:bytcrrt5642t100,Debug">
 
    <ComponentLibrary>

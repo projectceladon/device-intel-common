@@ -3,8 +3,8 @@
 	SystemClassName="Audio" ServerPort="5000" TuningAllowed="false">
     <SubsystemPlugins>
         <Location Folder="/system/lib/parameter-framework-plugins/Audio">
-            <Plugin Name="libtinyamixer-subsystem.so"/>
-            <Plugin Name="libtinyalsactl-subsystem.so"/>
+            <Plugin Name="libtinyalsa-subsystem.so"/>
+            <Plugin Name="libtinyalsa_custom-subsystem.so"/>
         </Location>
         <Location Folder="/system/lib/parameter-framework-plugins/Fs">
             <Plugin Name="libfs-subsystem.so"/>
