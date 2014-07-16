@@ -1,3 +1,5 @@
+add_lunch_combo base_x86_legacy-userdebug
+
 if [ -f device/intel/mixins/mixin-update ]; then
     if ! device/intel/mixins/mixin-update --dry-run; then
         echo '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
@@ -6,4 +8,3 @@ if [ -f device/intel/mixins/mixin-update ]; then
         echo '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
     fi
 fi
-
