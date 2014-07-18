@@ -1,0 +1,713 @@
+supDomain: StreamRoute
+
+	supDomain: Media
+
+		domain: Playback
+
+			conf: Applicable
+				ALL
+					ANY
+						OutputDevices Includes Earpiece
+						OutputDevices Includes Ihf
+						OutputDevices Includes Headset
+						OutputDevices Includes Headphones
+						ALL
+							BtEnable Is True
+							# ScoResourceRequested Is True
+							ANY
+								OutputDevices Includes Sco
+								OutputDevices Includes ScoHeadset
+								OutputDevices Includes ScoCarkit
+					ANY
+						AndroidMode Is Normal
+						AndroidMode Is RingTone
+						AndroidMode Is InCsvCall
+						AndroidMode Is InVoipCall
+					OutputFlags Includes Primary
+
+				/Route/route_mgr/routes/media/stream_route_full_duplex_playback/stream_route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/media/stream_route_full_duplex_playback/stream_route_playback/status/applicable = 0
+
+		domain: Capture
+
+			conf: Applicable
+				ALL
+					ANY
+						ALL
+							BtEnable Is True
+							# ScoResourceRequested Is True
+							InputDevices Includes ScoHeadset
+						InputDevices Includes Main
+						InputDevices Includes Headset
+						InputDevices Includes Back
+						ALL
+							InputDevices Includes VoiceCall
+							AndroidMode Is InCsvCall
+							ANY
+								ModemAudioStatus Is True
+								# CmeDirectStreamPlayback Is True
+								# CmeDirectStreamCapture Is True
+					ANY
+						InputSources Includes Mic
+						InputSources Includes Camcorder
+						InputSources Includes VoiceRecognition
+						ALL
+							InputSources Includes VoiceUplink
+							MicMute Is False
+						InputSources Includes VoiceDownlink
+						InputSources Includes VoiceCall
+						InputSources Includes VoiceCommunication
+					ANY
+						PreProcessorRequestedByActiveInput Is Agc
+						PreProcessorRequestedByActiveInput Is none
+
+				/Route/route_mgr/routes/media/stream_route_full_duplex_capture/stream_route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/media/stream_route_full_duplex_capture/stream_route_capture/status/applicable = 0
+
+
+	# completly disable the 'voice' route
+	domain: Voice
+		conf: Disabled
+			/Route/route_mgr/routes/voice/stream_route_full_duplex_playback/stream_route_playback/status/applicable = 0
+			/Route/route_mgr/routes/voice/stream_route_full_duplex_capture/stream_route_capture/status/applicable = 0
+	# supDomain: Voice
+
+	# 	domain: Playback
+
+	# 		conf: Applicable
+	# 			ALL
+	# 				ANY
+	# 					OutputDevices Includes Earpiece
+	# 					OutputDevices Includes Ihf
+	# 					OutputDevices Includes Headset
+	# 					OutputDevices Includes Headphones
+	# 					ALL
+	# 						BtEnable Is True
+	# 						# ScoResourceRequested Is True
+	# 						ANY
+	# 							OutputDevices Includes Sco
+	# 							OutputDevices Includes ScoHeadset
+	# 							OutputDevices Includes ScoCarkit
+	# 				AndroidMode Is InVoipCall
+	# 				OutputFlags Includes Primary
+
+	# 			/Route/route_mgr/routes/voice/stream_route_full_duplex_playback/stream_route_playback/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/voice/stream_route_full_duplex_playback/stream_route_playback/status/applicable = 0
+
+	# 	domain: Capture
+
+	# 		conf: Applicable
+	# 			ALL
+	# 				ANY
+	# 					ALL
+	# 						BtEnable Is True
+	# 						# ScoResourceRequested Is True
+	# 						InputDevices Includes ScoHeadset
+	# 					InputDevices Includes Main
+	# 					InputDevices Includes Headset
+	# 					InputDevices Includes Back
+	# 				ANY
+	# 					InputSources Includes VoiceCommunication
+	# 					ALL
+	# 						InputSources Includes Mic
+	# 						PreProcessorRequestedByActiveInput Includes Agc
+	# 						ANY
+	# 							PreProcessorRequestedByActiveInput Includes Aec
+	# 							PreProcessorRequestedByActiveInput Includes Ns
+
+	# 			/Route/route_mgr/routes/voice/stream_route_full_duplex_capture/stream_route_capture/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/voice/stream_route_full_duplex_capture/stream_route_capture/status/applicable = 0
+
+
+	supDomain: LowLatency
+
+		domain: Playback
+
+			conf: Applicable
+				ALL
+					ANY
+						OutputDevices Includes Earpiece
+						OutputDevices Includes Ihf
+						OutputDevices Includes Headset
+						OutputDevices Includes Headphones
+						ALL
+							BtEnable Is True
+							# ScoResourceRequested Is True
+							ANY
+								OutputDevices Includes Sco
+								OutputDevices Includes ScoHeadset
+								OutputDevices Includes ScoCarkit
+					ANY
+						AndroidMode Is Normal
+						AndroidMode Is RingTone
+					OutputFlags Includes Fast
+
+				/Route/route_mgr/routes/low_latency/stream_route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/low_latency/stream_route_playback/status/applicable = 0
+
+
+	supDomain: DeepBuffer
+
+		domain: Playback
+
+			conf: Applicable
+				ALL
+					ANY
+						OutputDevices Includes Earpiece
+						OutputDevices Includes Ihf
+						OutputDevices Includes Headset
+						OutputDevices Includes Headphones
+						ALL
+							BtEnable Is True
+							# ScoResourceRequested Is True
+							ANY
+								OutputDevices Includes Sco
+								OutputDevices Includes ScoHeadset
+								OutputDevices Includes ScoCarkit
+					AndroidMode Is Normal
+					OutputFlags Includes Deep
+
+				/Route/route_mgr/routes/deep_media/stream_route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/deep_media/stream_route_playback/status/applicable = 0
+
+
+	supDomain: NeedReconfigure
+
+		supDomain: Voice
+
+			domain: Capture
+
+				conf: Yes
+					ANY
+						StatesChanged Includes InputDevices
+						StatesChanged Includes MicMute
+						StatesChanged Includes PreProcessorRequestedByActiveInput
+
+					component: /Route/route_mgr/routes/voice/stream_route_full_duplex_capture/stream_route_capture/status/
+						need_reconfigure = 1
+
+				conf: No
+					component: /Route/route_mgr/routes/voice/stream_route_full_duplex_capture/stream_route_capture/status/
+						need_reconfigure = 0
+
+		domain: Playback
+
+			conf: Yes
+				StatesChanged Includes OutputDevices
+
+				component: /Route/route_mgr/routes/
+					media/stream_route_full_duplex_playback/stream_route_playback/status/need_reconfigure = 1
+					voice/stream_route_full_duplex_playback/stream_route_playback/status/need_reconfigure = 1
+					deep_media/stream_route_playback/status/need_reconfigure = 1
+
+			conf: No
+				component: /Route/route_mgr/routes/
+					media/stream_route_full_duplex_playback/stream_route_playback/status/need_reconfigure = 0
+					voice/stream_route_full_duplex_playback/stream_route_playback/status/need_reconfigure = 0
+					deep_media/stream_route_playback/status/need_reconfigure = 0
+
+		domain: Capture
+
+			conf: Yes
+				StatesChanged Includes InputDevices
+				StatesChanged Includes PreProcessorRequestedByActiveInput
+
+				component: /Route/route_mgr/routes/
+					media/stream_route_full_duplex_capture/stream_route_capture/status/need_reconfigure = 1
+
+			conf: No
+				component: /Route/route_mgr/routes/
+					media/stream_route_full_duplex_capture/stream_route_capture/status/need_reconfigure = 0
+
+supDomain: Route
+
+	supDomain: CompressedMedia
+
+		domain: Playback
+
+			conf: Applicable
+				DirectStream Is True
+
+				/Route/route_mgr/routes/compressed_media/route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/compressed_media/route_playback/status/applicable = 0
+
+
+	supDomain: HwCodec0IA
+
+		domain: Playback
+
+			conf: Applicable
+				ANY
+					ALL
+						AndroidMode Is InCsvCall
+						ModemAudioStatus Is True
+						TtyDirection Is Uplink
+						OutputDevices Includes Headset
+					ALL
+						ANY
+							OutputDevices Includes Earpiece
+							OutputDevices Includes Ihf
+						ANY
+							OutputFlags Includes Primary
+							OutputFlags Includes Fast
+							OutputFlags Includes Deep
+							DirectStream Is True
+							ModemAudioStatus Is True
+							FmEnabled Is True
+							# CmeDirectStreamPlayback Is True
+					## Copied from HwCodec1IA
+					ALL
+						ANY
+							OutputDevices Includes Headset
+							OutputDevices Includes Headphones
+						ANY
+							OutputFlags Includes Primary
+							OutputFlags Includes Fast
+							OutputFlags Includes Deep
+							DirectStream Is True
+							ModemAudioStatus Is True
+							FmEnabled Is True
+							# CmeDirectStreamPlayback Is True
+
+				/Route/route_mgr/routes/hwcodec0ia/route_full_duplex_playback/route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/hwcodec0ia/route_full_duplex_playback/route_playback/status/applicable = 0
+
+
+		domain: Capture
+
+			conf: Applicable
+				ANY
+					# ContextAwareness Is True
+					ALL
+						AndroidMode Is InCsvCall
+						ANY
+							ModemAudioStatus Is True
+							# CmeDirectStreamCapture Is True
+						ANY
+							OutputDevices Includes Earpiece
+							OutputDevices Includes Ihf
+							OutputDevices Includes Headphones
+							ALL
+								OutputDevices Includes Headset
+								TtyDirection Is Downlink
+					ALL
+						ANY
+							InputDevices Includes Back
+							InputDevices Includes Main
+						ANY
+							InputSources Includes Mic
+							InputSources Includes Camcorder
+							InputSources Includes VoiceRecognition
+							InputSources Includes VoiceCommunication
+					# ALL
+					# 	LpalDevice Is Main
+					# 	AlwaysListening Is True
+					# 	ANY
+					# 		AndroidMode Is Normal
+					# 		AndroidMode Is RingTone
+					# 	InputSources Is none
+					## Copied from HwCodec1IA
+					ALL
+						InputDevices Includes Headset
+						ANY
+							InputSources Includes Mic
+							InputSources Includes Camcorder
+							InputSources Includes VoiceRecognition
+							InputSources Includes VoiceCommunication
+					ALL
+						OutputDevices Includes Headset
+						AndroidMode Is InCsvCall
+						ANY
+							ModemAudioStatus Is True
+							# CmeDirectStreamCapture Is True
+					# ALL
+					# 	LpalDevice Is Headset
+					# 	AlwaysListening Is True
+					# 	InputSources Is none
+					# 	ANY
+					# 		AndroidMode Is Normal
+					# 		AndroidMode Is RingTone
+
+				/Route/route_mgr/routes/hwcodec0ia/route_full_duplex_capture/route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/hwcodec0ia/route_full_duplex_capture/route_capture/status/applicable = 0
+
+
+	supDomain: HwCodec1IA
+
+		domain: Playback
+
+	# 		conf: Applicable
+	# 			ALL
+	# 				ANY
+	# 					OutputDevices Includes Headset
+	# 					OutputDevices Includes Headphones
+	# 				ANY
+	# 					OutputFlags Includes Primary
+	# 					OutputFlags Includes Fast
+	# 					OutputFlags Includes Deep
+	# 					DirectStream Is True
+	# 					ModemAudioStatus Is True
+	# 					FmEnabled Is True
+	# 					# CmeDirectStreamPlayback Is True
+
+	# 			/Route/route_mgr/routes/hwcodec1ia/route_full_duplex_playback/route_playback/status/applicable = 1
+
+
+
+		domain: Capture
+
+	# 		conf: Applicable
+	# 			ANY
+	# 				ALL
+	# 					InputDevices Includes Headset
+	# 					ANY
+	# 						InputSources Includes Mic
+	# 						InputSources Includes Camcorder
+	# 						InputSources Includes VoiceRecognition
+	# 						InputSources Includes VoiceCommunication
+	# 				ALL
+	# 					OutputDevices Includes Headset
+	# 					AndroidMode Is InCsvCall
+	# 					ANY
+	# 						ModemAudioStatus Is True
+	# 						# CmeDirectStreamCapture Is True
+	# 				# ALL
+	# 				# 	LpalDevice Is Headset
+	# 				# 	AlwaysListening Is True
+	# 				# 	InputSources Is none
+	# 				# 	ANY
+	# 				# 		AndroidMode Is Normal
+	# 				# 		AndroidMode Is RingTone
+
+	# 			/Route/route_mgr/routes/hwcodec1ia/route_full_duplex_capture/route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/hwcodec1ia/route_full_duplex_capture/route_capture/status/applicable = 0
+
+	supDomain: ModemIA
+
+		domain: PlaybackCapture
+
+			conf: Applicable
+				ALL
+					AndroidMode Is InCsvCall
+					ModemAudioStatus Is True
+					ANY
+						OutputDevices Is Ihf
+						OutputDevices Is Headset
+						OutputDevices Is Headphones
+						OutputDevices Is Earpiece
+						OutputDevices Is Sco
+						OutputDevices Is ScoHeadset
+						OutputDevices Is ScoCarkit
+
+				component: /Route/route_mgr/routes/modemia/
+					route_full_duplex_playback/route_playback/status/applicable = 1
+					route_full_duplex_capture/route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				component: /Route/route_mgr/routes/modemia/
+					route_full_duplex_playback/route_playback/status/applicable = 0
+					route_full_duplex_capture/route_capture/status/applicable = 0
+
+		domain: NeedReconfigure
+
+			conf: Yes
+				ANY
+					StatesChanged Includes MicMute
+					StatesChanged Includes OutputDevices
+
+				component: /Route/route_mgr/routes/modemia/route_full_duplex_playback/route_playback/status/
+					need_reconfigure = 1
+
+			conf: No
+				component: /Route/route_mgr/routes/modemia/route_full_duplex_playback/route_playback/status/
+					need_reconfigure = 0
+
+	supDomain: BtIA
+
+		domain: Playback
+
+			conf: Applicable
+				ALL
+					BtEnable Is True
+					# ScoResourceRequested Is True
+					ALL
+						ANY
+							OutputDevices Includes Sco
+							OutputDevices Includes ScoHeadset
+							OutputDevices Includes ScoCarkit
+						ANY
+							OutputFlags Includes Primary
+							OutputFlags Includes Fast
+							OutputFlags Includes Deep
+							DirectStream Is True
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioStatus Is True
+									# CmeDirectStreamPlayback Is True
+
+				/Route/route_mgr/routes/bt_ia/route_full_duplex_playback/route_playback/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/bt_ia/route_full_duplex_playback/route_playback/status/applicable = 0
+
+		domain: Capture
+
+			conf: Applicable
+				ALL
+					BtEnable Is True
+					# ScoResourceRequested Is True
+					ANY
+						ALL
+							AndroidMode Is InCsvCall
+							ANY
+								ModemAudioStatus Is True
+								# CmeDirectStreamCapture Is True
+							ANY
+								OutputDevices Includes Sco
+								OutputDevices Includes ScoHeadset
+								OutputDevices Includes ScoCarkit
+						ALL
+							InputDevices Includes ScoHeadset
+							ANY
+								InputSources Includes Mic
+								InputSources Includes Camcorder
+								InputSources Includes VoiceRecognition
+								InputSources Includes VoiceCommunication
+
+				/Route/route_mgr/routes/bt_ia/route_full_duplex_capture/route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/bt_ia/route_full_duplex_capture/route_capture/status/applicable = 0
+
+
+	supDomain: FMIA
+
+		domain: Capture
+
+			conf: Applicable
+				FmEnabled Is True
+
+				/Route/route_mgr/routes/fm_ia/route_full_duplex_capture/route_capture/status/applicable = 1
+
+			conf: NotApplicable
+				/Route/route_mgr/routes/fm_ia/route_full_duplex_capture/route_capture/status/applicable = 0
+
+
+	# supDomain: ContextAwareness
+
+	# 	domain: Capture
+
+	# 		conf: Applicable
+	# 			ContextAwareness Is True
+
+	# 			/Route/route_mgr/routes/context_awareness/route_capture/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/context_awareness/route_capture/status/applicable = 0
+
+	# supDomain: AlwaysListening
+
+	# 	domain: Capture
+
+	# 		conf: Applicable
+	# 			ALL
+	# 				AlwaysListening Is True
+	# 				ANY
+	# 					AndroidMode Is Normal
+	# 					AndroidMode Is RingTone
+	# 				InputSources Is none
+
+	# 			/Route/route_mgr/routes/always_listening/route_capture/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/always_listening/route_capture/status/applicable = 0
+
+	# 	domain: NeedReconfigure
+
+	# 		conf: Yes
+	# 			StatesChanged Includes LpalDevice
+
+	# 			/Route/route_mgr/routes/always_listening/route_capture/status/need_reconfigure = 1
+
+	# 		conf: No
+	# 			/Route/route_mgr/routes/always_listening/route_capture/status/need_reconfigure = 0
+
+	# supDomain: CmeVoice
+
+	# 	domain: Capture
+
+	# 		conf: Applicable
+	# 			AndroidMode Is InCsvCall
+	# 			ModemAudioStatus IsNot True
+	# 			CmeDirectStreamCapture Is True
+
+	# 			/Route/route_mgr/routes/cmevoice/route_full_duplex_capture/route_capture/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/cmevoice/route_full_duplex_capture/route_capture/status/applicable = 0
+
+	# 	domain: Playback
+
+	# 		conf: Applicable
+	# 			AndroidMode Is InCsvCall
+	# 			ModemAudioStatus IsNot True
+	# 			CmeDirectStreamPlayback Is True
+
+	# 			/Route/route_mgr/routes/cmevoice/route_full_duplex_playback/route_playback/status/applicable = 1
+
+	# 		conf: NotApplicable
+	# 			/Route/route_mgr/routes/cmevoice/route_full_duplex_playback/route_playback/status/applicable = 0
+
+	# 	supDomain: NeedReconfigure
+
+	# 		domain: Capture
+	# 			conf: Yes
+	# 				ANY
+	# 					StatesChanged Includes MicMute
+	# 					StatesChanged Includes InputDevices
+	# 				component: /Route/route_mgr/routes/
+	# 					cmevoice/route_full_duplex_capture/route_capture/status/need_reconfigure = 1
+
+	# 			conf: No
+	# 				component: /Route/route_mgr/routes/
+	# 					cmevoice/route_full_duplex_capture/route_capture/status/need_reconfigure = 0
+
+	# 		domain: Playback
+
+	# 			conf: Yes
+	# 				StatesChanged Includes OutputDevices
+	# 				component: /Route/route_mgr/routes/
+	# 					cmevoice/route_full_duplex_playback/route_playback/status/need_reconfigure = 1
+
+	# 			conf: No
+	# 				component: /Route/route_mgr/routes/
+	# 					cmevoice/route_full_duplex_playback/route_playback/status/need_reconfigure = 0
+
+	supDomain: HWCodec
+
+		supDomain: NeedReconfigure
+
+			domain: Playback
+
+				conf: Yes
+					ANY
+						StatesChanged Includes HacSelected
+						StatesChanged Includes TtyDirection
+						StatesChanged Includes AndroidMode
+						StatesChanged Includes CsvBandType
+						StatesChanged Includes VoIPBandType
+						StatesChanged Includes ImsBandType
+						StatesChanged Includes OutputDevices
+
+					component: /Route/route_mgr/routes/
+						hwcodec0ia/route_full_duplex_playback/route_playback/status/need_reconfigure = 1
+						hwcodec1ia/route_full_duplex_playback/route_playback/status/need_reconfigure = 1
+
+				conf: No
+					component: /Route/route_mgr/routes/
+						hwcodec0ia/route_full_duplex_playback/route_playback/status/need_reconfigure = 0
+						hwcodec1ia/route_full_duplex_playback/route_playback/status/need_reconfigure = 0
+
+			domain: Capture
+
+				conf: Yes
+					ANY
+						StatesChanged Includes HacSelected
+						StatesChanged Includes TtyDirection
+						StatesChanged Includes AndroidMode
+						StatesChanged Includes CsvBandType
+						StatesChanged Includes VoIPBandType
+						StatesChanged Includes ImsBandType
+						StatesChanged Includes InputDevices
+						StatesChanged Includes MicMute
+
+					component: /Route/route_mgr/routes/
+						hwcodec0ia/route_full_duplex_capture/route_capture/status/need_reconfigure = 1
+						hwcodec1ia/route_full_duplex_capture/route_capture/status/need_reconfigure = 1
+
+				conf: No
+					component: /Route/route_mgr/routes/
+						hwcodec0ia/route_full_duplex_capture/route_capture/status/need_reconfigure = 0
+						hwcodec1ia/route_full_duplex_capture/route_capture/status/need_reconfigure = 0
+
+	supDomain: VoiceProcessingLock
+
+		supDomain: Applicable
+
+			domain: Capture
+
+				conf: Yes
+					ANY
+						AndroidMode Is InVoipCall
+						ALL
+							AndroidMode Is InCsvCall
+							ANY
+								ModemAudioStatus Is True
+								# CmeDirectStreamCapture Is True
+
+					/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_capture/route_capture/status/applicable = 1
+
+				conf: No
+					/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_capture/route_capture/status/applicable = 0
+
+			domain: Playback
+
+				conf: Yes
+					ANY
+						AndroidMode Is InVoipCall
+						ALL
+							AndroidMode Is InCsvCall
+							ANY
+								ModemAudioStatus Is True
+								# CmeDirectStreamPlayback Is True
+
+					/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_playback/route_playback/status/applicable = 1
+
+				conf: No
+					/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_playback/route_playback/status/applicable = 0
+
+		domain: NeedReroute
+
+			conf: Yes
+				ANY
+					ALL
+						AndroidMode Is InCsvCall
+						ModemAudioStatus Is True
+						StatesChanged Includes CsvBandType
+					ALL
+						AndroidMode Is InVoipCall
+						StatesChanged Includes VoIPBandType
+					# ALL
+					# 	AndroidMode Is InCsvCall
+					# 	StatesChanged Includes ImsBandType
+					# 	ANY
+					# 		CmeDirectStreamPlayback Is True
+					# 		CmeDirectStreamCapture Is True
+				/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_playback/route_playback/status/need_reroute = 1
+				/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_capture/route_capture/status/need_reroute = 1
+
+			conf: No
+				/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_playback/route_playback/status/need_reroute = 0
+				/Route/route_mgr/routes/voice_processing_lock/route_full_duplex_capture/route_capture/status/need_reroute = 0
+
