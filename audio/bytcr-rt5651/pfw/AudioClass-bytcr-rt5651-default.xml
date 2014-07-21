@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SystemClass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/SystemClass.xsd" Name="Audio">
+    <SubsystemInclude Path="CodecSubsystem-bytcr-rt5651-default.xml"/>
+    <SubsystemInclude Path="LpeSubsystem-bytcr-rt5651-default.xml"/>
+    <SubsystemInclude Path="ConfigurationSubsystem.xml"/>
+    <SubsystemInclude Path="SysfsPmdownTimeBytcrSubsystem.xml"/>
+</SystemClass>
+
