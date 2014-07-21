@@ -198,6 +198,15 @@ LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libproperty-subsystem
 include $(BUILD_PREBUILT)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := BluedroidCommSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+LOCAL_REQUIRED_MODULES := libbluedroidcomm-subsystem
+include $(BUILD_PREBUILT)
+
 ######### Audio Algos #########
 
 include $(CLEAR_VARS)
