@@ -135,6 +135,17 @@ def swap_entries(info):
     info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
             (fstab['/bootloader'].device,))
 
+def HasRecoveryPatch(outdir):
+    return os.path.exists(os.path.join(outdir, "SYSTEM/recovery-from-boot.p"))
+
+def is_block_ota(info, incremental):
+    if not OPTIONS.block_based:
+        return False
+
+    if incremental:
+        return HasRecoveryPatch(OPTIONS.source_tmp) and HasRecoveryPatch(OPTIONS.target_tmp)
+    else:
+        return HasRecoveryPatch(OPTIONS.input_tmp)
 
 def IncrementalOTA_InstallEnd(info):
     if fastboot["updating"]:
@@ -176,6 +187,9 @@ def IncrementalOTA_InstallEnd(info):
         info.script.UnpackPackageDir("bootloader", "/bootloader")
 
     info.script.script.append('copy_shim();')
+    if is_block_ota(info, True):
+        print "This is a block-level OTA, mounting /system before SFU copy"
+        info.script.Mount("/system");
     info.script.script.append('copy_sfu();')
     info.script.script.append('unmount("/bootloader");')
     swap_entries(info)
@@ -206,6 +220,9 @@ def FullOTA_InstallEnd(info):
 
     if os.path.exists(os.path.join(OPTIONS.input_tmp, sfu_path)):
         MountEsp(info, False)
+        if is_block_ota(info, False):
+            print "This is a block-level OTA, mounting /system before SFU copy"
+            info.script.Mount("/system");
         info.script.script.append('copy_sfu();')
         info.script.script.append('unmount("/bootloader");')
 
