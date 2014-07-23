@@ -108,7 +108,7 @@ service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emul
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/init.rc
 ##############################################################
-service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
+service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL eth0
     class main
     disabled
     oneshot
