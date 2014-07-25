@@ -137,6 +137,10 @@ USE_MEDIASDK := true
 MFX_IPP := p8
 
 ##############################################################
+# Source: device/intel/mixins/groups/sensors/iio/BoardConfig.mk
+##############################################################
+USE_INTEL_SENSOR_HAL := true
+##############################################################
 # Source: device/intel/mixins/groups/navigationbar/true/BoardConfig.mk
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/navigationbar/overlay
