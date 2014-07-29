@@ -187,14 +187,14 @@
             <!--     <Component Name="amic" Type="SspInPipe" Mapping="Amend1:codec_in1"/> -->
             <!--     <Component Name="deinterleaver" Type="Deinterleaver" Mapping="Amend1:codec_in"/> -->
             <!-- </ParameterBlock> -->
-            <!-- <ParameterBlock Name="cws_out"> -->
-            <!--     <Component Name="bt" Type="GainPipe" Mapping="Amend1:bt_out"/> -->
-            <!--     <Component Name="demux" Type="BtFmMuxer" Mapping="Amend1:ssp1_in,Amend2:demux,Amend3:0"/> -->
-            <!-- </ParameterBlock> -->
-            <!-- <ParameterBlock Name="cws_in"> -->
-            <!--     <Component Name="bt" Type="SspInPipe" Mapping="Amend1:bt_in"/> -->
-            <!--     <Component Name="mux" Type="BtFmMuxer" Mapping="Amend1:ssp1_out,Amend2:mux,Amend3:0"/> -->
-            <!-- </ParameterBlock> -->
+            <ParameterBlock Name="cws_out">
+                <Component Name="bt" Type="GainPipe" Mapping="Amend1:bt_out"/>
+                <Component Name="demux" Type="BtFmMuxer" Mapping="Amend1:ssp1_in,Amend2:demux,Amend3:0"/>
+            </ParameterBlock>
+            <ParameterBlock Name="cws_in">
+                <Component Name="bt" Type="SspInPipe" Mapping="Amend1:bt_in"/>
+                <Component Name="mux" Type="BtFmMuxer" Mapping="Amend1:ssp1_out,Amend2:mux,Amend3:0"/>
+            </ParameterBlock>
             <!-- <Component Name="sprot_loop" Type="SpeakerProtPipe" Mapping="Amend1:sprot_loop_out"/> -->
             <!-- <Component Name="hf_sns2" Type="EqPipeHfSns2"/> -->
             <!-- <Component Name="hf_ref" Type="GainPipe" Mapping="Amend1:hf_out"/> -->
@@ -224,7 +224,7 @@
             <!-- <BooleanParameter Name="tone" Mapping="Control:%1 %2 %3 tone_in"/> -->
             <!-- <BooleanParameter Name="modem" Mapping="Control:%1 %2 %3 modem_in"/> -->
             <!-- <BooleanParameter Name="fm" Mapping="Control:%1 %2 %3 fm_in"/> -->
-            <!-- <BooleanParameter Name="bt" Mapping="Control:%1 %2 %3 bt_in"/> -->
+            <BooleanParameter Name="bt" Mapping="Control:%1 %2 %3 bt_in"/>
             <!-- On bytcr-rt5651-common, there is no TDM between the SST and the Codec, so we can only use codec0 -->
             <BooleanParameter Name="codec_in" Mapping="Control:%1 %2 %3 codec_in0"/>
             <!-- <BooleanParameter Name="dmics" Mapping="Control:%1 %2 %3 codec_in0"/> -->
@@ -262,7 +262,7 @@
             <Component Name="codec_out" Type="MainMixerOut" Mapping="Amend1:codec_out0"/>
             <!-- <Component Name="ihf_or_earpiece" Type="MainMixerOut" Mapping="Amend1:codec_out0"/> -->
             <!-- <Component Name="headset" Type="MainMixerOut" Mapping="Amend1:codec_out1"/> -->
-            <!-- <Component Name="bt" Type="MainMixerOut" Mapping="Amend1:bt_out"/> -->
+            <Component Name="bt" Type="MainMixerOut" Mapping="Amend1:bt_out"/>
             <Component Name="pcm1" Type="MainMixerOut" Mapping="Amend1:pcm1_out"/>
             <!-- <Component Name="modem" Type="MainMixerOut" Mapping="Amend1:modem_out"/> -->
             <!-- <Component Name="voip" Type="MainMixerOut" Mapping="Amend1:voip_out"/> -->
