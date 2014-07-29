@@ -1,0 +1,8 @@
+Intel adb keys documentation
+============================
+
+If you want to connect to the device without manual secure adb authorization
+please copy gmin_adb_key.priv to ${HOME}/.android/adbkey and the gmin@intel public key
+from adb_keys to ${HOME}/.android/adbkey.pub.
+
+The other keys from the adb_keys file are for the test slaves.
