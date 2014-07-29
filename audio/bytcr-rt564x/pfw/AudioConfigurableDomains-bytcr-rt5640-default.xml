@@ -600,11 +600,15 @@
       </Configuration>
     </Settings>
   </ConfigurableDomain>
-  <ConfigurableDomain Name="Routing.Lpe.Configure.Playback.MediaMixer.Dmics" SequenceAware="false">
+  <ConfigurableDomain Name="Routing.Lpe.Configure.Capture.Media.Dmics" SequenceAware="false">
     <Configurations>
       <Configuration Name="Bind">
         <CompoundRule Type="All">
           <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+          <SelectionCriterionRule SelectionCriterion="OpenedCaptureRoutes" MatchesWhen="Includes" Value="Media"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceUplink"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceDownlink"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceCall"/>
           <SelectionCriterionRule SelectionCriterion="OpenedCaptureRoutes" MatchesWhen="Includes" Value="HwCodec0IA"/>
         </CompoundRule>
       </Configuration>

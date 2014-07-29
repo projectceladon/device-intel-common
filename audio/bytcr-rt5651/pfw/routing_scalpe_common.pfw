@@ -339,15 +339,15 @@ domainGroup: Routing.Lpe
 			# 		conf: Unbind
 			# 			/Audio/lpe/main_mixer/codec_out/mix/sprot_loop = 0
 
-		# domainGroup: Capture
-		# 	confType: Bind
-		# 		OpenedCaptureRoutes Includes Media
+		domainGroup: Capture
+			confType: Bind
+				OpenedCaptureRoutes Includes Media
 
-		# 	domainGroup: Media
-		# 		confType: Bind
-		# 			AudioSource IsNot VoiceUplink
-		# 			AudioSource IsNot VoiceDownlink
-		# 			AudioSource IsNot VoiceCall
+			domainGroup: Media
+				confType: Bind
+					AudioSource IsNot VoiceUplink
+					AudioSource IsNot VoiceDownlink
+					AudioSource IsNot VoiceCall
 
 				# temporary: we should use the media loop, as done below
 				# but only for digital mic
