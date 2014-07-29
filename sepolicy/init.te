@@ -75,7 +75,7 @@ domain_trans(init, rootfs, watchdogd)
 # https://android-review.googlesource.com/94851
 # For now, allow it to all domains.
 # TODO: scope this down.
-allow init domain:process noatsecure;
+allow init { domain -lmkd }:process noatsecure;
 
 # Support "adb shell stop"
 allow init domain:process sigkill;
