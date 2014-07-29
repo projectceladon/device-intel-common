@@ -38,6 +38,10 @@
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/level"/>
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/ramp_duration"/>
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/level"/>
     </ConfigurableElements>
     <Settings>
       <Configuration Name="Default">
@@ -81,6 +85,18 @@
           <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
       </Configuration>
@@ -415,6 +431,66 @@
       </Configuration>
     </Settings>
   </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Mute.Bluetooth.Playback" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Unmute">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Flow"/>
+          <SelectionCriterionRule SelectionCriterion="OpenedPlaybackRoutes" MatchesWhen="Includes" Value="BtIA"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="Mute">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Flow"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/mute"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Unmute">
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/mute">
+          <BooleanParameter Name="mute">0</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="Mute">
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/mute">
+          <BooleanParameter Name="mute">1</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Mute.Bluetooth.Capture" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Unmute">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Flow"/>
+          <SelectionCriterionRule SelectionCriterion="OpenedCaptureRoutes" MatchesWhen="Includes" Value="BtIA"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="Mute">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Flow"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/mute"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Unmute">
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/mute">
+          <BooleanParameter Name="mute">0</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="Mute">
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/mute">
+          <BooleanParameter Name="mute">1</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
   <ConfigurableDomain Name="Routing.Lpe.Mute.Media.Playback.Regular" SequenceAware="false">
     <Configurations>
       <Configuration Name="Unmute">
@@ -535,6 +611,69 @@
       </Configuration>
     </Settings>
   </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Configure.Muxing.BtFm.Mux" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Default">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/mux/select"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Default">
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/mux/select">
+          <EnumParameter Name="select">bt</EnumParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Configure.BandType.Bt" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="NB">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+          <SelectionCriterionRule SelectionCriterion="BtHeadsetBandType" MatchesWhen="Is" Value="NB"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="WB">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+          <CompoundRule Type="Any">
+            <SelectionCriterionRule SelectionCriterion="BtHeadsetBandType" MatchesWhen="Is" Value="WB"/>
+            <SelectionCriterionRule SelectionCriterion="BtHeadsetBandType" MatchesWhen="Is" Value="SuperWB"/>
+          </CompoundRule>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="Default">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/sample_spec_domain/bt/mode"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="NB">
+        <ConfigurableElement Path="/Audio/lpe/sample_spec_domain/bt/mode">
+          <EnumParameter Name="mode">narrow-band</EnumParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="WB">
+        <ConfigurableElement Path="/Audio/lpe/sample_spec_domain/bt/mode">
+          <EnumParameter Name="mode">wide-band</EnumParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="Default">
+        <ConfigurableElement Path="/Audio/lpe/sample_spec_domain/bt/mode">
+          <EnumParameter Name="mode">narrow-band</EnumParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
   <ConfigurableDomain Name="Routing.Lpe.Configure.Playback.Media.ToCodec" SequenceAware="false">
     <Configurations>
       <Configuration Name="Bind">
@@ -565,6 +704,41 @@
       </Configuration>
       <Configuration Name="Unbind">
         <ConfigurableElement Path="/Audio/lpe/main_mixer/codec_out/mix/pcm0">
+          <BooleanParameter Name="pcm0">0</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Configure.Playback.Media.Bluetooth" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Bind">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+          <CompoundRule Type="Any">
+            <SelectionCriterionRule SelectionCriterion="OpenedPlaybackRoutes" MatchesWhen="Includes" Value="Media"/>
+            <SelectionCriterionRule SelectionCriterion="OpenedPlaybackRoutes" MatchesWhen="Includes" Value="DeepMedia"/>
+            <SelectionCriterionRule SelectionCriterion="OpenedPlaybackRoutes" MatchesWhen="Includes" Value="CompressedMedia"/>
+          </CompoundRule>
+          <SelectionCriterionRule SelectionCriterion="OpenedPlaybackRoutes" MatchesWhen="Includes" Value="BtIA"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="Unbind">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/main_mixer/bt/mix/pcm0"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Bind">
+        <ConfigurableElement Path="/Audio/lpe/main_mixer/bt/mix/pcm0">
+          <BooleanParameter Name="pcm0">1</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="Unbind">
+        <ConfigurableElement Path="/Audio/lpe/main_mixer/bt/mix/pcm0">
           <BooleanParameter Name="pcm0">0</BooleanParameter>
         </ConfigurableElement>
       </Configuration>
@@ -630,6 +804,40 @@
       <Configuration Name="Unbind">
         <ConfigurableElement Path="/Audio/lpe/main_mixer/pcm1/mix/codec_in">
           <BooleanParameter Name="codec_in">0</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="Routing.Lpe.Configure.Capture.Media.Bluetooth" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="Bind">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+          <SelectionCriterionRule SelectionCriterion="OpenedCaptureRoutes" MatchesWhen="Includes" Value="Media"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceUplink"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceDownlink"/>
+          <SelectionCriterionRule SelectionCriterion="AudioSource" MatchesWhen="IsNot" Value="VoiceCall"/>
+          <SelectionCriterionRule SelectionCriterion="OpenedCaptureRoutes" MatchesWhen="Includes" Value="BtIA"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="Unbind">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="RoutageState" MatchesWhen="Includes" Value="Configure"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Audio/lpe/main_mixer/pcm1/mix/bt"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="Bind">
+        <ConfigurableElement Path="/Audio/lpe/main_mixer/pcm1/mix/bt">
+          <BooleanParameter Name="bt">1</BooleanParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="Unbind">
+        <ConfigurableElement Path="/Audio/lpe/main_mixer/pcm1/mix/bt">
+          <BooleanParameter Name="bt">0</BooleanParameter>
         </ConfigurableElement>
       </Configuration>
     </Settings>

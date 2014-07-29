@@ -38,22 +38,22 @@ domainGroup: Routing.Lpe
 					conf: Mute
 						/Audio/lpe/pipe/codec_in/gain/mute = 1
 
-		# domainGroup: Bluetooth
+		domainGroup: Bluetooth
 
 
-		# 	domain: Playback
-		# 		conf: Unmute
-		# 			OpenedPlaybackRoutes Includes BtIA
-		# 			/Audio/lpe/pipe/cws_out/bt/gain/mute = 0
-		# 		conf: Mute
-		# 			/Audio/lpe/pipe/cws_out/bt/gain/mute = 1
+			domain: Playback
+				conf: Unmute
+					OpenedPlaybackRoutes Includes BtIA
+					/Audio/lpe/pipe/cws_out/bt/gain/mute = 0
+				conf: Mute
+					/Audio/lpe/pipe/cws_out/bt/gain/mute = 1
 
-		# 	domain: Capture
-		# 		conf: Unmute
-		# 			OpenedCaptureRoutes Includes BtIA
-		# 			/Audio/lpe/pipe/cws_in/bt/gain/mute = 0
-		# 		conf: Mute
-		# 			/Audio/lpe/pipe/cws_in/bt/gain/mute = 1
+			domain: Capture
+				conf: Unmute
+					OpenedCaptureRoutes Includes BtIA
+					/Audio/lpe/pipe/cws_in/bt/gain/mute = 0
+				conf: Mute
+					/Audio/lpe/pipe/cws_in/bt/gain/mute = 1
 
 		domainGroup: Media
 
@@ -195,27 +195,27 @@ domainGroup: Routing.Lpe
 	domainGroup: Configure
 		RoutageState Includes Configure
 
-		# domainGroup: Muxing
+		domainGroup: Muxing
 
-		# 	domainGroup: BtFm
+			domainGroup: BtFm
 
-		# 		domain: Mux
-		# 			conf: Default
-		# 				/Audio/lpe/pipe/cws_in/mux/select = bt
+				domain: Mux
+					conf: Default
+						/Audio/lpe/pipe/cws_in/mux/select = bt
 
-		# domainGroup: BandType
+		domainGroup: BandType
 
-		# 	domain: Bt
-		# 		conf: NB
-		# 			BtHeadsetBandType Is NB
-		# 			/Audio/lpe/sample_spec_domain/bt/mode = narrow-band
-		# 		conf: WB
-		# 			ANY
-		# 				BtHeadsetBandType Is WB
-		# 				BtHeadsetBandType Is SuperWB
-		# 			/Audio/lpe/sample_spec_domain/bt/mode = wide-band
-		# 		conf: Default
-		# 			/Audio/lpe/sample_spec_domain/bt/mode = narrow-band
+			domain: Bt
+				conf: NB
+					BtHeadsetBandType Is NB
+					/Audio/lpe/sample_spec_domain/bt/mode = narrow-band
+				conf: WB
+					ANY
+						BtHeadsetBandType Is WB
+						BtHeadsetBandType Is SuperWB
+					/Audio/lpe/sample_spec_domain/bt/mode = wide-band
+				conf: Default
+					/Audio/lpe/sample_spec_domain/bt/mode = narrow-band
 
 		# 	domain: Speech
 		# 		conf: NB
@@ -268,12 +268,12 @@ domainGroup: Routing.Lpe
 					conf: Unbind
 						/Audio/lpe/main_mixer/codec_out/mix/pcm0 = 0
 
-				# domain: Bluetooth
-				# 	conf: Bind
-				# 		OpenedPlaybackRoutes Includes BtIA
-				# 		/Audio/lpe/main_mixer/bt/mix/pcm0 = 1
-				# 	conf: Unbind
-				# 		/Audio/lpe/main_mixer/bt/mix/pcm0 = 0
+				domain: Bluetooth
+					conf: Bind
+						OpenedPlaybackRoutes Includes BtIA
+						/Audio/lpe/main_mixer/bt/mix/pcm0 = 1
+					conf: Unbind
+						/Audio/lpe/main_mixer/bt/mix/pcm0 = 0
 
 			# domainGroup: LowLatency
 			# 	confType: Bind
@@ -379,12 +379,12 @@ domainGroup: Routing.Lpe
 		# 			conf: Unbind
 		# 				/Audio/lpe/main_mixer/pcm1/mix/codec_in = 0
 
-		# 		domain: Bluetooth
-		# 			conf: Bind
-		# 				OpenedCaptureRoutes Includes BtIA
-		# 				/Audio/lpe/main_mixer/pcm1/mix/bt = 1
-		# 			conf: Unbind
-		# 				/Audio/lpe/main_mixer/pcm1/mix/bt = 0
+				domain: Bluetooth
+					conf: Bind
+						OpenedCaptureRoutes Includes BtIA
+						/Audio/lpe/main_mixer/pcm1/mix/bt = 1
+					conf: Unbind
+						/Audio/lpe/main_mixer/pcm1/mix/bt = 0
 
 		# 	domainGroup: Csv
 		# 		domain: Downlink
