@@ -20,12 +20,16 @@ OPTIONS = common.OPTIONS
 sfu_path = "SYSTEM/etc/firmware/BIOSUPDATE.fv"
 
 def LoadBootloaderFiles(tfpdir):
-    out = {}
-    esp_root, esp_zip = common.UnzipTemp(os.path.join(tfpdir, "RADIO", "bootloader.zip"))
+    data = intel_common.GetBootloaderImageFromTFP(tfpdir)
+    bzip = common.File("bootloader.img", data).WriteToTemp()
+
+    esp_root, esp_zip = common.UnzipTemp(bzip.name)
 
     for info in esp_zip.infolist():
         data = esp_zip.read(info.filename)
         out[info.filename] = common.File("bootloader/" + info.filename, data)
+
+    bzip.close()
     return out
 
 def IncrementalEspUpdateInit(info):
@@ -78,53 +82,13 @@ def MountEsp(info, copy):
                 (fstab['/bootloader'].device, fstab['/bootloader2'].device))
     info.script.script.append('mount("vfat", "EMMC", "%s", "/bootloader");' % (fstab['/bootloader2'].device))
 
-
-fastboot = {}
-
 def IncrementalOTA_Assertions(info):
-    fastboot["source"] = intel_common.GetFastbootImage(OPTIONS.source_tmp,
-                OPTIONS.source_info_dict)
-    fastboot["target"] = intel_common.GetFastbootImage(OPTIONS.target_tmp,
-                OPTIONS.target_info_dict)
-    # Policy: if both exist, try to do a patch update
-    # if target but not source, write out the target verbatim
-    # if source but not target, or neither, do nothing
-    if fastboot["target"]:
-        if fastboot["source"]:
-            fastboot["updating"] = fastboot["source"].data != fastboot["target"].data
-            fastboot["verbatim"] = False
-        else:
-            fastboot["updating"] = False
-            fastboot["verbatim"] = True
-    else:
-        fastboot["updating"] = False
-        fastboot["verbatim"] = False
-
     IncrementalEspUpdateInit(info)
     if bootloader_update:
         MountEsp(info, True)
 
 
 def IncrementalOTA_VerifyEnd(info):
-    # Check fastboot patch
-    if fastboot["updating"]:
-        target_boot = fastboot["target"]
-        source_boot = fastboot["source"]
-        d = common.Difference(target_boot, source_boot)
-        _, _, d = d.ComputePatch()
-        print "fastboot  target: %d  source: %d  diff: %d" % (
-            target_boot.size, source_boot.size, len(d))
-
-        common.ZipWriteStr(info.output_zip, "patch/fastboot.img.p", d)
-
-        boot_type, boot_device = common.GetTypeAndDevice("/fastboot", OPTIONS.info_dict)
-        info.script.PatchCheck("%s:%s:%d:%s:%d:%s" %
-                          (boot_type, boot_device,
-                           source_boot.size, source_boot.sha1,
-                           target_boot.size, target_boot.sha1))
-        fastboot["boot_type"] = boot_type
-        fastboot["boot_device"] = boot_device
-
     # Check ESP component patches
     for fn, tf, sf, size, patch_sha in patch_list:
         info.script.PatchCheck("/"+fn, tf.sha1, sf.sha1)
@@ -148,27 +112,6 @@ def is_block_ota(info, incremental):
         return HasRecoveryPatch(OPTIONS.input_tmp)
 
 def IncrementalOTA_InstallEnd(info):
-    if fastboot["updating"]:
-        target_boot = fastboot["target"]
-        source_boot = fastboot["source"]
-        boot_type = fastboot["boot_type"]
-        boot_device = fastboot["boot_device"]
-        info.script.Print("Patching fastboot image...")
-        info.script.ApplyPatch("%s:%s:%d:%s:%d:%s"
-                          % (boot_type, boot_device,
-                             source_boot.size, source_boot.sha1,
-                             target_boot.size, target_boot.sha1),
-                          "-",
-                          target_boot.size, target_boot.sha1,
-                          source_boot.sha1, "patch/fastboot.img.p")
-        print "fastboot image changed; including."
-    elif fastboot["verbatim"]:
-        common.ZipWriteStr(info.output_zip, "fastboot.img", fastboot["target"].data)
-        info.script.WriteRawImage("/fastboot", "fastboot.img")
-        print "fastboot not present in source archive; including verbatim"
-    else:
-        print "skipping fastboot update"
-
     if not bootloader_update:
         return
 
@@ -196,24 +139,7 @@ def IncrementalOTA_InstallEnd(info):
 
 
 def FullOTA_InstallEnd(info):
-    fastboot_img = intel_common.GetFastbootImage(OPTIONS.input_tmp, OPTIONS.info_dict)
-    if fastboot_img:
-        common.ZipWriteStr(info.output_zip, "fastboot.img", fastboot_img.data)
-        info.script.WriteRawImage("/fastboot", "fastboot.img")
-    else:
-        print "No fastboot data found, skipping"
-
-    bf = tempfile.NamedTemporaryFile(delete=False)
-    bname = bf.name
-    bf.close()
-    size = int(open(os.path.join(OPTIONS.input_tmp, "RADIO", "bootloader-size.txt")).read().strip())
-    intel_common.MakeVFATFilesystem(os.path.join(OPTIONS.input_tmp, "RADIO", "bootloader.zip"),
-            bname, size=size)
-
-    bf = open(bname)
-    data = bf.read()
-    bf.close()
-    os.unlink(bname)
+    data = intel_common.GetBootloaderImageFromTFP(OPTIONS.input_tmp)
     common.ZipWriteStr(info.output_zip, "bootloader.img", data)
     info.script.Print("Writing updated bootloader image...")
     info.script.WriteRawImage("/bootloader2", "bootloader.img")
