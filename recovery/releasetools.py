@@ -26,6 +26,8 @@ def LoadBootloaderFiles(tfpdir):
     esp_root, esp_zip = common.UnzipTemp(bzip.name)
 
     for info in esp_zip.infolist():
+        if (info.filename == "BIOSUPDATE.fv"):
+            continue
         data = esp_zip.read(info.filename)
         out[info.filename] = common.File("bootloader/" + info.filename, data)
 
@@ -143,15 +145,6 @@ def FullOTA_InstallEnd(info):
     common.ZipWriteStr(info.output_zip, "bootloader.img", data)
     info.script.Print("Writing updated bootloader image...")
     info.script.WriteRawImage("/bootloader2", "bootloader.img")
-
-    if os.path.exists(os.path.join(OPTIONS.input_tmp, sfu_path)):
-        MountEsp(info, False)
-        if is_block_ota(info, False):
-            print "This is a block-level OTA, mounting /system before SFU copy"
-            info.script.Mount("/system");
-        info.script.script.append('copy_sfu();')
-        info.script.script.append('unmount("/bootloader");')
-
     swap_entries(info)
 
 
