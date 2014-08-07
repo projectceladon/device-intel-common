@@ -87,6 +87,14 @@ $(call inherit-product-if-exists, hardware/intel/houdini/houdini.mk)
 $(call inherit-product-if-exists, vendor/intel/houdini/houdini.mk)
 
 ##############################################################
+# Source: device/intel/mixins/groups/graphics/software/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+	libGLES_android \
+	egl.cfg \
+
+BOARD_EGL_CFG := device/generic/goldfish/opengl/system/egl/egl.cfg
+##############################################################
 # Source: device/intel/mixins/groups/media/ufo/product.mk
 ##############################################################
 # libstagefrighthw
