@@ -8,7 +8,7 @@ service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL eth0
     disabled
     oneshot
 
-on device-added-/dev/eth0
+on post-fs
     start dhcpcd_eth0
 
 ##############################################################
