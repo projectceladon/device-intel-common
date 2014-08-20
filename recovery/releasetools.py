@@ -144,7 +144,6 @@ def IncrementalOTA_InstallEnd(info):
         info.script.Print("Adding new bootloader files...")
         info.script.UnpackPackageDir("bootloader", "/bootloader")
 
-    info.script.script.append('copy_shim();')
     if is_block_ota(info, True):
         print "This is a block-level OTA, mounting /system before SFU copy"
         info.script.Mount("/system");
