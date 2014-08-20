@@ -3,6 +3,7 @@ import fnmatch
 import os
 import sys
 import tempfile
+import subprocess
 
 sys.path.append("device/intel/build/releasetools")
 import intel_common
@@ -20,18 +21,30 @@ OPTIONS = common.OPTIONS
 sfu_path = "SYSTEM/etc/firmware/BIOSUPDATE.fv"
 
 def LoadBootloaderFiles(tfpdir):
+    out = {}
     data = intel_common.GetBootloaderImageFromTFP(tfpdir)
-    bzip = common.File("bootloader.img", data).WriteToTemp()
+    image = common.File("bootloader.img", data).WriteToTemp()
 
-    esp_root, esp_zip = common.UnzipTemp(bzip.name)
+    # Extract the contents of the VFAT bootloader image so we
+    # can compute diffs on a per-file basis
+    esp_root = tempfile.mkdtemp(prefix="bootloader-")
+    OPTIONS.tempfiles.append(esp_root)
+    intel_common.add_dir_to_path("/sbin")
+    subprocess.check_output(["mcopy", "-s", "-i", image.name, "::*", esp_root]);
+    image.close();
 
-    for info in esp_zip.infolist():
-        if (info.filename == "BIOSUPDATE.fv"):
-            continue
-        data = esp_zip.read(info.filename)
-        out[info.filename] = common.File("bootloader/" + info.filename, data)
+    for dpath, dname, fnames in os.walk(esp_root):
+        for fname in fnames:
+            # Capsule update file -- gets consumed and deleted by the firmware
+            # at first boot, shouldn't try to patch it
+            if (fname == "BIOSUPDATE.fv"):
+                continue
+            abspath = os.path.join(dpath, fname)
+            relpath = os.path.relpath(abspath, esp_root)
+            data = open(abspath).read()
+            print relpath
+            out[relpath] = common.File("bootloader/" + relpath, data)
 
-    bzip.close()
     return out
 
 def IncrementalEspUpdateInit(info):
