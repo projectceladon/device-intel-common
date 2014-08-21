@@ -5,3 +5,35 @@
 
 # userfastboot
 /sbin/userfastboot          u:object_r:userfastboot_exec:s0
+
+# gpu_device (EGL/OGL gpu device)
+/dev/dri/card0              u:object_r:gpu_device:s0
+
+# mei_device
+# in the future, consider to use tee_device instead of mei_device
+/dev/mei                    u:object_r:mei_device:s0
+
+# msr_device
+/dev/msr0                   u:object_r:msr_device:s0
+
+# media_device
+/dev/media0                 u:object_r:media_device:s0
+
+# sw_sync_device
+/dev/sw_sync                u:object_r:sw_sync_device:s0
+
+# gps
+/system/bin/gpsd            u:object_r:gpsd_exec:s0
+/system/bin/gpscerd         u:object_r:gpsd_exec:s0
+
+# hci
+/system/bin/hciattach       u:object_r:hci_attach_exec:s0
+/dev/ttyS1                  u:object_r:hci_attach_dev:s0
+
+# rfkill
+/dev/rfkill                 u:object_r:rfkill_device:s0
+
+# camera
+/dev/v4l-subdev0            u:object_r:camera_device:s0
+
+/data/media/0               u:object_r:media0_device:s0

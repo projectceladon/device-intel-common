@@ -1,0 +1,5 @@
+allow gpsd servicemanager:binder call;
+allow gpsd sysfs_wake_lock:file { read write open };
+
+use_keystore(gpsd)
+binder_use(gpsd)

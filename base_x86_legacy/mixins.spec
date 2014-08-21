@@ -25,6 +25,6 @@ device-type: tablet
 gms: true
 debug-tools: true
 factory-scripts: true
-sepolicy: intel
+sepolicy: permissive
 charger: false
 disk-bus: sata-1f.2
