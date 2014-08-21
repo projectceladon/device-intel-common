@@ -118,7 +118,9 @@ PRODUCT_PACKAGES += \
     libstagefright_soft_mp3dec_mdp \
     libstagefright_soft_aacdec_mdp \
     libstagefright_soft_aacenc_mdp \
-    libstagefright_soft_vorbisdec_mdp
+    libstagefright_soft_vorbisdec_mdp \
+    libstagefright_soft_amrenc_mdp \
+    libstagefright_soft_amrdec_mdp
 
 ##############################################################
 # Source: device/intel/mixins/groups/sensors/iio/product.mk
