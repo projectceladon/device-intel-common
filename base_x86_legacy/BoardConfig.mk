@@ -82,6 +82,7 @@ KERNEL_LOGLEVEL ?= 7
 BOARD_KERNEL_CMDLINE += \
         loglevel=$(KERNEL_LOGLEVEL) \
         androidboot.hardware=$(TARGET_DEVICE)\
+        firmware_class.path=/system/etc/firmware \
 	i915.fastboot=1
 
 ##############################################################
