@@ -83,7 +83,6 @@ include frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk
 ##############################################################
 # Source: device/intel/mixins/groups/houdini/true/product.mk
 ##############################################################
-$(call inherit-product-if-exists, hardware/intel/houdini/houdini.mk)
 $(call inherit-product-if-exists, vendor/intel/houdini/houdini.mk)
 
 ##############################################################
