@@ -395,7 +395,6 @@
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headset"/>
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headphones"/>
             <CompoundRule Type="All">
-              <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
               <CompoundRule Type="Any">
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Sco"/>
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="ScoHeadset"/>
@@ -438,7 +437,6 @@
         <CompoundRule Type="All">
           <CompoundRule Type="Any">
             <CompoundRule Type="All">
-              <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
               <SelectionCriterionRule SelectionCriterion="InputDevices" MatchesWhen="Includes" Value="ScoHeadset"/>
             </CompoundRule>
             <SelectionCriterionRule SelectionCriterion="InputDevices" MatchesWhen="Includes" Value="Main"/>
@@ -521,7 +519,6 @@
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headset"/>
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headphones"/>
             <CompoundRule Type="All">
-              <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
               <CompoundRule Type="Any">
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Sco"/>
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="ScoHeadset"/>
@@ -566,7 +563,6 @@
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headset"/>
             <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Headphones"/>
             <CompoundRule Type="All">
-              <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
               <CompoundRule Type="Any">
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Sco"/>
                 <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="ScoHeadset"/>
@@ -950,7 +946,6 @@
     <Configurations>
       <Configuration Name="Applicable">
         <CompoundRule Type="All">
-          <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
           <CompoundRule Type="All">
             <CompoundRule Type="Any">
               <SelectionCriterionRule SelectionCriterion="OutputDevices" MatchesWhen="Includes" Value="Sco"/>
@@ -996,7 +991,6 @@
     <Configurations>
       <Configuration Name="Applicable">
         <CompoundRule Type="All">
-          <SelectionCriterionRule SelectionCriterion="BtEnable" MatchesWhen="Is" Value="True"/>
           <CompoundRule Type="Any">
             <CompoundRule Type="All">
               <SelectionCriterionRule SelectionCriterion="AndroidMode" MatchesWhen="Is" Value="InCsvCall"/>

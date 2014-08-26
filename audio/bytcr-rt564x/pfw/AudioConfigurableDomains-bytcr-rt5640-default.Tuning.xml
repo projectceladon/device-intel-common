@@ -38,6 +38,10 @@
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_out/gain/level"/>
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/ramp_duration"/>
       <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/level"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/ramp_duration"/>
+      <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/level"/>
     </ConfigurableElements>
     <Settings>
       <Configuration Name="Default">
@@ -81,6 +85,18 @@
           <IntegerParameter Name="ramp_duration">5</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/lpe/pipe/codec_in/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_out/bt/gain/level">
+          <IntegerParameter Name="level">0 0</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/ramp_duration">
+          <IntegerParameter Name="ramp_duration">5</IntegerParameter>
+        </ConfigurableElement>
+        <ConfigurableElement Path="/Audio/lpe/pipe/cws_in/bt/gain/level">
           <IntegerParameter Name="level">0 0</IntegerParameter>
         </ConfigurableElement>
       </Configuration>

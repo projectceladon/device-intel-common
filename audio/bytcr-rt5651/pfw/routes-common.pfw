@@ -12,7 +12,6 @@ supDomain: StreamRoute
 						OutputDevices Includes Headset
 						OutputDevices Includes Headphones
 						ALL
-							BtEnable Is True
 							# ScoResourceRequested Is True
 							ANY
 								OutputDevices Includes Sco
@@ -36,7 +35,6 @@ supDomain: StreamRoute
 				ALL
 					ANY
 						ALL
-							BtEnable Is True
 							# ScoResourceRequested Is True
 							InputDevices Includes ScoHeadset
 						InputDevices Includes Main
@@ -86,7 +84,6 @@ supDomain: StreamRoute
 	# 					OutputDevices Includes Headset
 	# 					OutputDevices Includes Headphones
 	# 					ALL
-	# 						BtEnable Is True
 	# 						# ScoResourceRequested Is True
 	# 						ANY
 	# 							OutputDevices Includes Sco
@@ -106,7 +103,6 @@ supDomain: StreamRoute
 	# 			ALL
 	# 				ANY
 	# 					ALL
-	# 						BtEnable Is True
 	# 						# ScoResourceRequested Is True
 	# 						InputDevices Includes ScoHeadset
 	# 					InputDevices Includes Main
@@ -139,7 +135,6 @@ supDomain: StreamRoute
 						OutputDevices Includes Headset
 						OutputDevices Includes Headphones
 						ALL
-							BtEnable Is True
 							# ScoResourceRequested Is True
 							ANY
 								OutputDevices Includes Sco
@@ -168,7 +163,6 @@ supDomain: StreamRoute
 						OutputDevices Includes Headset
 						OutputDevices Includes Headphones
 						ALL
-							BtEnable Is True
 							# ScoResourceRequested Is True
 							ANY
 								OutputDevices Includes Sco
@@ -448,7 +442,6 @@ supDomain: Route
 
 			conf: Applicable
 				ALL
-					BtEnable Is True
 					# ScoResourceRequested Is True
 					ALL
 						ANY
@@ -475,7 +468,6 @@ supDomain: Route
 
 			conf: Applicable
 				ALL
-					BtEnable Is True
 					# ScoResourceRequested Is True
 					ANY
 						ALL
