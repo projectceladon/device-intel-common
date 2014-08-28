@@ -48,7 +48,7 @@ BOARD_FLASH_BLOCK_SIZE := 512
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 
 # Partition table configuration file
-BOARD_GPT_INI ?= device/intel/common/boot/gpt.ini
+BOARD_GPT_INI ?= $(TARGET_DEVICE_DIR)/gpt.ini
 
 #
 # FASTBOOT
