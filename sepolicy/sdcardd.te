@@ -1,0 +1,1 @@
+allow sdcardd media0_device:dir { read write open add_name};

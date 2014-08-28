@@ -8,6 +8,8 @@ allow init kernel:security setenforce;
 
 allow init self:capability { sys_rawio mknod };
 
+allow init self:capability sys_module;
+
 # Run helpers from / or /system without changing domain.
 # We do not include exec_type here since generally those
 # should always involve a domain transition.

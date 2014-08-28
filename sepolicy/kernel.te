@@ -37,6 +37,9 @@ allow kernel self:security setcheckreqprot;
 # MTP sync
 allow kernel fuse:file { read write };
 
+# kdevtmpfs
+allow kernel self:capability mknod;
+
 ###
 ### neverallow rules
 ###
