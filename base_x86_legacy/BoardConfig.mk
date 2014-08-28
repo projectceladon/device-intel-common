@@ -163,19 +163,33 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/gms/overlay
 TARGET_BUILD_INTEL_FACTORY_SCRIPTS := true
 
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/intel/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS := device/intel/common/sepolicy
+BOARD_SEPOLICY_REPLACE := \
+    domain.te \
+    init.te \
+    kernel.te
 BOARD_SEPOLICY_UNION := \
     genfs_contexts \
     file_contexts \
     file.te \
+    bluetooth.te \
     device.te \
+    dhcp.te \
+    gpsd.te \
+    init_shell.te \
+    keystore.te \
+    mediaserver.te \
     netd.te \
     pstore-clean.te \
-    userfastboot.te \
-    vold.te
-
+    sdcardd.te \
+    surfaceflinger.te \
+    system_server.te \
+    userfastboot.te  \
+    vold.te \
+    wpa.te \
+    setup_fs.te
 ##############################################################
 # Source: device/intel/mixins/groups/mixin-check/default/BoardConfig.mk
 ##############################################################

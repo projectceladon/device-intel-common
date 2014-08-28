@@ -1,0 +1,3 @@
+allow bluetooth self:socket rw_socket_perms;
+allow bluetooth kernel:system module_request;
+allow bluetooth rfkill_device:chr_file rw_file_perms;
