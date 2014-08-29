@@ -3,6 +3,7 @@
 /data/dontpanic(/.*)?       u:object_r:pstore-clean_data_file:s0
 /system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
 /system/bin/setup_fs        u:object_r:setup_fs_exec:s0
+/system/bin/coreu           u:object_r:coreu_exec:s0
 
 # userfastboot
 /sbin/userfastboot          u:object_r:userfastboot_exec:s0
