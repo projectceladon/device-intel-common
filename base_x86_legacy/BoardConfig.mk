@@ -99,12 +99,6 @@ TARGET_ARCH_VARIANT := x86
 TARGET_ARCH := x86
 
 ##############################################################
-# Source: device/intel/mixins/groups/houdini/true/BoardConfig.mk
-##############################################################
-# Preload houdini
-ADDITIONAL_BUILD_PROPERTIES += ro.config.no_preload_hdn=false
-
-##############################################################
 # Source: device/intel/mixins/groups/graphics/software/BoardConfig.mk
 ##############################################################
 BOARD_KERNEL_CMDLINE += vga=current nomodeset

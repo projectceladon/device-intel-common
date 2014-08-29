@@ -41,17 +41,10 @@ service setup_fs /system/bin/setup_fs \
 ##############################################################
 # Source: device/intel/mixins/groups/houdini/true/init.rc
 ##############################################################
-
-service enable_houdini /system/bin/enable_houdini
+# enable Native bridge for executables
+service enable_native_bridge /system/bin/enable_native_bridge
     class main
     oneshot
-
-on early-init
-    # Houdini requires /system/lib/arm.  Must do this before "on init"
-    # because the core init.rc sets this variable too; the first setting
-    # is what is used.
-    export LD_LIBRARY_PATH /vendor/lib:/system/lib:/system/lib/arm
-
 ##############################################################
 # Source: device/intel/mixins/groups/bugreport/chime/init.rc
 ##############################################################
