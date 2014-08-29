@@ -185,6 +185,16 @@ BOARD_SEPOLICY_UNION := \
     wpa.te \
     setup_fs.te
 ##############################################################
+# Source: device/intel/mixins/groups/art-config/default/BoardConfig.mk
+##############################################################
+# Enable dex-preoptimization to speed up the first boot sequence
+# Note that this operation only works on Linux for now
+# Enable for user and eng builds
+ifneq ($(TARGET_BUILD_VARIANT),userdebug)
+WITH_DEXPREOPT := true
+endif
+
+##############################################################
 # Source: device/intel/mixins/groups/mixin-check/default/BoardConfig.mk
 ##############################################################
 mixin_update := $(wildcard device/intel/mixins/mixin-update)
