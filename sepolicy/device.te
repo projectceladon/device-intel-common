@@ -1,7 +1,4 @@
 type pstore_dev, dev_type;
 type mei_device, dev_type;
 type msr_device, dev_type;
-type media_device, dev_type;
-type sw_sync_device, dev_type;
 type rfkill_device, dev_type;
-type media0_device, dev_type;

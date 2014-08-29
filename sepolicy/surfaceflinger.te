@@ -1,5 +1,3 @@
-allow surfaceflinger sw_sync_device:chr_file rw_file_perms;
-
 # Use binder_call macro here instead?
 allow surfaceflinger coreu:binder call;
 allow surfaceflinger coreu:fd use;
