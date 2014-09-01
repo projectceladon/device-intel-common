@@ -41,4 +41,4 @@
 # Misc
 /system/bin/setup_fs        u:object_r:setup_fs_exec:s0
 /sbin/userfastboot          u:object_r:userfastboot_exec:s0
-
+/system/bin/hdcpd           u:object_r:hdcpd_exec:s0

@@ -1,0 +1,9 @@
+# Rules for system/bin/dhcpd
+type hdcpd, domain;
+type hdcpd_exec, exec_type, file_type;
+init_daemon_domain(hdcpd);
+allow hdcpd self:capability { dac_override setuid chown };
+allow hdcpd self:netlink_kobject_uevent_socket create_socket_perms;
+allow hdcpd sysfs:file write;
+allow hdcpd system_data_file:dir { create_dir_perms };
+allow hdcpd system_data_file:sock_file { create link_file_perms };
