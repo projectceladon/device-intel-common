@@ -17,7 +17,9 @@
 /dev/snd/.*                 u:object_r:audio_device:s0
 
 # GPS
-/dev/gps                    u:object_r:gps_device:s0
+
+/dev/gps/ttyGPS             u:object_r:gps_device:s0
+/dev/gps/ttyGPSPowerControl u:object_r:gps_device:s0
 /dev/ttyS2                  u:object_r:gps_device:s0
 
 /system/bin/gpsd            u:object_r:gpsd_exec:s0
