@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+**
+** Copyright 2009, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License")
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<device name="Android">
+  <!-- Most values are the incremental current used by a feature,
+       in mA (measured at nominal voltage).
+       The default values are deliberately incorrect dummy values.
+       OEM's must measure and provide actual values before
+       shipping a device.
+       Example real-world values are given in comments, but they
+       are totally dependent on the platform and can vary
+       significantly, so should be measured on the shipping platform
+       with a power meter. -->
+  <item name="none">70</item>
+  <!-- SCREEN details -->
+  <item name="screen.on">200</item>
+  <item name="screen.full">500</item>
+  <!-- BLUETOOTH details -->
+  <item name="bluetooth.active">10</item>
+  <item name="bluetooth.on">10</item>
+  <!-- WIFI details -->
+  <item name="wifi.on">30</item>
+  <item name="wifi.active">100</item>
+  <item name="wifi.scan">30</item>
+  <!-- DSP details -->
+  <item name="dsp.audio">50</item>
+  <item name="dsp.video">200</item>
+  <!-- GPS details -->
+  <item name="gps.on">10</item>
+  <!-- RADIO details -->
+  <item name="radio.active">0</item>
+  <item name="radio.scanning">0</item>
+  <!-- Current consumed by the radio at different signal strengths, when paging -->
+  <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
+      <value>0</value>
+      <value>0</value>
+  </array>
+  <!-- Different CPU speeds as reported in
+       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state -->
+  <array name="cpu.speeds">
+      <value>532000</value>  <!-- 532  MHz CPU speed -->
+      <value>665000</value>  <!-- 665  MHz CPU speed -->
+      <value>1064000</value> <!-- 1064 MHz CPU speed -->
+      <value>1330000</value> <!-- 1330 MHz CPU speed -->
+      <value>1596000</value> <!-- 1596 MHz CPU speed -->
+      <value>1995000</value> <!-- 1995 MHz CPU speed -->
+      <value>2394000</value> <!-- 2395 MHz CPU speed -->
+  </array>
+  <!-- Current when CPU is idle -->
+  <item name="cpu.idle">13</item>
+  <!-- Current at each CPU speed, as per 'cpu.speeds' -->
+  <array name="cpu.active">
+      <value>400</value>  <!-- ~100mA -->
+      <value>500</value>  <!-- ~100mA -->
+      <value>600</value>  <!-- ~100mA -->
+      <value>800</value>  <!-- ~100mA -->
+      <value>1000</value>  <!-- ~100mA -->
+      <value>1000</value>  <!-- ~100mA -->
+      <value>1000</value>  <!-- ~100mA -->
+  </array>
+  <!-- This is the battery capacity in mAh (measured at nominal voltage) -->
+  <item name="battery.capacity">4000</item>
+</device>
