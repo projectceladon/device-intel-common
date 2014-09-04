@@ -50,6 +50,32 @@ struct Capsule {
     int existence;
 };
 
+Value* MountROFn(const char* name, State* state, int argc, Expr* argv[]) {
+    char* result = NULL;
+    char* fs_type = NULL;
+    char* location = NULL;
+    char* mount_point = NULL;
+
+    if (ReadArgs(state, argv, 3, &fs_type, &location, &mount_point) < 0)
+        return NULL;
+
+    mkdir(mount_point, 0755);
+
+    if (mount(location, mount_point, fs_type,
+              MS_NODEV | MS_RDONLY, "") < 0) {
+        printf("%s: failed to mount %s at %s: %s\n",
+                name, location, mount_point, strerror(errno));
+    } else {
+        result = strdup("");
+    }
+done:
+    free(fs_type);
+    free(location);
+    free(mount_point);
+    return StringValue(result);
+}
+
+
 
 static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Expr *argv[])
 {
@@ -508,5 +534,6 @@ void Register_libupdater_esp(void)
     RegisterFunction("set_bcb_command", SetBCBCommand);
     RegisterFunction("get_bcb_status", GetBCBStatus);
     RegisterFunction("copy_shim", CopyShimFn);
+    RegisterFunction("mount_ro", MountROFn);
 }
 
