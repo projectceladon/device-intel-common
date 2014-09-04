@@ -146,9 +146,20 @@ def IncrementalOTA_InstallEnd(info):
 
     if is_block_ota(info, True):
         print "This is a block-level OTA, mounting /system before SFU copy"
-        info.script.Mount("/system");
+        fstab = info.script.info.get("fstab", None)
+        p = fstab["/system"]
+        info.script.script.append('mount_ro("%s", "%s", "%s");' %
+                (p.fs_type, p.device, p.mount_point))
+        system_mounted = True
+    else:
+        system_mounted = False
+
     info.script.script.append('copy_sfu();')
+
     info.script.script.append('unmount("/bootloader");')
+    if system_mounted:
+        info.script.script.append('unmount("/system");')
+
     swap_entries(info)
 
 
