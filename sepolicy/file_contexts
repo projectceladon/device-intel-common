@@ -48,3 +48,8 @@
 /system/bin/setup_fs        u:object_r:setup_fs_exec:s0
 /sbin/userfastboot          u:object_r:userfastboot_exec:s0
 /system/bin/hdcpd           u:object_r:hdcpd_exec:s0
+
+# Thermal daemon
+/dev/acpi_thermal_rel       u:object_r:thermal_device:s0
+/data/thermal-daemon(/.*)?  u:object_r:thermal_data_file:s0
+/system/bin/thermal-daemon  u:object_r:thermal_exec:s0

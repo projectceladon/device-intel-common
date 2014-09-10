@@ -6,3 +6,6 @@ type efivarfs, fs_type;
 
 # binfmt_misc - Used by houdini
 type binfmt_misc, fs_type;
+
+# thermal
+type thermal_data_file, file_type, data_file_type;
