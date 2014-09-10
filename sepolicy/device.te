@@ -1,4 +1,3 @@
 type pstore_dev, dev_type;
-type mei_device, dev_type;
 type msr_device, dev_type;
 type rfkill_device, dev_type;

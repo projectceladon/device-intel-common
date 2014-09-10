@@ -32,8 +32,9 @@
 /system/bin/hciattach       u:object_r:hci_attach_exec:s0
 
 # Hardware keystore
-/dev/mei                    u:object_r:mei_device:s0
-/dev/meimm                  u:object_r:mei_device:s0
+/dev/mei                    u:object_r:tee_device:s0
+/dev/meimm                  u:object_r:tee_device:s0
+/system/bin/keymaster_meid  u:object_r:keystore_exec:s0
 
 # Persistent Storage
 /dev/pstore                 u:object_r:pstore_dev:s0
