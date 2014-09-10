@@ -1,4 +1,3 @@
 unconfined_domain(coreu);
 unconfined_domain(mediaserver);
-unconfined_domain(gpsd);
 unconfined_domain(hdcpd);
