@@ -1,7 +1,5 @@
-allow gpsd servicemanager:binder call;
 allow gpsd sysfs_wake_lock:file { read write open };
 allow gpsd keystore:keystore_key { saw };
-allow gpsd init:unix_stream_socket connectto;
 allow gpsd property_socket:sock_file rw_file_perms;
 use_keystore(gpsd)
 binder_use(gpsd)
