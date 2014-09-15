@@ -159,7 +159,6 @@ allow domain asec_public_file:file r_file_perms;
 allow domain { asec_public_file asec_apk_file }:dir r_dir_perms;
 
 allow domain servicemanager:service_manager list;
-auditallow domain servicemanager:service_manager list;
 allow domain service_manager_type:service_manager find;
 
 ###
@@ -264,7 +263,7 @@ neverallow { domain -kernel -init -recovery -vold -zygote -pstore-clean -coreu }
 
 #
 # Assert that, to the extent possible, we're not loading executable content from
-# outside the /system partition except for a few whitelisted domains.
+# outside the rootfs or /system partition except for a few whitelisted domains.
 #
 neverallow {
     domain
@@ -275,6 +274,11 @@ neverallow {
     -system_server
     -zygote
 } { file_type -system_file -exec_type }:file execute;
+neverallow {
+    domain
+    -appdomain # for oemfs
+    -recovery # for /tmp/update_binary in tmpfs
+} { fs_type -rootfs }:file execute;
 
 # Only the init property service should write to /data/property.
 neverallow { domain -init } property_data_file:dir { create setattr relabelfrom rename write add_name remove_name rmdir };
@@ -303,3 +307,6 @@ neverallow { domain -recovery } contextmount_type:dir_file_class_set
 # New service_types are defined in service.te and new mappings
 # from service name to service_type are defined in service_contexts.
 neverallow domain default_android_service:service_manager add;
+
+neverallow { domain -init -recovery -system_server } frp_block_device:blk_file rw_file_perms;
+
