@@ -1,0 +1,5 @@
+on post-fs-data
+    mkdir /data/logs 0770 system log
+
+service ap_logfs /system/bin/logcat -b all -n 20 -r5000 -v threadtime -f /data/logs/aplog
+    class main
