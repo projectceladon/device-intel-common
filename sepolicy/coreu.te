@@ -20,3 +20,5 @@ allow coreu tmpfs:dir { write add_name };
 allow coreu tmpfs:filesystem mount;
 allow coreu self:capability dac_override;
 allow coreu self:capability sys_admin;
+
+allow coreu coreu_service:service_manager add;

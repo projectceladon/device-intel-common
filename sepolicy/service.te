@@ -1,0 +1,2 @@
+# Use binder_call macro here instead?
+type coreu_service,     service_manager_type;
