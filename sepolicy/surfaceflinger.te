@@ -1,3 +1,1 @@
-#allow surfaceflinger coreu:binder { call transfer };
-#allow surfaceflinger coreu:fd use;
 binder_call(surfaceflinger, coreu)

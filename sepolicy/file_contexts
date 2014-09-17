@@ -53,3 +53,6 @@
 /dev/acpi_thermal_rel       u:object_r:thermal_device:s0
 /data/thermal-daemon(/.*)?  u:object_r:thermal_data_file:s0
 /system/bin/thermal-daemon  u:object_r:thermal_exec:s0
+
+# DRM
+/data/IntelCPHS.log         u:object_r:drm_data_file:s0
