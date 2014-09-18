@@ -1,2 +1,2 @@
 android.hardware.intel.coreu              u:object_r:coreu_service:s0
-
+hwc.info                                  u:object_r:surfaceflinger_service:s0
