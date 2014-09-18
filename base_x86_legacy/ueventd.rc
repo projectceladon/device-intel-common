@@ -83,4 +83,8 @@
 /sys/devices/platform/*/i2c-*/i2c-*/iio:device* scan_elements/in_timestamp_type  0660   system  system
 
 /sys/devices/platform/*/i2c-*/i2c-*/iio:device* trigger/current_trigger          0660   system  system
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/sata-1f.2/ueventd.rc
+##############################################################
+/dev/block/pci/pci0000:00/0000:00:1f.2/by-name/android_persistent   0660 system system
 # ------------------ END MIX-IN DEFINITIONS ------------------
