@@ -1,0 +1,9 @@
+# Recovery needs to mount /cache/recovery/*
+allow recovery cache_file:dir  mounton;
+
+# rules needed by OTA updates
+allow recovery block_device:dir write;
+allow recovery rootfs:dir { write create add_name };
+allow recovery self:capability mknod;
+allow recovery vfat:dir { write remove_name add_name };
+allow recovery vfat:file { rename setattr read create write getattr unlink open };
