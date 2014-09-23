@@ -2,3 +2,7 @@
 type userfastboot, domain;
 type userfastboot_exec, exec_type, file_type;
 init_daemon_domain(userfastboot);
+# Give fastboot unlimited powers to do its job
+# This process needs almost all sensitive permissions out there (for eg rw rootfs)
+# so having it confined brings nothing in terms of security
+unconfined_domain(userfastboot);
