@@ -1,3 +1,10 @@
 allow mediaserver default_prop:property_service set;
 allow mediaserver camera_device:chr_file rw_file_perms;
 allow mediaserver system_server:unix_stream_socket { read write };
+binder_call(mediaserver, coreu)
+
+allow mediaserver hdcpd:unix_stream_socket connectto;
+allow mediaserver hdcpd_data_file:sock_file write;
+
+# access to /data/hdcp/.sdk_socket, but needs to be more elegant.
+allow mediaserver system_data_file:sock_file write;
