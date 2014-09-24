@@ -12,5 +12,5 @@ allow hdcpd coreu_tmpfs:file { rw_file_perms };
 allow hdcpd hdcpd_tmpfs:file { lock create open };
 allow hdcpd rootfs:dir { write create add_name mounton };
 allow hdcpd rootfs:filesystem remount;
-allow hdcpd tmpfs:dir { write add_name };
+allow hdcpd tmpfs:dir { mounton write add_name };
 allow hdcpd tmpfs:filesystem mount;
