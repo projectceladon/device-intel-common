@@ -8,3 +8,6 @@ allow mediaserver hdcpd_data_file:sock_file write;
 
 # access to /data/hdcp/.sdk_socket, but needs to be more elegant.
 allow mediaserver system_data_file:sock_file write;
+
+# fix camera
+allow mediaserver surfaceflinger_tmpfs:file { read write };
