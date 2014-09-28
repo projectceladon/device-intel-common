@@ -30,10 +30,17 @@ service pstore-clean /system/bin/pstore-clean
 ##############################################################
 # Source: device/intel/mixins/groups/houdini/true/init.rc
 ##############################################################
-# enable Native bridge for executables
-service native_bridge /system/bin/enable_native_bridge
-    class main
-    oneshot
+# Enable native bridge for target executables
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.enable.native.bridge.exec=1
+    copy /system/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.enable.native.bridge.exec=0
+    copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_exe
+    copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_dyn
 ##############################################################
 # Source: device/intel/mixins/groups/bugreport/chime/init.rc
 ##############################################################
