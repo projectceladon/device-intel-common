@@ -19,7 +19,7 @@
                 <FixedPointParameter Name="mic_2" Size="16" Integral="2" Fractional="13" ArrayLength="64"
                              Description="Filter coefficients for the left channel connected to microphone 1. Class 2 parameter. Default=0"/>
     </ComponentType>
-    <ComponentType Name="Beamforming" Mapping="ByteControlWithLength:%1 %2 %3 params bmf">
+    <ComponentType Name="BeamformingVoice" Mapping="ByteControlWithLength:%1 %2 %3 params bmf">
         <Component Name="switch" Type="SwitchParam"/>
         <EnumParameter Name="sw_flag" Size="16" Description="Module version. Default=BMF_1.1">
             <ValuePair Literal="BMF_1.1" Numerical="0"/>
@@ -33,8 +33,8 @@
                           Description="Enable gain before channel selection and mixing. Class 1 parameter. Default=0"/>
         <EnumParameter Name="spatialize" Size="16"
                           Description="Spatialization. Class 1 parameter. Default=no spatialization">
-            <ValuePair Literal="disable" Numerical="1" Description="Proper setting for DNR or SNS"/>
-            <ValuePair Literal="enable" Numerical="2" Description="Stereo recording, upmix/downmix"/>
+            <ValuePair Literal="disable" Numerical="1"/>
+            <ValuePair Literal="enable" Numerical="2"/>
         </EnumParameter>
         <ParameterBlock Name="switch_mat">
             <EnumParameter Name="in" Size="16" ArrayLength="8" Description="Specify microphones connexion for each input channel of the first switch matrix. Up to two microphones signals can be added or subtracted. Class 2 parameter. Default=0">

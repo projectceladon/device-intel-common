@@ -5,7 +5,7 @@
         <Component Name="switch" Type="SwitchParam"/>
         <IntegerParameter Name="sw_flag" Size="16"
             Description="ReferenceLine version: 0 is v1.1"/>
-        <FixedPointParameter Name="gain_analog" Size="16" Integral="0" Fractionnal="15"
+        <FixedPointParameter Name="gain_analog" Size="16" Integral="0" Fractional="15"
             Description="External gain involved in the echo path. Class II parameter. Default=0x7FFF."/>
         <IntegerParameter Name="aec_delay" Size="16" Min="0" Max="320"
             Description="Number of delay samples for AEC reference line. Class II parameter. Default=0. Max value is 160 in narrow-band mode."/>
@@ -19,16 +19,8 @@
                 <ValuePair Literal="off" Numerical="0"/>
                 <ValuePair Literal="on" Numerical="2"/>
             </EnumParameter>
-            <FixedPointParameter Name="a1" Size="16" Integral="0" Fractionnal="15"
-                Description="Set the Biquad Coefficient a1"/>
-            <FixedPointParameter Name="b1" Size="16" Integral="0" Fractionnal="15"
-                Description="Set the Biquad Coefficient b1"/>
-            <FixedPointParameter Name="a2" Size="16" Integral="0" Fractionnal="15"
-                Description="Set the Biquad Coefficient a2"/>
-            <FixedPointParameter Name="b2" Size="16" Integral="0" Fractionnal="15"
-                Description="Set the Biquad Coefficient b2"/>
-            <FixedPointParameter Name="a0" Size="16" Integral="0" Fractionnal="15"
-                Description="Set the Biquad Coefficient a0"/>
+            <Component Name="0" Type="Biquad"
+                Description="Coefficients for biquad"/>
         </ParameterBlock>
     </ComponentType>
 </ComponentTypeSet>

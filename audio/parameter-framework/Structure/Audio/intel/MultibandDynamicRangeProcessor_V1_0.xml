@@ -30,101 +30,29 @@
             Description="Coefficient for cross-over filter separating sub-bands 2 and 3. Class 1 parameter. Default=0"/>
         <FixedPointParameter Name="band34_coef" ArrayLength="7" Size="16" Integral="0" Fractional="15"
             Description="Coefficient for cross-over filter separating sub-bands 3 and 4. Class 1 parameter. Default=13573"/>
-        <ParameterBlock Name="band1">
+        <ParameterBlock Name="band_timings" ArrayLength="4">
             <FixedPointParameter Name="rms_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the RMS level measurement in sub-band 1. Class 1 parameter. Default=17584"/>
+                Description="Attack time for the RMS level measurement in sub-band. Class 1 parameter. Default=17584"/>
             <FixedPointParameter Name="rms_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the RMS level measurement in sub-band 1. Class 1 parameter. Default=1598"/>
+                Description="Release time for the RMS level measurement in sub-band. Class 1 parameter. Default=1598"/>
             <FixedPointParameter Name="gain_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the gain smoothing in sub-band 1. Class 1 parameter. Default=10803"/>
+                Description="Attack time for the gain smoothing in sub-band. Class 1 parameter. Default=10803"/>
             <FixedPointParameter Name="gain_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the gain smoothing in sub-band 1. Class 1 parameter. Default=649"/>
+                Description="Release time for the gain smoothing in sub-band. Class 1 parameter. Default=649"/>
         </ParameterBlock>
-        <ParameterBlock Name="band2">
-            <FixedPointParameter Name="rms_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the RMS level measurement in sub-band 2. Class 1 parameter. Default=17584"/>
-            <FixedPointParameter Name="rms_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the RMS level measurement in sub-band 2. Class 1 parameter. Default=1598"/>
-            <FixedPointParameter Name="gain_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the gain smoothing in sub-band 2. Class 1 parameter. Default=10803"/>
-            <FixedPointParameter Name="gain_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the gain smoothing in sub-band 2. Class 1 parameter. Default=649"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band3">
-            <FixedPointParameter Name="rms_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the RMS level measurement in sub-band 3. Class 1 parameter. Default=17584"/>
-            <FixedPointParameter Name="rms_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the RMS level measurement in sub-band 3. Class 1 parameter. Default=1598"/>
-            <FixedPointParameter Name="gain_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the gain smoothing in sub-band 3. Class 1 parameter. Default=10803"/>
-            <FixedPointParameter Name="gain_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the gain smoothing in sub-band 3. Class 1 parameter. Default=649"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band4">
-            <FixedPointParameter Name="rms_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the RMS level measurement in sub-band 4. Class 1 parameter. Default=17584"/>
-            <FixedPointParameter Name="rms_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the RMS level measurement in sub-band 4. Class 1 parameter. Default=1598"/>
-            <FixedPointParameter Name="gain_attack" Size="16" Integral="0" Fractional="15"
-                Description="Attack time for the gain smoothing in sub-band 1. Class 4 parameter. Default=10803"/>
-            <FixedPointParameter Name="gain_release" Size="16" Integral="0" Fractional="15"
-                Description="Release time for the gain smoothing in sub-band 4. Class 1 parameter. Default=649"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band1_params">
+        <ParameterBlock Name="band_params" ArrayLength="4">
             <FixedPointParameter Name="la" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point A in sub-band 1. Class 1 parameter. Default=-17920"/>
+                Description="Power threshold for upper knee point A in sub-band. Class 1 parameter. Default=-17920"/>
             <FixedPointParameter Name="lb" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point B in sub-band 1. Class 1 parameter. Default=-8960"/>
+                Description="Power threshold for upper knee point B in sub-band. Class 1 parameter. Default=-8960"/>
             <FixedPointParameter Name="g_comp" Size="16" Integral="7" Fractional="8"
-                Description="Output compensation gain at knee point B in sub-band 1. Class 1 parameter. Default=2048"/>
+                Description="Output compensation gain at knee point B in sub-band. Class 1 parameter. Default=2048"/>
             <FixedPointParameter Name="r_inf_a" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level less than LA in sub-band 1. Class 1 parameter. Default=512"/>
+                Description="Slope of compression profile for input level less than LA in sub-band. Class 1 parameter. Default=512"/>
             <FixedPointParameter Name="r_ab" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level LA and LB in sub-band 1. Class 1 parameter. Default=256"/>
+                Description="Slope of compression profile for input level LA and LB in sub-band. Class 1 parameter. Default=256"/>
             <FixedPointParameter Name="r_bo" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level greater than LB in sub-band 1. Class 1 parameter. Default=76"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band2_params">
-            <FixedPointParameter Name="la" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point A in sub-band 2. Class 1 parameter. Default=-17920"/>
-            <FixedPointParameter Name="lb" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point B in sub-band 2. Class 1 parameter. Default=-8960"/>
-            <FixedPointParameter Name="g_comp" Size="16" Integral="7" Fractional="8"
-                Description="Output compensation gain at knee point B in sub-band 2. Class 1 parameter. Default=2048"/>
-            <FixedPointParameter Name="r_inf_a" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level less than LA in sub-band 2. Class 1 parameter. Default=512"/>
-            <FixedPointParameter Name="r_ab" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level LA and LB in sub-band 2. Class 1 parameter. Default=256"/>
-            <FixedPointParameter Name="r_bo" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level greater than LB in sub-band 2. Class 1 parameter. Default=76"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band3_params">
-            <FixedPointParameter Name="la" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point A in sub-band 3. Class 1 parameter. Default=-17920"/>
-            <FixedPointParameter Name="lb" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point B in sub-band 3. Class 1 parameter. Default=-8960"/>
-            <FixedPointParameter Name="g_comp" Size="16" Integral="7" Fractional="8"
-                Description="Output compensation gain at knee point B in sub-band 3. Class 1 parameter. Default=2048"/>
-            <FixedPointParameter Name="r_inf_a" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level less than LA in sub-band 3. Class 1 parameter. Default=512"/>
-            <FixedPointParameter Name="r_ab" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level LA and LB in sub-band 3. Class 1 parameter. Default=256"/>
-            <FixedPointParameter Name="r_bo" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level greater than LB in sub-band 3. Class 1 parameter. Default=76"/>
-        </ParameterBlock>
-        <ParameterBlock Name="band4_params">
-            <FixedPointParameter Name="la" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point A in sub-band 4. Class 1 parameter. Default=-17920"/>
-            <FixedPointParameter Name="lb" Size="16" Integral="7" Fractional="8"
-                Description="Power threshold for upper knee point B in sub-band 4. Class 1 parameter. Default=-8960"/>
-            <FixedPointParameter Name="g_comp" Size="16" Integral="7" Fractional="8"
-                Description="Output compensation gain at knee point B in sub-band 4. Class 1 parameter. Default=2048"/>
-            <FixedPointParameter Name="r_inf_a" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level less than LA in sub-band 4. Class 1 parameter. Default=512"/>
-            <FixedPointParameter Name="r_ab" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level LA and LB in sub-band 4. Class 1 parameter. Default=256"/>
-            <FixedPointParameter Name="r_bo" Size="16" Integral="7" Fractional="8"
-                Description="Slope of compression profile for input level greater than LB in sub-band 4. Class 1 parameter. Default=76"/>
+                Description="Slope of compression profile for input level greater than LB in sub-band. Class 1 parameter. Default=76"/>
         </ParameterBlock>
     </ComponentType>
 </ComponentTypeSet>

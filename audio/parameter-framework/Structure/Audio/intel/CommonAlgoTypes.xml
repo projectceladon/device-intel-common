@@ -15,15 +15,15 @@
         </EnumParameter>
     </ComponentType>
     <ComponentType Name="Biquad">
-        <FixedPointParameter Name="a1" Size="16" Signed="true" Integral="0" Fractional="15"
+        <FixedPointParameter Name="a1" Size="16" Integral="0" Fractional="15"
             Description="Set the Biquad Coefficient a1"/>
-        <FixedPointParameter Name="b1" Size="16" Signed="true" Integral="0" Fractional="15"
+        <FixedPointParameter Name="b1" Size="16" Integral="0" Fractional="15"
             Description="Set the Biquad Coefficient b1"/>
-        <FixedPointParameter Name="a2" Size="16" Signed="true" Integral="0" Fractional="15"
+        <FixedPointParameter Name="a2" Size="16" Integral="0" Fractional="15"
             Description="Set the Biquad Coefficient a2"/>
-        <FixedPointParameter Name="b2" Size="16" Signed="true" Integral="0" Fractional="15"
+        <FixedPointParameter Name="b2" Size="16" Integral="0" Fractional="15"
             Description="Set the Biquad Coefficient b2"/>
-        <FixedPointParameter Name="a0" Size="16" Signed="true" Integral="0" Fractional="15"
+        <FixedPointParameter Name="a0" Size="16" Integral="0" Fractional="15"
             Description="Set the Biquad Coefficient a0"/>
     </ComponentType>
 </ComponentLibrary>

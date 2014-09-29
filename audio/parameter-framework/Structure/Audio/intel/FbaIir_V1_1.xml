@@ -11,12 +11,15 @@
             <ValuePair Literal="Sixth" Numerical="6"/>
             <ValuePair Literal="Eighth" Numerical="8"/>
         </EnumParameter>
-        <ParameterBlock Name="biquad" ArrayLength="4">
-            <IntegerParameter Name="a1" Size="16" Signed="true"/>
-            <IntegerParameter Name="b1" Size="16" Signed="true"/>
-            <IntegerParameter Name="a2" Size="16" Signed="true"/>
-            <IntegerParameter Name="b2" Size="16" Signed="true"/>
-            <IntegerParameter Name="a0" Size="16" Signed="true"/>
+        <ParameterBlock Name="biquad">
+            <Component Name="0" Type="Biquad"
+                Description="Coefficients for biquad stage 0"/>
+            <Component Name="1" Type="Biquad"
+                Description="Coefficients for biquad stage 1"/>
+            <Component Name="2" Type="Biquad"
+                Description="Coefficients for biquad stage 2"/>
+            <Component Name="3" Type="Biquad"
+                Description="Coefficients for biquad stage 3"/>
         </ParameterBlock>
     </ComponentType>
 </ComponentTypeSet>

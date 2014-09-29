@@ -8,10 +8,12 @@
     <xi:include href="FbaIir_V1_1.xml"/>
     <xi:include href="FbaFir_V1_1.xml"/>
     <xi:include href="ComfortNoiseInjector_V1_2.xml"/>
-    <xi:include href="AutomaticGainControl_V1_3.xml"/>
+    <xi:include href="AutomaticGainControlVoice_V1_3.xml"/>
+    <xi:include href="AutomaticGainControlAudio_V1_0.xml"/>
     <xi:include href="DualMicrophoneNoiseReduction_V1_5.xml"/>
     <xi:include href="SpectralEchoReduction_V2_5.xml"/>
-    <xi:include href="Beamforming_V1.1.xml"/>
+    <xi:include href="BeamformingVoice_V1.1.xml"/>
+    <xi:include href="BeamformingAudio_V1.0.xml"/>
     <xi:include href="EchoDelayLine_V1_1.xml"/>
     <xi:include href="GainLossControl_V1_0.xml"/>
     <xi:include href="AcousticEchoCanceler_V1_6.xml"/>
@@ -20,7 +22,8 @@
     <xi:include href="TrafficNoiseReduction_V1_0.xml"/>
     <xi:include href="DynamicRangeProcessor_V1_4.xml"/>
     <xi:include href="BandWidthExtender_V1_0.xml"/>
-    <xi:include href="WindNoiseReduction_V1_0.xml"/>
+    <xi:include href="WindNoiseReductionVoice_V1_0.xml"/>
+    <xi:include href="WindNoiseReductionAudio_V1_0.xml"/>
     <xi:include href="SlowVoice_V1_0.xml"/>
     <xi:include href="MultibandDynamicRangeProcessor_V1_0.xml"/>
 </ComponentTypeSet>

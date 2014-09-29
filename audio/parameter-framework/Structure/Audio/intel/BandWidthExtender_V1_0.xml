@@ -26,9 +26,9 @@
         <FixedPointParameter Name="echo_fix" Size="16" Integral="1" Fractional="14"
             Description="Pre-Echo Compensation Factor. Class 2 parameter. Default value: 16384"/>
         <ParameterBlock Name="cepstral_vectors">
-            <FixedPointParameter Name="summand" ArrayLength="8" Size="16" Integral="0" Fractional="15"
+            <FixedPointParameter Name="summand" ArrayLength="8" Size="16" Integral="3" Fractional="12"
                 Description="Modified Mapped Cepstral Vectors with Addition. Class 2 parameter. Default=0"/>
-            <FixedPointParameter Name="weighting" ArrayLength="8" Size="16" Integral="0" Fractional="15"
+            <FixedPointParameter Name="weighting" ArrayLength="8" Size="16" Integral="1" Fractional="14"
                 Description="Modified Mapped Cepstral Vectors with Multiplication. Class 2 parameter. Default=32767"/>
         </ParameterBlock>
     </ComponentType>

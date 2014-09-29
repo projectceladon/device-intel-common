@@ -9,9 +9,9 @@
             <BitParameter Name="dnr_1_5" Size="1" Pos="4"/>
         </BitParameterBlock>
         <EnumParameter Name="mode" Size="16" Description="Noise Estimation Mode. Class 1 parameter. Default=2">
-          <ValuePair Literal="No_DNR" Numerical="0"/>
-          <ValuePair Literal="No_single_channel_noise_estimation" Numerical="1"/>
-          <ValuePair Literal="Max_DNR_and_single_channel_noise_estimation" Numerical="2"/>
+          <ValuePair Literal="no_dnr" Numerical="0"/>
+          <ValuePair Literal="no_single_channel_noise_estimation" Numerical="1"/>
+          <ValuePair Literal="max_dnr_and_single_channel_noise_estimation" Numerical="2"/>
         </EnumParameter>
         <FixedPointParameter Name="cross_comp" Size="16" Integral="3" Fractional="12"
             Description="Gain Compensation between primary and secondary microphones. Class 1 parameter. Default=4096"/>
@@ -23,7 +23,7 @@
             Description="Scaling of the single channel noise estimation. Class 2 parameter. Default=16384"/>
         <FixedPointParameter Name="diff_smooth" Size="16" Integral="0" Fractional="15"
             Description="Smoothing of difference. Class 2 parameter. Default=29491"/>
-        <FixedPointParameter Name="threshold" Size="16" Integral="4" Fractional="10"
+        <FixedPointParameter Name="threshold" Size="16" Integral="5" Fractional="10"
             Description="Threshold for PLE estimation. Class 2 parameter. Default=4096"/>
         <ParameterBlock Name="alpha">
             <FixedPointParameter Name="ph1" Size="16" Integral="0" Fractional="15"

@@ -3,17 +3,11 @@
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
     <ComponentType Name="LproFilterStageType">
         <ParameterBlock Name="a" ArrayLength="2">
-            <ParameterBlock Name="biquad" ArrayLength="2">
-                <FixedPointParameter Name="a1" Size="16" Integral="0" Fractional="12"
-                                         Description="Biquad filter a1 coeff"/>
-                <FixedPointParameter Name="b1" Size="16" Integral="0" Fractional="12"
-                                         Description="Biquad filter b1 coeff"/>
-                <FixedPointParameter Name="a2" Size="16" Integral="0" Fractional="12"
-                                         Description="Biquad filter a2 coeff"/>
-                <FixedPointParameter Name="b2" Size="16" Integral="0" Fractional="12"
-                                         Description="Biquad filter b2 coeff"/>
-                <FixedPointParameter Name="a0" Size="16" Integral="0" Fractional="12"
-                                         Description="Biquad filter a0 coeff"/>
+            <ParameterBlock Name="biquad">
+                <Component Name="0" Type="Biquad"
+                    Description="Coefficients for biquad0"/>
+                <Component Name="1" Type="Biquad"
+                    Description="Coefficients for biquad1"/>
             </ParameterBlock>
         </ParameterBlock>
     </ComponentType>
@@ -27,7 +21,7 @@
                                  Description="Time constant for gain smoothing during gain decrease"/>
         <FixedPointParameter Name="lp3" Size="16" Integral="0" Fractional="15" Unit="s"
                                  Description="Time constant for gain smoothing during gain increase"/>
-        <FixedPointParameter Name="lb" Size="16" Integral="0" Fractional="10" Unit="dB"
+        <FixedPointParameter Name="lb" Size="16" Integral="0" Fractional="15" Unit="dB"
                                  Description="Limiter value"/>
     </ComponentType>
 

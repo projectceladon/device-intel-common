@@ -7,9 +7,9 @@
             Description="NR version: 0 is v1.0; 1 is v1.1"/>
         <FixedPointParameter Name="atten_factor_min_val" Size="16" Integral="0" Fractional="15"
             Description="Minimum value of attenuation factor. (Class I)"/>
-        <FixedPointParameter Name="ov_est_fac_band_zero" Size="16" Integral="0" Fractional="15"
+        <FixedPointParameter Name="ov_est_fac_band_zero" Size="16" Integral="2" Fractional="13"
             Description="Overestimation factor for band 0. (Class I)"/>
-        <FixedPointParameter Name="ov_est_fac_band_no_zero" Size="16" Integral="0" Fractional="15"
+        <FixedPointParameter Name="ov_est_fac_band_no_zero" Size="16" Integral="2" Fractional="13"
             Description="Overestimation factor for all bands except band 0. (Class I)"/>
         <IntegerParameter Name="nr_shl_ri" Size="16" Min="-15" Max="0" Signed="true"
             Description="Number of left shifts in noise reduction averaging low-pass for rising signals. (Class II)"/>
