@@ -156,18 +156,18 @@
     <Settings>
       <Configuration Name="VoiceRecgnition.FrontMic">
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/0/LEVEL">
-          <IntegerParameter Name="LEVEL">112</IntegerParameter>
+          <IntegerParameter Name="LEVEL">95</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/1/LEVEL">
-          <IntegerParameter Name="LEVEL">112</IntegerParameter>
+          <IntegerParameter Name="LEVEL">95</IntegerParameter>
         </ConfigurableElement>
       </Configuration>
       <Configuration Name="Multimedia.FrontMic">
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/0/LEVEL">
-          <IntegerParameter Name="LEVEL">110</IntegerParameter>
+          <IntegerParameter Name="LEVEL">93</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/1/LEVEL">
-          <IntegerParameter Name="LEVEL">110</IntegerParameter>
+          <IntegerParameter Name="LEVEL">93</IntegerParameter>
         </ConfigurableElement>
       </Configuration>
       <Configuration Name="Multimedia.HeadsetMic">
@@ -180,10 +180,10 @@
       </Configuration>
       <Configuration Name="InCall.FrontMic">
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/0/LEVEL">
-          <IntegerParameter Name="LEVEL">110</IntegerParameter>
+          <IntegerParameter Name="LEVEL">93</IntegerParameter>
         </ConfigurableElement>
         <ConfigurableElement Path="/Audio/REALTEK/SOUND_CARD/INPUT/DIGITAL/STEREO/VOLUME/1/LEVEL">
-          <IntegerParameter Name="LEVEL">110</IntegerParameter>
+          <IntegerParameter Name="LEVEL">93</IntegerParameter>
         </ConfigurableElement>
       </Configuration>
       <Configuration Name="InCall.HeadsetMic">
