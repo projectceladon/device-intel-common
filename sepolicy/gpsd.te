@@ -1,5 +1,6 @@
 allow gpsd sysfs_wake_lock:file { read write open };
 allow gpsd keystore:keystore_key { saw };
 allow gpsd property_socket:sock_file rw_file_perms;
+allow gpsd self:capability { net_admin };
 use_keystore(gpsd)
 binder_use(gpsd)
