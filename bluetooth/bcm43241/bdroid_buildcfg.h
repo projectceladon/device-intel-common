@@ -31,4 +31,8 @@
 
 #define BTA_DM_COD {0x1A, 0x01, 0x1C}
 
+#define PRELOAD_MAX_RETRY_ATTEMPTS 1
+
+#define PRELOAD_START_TIMEOUT_MS 3500
+
 #endif
