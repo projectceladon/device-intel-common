@@ -1,5 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 COMMON_PFW_CONFIG_PATH := $(call my-dir)
+CLEAR_PFW_VARS := $(COMMON_PFW_CONFIG_PATH)/clear_pfw_vars.mk
+BUILD_PFW_SETTINGS := $(COMMON_PFW_CONFIG_PATH)/build_pfw_settings.mk
 
 # defines:
 # - $(PFW_TUNING_ALLOWED)
