@@ -72,6 +72,10 @@ TARGET_SYSLINUX_FILES = \
 BOARD_MBR_BLOCK_BIN ?= external/syslinux/mbr/gptmbr.bin
 
 ##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk.1
+##############################################################
+TARGET_USES_64_BIT_BINDER := true
+##############################################################
 # Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk
 ##############################################################
 # Specify location of board-specific kernel headers
