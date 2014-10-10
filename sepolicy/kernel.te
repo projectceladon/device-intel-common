@@ -1,3 +1,4 @@
 allow kernel self:security setenforce;
 # kdevtmpfs
 allow kernel self:capability mknod;
+allow kernel device:blk_file { getattr unlink setattr create };
