@@ -1,6 +1,7 @@
 #!/system/bin/sh
 
 BT_DEV_ID="OBDA8723"
+GPS_DEV_ID="BCM4752E"
 RFKILL_ROOT_DIR="/sys/class/rfkill"
 
 # Look for the rfkill associated to BT device
@@ -16,10 +17,18 @@ do
     if [ "${BT_DEV_ID}" = "${dev_id}" ]; then
         rfkill_id=${rfkill}
     fi
+
+    if [ "${GPS_DEV_ID}" = "${dev_id}" ]; then
+        gps_rfkill_id=${rfkill}
+    fi
 done
 
 # Force disable BT chip if needed
 bt_state=`getprop bluetooth.hwcfg`
 if [ ! -z "${rfkill_id}" ] && [ "${bt_state}" = "stop" ]; then
     echo 0 > ${rfkill_id}/state
+fi
+
+if [ ! -z "${gps_rfkill_id}" ]; then
+    echo 0 > ${gps_rfkill_id}/state
 fi
