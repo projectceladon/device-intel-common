@@ -11,7 +11,7 @@ display-density: medium
 dalvik-heap: tablet-7in-hdpi-1024
 cpu-arch: x86
 houdini: true
-bugreport: chime
+bugreport: default
 graphics: software
 storage: emulated
 ethernet: dhcp
