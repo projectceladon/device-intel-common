@@ -24,7 +24,47 @@ LOCAL_MODULE := parameter-framework.audio.common
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     ConfigurationSubsystem.xml
+
+ifneq ($(TARGET_BUILD_VARIANT),user)
+LOCAL_REQUIRED_MODULES += \
+    libremote-processor \
+    remote-process \
+    parameter
+endif
+
 include $(BUILD_PHONY_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter-framework.vibrator.common
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES :=  \
+    vibrator
+include $(BUILD_PHONY_PACKAGE)
+
+##################################################
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
+else
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE).user_debug
+endif
+include $(BUILD_PREBUILT)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := vibrator
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+##################################################
+
 
 ##################################################
 ######### Route PFW #########
