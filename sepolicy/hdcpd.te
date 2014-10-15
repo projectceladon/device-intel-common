@@ -9,8 +9,10 @@ allow hdcpd sysfs:file write;
 # by hdcpd_data_file ones
 allow hdcpd system_data_file:dir { create_dir_perms };
 allow hdcpd system_data_file:sock_file { create link_file_perms };
+allow hdcpd system_data_file:file create_file_perms;
 allow hdcpd hdcpd_data_file:dir { create_dir_perms };
 allow hdcpd hdcpd_data_file:sock_file { create link_file_perms };
+allow hdcpd hdcpd_data_file:file create_file_perms;
 allow hdcpd coreu_tmpfs:file { rw_file_perms };
 
 allow hdcpd hdcpd_tmpfs:file { lock create open };
