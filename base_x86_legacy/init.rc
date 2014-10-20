@@ -47,17 +47,15 @@ on property:ro.enable.native.bridge.exec=0
     copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_exe
     copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_dyn
 ##############################################################
-# Source: device/intel/mixins/groups/bugreport/chime/init.rc
+# Source: device/intel/mixins/groups/bugreport/default/init.rc
 ##############################################################
-# bugreport is triggered by holding down volume down, volume up
+# bugreport is triggered by holding down volume down, volume up and power
 service bugreport /system/bin/dumpstate -d -p -B \
-        -o /data/data/com.android.shell/files/bugreports/bugreport \
-        -b /system/media/audio/ui/Dock.ogg -e /system/media/audio/ui/Undock.ogg
+        -o /data/data/com.android.shell/files/bugreports/bugreport
     class main
     disabled
     oneshot
-    keycodes 114 115
-
+    keycodes 114 115 116
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/software/init.rc
 ##############################################################
