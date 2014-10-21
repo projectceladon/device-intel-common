@@ -154,8 +154,9 @@ PRODUCT_COPY_FILES += \
 ##############################################################
 # Source: device/intel/mixins/groups/gms/true/product.mk
 ##############################################################
-$(call inherit-product-if-exists, vendor/google/gms/products/gms.mk)
-$(call inherit-product-if-exists, vendor/google/gms/products/gms_optional.mk)
+PRODUCT_PREBUILT_WEBVIEWCHROMIUM := yes
+
+$(call inherit-product-if-exists, vendor/google/gms/products/gms_gpe.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
  ro.com.google.clientidbase=android-intel
