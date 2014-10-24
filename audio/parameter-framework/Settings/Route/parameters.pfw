@@ -765,6 +765,9 @@ supDomain: Parameter
 				ALL
 					AndroidMode Is InVoipCall
 					VoIPBandType Is NB
+				ALL
+					HfpClientEnable Is True
+					HfpClientBandType Is NB
 
 			component: /Route/route_mgr/criteria/band_type
 				band = NB
@@ -778,6 +781,9 @@ supDomain: Parameter
 				ALL
 					AndroidMode Is InVoipCall
 					VoIPBandType Is WB
+				ALL
+					HfpClientEnable Is True
+					HfpClientBandType Is WB
 
 			component: /Route/route_mgr/criteria/band_type
 				band = WB
@@ -962,3 +968,31 @@ supDomain: Parameter
 		conf: Disabled
 			component: /Route/route_mgr/criteria/hac_mode
 				state = Off
+
+	domain: HfpClientEnable
+		conf: On
+			HfpClientEnable Is True
+
+			component: /Route/route_mgr/criteria/hfp_client_enabled/
+				state = On
+
+		conf: Off
+			component: /Route/route_mgr/criteria/hfp_client_enabled/
+				state = Off
+
+	domain: HfpClientBandType
+		conf: NB
+			HfpClientBandType Is NB
+
+			component: /Route/route_mgr/criteria/hfp_client_set_sampling_rate/
+				band = NB
+
+		conf: WB
+			HfpClientBandType Is WB
+
+			component: /Route/route_mgr/criteria/hfp_client_set_sampling_rate/
+				band = WB
+
+		conf: Unknown
+			component: /Route/route_mgr/criteria/hfp_client_set_sampling_rate/
+				band = Unknown

@@ -183,6 +183,8 @@
             <Component Name="bypass_linear_pp" Type="State" Mapping="Name:BypassLinearPp"/>
             <Component Name="mic_mute" Type="State" Mapping="Name:MicMute"/>
             <Component Name="preproc_enabled" Type="Preprocessing" Mapping="Name:PreProcEnabled"/>
+            <Component Name="hfp_client_enabled" Type="State" Mapping="Name:HfpClientEnable"/>
+            <Component Name="hfp_client_set_sampling_rate" Type="Band" Mapping="Name:HfpClientBandType"/>
         </ComponentType>
 
     </ComponentTypeSet>
