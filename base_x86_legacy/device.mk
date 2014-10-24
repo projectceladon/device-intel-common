@@ -176,6 +176,13 @@ PRODUCT_PACKAGES += AndroidTerm libjackpal-androidterm4
 
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/art-config/default/product.mk
+##############################################################
+# This is needed to enable silver art optimizer.
+# This will build the plugins/libart-extension.so library,  which is dynamically loaded by
+# AOSP and contains Intel optimizations to the compiler.
+PRODUCT_PACKAGES += libart-extension
+##############################################################
 # Source: device/intel/mixins/groups/widevine/default/product.mk
 ##############################################################
 # Make generic definition of media components.
