@@ -150,12 +150,6 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/navigationbar/overlay
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
 ##############################################################
-# Source: device/intel/mixins/groups/gms/true/BoardConfig.mk
-##############################################################
-DEVICE_PACKAGE_OVERLAYS += device/intel/common/gms/overlay
-FLAG_GMS_AVAILABLE := yes
-
-##############################################################
 # Source: device/intel/mixins/groups/factory-scripts/true/BoardConfig.mk
 ##############################################################
 # Include factory archive in 'make dist' output
