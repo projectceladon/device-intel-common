@@ -6,7 +6,7 @@ product.mk: device.mk
 
 [groups]
 boot-arch: syslinux32
-kernel: gmin64
+kernel: gmin64(path=gmin,loglevel=5)
 display-density: medium
 dalvik-heap: tablet-7in-hdpi-1024
 cpu-arch: x86
