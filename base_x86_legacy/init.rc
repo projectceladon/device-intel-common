@@ -114,11 +114,6 @@ on post-fs
 on boot
     write /sys/devices/pci0000\:00/0000\:00\:14.0/power/control auto
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/init.rc
-##############################################################
-on early-init
-    setenforce 0
-##############################################################
 # Source: device/intel/mixins/groups/disk-bus/sata-1f.2/init.rc
 ##############################################################
 on init

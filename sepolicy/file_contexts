@@ -1,40 +1,60 @@
-# pstore-clean
-/dev/pstore                 u:object_r:pstore_dev:s0
-/data/dontpanic(/.*)?       u:object_r:pstore-clean_data_file:s0
-/system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
-/system/bin/setup_fs        u:object_r:setup_fs_exec:s0
+# CPU
+/dev/msr[0-3]               u:object_r:msr_device:s0
 
-# userfastboot
-/sbin/userfastboot          u:object_r:userfastboot_exec:s0
-
-# gpu_device (EGL/OGL gpu device)
+# GPU
 /dev/dri/card0              u:object_r:gpu_device:s0
+/dev/dri/controlD64         u:object_r:gpu_device:s0
+/dev/sw_sync                u:object_r:graphics_device:s0
 
-# mei_device
-# in the future, consider to use tee_device instead of mei_device
-/dev/mei                    u:object_r:mei_device:s0
+/system/bin/coreu           u:object_r:coreu_exec:s0
 
-# msr_device
-/dev/msr0                   u:object_r:msr_device:s0
+# Camera
+/dev/v4l-subdev.*           u:object_r:camera_device:s0
+/dev/video([0-9])+          u:object_r:camera_device:s0
+/dev/media([0-9])+          u:object_r:camera_device:s0
 
-# media_device
-/dev/media0                 u:object_r:media_device:s0
+# Audio
+/dev/snd/.*                 u:object_r:audio_device:s0
 
-# sw_sync_device
-/dev/sw_sync                u:object_r:sw_sync_device:s0
+# GPS
 
-# gps
+/dev/gps/ttyGPS             u:object_r:gps_device:s0
+/dev/gps/ttyGPSPowerControl u:object_r:gps_device:s0
+/dev/ttyS2                  u:object_r:gps_device:s0
+
 /system/bin/gpsd            u:object_r:gpsd_exec:s0
 /system/bin/gpscerd         u:object_r:gpsd_exec:s0
 
-# hci
-/system/bin/hciattach       u:object_r:hci_attach_exec:s0
+# COOMS
 /dev/ttyS1                  u:object_r:hci_attach_dev:s0
-
-# rfkill
 /dev/rfkill                 u:object_r:rfkill_device:s0
 
-# camera
-/dev/v4l-subdev0            u:object_r:camera_device:s0
+/system/bin/hciattach       u:object_r:hci_attach_exec:s0
 
-/data/media/0               u:object_r:media0_device:s0
+# Hardware keystore
+/dev/mei                    u:object_r:tee_device:s0
+/dev/meimm                  u:object_r:tee_device:s0
+/system/bin/keymaster_meid  u:object_r:keymaster_exec:s0
+
+# Persistent Storage
+/dev/pstore                 u:object_r:pstore_dev:s0
+/data/dontpanic(/.*)?       u:object_r:pstore-clean_data_file:s0
+/system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
+
+# Persistent partition
+/dev/block/platform/80860F14:00/by-name/android_persistent  u:object_r:frp_block_device:s0
+
+# Misc
+/system/bin/setup_fs        u:object_r:setup_fs_exec:s0
+
+# Thermal daemon
+/dev/acpi_thermal_rel       u:object_r:thermal_device:s0
+/data/thermal-daemon(/.*)?  u:object_r:thermal_data_file:s0
+/system/bin/thermal-daemon  u:object_r:thermal_exec:s0
+
+# DRM
+/data/IntelCPHS.log         u:object_r:drm_data_file:s0
+
+# HDCP
+/system/bin/hdcpd           u:object_r:hdcpd_exec:s0
+/data/hdcp(/.*)?            u:object_r:hdcpd_data_file:s0

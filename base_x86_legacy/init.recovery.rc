@@ -21,11 +21,6 @@ on post-fs
     start dhcpcd_eth0
 
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/init.recovery.rc
-##############################################################
-on early-init
-    setenforce 0
-##############################################################
 # Source: device/intel/mixins/groups/disk-bus/sata-1f.2/init.recovery.rc
 ##############################################################
 on init

@@ -140,6 +140,7 @@ r_dir_file(domain, sysfs_devices_system_cpu)
 r_dir_file(domain, inotify)
 r_dir_file(domain, cgroup)
 r_dir_file(domain, proc_net)
+allow domain proc_cpuinfo:file r_file_perms;
 
 # debugfs access
 allow domain debugfs:dir r_dir_perms;
@@ -159,7 +160,6 @@ allow domain asec_public_file:file r_file_perms;
 allow domain { asec_public_file asec_apk_file }:dir r_dir_perms;
 
 allow domain servicemanager:service_manager list;
-auditallow domain servicemanager:service_manager list;
 allow domain service_manager_type:service_manager find;
 
 ###
@@ -174,10 +174,10 @@ neverallow { domain -unconfineddomain -recovery } unlabeled:dir_file_class_set c
 neverallow { domain -debuggerd -vold -dumpstate -system_server } self:capability sys_ptrace;
 
 # Limit device node creation to these whitelisted domains.
-neverallow { domain -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt } self:capability mknod;
+neverallow { domain -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt -userfastboot } self:capability mknod;
 
 # Limit raw I/O to these whitelisted domains.
-neverallow { domain -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt -tee } self:capability sys_rawio;
+neverallow { domain -coreu -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt -tee } self:capability sys_rawio;
 
 # No process can map low memory (< CONFIG_LSM_MMAP_MIN_ADDR).
 neverallow domain self:memprotect mmap_zero;
@@ -250,7 +250,7 @@ neverallow domain init:binder call;
 
 # Don't allow raw read/write/open access to block_device
 # Rather force a relabel to a more specific type
-neverallow { domain -kernel -init -recovery -vold -uncrypt -install_recovery } block_device:blk_file { open read write };
+neverallow { domain -kernel -init -recovery -vold -uncrypt -install_recovery -setup_fs -userfastboot } block_device:blk_file { open read write };
 
 # Don't allow raw read/write/open access to generic devices.
 # Rather force a relabel to a more specific type.
@@ -260,11 +260,11 @@ neverallow { domain -unconfineddomain -ueventd } device:chr_file { open read wri
 # Limit what domains can mount filesystems or change their mount flags.
 # sdcard_type / vfat is exempt as a larger set of domains need
 # this capability, including device-specific domains.
-neverallow { domain -kernel -init -recovery -vold -zygote -pstore-clean } { fs_type -sdcard_type }:filesystem { mount remount relabelfrom relabelto };
+neverallow { domain -kernel -init -recovery -vold -zygote -pstore-clean -coreu -hdcpd } { fs_type -sdcard_type }:filesystem { mount remount relabelfrom relabelto };
 
 #
 # Assert that, to the extent possible, we're not loading executable content from
-# outside the /system partition except for a few whitelisted domains.
+# outside the rootfs or /system partition except for a few whitelisted domains.
 #
 neverallow {
     domain
@@ -275,6 +275,11 @@ neverallow {
     -system_server
     -zygote
 } { file_type -system_file -exec_type }:file execute;
+neverallow {
+    domain
+    -appdomain # for oemfs
+    -recovery # for /tmp/update_binary in tmpfs
+} { fs_type -rootfs }:file execute;
 
 # Only the init property service should write to /data/property.
 neverallow { domain -init } property_data_file:dir { create setattr relabelfrom rename write add_name remove_name rmdir };
@@ -303,3 +308,6 @@ neverallow { domain -recovery } contextmount_type:dir_file_class_set
 # New service_types are defined in service.te and new mappings
 # from service name to service_type are defined in service_contexts.
 neverallow domain default_android_service:service_manager add;
+
+neverallow { domain -init -recovery -system_server -userfastboot } frp_block_device:blk_file rw_file_perms;
+

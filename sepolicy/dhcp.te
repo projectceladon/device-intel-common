@@ -1,9 +1,0 @@
-# Rule for
-#    if (chdir("/") == -1)
-# This is something well-behaved daemons tend to do mainly
-# because they don't want to block unmounting a filesystem
-# that was mounted in their initial working directory. But
-# this is not important in our case and I think Google will
-# add a *dontaudit* rule for it or we can send them a patch
-# for it.
-#allow dhcp unlabeled:dir search;

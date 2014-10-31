@@ -3,4 +3,9 @@ type setup_fs, domain;
 type setup_fs_exec, exec_type, file_type;
 init_daemon_domain(setup_fs);
 
-allow setup_fs block_device:dir search;
+# allow setup_fs to create filesystems
+allow setup_fs block_device:dir { search write remove_name };
+allow setup_fs block_device:blk_file { open read write getattr ioctl };
+allow setup_fs proc_sysrq:file { open write };
+allow setup_fs self:capability sys_boot;
+allow setup_fs system_file:file execute_no_trans;
