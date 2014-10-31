@@ -156,33 +156,53 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
 TARGET_BUILD_INTEL_FACTORY_SCRIPTS := true
 
 ##############################################################
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
+##############################################################
+# start kernel in permissive mode, this way we don't
+# need 'setenforce 0' from init.rc files
+BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
+##############################################################
 # Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
 ##############################################################
+# SELinux Policy
 BOARD_SEPOLICY_DIRS := device/intel/common/sepolicy
 BOARD_SEPOLICY_REPLACE := \
-    domain.te \
-    init.te \
-    kernel.te
+    domain.te
+
+# please keep this list ordered
 BOARD_SEPOLICY_UNION := \
-    genfs_contexts \
+    adbd.te \
+    bluetooth.te \
+    coreu.te \
+    device.te \
+    drmserver.te \
     file_contexts \
     file.te \
-    bluetooth.te \
-    device.te \
-    dhcp.te \
+    genfs_contexts \
     gpsd.te \
+    hdcpd.te \
     init_shell.te \
+    init.te \
+    kernel.te \
+    keymaster.te \
     keystore.te \
     mediaserver.te \
     netd.te \
+    platform_app.te \
     pstore-clean.te \
-    sdcardd.te \
+    recovery.te \
+    service_contexts \
+    service.te \
+    setup_fs.te \
+    shell.te \
     surfaceflinger.te \
+    system_app.te \
     system_server.te \
-    userfastboot.te  \
+    thermal.te \
+    untrusted_app.te \
+    userfastboot.te \
     vold.te \
-    wpa.te \
-    setup_fs.te
+    wpa.te
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/BoardConfig.mk
 ##############################################################
