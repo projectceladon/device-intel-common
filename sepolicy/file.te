@@ -9,6 +9,10 @@ type binfmt_misc, fs_type;
 
 # thermal
 type thermal_data_file, file_type, data_file_type;
+type thermal_socket, file_type;
 
 # hdcp
 type hdcpd_data_file, file_type, data_file_type;
+
+#Powercap
+type sysfs_powercap, fs_type, sysfs_type;

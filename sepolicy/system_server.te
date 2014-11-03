@@ -3,3 +3,7 @@ allow system_server gps_data_file:dir { search add_name write };
 allow system_server pstore-clean_data_file:dir search;
 allow system_server init:unix_dgram_socket sendto;
 allow system_server surfaceflinger_tmpfs:file { read write };
+
+# enable Battery Saver
+allow system_server thermal_socket:sock_file write;
+allow system_server thermal:unix_dgram_socket sendto;
