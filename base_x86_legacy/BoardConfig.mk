@@ -169,7 +169,7 @@ BOARD_SEPOLICY_DIRS := device/intel/common/sepolicy
 BOARD_SEPOLICY_REPLACE := \
     domain.te
 
-# please keep this list ordered
+# please keep this list in alphabetical order
 BOARD_SEPOLICY_UNION := \
     adbd.te \
     bluetooth.te \
@@ -199,6 +199,7 @@ BOARD_SEPOLICY_UNION := \
     system_app.te \
     system_server.te \
     thermal.te \
+    ueventd.te \
     untrusted_app.te \
     userfastboot.te \
     vold.te \
