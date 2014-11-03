@@ -62,3 +62,6 @@
 
 # Powercap
 /sys/devices/virtual/powercap(/.*)?  u:object_r:sysfs_powercap:s0
+
+# Power HAL helper
+/system/vendor/bin/power_hal_helper    u:object_r:power_hal_helper_exec:s0

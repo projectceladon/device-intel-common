@@ -8,3 +8,6 @@ domain_trans(init, rootfs, userfastboot)
 userdebug_or_eng(`
   domain_trans(init, rootfs, shell)
 ')
+
+# allow to write mediaserver pid to cgroup for mediaserver
+allow init mediaserver:process { setsched };
