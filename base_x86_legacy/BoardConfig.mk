@@ -103,6 +103,12 @@ TARGET_ARCH_VARIANT := x86
 TARGET_ARCH := x86
 
 ##############################################################
+# Source: device/intel/mixins/groups/houdini/true/BoardConfig.mk
+##############################################################
+# enable ARM codegen for x86 with Houdini
+BUILD_ARM_FOR_X86 := true
+
+##############################################################
 # Source: device/intel/mixins/groups/graphics/software/BoardConfig.mk
 ##############################################################
 BOARD_KERNEL_CMDLINE += vga=current nomodeset
