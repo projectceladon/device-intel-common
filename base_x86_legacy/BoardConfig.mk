@@ -189,6 +189,9 @@ BOARD_SEPOLICY_UNION := \
     mediaserver.te \
     netd.te \
     platform_app.te \
+    power_hal_helper.te \
+    property_contexts \
+    property.te \
     pstore-clean.te \
     recovery.te \
     service_contexts \

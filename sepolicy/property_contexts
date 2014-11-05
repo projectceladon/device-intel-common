@@ -1,0 +1,2 @@
+# property for power HAL
+sys.power_hal.          u:object_r:system_power_hal_prop:s0
