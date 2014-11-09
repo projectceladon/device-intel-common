@@ -1,0 +1,4 @@
+<resources>
+    <!-- CryptKeeper prohibit rotation since it doesn't fit in landscape mode -->
+    <bool name="crypt_keeper_allow_rotation">false</bool>
+</resources>
