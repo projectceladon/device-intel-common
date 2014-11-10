@@ -104,6 +104,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
+LOCAL_REQUIRED_MODULES := libfs-subsystem
 include $(BUILD_PREBUILT)
 
 
