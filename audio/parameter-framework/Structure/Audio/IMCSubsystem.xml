@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="IMC" Type="XMM" Endianness="Little" Mapping="ModemName:xmm1,LibraryName:libmamgr-xmm.so">
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="IMC" Type="Virtual" Endianness="Little" Mapping="ModemName:xmm1,LibraryName:libmamgr-xmm.so">
     <ComponentLibrary>
         <!-- GENERAL -->
         <ComponentType Name="DESTINATION_TYPE">
