@@ -61,12 +61,11 @@
 
         <ComponentType Name="OutputFlags" Mapping="Type:OutputFlagsType,Inclusive:1">
             <BitParameterBlock Name="output_flags" Size="32" Mapping="Criterion">
-                <BitParameter Name="none" Size="1" Pos="0"/>
-                <BitParameter Name="direct" Size="1" Pos="1"/>
-                <BitParameter Name="primary" Size="1" Pos="2"/>
-                <BitParameter Name="fast" Size="1" Pos="3"/>
-                <BitParameter Name="deep_buffer" Size="1" Pos="4"/>
-                <BitParameter Name="compress_offload" Size="1" Pos="5"/>
+                <BitParameter Name="direct" Size="1" Pos="0"/>
+                <BitParameter Name="primary" Size="1" Pos="1"/>
+                <BitParameter Name="fast" Size="1" Pos="2"/>
+                <BitParameter Name="deep_buffer" Size="1" Pos="3"/>
+                <BitParameter Name="compress_offload" Size="1" Pos="4"/>
             </BitParameterBlock>
         </ComponentType>
 
