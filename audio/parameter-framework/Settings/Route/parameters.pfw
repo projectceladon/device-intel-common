@@ -80,6 +80,185 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices
 					SCO_CarKit = 0
 
+		domain: A2dp
+			conf: Selected
+				OutputDevices Includes A2dp
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dp = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dp = 0
+
+		domain: A2dpHeadphones
+			conf: Selected
+				OutputDevices Includes A2dpHeadphones
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dpHeadphones = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dpHeadphones = 0
+
+
+		domain: A2dpSpeaker
+			conf: Selected
+				OutputDevices Includes A2dpSpeaker
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dpSpeaker = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					A2dpSpeaker = 0
+
+
+		domain: AuxDigital
+			conf: Selected
+				OutputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AuxDigital = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AuxDigital = 0
+
+
+		domain: AnlgDockHeadset
+			conf: Selected
+				OutputDevices Includes AnlgDockHeadset
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AnlgDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AnlgDockHeadset = 0
+
+		domain: DgtlDockHeadset
+			conf: Selected
+				OutputDevices Includes DgtlDockHeadset
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					DgtlDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					DgtlDockHeadset = 0
+
+		domain: UsbAccessory
+			conf: Selected
+				OutputDevices Includes UsbAccessory
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					UsbAccessory = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					UsbAccessory = 0
+
+		domain: UsbDevice
+			conf: Selected
+				OutputDevices Includes UsbDevice
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					UsbDevice = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					UsbDevice = 0
+
+		domain: RemoteSubmix
+			conf: Selected
+				OutputDevices Includes RemoteSubmix
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					RemoteSubmix = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					RemoteSubmix = 0
+
+		domain: TelephonyTx
+			conf: Selected
+				OutputDevices Includes TelephonyTx
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					TelephonyTx = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					TelephonyTx = 0
+
+		domain: Line
+			conf: Selected
+				OutputDevices Includes Line
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Line = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Line = 0
+
+		domain: HdmiArc
+			conf: Selected
+				OutputDevices Includes HdmiArc
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					HdmiArc = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					HdmiArc = 0
+
+		domain: Spdif
+			conf: Selected
+				OutputDevices Includes Spdif
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Spdif = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Spdif = 0
+
+		domain: Fm
+			conf: Selected
+				OutputDevices Includes Fm
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Fm = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					Fm = 0
+
+		domain: AuxLine
+			conf: Selected
+				OutputDevices Includes AuxLine
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AuxLine = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					AuxLine = 0
+
+		domain: SpeakerSafe
+			conf: Selected
+				OutputDevices Includes SpeakerSafe
+
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					SpeakerSafe = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices_criterion/output_devices/
+					SpeakerSafe = 0
+
 
 	supDomain: InputDevice
 
@@ -168,8 +347,145 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
 					Back = 0
 
+		domain: Ambient
+			conf: Selected
+				InputDevices Includes Ambient
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Ambient = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Ambient = 0
+
+		domain: Communication
+			conf: Selected
+				InputDevices Includes Communication
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Communication = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Communication = 0
+
+		domain: AuxDigital
+			conf: Selected
+				InputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					AuxDigital = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					AuxDigital = 0
+
+		domain: AnlgDockHeadset
+			conf: Selected
+				InputDevices Includes AnlgDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					AnlgDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					AnlgDockHeadset = 0
+
+		domain: DgtlDockHeadset
+			conf: Selected
+				InputDevices Includes DgtlDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					DgtlDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					DgtlDockHeadset = 0
+
+		domain: UsbAccessory
+			conf: Selected
+				InputDevices Includes UsbAccessory
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					UsbAccessory = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					UsbAccessory = 0
+
+		domain: FmTuner
+			conf: Selected
+				InputDevices Includes FmTuner
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					FmTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					FmTuner = 0
+
+		domain: TvTuner
+			conf: Selected
+				InputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					TvTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					TvTuner = 0
+
+		domain: Line
+			conf: Selected
+				InputDevices Includes Line
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Line = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Line = 0
+
+		domain: Spdif
+			conf: Selected
+				InputDevices Includes Spdif
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Spdif = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Spdif = 0
+
+		domain: BluetoothA2dp
+			conf: Selected
+				InputDevices Includes BluetoothA2dp
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					BluetoothA2dp = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					BluetoothA2dp = 0
+
+		domain: Loopback
+			conf: Selected
+				InputDevices Includes Loopback
+
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Loopback = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices_criterion/input_devices
+					Loopback = 0
+
 
 	supDomain: InputSources
+
+		domain: Default
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
+					Default = 0
 
 		domain: Mic
 			conf: Selected
@@ -237,6 +553,17 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
 					VoiceUplink = 0
 
+		domain: RemoteSubmix
+			conf: Selected
+				InputSources Includes RemoteSubmix
+
+				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
+					RemoteSubmix = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
+					RemoteSubmix = 0
+
 		domain: VoiceCall
 			conf: Selected
 				InputSources Includes VoiceCall
@@ -248,8 +575,30 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
 					VoiceCall = 0
 
+		domain: Hotword
+			conf: Selected
+				InputSources Includes Hotword
+
+				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
+					Hotword = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources_criterion/input_sources
+					Hotword = 0
+
 
 	supDomain: Outputflags
+
+		domain: Direct
+			conf: Selected
+				OutputFlags Includes Direct
+
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					direct = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					direct = 0
 
 		domain: Primary
 			conf: Selected
@@ -284,6 +633,38 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
 					fast = 0
 
+		domain: Offload
+			conf: Selected
+				OutputFlags Includes Offload
+
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					compress_offload = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					compress_offload = 0
+
+		domain: NonBlocking
+			conf: Selected
+				OutputFlags Includes NonBlocking
+
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					non_blocking = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					non_blocking = 0
+
+		domain: HwAvSync
+			conf: Selected
+				OutputFlags Includes HwAvSync
+
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					hw_av_sync = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags_criterion/output_flags
+					hw_av_sync = 0
 
 	domain: Mode
 
@@ -417,6 +798,28 @@ supDomain: Parameter
 				Downlink = 0
 				Uplink = 0
 
+	domain: BypassNonLinearPp
+		conf: On
+			BypassNonLinearPp Is True
+
+			component: /Route/route_mgr/criteria/bypass_non_linear_pp_criterion/
+				state = On
+
+		conf: Off
+			component: /Route/route_mgr/criteria/bypass_non_linear_pp_criterion/
+				state = Off
+
+	domain: BypassLinearPp
+		conf: On
+			BypassLinearPp Is True
+
+			component: /Route/route_mgr/criteria/bypass_linear_pp_criterion/
+				state = On
+
+		conf: Off
+			component: /Route/route_mgr/criteria/bypass_linear_pp_criterion/
+				state = Off
+
 	domain: MicMute
 		conf: Muted
 			MicMute Is True
@@ -483,6 +886,28 @@ supDomain: Parameter
 			conf: Disabled
 				component: /Route/route_mgr/criteria/preproc_enabled_criterion/preprocessing_enabled
 					Ns = 0
+
+		domain: Bmf
+			conf: Enabled
+				PreProcessorRequestedByActiveInput Includes Bmf
+
+				component: /Route/route_mgr/criteria/preproc_enabled_criterion/preprocessing_enabled/
+					Bmf = 1
+
+			conf: Disabled
+				component: /Route/route_mgr/criteria/preproc_enabled_criterion/preprocessing_enabled/
+					Bmf = 0
+
+		domain: Wnr
+			conf: Enabled
+				PreProcessorRequestedByActiveInput Includes Wnr
+
+				component: /Route/route_mgr/criteria/preproc_enabled_criterion/preprocessing_enabled/
+					Wnr = 1
+
+			conf: Disabled
+				component: /Route/route_mgr/criteria/preproc_enabled_criterion/preprocessing_enabled/
+					Wnr = 0
 
 	domain: Hac
 		conf: Enabled
