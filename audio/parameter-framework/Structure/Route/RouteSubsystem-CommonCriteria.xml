@@ -13,7 +13,7 @@
         </ComponentType>
 
         <ComponentType Name="InputDevices" Mapping="Type:InputDevicesType,Inclusive:1">
-            <BitParameterBlock Name="input_devices" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Communication" Size="1" Pos="0"/>
                 <BitParameter Name="Ambient" Size="1" Pos="1"/>
                 <BitParameter Name="Main" Size="1" Pos="2"/>
@@ -37,7 +37,7 @@
         </ComponentType>
 
         <ComponentType Name="OutputDevices" Mapping="Type:OutputDevicesType,Inclusive:1">
-            <BitParameterBlock Name="output_devices" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Earpiece" Size="1" Pos="0"/>
                 <BitParameter Name="IHF" Size="1" Pos="1"/>
                 <BitParameter Name="Headset" Size="1" Pos="2"/>
@@ -74,7 +74,7 @@
         </ComponentType>
 
         <ComponentType Name="InputSources" Mapping="Type:InputSourcesType,Inclusive:1">
-            <BitParameterBlock Name="input_sources" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Default" Size="1" Pos="0"/>
                 <BitParameter Name="Mic" Size="1" Pos="1"/>
                 <BitParameter Name="VoiceUplink" Size="1" Pos="2"/>
@@ -108,7 +108,7 @@
         </ComponentType>
 
         <ComponentType Name="OutputFlags" Mapping="Type:OutputFlagsType,Inclusive:1">
-            <BitParameterBlock Name="output_flags" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="direct" Size="1" Pos="0"/>
                 <BitParameter Name="primary" Size="1" Pos="1"/>
                 <BitParameter Name="fast" Size="1" Pos="2"/>
@@ -136,7 +136,7 @@
         </ComponentType>
 
         <ComponentType Name="TtyDirection" Mapping="Type:TtyDirectionType,Inclusive:1">
-            <BitParameterBlock Name="tty_direction" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Downlink" Size="1" Pos="0"/>
                 <BitParameter Name="Uplink" Size="1" Pos="1"/>
             </BitParameterBlock>
@@ -157,7 +157,7 @@
         </ComponentType>
 
         <ComponentType Name="Preprocessing" Mapping="Type:PreProcessingType,Inclusive:1">
-            <BitParameterBlock Name="preprocessing_enabled" Size="32" Mapping="Criterion">
+            <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Aec" Size="1" Pos="0"/>
                 <BitParameter Name="Agc" Size="1" Pos="1"/>
                 <BitParameter Name="Ns" Size="1" Pos="2"/>
@@ -167,22 +167,22 @@
         </ComponentType>
 
         <ComponentType Name="PlatformCriteria">
-            <Component Name="mode_criterion" Type="Mode" Mapping="Name:Mode"/>
-            <Component Name="input_devices_criterion" Type="InputDevices" Mapping="Name:SelectedInputDevice"/>
-            <Component Name="output_devices_criterion" Type="OutputDevices" Mapping="Name:SelectedOutputDevice"/>
-            <Component Name="band_type_criterion" Type="Band" Mapping="Name:BandType"/>
-            <Component Name="screen_state_criterion" Type="State" Mapping="Name:ScreenState"/>
-            <Component Name="fm_mode_criterion" Type="State" Mapping="Name:FmMode"/>
-            <Component Name="input_sources_criterion" Type="InputSources" Mapping="Name:AudioSource"/>
-            <Component Name="output_flags_criterion" Type="OutputFlags" Mapping="Name:OutputFlags"/>
-            <Component Name="bt_headset_nrec_criterion" Type="Boolean" Mapping="Name:BtHeadsetNrEc"/>
-            <Component Name="bt_headset_band_criterion" Type="Band" Mapping="Name:BtHeadsetBandType"/>
-            <Component Name="hac_mode_criterion" Type="State" Mapping="Name:HAC"/>
-            <Component Name="tty_direction_criterion" Type="TtyDirection" Mapping="Name:TTYDirection"/>
+            <Component Name="mode" Type="Mode" Mapping="Name:Mode"/>
+            <Component Name="input_devices" Type="InputDevices" Mapping="Name:SelectedInputDevice"/>
+            <Component Name="output_devices" Type="OutputDevices" Mapping="Name:SelectedOutputDevice"/>
+            <Component Name="band_type" Type="Band" Mapping="Name:BandType"/>
+            <Component Name="screen_state" Type="State" Mapping="Name:ScreenState"/>
+            <Component Name="fm_mode" Type="State" Mapping="Name:FmMode"/>
+            <Component Name="input_sources" Type="InputSources" Mapping="Name:AudioSource"/>
+            <Component Name="output_flags" Type="OutputFlags" Mapping="Name:OutputFlags"/>
+            <Component Name="bt_headset_nrec" Type="Boolean" Mapping="Name:BtHeadsetNrEc"/>
+            <Component Name="bt_headset_band" Type="Band" Mapping="Name:BtHeadsetBandType"/>
+            <Component Name="hac_mode" Type="State" Mapping="Name:HAC"/>
+            <Component Name="tty_direction" Type="TtyDirection" Mapping="Name:TTYDirection"/>
             <Component Name="bypass_non_linear_pp" Type="State" Mapping="Name:BypassNonLinearPp"/>
             <Component Name="bypass_linear_pp" Type="State" Mapping="Name:BypassLinearPp"/>
-            <Component Name="mic_mute_criterion" Type="State" Mapping="Name:MicMute"/>
-            <Component Name="preproc_enabled_criterion" Type="Preprocessing" Mapping="Name:PreProcEnabled"/>
+            <Component Name="mic_mute" Type="State" Mapping="Name:MicMute"/>
+            <Component Name="preproc_enabled" Type="Preprocessing" Mapping="Name:PreProcEnabled"/>
         </ComponentType>
 
     </ComponentTypeSet>
