@@ -1,0 +1,11 @@
+<camera>
+	<prop>
+		<!--- ds4 -->
+		<vendorId value="8086"/>
+		<productId value="0a80"/>
+		<facing value="CAMERA_FACING_BACK"/>
+		<orientation value="0"/>
+		<plugin name="ds4"/>
+	</prop>
+</camera>
+
