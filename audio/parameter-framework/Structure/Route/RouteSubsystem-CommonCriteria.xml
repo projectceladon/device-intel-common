@@ -22,6 +22,17 @@
                 <BitParameter Name="AuxDigital" Size="1" Pos="5"/>
                 <BitParameter Name="VoiceCall" Size="1" Pos="6"/>
                 <BitParameter Name="Back" Size="1" Pos="7"/>
+                <BitParameter Name="RemoteSubmix" Size="1" Pos="8"/>
+                <BitParameter Name="AnlgDockHeadset" Size="1" Pos="9"/>
+                <BitParameter Name="DgtlDockHeadset" Size="1" Pos="10"/>
+                <BitParameter Name="UsbAccessory" Size="1" Pos="11"/>
+                <BitParameter Name="UsbDevice" Size="1" Pos="12"/>
+                <BitParameter Name="FmTuner" Size="1" Pos="13"/>
+                <BitParameter Name="TvTuner" Size="1" Pos="14"/>
+                <BitParameter Name="Line" Size="1" Pos="15"/>
+                <BitParameter Name="Spdif" Size="1" Pos="16"/>
+                <BitParameter Name="BluetoothA2dp" Size="1" Pos="17"/>
+                <BitParameter Name="Loopback" Size="1" Pos="18"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -34,6 +45,22 @@
                 <BitParameter Name="SCO" Size="1" Pos="4"/>
                 <BitParameter Name="SCO_Headset" Size="1" Pos="5"/>
                 <BitParameter Name="SCO_CarKit" Size="1" Pos="6"/>
+                <BitParameter Name="A2dp" Size="1" Pos="7"/>
+                <BitParameter Name="A2dpHeadphones" Size="1" Pos="8"/>
+                <BitParameter Name="A2dpSpeaker" Size="1" Pos="9"/>
+                <BitParameter Name="AuxDigital" Size="1" Pos="10"/>
+                <BitParameter Name="AnlgDockHeadset" Size="1" Pos="11"/>
+                <BitParameter Name="DgtlDockHeadset" Size="1" Pos="12"/>
+                <BitParameter Name="UsbAccessory" Size="1" Pos="13"/>
+                <BitParameter Name="UsbDevice" Size="1" Pos="14"/>
+                <BitParameter Name="RemoteSubmix" Size="1" Pos="15"/>
+                <BitParameter Name="TelephonyTx" Size="1" Pos="16"/>
+                <BitParameter Name="Line" Size="1" Pos="17"/>
+                <BitParameter Name="HdmiArc" Size="1" Pos="18"/>
+                <BitParameter Name="Spdif" Size="1" Pos="19"/>
+                <BitParameter Name="Fm" Size="1" Pos="20"/>
+                <BitParameter Name="AuxLine" Size="1" Pos="21"/>
+                <BitParameter Name="SpeakerSafe" Size="1" Pos="22"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -56,6 +83,8 @@
                 <BitParameter Name="Camcorder" Size="1" Pos="5"/>
                 <BitParameter Name="VoiceRecognition" Size="1" Pos="6"/>
                 <BitParameter Name="VoiceCommunication" Size="1" Pos="7"/>
+                <BitParameter Name="RemoteSubmix" Size="1" Pos="8"/>
+                <BitParameter Name="Hotword" Size="1" Pos="9"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -73,6 +102,8 @@
                 <BitParameter Name="camcorder" Size="1" Pos="5"/>
                 <BitParameter Name="voice_recognition" Size="1" Pos="6"/>
                 <BitParameter Name="voice_communication" Size="1" Pos="7"/>
+                <BitParameter Name="remote_submix" Size="1" Pos="8"/>
+                <BitParameter Name="hotword" Size="1" Pos="9"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -83,6 +114,8 @@
                 <BitParameter Name="fast" Size="1" Pos="2"/>
                 <BitParameter Name="deep_buffer" Size="1" Pos="3"/>
                 <BitParameter Name="compress_offload" Size="1" Pos="4"/>
+                <BitParameter Name="non_blocking" Size="1" Pos="5"/>
+                <BitParameter Name="hw_av_sync" Size="1" Pos="6"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -97,6 +130,8 @@
                 <BitParameter Name="fast" Size="1" Pos="2"/>
                 <BitParameter Name="deep_buffer" Size="1" Pos="3"/>
                 <BitParameter Name="compress_offload" Size="1" Pos="4"/>
+                <BitParameter Name="non_blocking" Size="1" Pos="5"/>
+                <BitParameter Name="hw_av_sync" Size="1" Pos="6"/>
             </BitParameterBlock>
         </ComponentType>
 
