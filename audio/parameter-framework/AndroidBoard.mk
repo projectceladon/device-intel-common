@@ -107,6 +107,14 @@ LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libfs-subsystem
 include $(BUILD_PREBUILT)
 
+######### Route Common Criteria Component Set #########
+include $(CLEAR_VARS)
+LOCAL_MODULE := RouteSubsystem-CommonCriteria.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
+LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
 
 ######### Audio Structures #########
 
