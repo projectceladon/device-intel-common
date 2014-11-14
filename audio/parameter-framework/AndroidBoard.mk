@@ -116,6 +116,15 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+######### Route Common Types Component Set #########
+include $(CLEAR_VARS)
+LOCAL_MODULE := RouteSubsystem-RoutesTypes.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
+LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 ######### Audio Structures #########
 
 include $(CLEAR_VARS)
