@@ -273,8 +273,14 @@ supDomain: Parameter
 								AndroidMode Is InCsvCall
 								ModemAudioStatus Is True
 					ALL
-						AndroidMode Is Normal
+						AlwaysListening Is True
+						LpalDevice Is Main
+						InputSources Is none
+					ALL
 						InputDevices Includes Main
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Main = 1
@@ -294,7 +300,12 @@ supDomain: Parameter
 							OutputDevices Includes Sco
 							OutputDevices Includes ScoHeadset
 							OutputDevices Includes ScoCarkit
-					InputDevices Includes ScoHeadset
+					ALL
+						InputDevices Includes ScoHeadset
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					SCO_Headset = 1
@@ -310,7 +321,16 @@ supDomain: Parameter
 						AndroidMode Is InCsvCall
 						ModemAudioStatus Is True
 						OutputDevices Includes Headset
-					InputDevices Includes Headset
+					ALL
+						InputDevices Includes Headset
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
+					ALL
+						AlwaysListening Is True
+						LpalDevice Is Headset
+						InputSources Is none
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Headset = 1
@@ -338,7 +358,11 @@ supDomain: Parameter
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes Ihf
-					InputDevices Includes Back
+					ALL
+						InputDevices Includes Back
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Back = 1
@@ -349,7 +373,26 @@ supDomain: Parameter
 
 		domain: Ambient
 			conf: Selected
-				InputDevices Includes Ambient
+				ANY
+					ALL
+						ANY
+							OutputDevices Includes Earpiece
+							OutputDevices Includes Ihf
+							OutputDevices Includes Headphones
+						ANY
+							AndroidMode Is InVoipCall
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioAvailable Is True
+									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
+
+					ALL
+						InputDevices Includes Ambient
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Ambient = 1
