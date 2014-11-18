@@ -1,0 +1,4 @@
+<permissions>
+	<feature name="com.intel.camera.depth_snapshot" />
+	<feature name="com.intel.camera.depth_video" />
+</permissions>
