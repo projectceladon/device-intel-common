@@ -85,6 +85,67 @@ In the context of Android, there are additional details:
   and b) mere copy/paste avoidance (subject to divergence) - see item 3 above.
 * Split ".pfw" files whenever relevant and "commonalize" when possible.
 
+## Makefiles
+
+There are 2 important kinds of makefiles:
+
+1. AndroidBoard.mk;
+2. device.mk (sometimes referred to as "product.mk" in mixins);
+
+The boundary between them is a bit fuzzy but the way we use them for audio
+packages and configuration files is:
+
+* device.mk lists which meta-packages must be included in the image;
+* AndroidBoard.mk defines these meta-packages.
+
+The build system uses `device/intel/<board>/<product>/AndroidBoard.mk` (to
+which we will refer to as *top-level AndroidBoard.mk*. For audio-specific
+targets, we recommend 4 levels of AndroidBoard.mk:
+
+1. the product-specific audio-AndroidBoard.mk, found at
+   `device/intel/<board>/<product>/audio/AndroidBoard.mk`, defining the audio
+   meta-package for the product;
+2. the product-specific pfw-AndroidBoard.mk, found at
+   `device/intel/<board>/<product>/audio/parameter-framework/AndroidBoard.mk`;
+3. the platform-specific pfw-AndroidBoard.mk, found at
+   `device/intel/<board>/audio/parameter-framework/AndroidBoard.mk`;
+4. the common pfw-AndroidBoard.mk, found at
+   `device/intel/common/audio/parameter-framework/AndroidBoard.mk`.
+
+The top-level AndroidBoard.mk shall include number 1 in the list above which
+will in turn include number 2 and so on for 3 and 4.
+
+The directory structure will then look like this:
+
+    device/intel/
+    |-- common/audio/parameter-framework
+    |   `-- AndroidBoard.mk (#4)
+    `-- <platform>/
+        |-- audio/
+        |   `-- parameter-framework/
+        |       `-- AndroidBoard.mk (#3, includes #4)
+        `-- <board>/
+            |-- device.mk
+            |-- audio/
+            |   |-- parameter-framework/
+            |   |   `-- AndroidBoard.mk (#2, includes #3)
+            |   `-- AndroidBoard.mk (#1, includes #2)
+            `-- AndroidBoard.mk (top-level, includes #1)
+
+### Rules of thumb:
+
+* Keep the content of device.mk small: if possible, only one package in
+  device.mk, which will then point to all needed packages.
+* Put as many target definitions as possible in the common AndroidBoard.mk
+* Use phony packages with meaningful names and "required modules" to represent
+  a bundle of packages (e.g. `parameter-framework.audio.baytrail` as phony
+  target depending on `parameter-framework.audio.common` and all
+  baytrail-specific targets.)
+* When creating a target for a Structure file, add its plugin library as
+  required module (e.g. `LOCAL_REQUIRED_MODULE := libfs-subsystem`); do the same
+  for each ComponentLibrary it uses.
+* When available, use a convenience build rule (e.g. for generating the
+  Settings files); they are documented in dedicated sections below.
 
 ## Parameter-framework XML generation build rule
 
