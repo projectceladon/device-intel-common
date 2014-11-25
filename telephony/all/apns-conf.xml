@@ -20442,11 +20442,13 @@
       user="none"
       server="*"
       password="none"
+      type="default"
   />
 
   <apn carrier="CMW500"
       mcc="001"
       mnc="01"
       apn="cmw500.rohde-schwarz.com.mnc01.mcc001.gprs"
+      type="default"
   />
 </apns>
