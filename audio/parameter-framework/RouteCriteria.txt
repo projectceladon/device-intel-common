@@ -4,10 +4,9 @@ InclusiveCriterion OutputFlags			:	Direct			Primary		Fast		Deep			Offload		Remot
 InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	VoiceCall	Camcorder		VoiceRecognition	VoiceCommunication
 InclusiveCriterion TtyDirection			: 	Downlink 		Uplink
 InclusiveCriterion PreProcessorRequestedByActiveInput			: 	Aec 		Agc			Ns		Bmf
-InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	ImsBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice ScoResourceRequested
+InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	ImsBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice
 ExclusiveCriterion LpalDevice			:	Communication	Ambient		Main		ScoHeadset		Headset		VoiceCall		Back
 ExclusiveCriterion AndroidMode			:	Normal			RingTone	InCsvCall	InVoipCall
-ExclusiveCriterion BtEnable			: 	False			True
 ExclusiveCriterion DirectStream			: 	False			True
 ExclusiveCriterion ModemAudioStatus		: 	False			True
 ExclusiveCriterion FmEnabled			: 	False			True
@@ -27,6 +26,5 @@ ExclusiveCriterion BypassLinearPp		: 	False			True
 ExclusiveCriterion MicMute			:	False			True
 ExclusiveCriterion CmeDirectStreamCapture	:	False			True
 ExclusiveCriterion CmeDirectStreamPlayback	:	False			True
-ExclusiveCriterion ScoResourceRequested		:	False			True
 ExclusiveCriterion CmeModemStreamCapture	:	False			True
 ExclusiveCriterion CmeModemStreamPlayback	:	False			True
