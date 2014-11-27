@@ -154,7 +154,7 @@ Domains) files using ".pfw" files and, optionaly, a pre-existing Settings file.
 This is similar to the ones provided by the Android build system (through
 instructions like `include $(BUILD_SHARED_LIBRARY)`).
 
-Here is usage example followed by an explanation:
+Here is a usage example followed by an explanation:
 
     include $(CLEAR_VARS)
     LOCAL_MODULE := AudioConfigurableDomains-bytcr-rt5640-default.xml
@@ -197,6 +197,5 @@ The important parts are the `PFW_`-prefixed variables:
     hack.
 
 Before using any `PFW_` variable, you must call `include $(CLEAR_PFW_VARS)` and
-you can call `include $(BUILD_PFW_SETTINGS)` to trigger XML generation. This
+you can call `include $(BUILD_PFW_SETTINGS)` to trigger XML generation. These
 two variables are defined by `AndroidBoard.mk`.
-
