@@ -13,13 +13,6 @@ ifneq (,$(filter $(LOCAL_MODULE_TAGS), tests))
 _need_prebuilts :=
 endif
 
-ifneq (,$(_need_prebuilts))
-ifeq ($(findstring /PRIVATE/, $(LOCAL_MODULE_MAKEFILE)),)
-$(error External framework does not support prebuilt for non PRIVATE path: $(LOCAL_MODULE_MAKEFILE))
-_need_prebuilts :=
-endif
-endif
-
 ########################################################################################
 ifneq (custom_external, $(_metatarget))
 include $(call original-metatarget)
@@ -188,7 +181,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(call several-files-deps, $($(LOCAL_MODULE_P
 
 # cleanup local shortcut for LOCAL_MODULE_PREBUILT_MAKEFILE
 my :=
-endif # is /PRIVATE/
+endif # is _need_prebuilts
 _metatarget :=
 _need_prebuilts :=
 else # metatarget neq ''

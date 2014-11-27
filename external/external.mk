@@ -1,7 +1,11 @@
-# At the moment we only generate prebuilts for userdebug builds
-# this is a safety feature, eng, user, and userdebug binaries should be the same
+# Make sure REF_PRODUCT_NAME is set
+ifeq ($(REF_PRODUCT_NAME),)
+REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
+endif
+
+# At the moment we only generate prebuilts for user and userdebug builds
 # so intel_prebuilts should be used only for one variant anyway.
-ifeq (userdebug,$(TARGET_BUILD_VARIANT))
+ifneq ($(filter userdebug user,$(TARGET_BUILD_VARIANT)),)
 
 
 # Prebuilts generation for external release is now done in two steps
@@ -27,11 +31,6 @@ ifneq (,$(filter \
 GENERATE_INTEL_PREBUILTS:=true
 
 TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
-
-# for easy porting to legacy branches, we setup REF_PRODUCT_NAME
-ifeq ($(REF_PRODUCT_NAME),)
-REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
-endif
 
 endif # intel_prebuilts || generate_intel_prebuilts || publish_intel_prebuilts
 
@@ -67,10 +66,15 @@ endef
 #
 define external-gather-files
 $(if $(filter $(1),$(_metatarget)), \
-    $(if $(findstring /PRIVATE/, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE)), \
-        $(info PRIVATE module [$(LOCAL_MODULE)] cannot use another PRIVATE module files directly to prevent IP violation) \
-        $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring /PRIVATE/, $(s)), $(info >    [$(s)]))) \
-        $(error Stop) \
+    $(foreach _prj, $(_prebuilt_projects), \
+        $(if $(findstring $(_prj), $(LOCAL_MODULE_MAKEFILE)), \
+        , \
+            $(if $(findstring $(_prj)/, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE)), \
+                $(info PRIVATE module [$(LOCAL_MODULE)] cannot use another PRIVATE module files directly to prevent IP violation) \
+                $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring $(_prj)/, $(s)), $(info >    [$(s)]))) \
+                $(error Stop) \
+            ) \
+        ) \
     ) \
     $(eval LOCAL_INSTALLED_MODULE_STEM := $(my_installed_module_stem)) \
     $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
@@ -219,5 +223,5 @@ endif # userdebug
 # $(1) : Local path to be translated in prebuilt
 #
 define intel-prebuilts-path
-prebuilts/intel/$(subst /PRIVATE/,/prebuilts/$(REF_PRODUCT_NAME)/,$(1))
+prebuilts/intel/$(REF_PRODUCT_NAME)/$(subst /PRIVATE/,/,$(1))
 endef
