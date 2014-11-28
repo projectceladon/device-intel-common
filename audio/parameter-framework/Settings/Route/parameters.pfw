@@ -5,7 +5,11 @@ supDomain: Parameter
 
 		domain: IHF
 			conf: Selected
-				OutputDevices Includes Ihf
+				ANY
+					OutputDevices Includes Ihf
+					ALL
+						OutputDevices Is Earpiece
+						AndroidMode Is Normal
 
 				component: /Route/route_mgr/criteria/output_devices/mask
 					IHF = 1
@@ -17,6 +21,7 @@ supDomain: Parameter
 		domain: Earpiece
 			conf: Selected
 				OutputDevices Includes Earpiece
+				AndroidMode IsNot Normal
 
 				component: /Route/route_mgr/criteria/output_devices/mask
 					Earpiece = 1
