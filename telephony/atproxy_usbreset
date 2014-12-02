@@ -1,0 +1,8 @@
+#!/system/xbin/ash
+value=`getprop sys.usb.config`
+persist_value=`getprop persist.sys.usb.config`
+if [[ -n "$value" -a -n "$persist_value" ]]; then
+  if [ "$persist_value" != "$value" ]; then
+    setprop sys.usb.config $persist_value
+  fi
+fi

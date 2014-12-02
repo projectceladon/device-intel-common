@@ -24,16 +24,33 @@ def zero_pad(s, size):
     s += '\0' * (size - len(s))
     return s
 
+def preparse_partitions(gpt_in, cfg):
+    with open(gpt_in, 'r') as f:
+        data = f.read()
+
+    partitions = cfg.get('base', 'partitions').split()
+
+    for l in data.split('\n'):
+        words = l.split()
+        if len(words) > 2:
+            if words[0] == 'partitions' and words[1] == '+=':
+                partitions += words[2:]
+
+    return partitions
+
 def main():
-    if len(sys.argv) == 1:
-        print 'Usage : ', sys.argv[0], 'gpt_in1.ini gpt_in2.ini ...'
+    if len(sys.argv) != 2:
+        print 'Usage : ', sys.argv[0], 'gpt_in1.ini'
         print '    write binary to stdout'
-        return
+        sys.exit(1)
+
+    gpt_in = sys.argv[1]
 
     cfg = ConfigParser.SafeConfigParser()
-    for gpt_in in sys.argv[1:]:
-        cfg.read(gpt_in)
-    part = cfg.get('base', 'partitions').split()
+
+    cfg.read(gpt_in)
+
+    part = preparse_partitions(gpt_in, cfg)
 
     magic = 0x6a8b0da1
     start_lba = 0
