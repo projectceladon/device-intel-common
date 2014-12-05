@@ -23,3 +23,5 @@ allow coreu coreu_service:service_manager add;
 
 # /mnt/libreg shared with hdcpd
 allow coreu hdcpd_tmpfs:file { read write open lock };
+
+allow coreu self:netlink_kobject_uevent_socket create_socket_perms;
