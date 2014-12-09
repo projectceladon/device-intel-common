@@ -27358,27 +27358,20 @@
       type="default,supl,mms"
   />
 
-  <apn carrier="CMHK MMS"
+  <apn carrier="CMHK"
       mcc="454"
       mnc="12"
       apn="cmhk"
       mmsc="http://mms.hk.chinamobile.com/mms"
-      type="mms"
+      type="default,supl,mms"
   />
 
-  <apn carrier="CMHK Data"
-      mcc="454"
-      mnc="12"
-      apn="cmhk"
-      type="default,supl"
-  />
-
-  <apn carrier="CMHK MMS"
+  <apn carrier="CMHK"
       mcc="454"
       mnc="13"
       apn="cmhk"
       mmsc="http://mms.hk.chinamobile.com/mms"
-      type="mms"
+      type="default,supl,mms"
   />
 
   <apn carrier="CMHK Data"
@@ -33752,6 +33745,37 @@
       password="orange"
       proxy="10.150.0.115"
       port="8080"
+      type="default"
+  />
+
+  <apn carrier="C4I internet"
+      mcc="208"
+      mnc="92"
+      apn="internet.v4.pft"
+      type="default"
+  />
+
+  <apn carrier="C4I IMS"
+      mcc="208"
+      mnc="92"
+      apn="ims"
+      type="ims"
+  />
+
+  <apn carrier="Spirent"
+      mcc="001"
+      mnc="01"
+      apn="spirent-lcs.com"
+      user="none"
+      server="*"
+      password="none"
+      type="default"
+  />
+
+  <apn carrier="CMW500"
+      mcc="001"
+      mnc="01"
+      apn="cmw500.rohde-schwarz.com.mnc01.mcc001.gprs"
       type="default"
   />
 </apns>
