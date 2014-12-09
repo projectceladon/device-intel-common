@@ -3,7 +3,7 @@ supDomain: Parameter
 
 	supDomain: OutputDevice
 
-		domain: IHF
+		domain: Ihf
 			conf: Selected
 				ANY
 					OutputDevices Includes Ihf
@@ -52,7 +52,7 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/output_devices/mask
 					Headphones = 0
 
-		domain: SCO
+		domain: Sco
 			conf: Selected
 				OutputDevices Includes Sco
 
@@ -63,7 +63,7 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO = 0
 
-		domain: SCO_Headset
+		domain: ScoHeadset
 			conf: Selected
 				OutputDevices Includes ScoHeadset
 
@@ -74,7 +74,7 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO_Headset = 0
 
-		domain: SCO_CarKit
+		domain: ScoCarkit
 			conf: Selected
 				OutputDevices Includes ScoCarkit
 
@@ -276,7 +276,10 @@ supDomain: Parameter
 							AndroidMode Is InVoipCall
 							ALL
 								AndroidMode Is InCsvCall
-								ModemAudioStatus Is True
+								ANY
+									ModemAudioAvailable Is True
+									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Main
@@ -295,12 +298,15 @@ supDomain: Parameter
 					Main = 0
 
 
-		domain: SCO_Headset
+		domain: ScoHeadset
 			conf: Selected
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ANY
+							ModemAudioAvailable Is True
+							CmeDirectStreamCapture Is True
+							CmeModemStreamCapture Is True
 						ANY
 							OutputDevices Includes Sco
 							OutputDevices Includes ScoHeadset
@@ -324,7 +330,10 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ANY
+							ModemAudioAvailable Is True
+							CmeDirectStreamCapture Is True
+							CmeModemStreamCapture Is True
 						OutputDevices Includes Headset
 					ALL
 						InputDevices Includes Headset
@@ -359,7 +368,14 @@ supDomain: Parameter
 			conf: Selected
 				ANY
 					ALL
-						AndroidMode Is InVoipCall
+						ANY
+							AndroidMode Is InVoipCall
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioAvailable Is True
+									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes Ihf
@@ -376,6 +392,7 @@ supDomain: Parameter
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Back = 0
 
+		# Ambient mic: activated when we have a dual-mic situation (incall + Earpiece or Ihf or Headphones)
 		domain: Ambient
 			conf: Selected
 				ANY
@@ -726,7 +743,21 @@ supDomain: Parameter
 			ALL
 				AndroidMode Is InCsvCall
 				ModemState Is True
-				ModemAudioStatus Is True
+				ANY
+					ModemAudioAvailable Is True
+					CmeModemStreamPlayback Is True
+					CmeModemStreamCapture Is True
+
+			component: /Route/route_mgr/criteria/mode
+				mode = InCsvCall
+
+		conf: InIms
+			ALL
+				AndroidMode Is InCsvCall
+				ModemAudioAvailable IsNot True
+				ANY
+					CmeDirectStreamPlayback Is True
+					CmeDirectStreamCapture Is True
 				ANY
 					OutputDevices Is Ihf
 					OutputDevices Is Headset
@@ -737,7 +768,7 @@ supDomain: Parameter
 					OutputDevices Is ScoCarkit
 
 			component: /Route/route_mgr/criteria/mode
-				mode = InCsvCall
+				mode = InImsCall
 
 		conf: InCommunication
 			ALL
@@ -765,11 +796,19 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is NB
 				ALL
-					AndroidMode Is InVoipCall
+					AndroidMode Is InCsvCall
+					ImsBandType Is NB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
+				ALL
 					VoIPBandType Is NB
+					AndroidMode IsNot InCsvCall
 				ALL
 					HfpClientEnable Is True
 					HfpClientBandType Is NB
@@ -781,11 +820,19 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is WB
 				ALL
-					AndroidMode Is InVoipCall
+					AndroidMode Is InCsvCall
+					ImsBandType Is WB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
+				ALL
 					VoIPBandType Is WB
+					AndroidMode IsNot InCsvCall
 				ALL
 					HfpClientEnable Is True
 					HfpClientBandType Is WB
@@ -797,11 +844,19 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is SuperWB
 				ALL
-					AndroidMode Is InVoipCall
+					AndroidMode Is InCsvCall
+					ImsBandType Is SuperWB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
+				ALL
 					VoIPBandType Is SuperWB
+					AndroidMode IsNot InCsvCall
 
 			component: /Route/route_mgr/criteria/band_type
 				band = SuperWB
@@ -910,7 +965,7 @@ supDomain: Parameter
 
 		domain: Aec
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Aec
 
 				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Aec = 1
@@ -921,7 +976,7 @@ supDomain: Parameter
 
 		domain: Agc
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Agc
 
 				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Agc = 1
@@ -932,7 +987,7 @@ supDomain: Parameter
 
 		domain: Ns
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Ns
 
 				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Ns = 1

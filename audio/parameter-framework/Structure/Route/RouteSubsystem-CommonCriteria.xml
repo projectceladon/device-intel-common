@@ -12,6 +12,8 @@
             </EnumParameter>
         </ComponentType>
 
+        <!-- The name of each device must match the name of the Audio PFW input device
+        criterion as this parameter will feed the associated criterion. -->
         <ComponentType Name="InputDevices" Mapping="Type:InputDevicesType,Inclusive:1">
             <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Communication" Size="1" Pos="0"/>
@@ -36,6 +38,8 @@
             </BitParameterBlock>
         </ComponentType>
 
+        <!-- The name of each device must match the name of the Audio PFW output device
+        criterion as this parameter will feed the associated criterion. -->
         <ComponentType Name="OutputDevices" Mapping="Type:OutputDevicesType,Inclusive:1">
             <BitParameterBlock Name="mask" Size="32" Mapping="Criterion">
                 <BitParameter Name="Earpiece" Size="1" Pos="0"/>
@@ -88,10 +92,10 @@
             </BitParameterBlock>
         </ComponentType>
 
-        <!-- Duplicated definition of input sources... This is needed because
-             of how the route plugin will use the 'Criterion' objects: the
-             'Criterion' instanciation mapping must be put on the parameter
-             block -->
+        <!-- Duplicated definition of input sources... This
+        is needed because of how the route plugin will use the 'Criterion'
+        objects: the 'Criterion' instanciation mapping must be put on the
+        ParameterBlock -->
         <ComponentType Name="InputSources_">
             <BitParameterBlock Name="input_sources" Size="32">
                 <BitParameter Name="default" Size="1" Pos="0"/>
@@ -120,9 +124,9 @@
         </ComponentType>
 
         <!-- Duplicated definition of output flags ... This
-             is needed because of how the route plugin will use the 'Criterion'
-             objects: the 'Criterion' instanciation mapping must be put on the
-             ParameterBlock -->
+        is needed because of how the route plugin will use the 'Criterion'
+        objects: the 'Criterion' instanciation mapping must be put on the
+        ParameterBlock -->
         <ComponentType Name="OutputFlags_">
             <BitParameterBlock Name="output_flags" Size="32">
                 <BitParameter Name="direct" Size="1" Pos="0"/>
