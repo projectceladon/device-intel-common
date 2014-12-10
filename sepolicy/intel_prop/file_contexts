@@ -1,0 +1,2 @@
+# intel_prop
+/sbin/intel_prop            u:object_r:intel_prop_exec:s0
