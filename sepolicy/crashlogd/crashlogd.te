@@ -1,0 +1,25 @@
+userdebug_or_eng(`
+  # Rules for crashlogd
+  type crashlogd, domain;
+  type crashlogd_exec, exec_type, file_type;
+  init_daemon_domain(crashlogd)
+  permissive crashlogd;
+
+  #For silence only
+  unconfined_domain(crashlogd)
+  allow crashlogd default_prop:property_service set;
+  allow crashlogd fuse:dir { write search read remove_name create open add_name rmdir };
+  allow crashlogd fuse:file { write getattr setattr read create unlink open };
+  allow crashlogd rootfs:file execute_no_trans;
+  allow crashlogd shell_exec:file execute_no_trans;
+  allow crashlogd system_file:file execute_no_trans;
+  allow crashlogd log_file:filesystem getattr;
+  allow crashlogd unlabeled:filesystem getattr;
+  allow crashlogd self:process execmem;
+  allow crashlogd zygote_exec:file execute_no_trans;
+  allow crashlogd ctl_default_prop:property_service set;
+  allow crashlogd dex2oat_exec:file execute_no_trans;
+
+  binder_use(crashlogd);
+  binder_call(system_server, crashlogd);
+')

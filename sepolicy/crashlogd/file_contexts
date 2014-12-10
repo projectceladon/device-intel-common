@@ -1,0 +1,2 @@
+# Crashlogd executable
+/system/bin/crashlogd u:object_r:crashlogd_exec:s0
