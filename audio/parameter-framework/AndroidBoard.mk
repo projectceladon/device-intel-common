@@ -20,6 +20,8 @@ else
 PFW_TUNING_ALLOWED := false
 endif
 
+BUILD_REPLACE_PATTERNS_IN_FILE := $(COMMON_PFW_CONFIG_PATH)/build_replace_patterns_in_file.mk
+
 ##################################################
 
 include $(CLEAR_VARS)
