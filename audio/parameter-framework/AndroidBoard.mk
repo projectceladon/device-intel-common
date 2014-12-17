@@ -16,8 +16,10 @@ PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 # "@TUNING_ALLOWED@" pattern in top-level configuration files templates
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 PFW_TUNING_ALLOWED := true
+AUDIO_PATTERNS += @TUNING_ALLOWED@=true
 else
 PFW_TUNING_ALLOWED := false
+AUDIO_PATTERNS += @TUNING_ALLOWED@=false
 endif
 
 BUILD_REPLACE_PATTERNS_IN_FILE := $(COMMON_PFW_CONFIG_PATH)/build_replace_patterns_in_file.mk
@@ -41,6 +43,10 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.vibrator.common
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
+    SysfsVibratorClass.xml \
+    MiscConfigurationSubsystem.xml \
+    SysfsVibratorSubsystem.xml \
+    ParameterFrameworkConfigurationVibrator.xml \
     vibrator
 include $(BUILD_PHONY_PACKAGE)
 
@@ -555,5 +561,42 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+
+######### Vibrator Structures #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ParameterFrameworkConfigurationVibrator.xml
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := $(LOCAL_MODULE).in
+REPLACE_PATTERNS := $(AUDIO_PATTERNS)
+include $(BUILD_REPLACE_PATTERNS_IN_FILE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SysfsVibratorClass.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
+LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := MiscConfigurationSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
+LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SysfsVibratorSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
+LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE).in
+LOCAL_REQUIRED_MODULES := libfs-subsystem
+REPLACE_PATTERNS := $(AUDIO_PATTERNS)
+include $(BUILD_REPLACE_PATTERNS_IN_FILE)
 
 ##################################################
