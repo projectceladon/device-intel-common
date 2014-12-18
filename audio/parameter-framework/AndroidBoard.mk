@@ -246,24 +246,33 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 ##############################
-# VoiceAlgos_Gen3_5 Phony package
+# Algos_Gen3_5 Phony package
+include $(CLEAR_VARS)
+LOCAL_MODULE := MediaAlgos_Gen3_5
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES :=  \
+    MediaAlgos_Gen3_5.xml \
+    AutomaticGainControlAudio_V1_0.xml \
+    BeamformingAudio_V1.0.xml \
+    WindNoiseReductionAudio_V1_0.xml \
+
+include $(BUILD_PHONY_PACKAGE)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceAlgos_Gen3_5
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
-    Algos_Gen3_5.xml \
+    VoiceAlgos_Gen3_5.xml \
     AmbientNoiseAdapter_V2_5.xml \
     NoiseReduction_V1_1.xml \
     ComfortNoiseInjector_V1_1.xml \
     ComfortNoiseInjector_V1_2.xml \
     AutomaticGainControlVoice_V1_3.xml \
-    AutomaticGainControlAudio_V1_0.xml \
     FbaFir_V1_1.xml \
     FbaIir_V1_1.xml \
     DualMicrophoneNoiseReduction_V1_5.xml \
     SpectralEchoReduction_V2_5.xml \
     BeamformingVoice_V1.1.xml \
-    BeamformingAudio_V1.0.xml \
     EchoDelayLine_V1_1.xml \
     GainLossControl_V1_0.xml \
     AcousticEchoCanceler_V1_6.xml \
@@ -273,14 +282,21 @@ LOCAL_REQUIRED_MODULES :=  \
     DynamicRangeProcessor_V1_4.xml \
     BandWidthExtender_V1_0.xml \
     WindNoiseReductionVoice_V1_0.xml \
-    WindNoiseReductionAudio_V1_0.xml \
     SlowVoice_V1_0.xml \
     MultibandDynamicRangeProcessor_V1_0.xml
 
 include $(BUILD_PHONY_PACKAGE)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := Algos_Gen3_5.xml
+LOCAL_MODULE := MediaAlgos_Gen3_5.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := VoiceAlgos_Gen3_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
