@@ -16,7 +16,8 @@ type_2_guid = {
     'recovery' : '4177c722-9e92-4aab-8644-43502bfd5506',
     'misc' : 'ef32a33b-a409-486c-9141-9ffb711f6266',
     'metadata' : '20ac26be-20b7-11e3-84c5-6cfdb94711e9',
-    'tertiary' : '767941d0-2085-11e3-ad3b-6cfdb94711e9' }
+    'tertiary' : '767941d0-2085-11e3-ad3b-6cfdb94711e9',
+    'factory' : '9fdaa6ef-4b3f-40d2-ba8d-bff16bfb887b' }
 
 def zero_pad(s, size):
     if (len(s) > size):
