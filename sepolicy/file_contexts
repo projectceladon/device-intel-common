@@ -74,3 +74,6 @@
 
 # Telemetry
 /data/telemetry(/.*)?       u:object_r:telemetry_data_file:s0
+
+# Logs
+/data/logs(/.*)?                u:object_r:log_file:s0

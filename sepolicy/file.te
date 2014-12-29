@@ -25,3 +25,6 @@ type sysfs_videostatus, fs_type, sysfs_type;
 
 # Telemetry
 type telemetry_data_file, file_type, data_file_type;
+
+#rootfs missing labels
+type log_file, file_type;
