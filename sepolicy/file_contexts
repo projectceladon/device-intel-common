@@ -75,5 +75,9 @@
 # Telemetry
 /data/telemetry(/.*)?       u:object_r:telemetry_data_file:s0
 
+# ap[k]_logfs entry point script
+/system/bin/logcat_ep.sh        u:object_r:logsvc_exec:s0
+/system/bin/start_log_srv.sh    u:object_r:logsvc_exec:s0
+
 # Logs
 /data/logs(/.*)?                u:object_r:log_file:s0
