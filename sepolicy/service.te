@@ -1,1 +1,2 @@
 type coreu_service,            service_manager_type;
+type thermal_service,          service_manager_type;
