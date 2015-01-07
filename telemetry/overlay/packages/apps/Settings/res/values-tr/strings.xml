@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Ayarlar"</string>
+    <string name="telemetry_info">"Intel Sistem Yazılımı, deneyiminizi iyileştirmek ve cihazınız için yazılım güncellemeleri sunmak amacıyla sistem bilgileri toplamak istiyor. Uygulama ve sistem çökmeleri hakkında bilgi toplayacağız. Kişisel bilgileriniz toplanmayacaktır."</string>
+    <string name="telemetry_info2">"Intel, gizliliğinize önem verir. Intel\'in Gizlilik uygulamaları ile ilgili daha fazla bilgi için lütfen http://www.intel.com.tr/content/www/tr/tr/privacy/intel-online-privacy-notice-summary.html adresini ziyaret edin"</string>
+	<string name="telemetry_allow">"İzin ver"</string>
+	<string name="telemetry_notallow">"İzin Verme"</string>
+	<string name="telemetry_title">"Veri Raporlaması"</string>
+	<string name="title_activity_license">"Veri Raporlama Hakkında"</string>
+	<string name="title_activity_license_loading">"Yükleniyor..."</string>
+	<string name="Cancel">"Kapat"</string>
+</resources>

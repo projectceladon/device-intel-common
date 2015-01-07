@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"설정"</string>
+    <string name="telemetry_info">"인텔 시스템 소프트웨어에서는 사용자 환경을 개선하고 장치 소프트웨어 업데이트를 제공하기 위해 시스템 정보를 수집하고자 합니다. 응용 프로그램 및 시스템 충돌에 관한 정보를 수집합니다. 수집된 개인 정보가 없습니다."</string>
+    <string name="telemetry_info2">"인텔은 귀하의 개인 정보를 소중하게 여깁니다. 인텔의 개인정보 보호방침에 관한 자세한 내용은 http://www.intel.co.kr/content/www/kr/ko/privacy/intel-online-privacy-notice-summary.html을 참조하십시오."</string>
+	<string name="telemetry_allow">"허용"</string>
+	<string name="telemetry_notallow">"허용하지 않음"</string>
+	<string name="telemetry_title">"데이터 보고"</string>
+	<string name="title_activity_license">"데이터 보고 정보"</string>
+	<string name="title_activity_license_loading">"로드 중..."</string>
+	<string name="Cancel">"닫기"</string>
+</resources>

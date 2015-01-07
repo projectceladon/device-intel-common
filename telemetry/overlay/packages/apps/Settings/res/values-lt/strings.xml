@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Nustatymai"</string>
+    <string name="telemetry_info">"„Intel“ sistemos programinė įranga norėtų rinkti informaciją, kad pagerintų jūsų naudojimosi patirtį ir pateiktų įrenginio programinės įrangos naujinius. Rinksime informaciją apie programos ir sistemos gedimus. Asmeninė informacija nebus renkama."</string>
+    <string name="telemetry_info2">"„Intel“ vertina privatumą. Daugiau informacijos apie „Intel“ privatumo praktikas rasite http://www.intel.com/privacy."</string>
+	<string name="telemetry_allow">"Leisti"</string>
+	<string name="telemetry_notallow">"Neleisti"</string>
+	<string name="telemetry_title">"Duomenų ataskaitos"</string>
+	<string name="title_activity_license">"Apie duomenų ataskaitas"</string>
+	<string name="title_activity_license_loading">"Įkeliama..."</string>
+	<string name="Cancel">"Uždaryti"</string>
+</resources>
