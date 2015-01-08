@@ -65,3 +65,6 @@
 
 # Power HAL helper
 /system/vendor/bin/power_hal_helper    u:object_r:power_hal_helper_exec:s0
+
+# NFC
+/data/nfc(/.*)?            u:object_r:nfc_data_file:s0
