@@ -13,3 +13,6 @@ else
         setprop wlan.driver.status "ok"
 
 fi
+
+# make sure that the WiFi HAL is using wlan0 as the global interface
+setprop wifi.interface wlan0
