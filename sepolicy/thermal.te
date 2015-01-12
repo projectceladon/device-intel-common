@@ -3,6 +3,11 @@ type thermal, domain;
 type thermal_exec, exec_type, file_type;
 init_daemon_domain(thermal);
 
+binder_use(thermal)
+binder_service(thermal)
+
+allow thermal thermal_service:service_manager add;
+
 # Data directory
 allow thermal thermal_data_file:dir create_dir_perms;
 allow thermal thermal_data_file:file create_file_perms;
