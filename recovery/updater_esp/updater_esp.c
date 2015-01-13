@@ -50,140 +50,6 @@ struct Capsule {
     int existence;
 };
 
-Value* MountROFn(const char* name, State* state, int argc, Expr* argv[]) {
-    char* result = NULL;
-    char* fs_type = NULL;
-    char* location = NULL;
-    char* mount_point = NULL;
-
-    if (ReadArgs(state, argv, 3, &fs_type, &location, &mount_point) < 0)
-        return NULL;
-
-    mkdir(mount_point, 0755);
-
-    if (mount(location, mount_point, fs_type,
-              MS_NODEV | MS_RDONLY, "") < 0) {
-        printf("%s: failed to mount %s at %s: %s\n",
-                name, location, mount_point, strerror(errno));
-    } else {
-        result = strdup("");
-    }
-done:
-    free(fs_type);
-    free(location);
-    free(mount_point);
-    return StringValue(result);
-}
-
-
-
-static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Expr *argv[])
-{
-    char *device = NULL;
-    char *status = NULL;
-    struct bootloader_message bcb;
-
-    if (ReadArgs(state, argv, 1, &device))
-        return NULL;
-
-    if (strlen(device) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
-        return NULL;
-    }
-
-    if (read_bcb(device, &bcb)) {
-        ErrorAbort(state, "%s: Failed to read Bootloader Control Block", name);
-        return NULL;
-    }
-
-    status = strdup(bcb.status);
-    printf("Read status '%s' from Bootloader Control Block\n",
-        ((NULL == status) ? "**FAILED**" : status));
-
-    return StringValue(status);
-}
-
-/* Hackery: Recovery Console no longer really supports controlled reboots
- * during the update process; if we get to finish_recovery() in recovery.cpp,
- * everything is reset. Since we want to continue doing recovery operations
- * we need to save the log file and reboot here */
-static const char *TEMPORARY_LOG_FILE = "/tmp/recovery.log";
-static const char *LOG_FILE = "/cache/recovery/log";
-
-/* Android BootReceiver eats the /cache/recovery/log file and the
- * last_log file is overwritten on each boot into recovery console.
- * so save this under a different name so the logs from the first
- * phase can be inspected manually */
-static const char *LAST_LOG_FILE = "/cache/recovery/last_log_phase1";
-
-static void copy_log_file(const char* source, const char* destination, int append) {
-    FILE *log = fopen(destination, append ? "a" : "w");
-    if (log == NULL) {
-        printf("Can't open %s: %s\n", destination, strerror(errno));
-        return;
-    }
-
-    FILE *tmplog = fopen(source, "r");
-    if (tmplog != NULL) {
-        if (append)
-            fseek(tmplog, 0, SEEK_END);  // Since last write
-        char buf[4096];
-        while (fgets(buf, sizeof(buf), tmplog))
-            fputs(buf, log);
-        fclose(tmplog);
-    }
-    fclose(log);
-}
-
-
-static Value *SetBCBCommand(const char *name, State *state, int __unused argc, Expr *argv[])
-{
-    char *device, *command;
-    struct bootloader_message bcb;
-
-    if (ReadArgs(state, argv, 2, &device, &command))
-        return NULL;
-
-    if (strlen(device) == 0 || strlen(command) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
-        return NULL;
-    }
-
-    if (strlen(command) > (sizeof(bcb.command) - 1)) {
-        ErrorAbort(state, "%s: command string '%s' too long", name, command);
-        return NULL;
-    }
-
-    if (read_bcb(device, &bcb)) {
-        ErrorAbort(state, "%s: Failed to read Bootloader Control Block", name);
-        return NULL;
-    }
-    strncpy(bcb.command, command, 31);
-    bcb.command[31] = '\0';
-    printf("BCB command set to '%s'\n", bcb.command);
-    if (write_bcb(device, &bcb)) {
-        ErrorAbort(state, "%s: Failed to update Bootloader Control Block", name);
-        return NULL;
-    }
-
-    printf("Stash log files and reboot\n");
-    copy_log_file(TEMPORARY_LOG_FILE, LOG_FILE, 1);
-    copy_log_file(TEMPORARY_LOG_FILE, LAST_LOG_FILE, 0);
-
-    chmod(LOG_FILE, 0600);
-    chown(LOG_FILE, 1000, 1000);   // system user
-    chmod(LAST_LOG_FILE, 0640);
-
-    umount("/cache");
-
-    sync();
-    android_reboot(ANDROID_RB_RESTART, 0, 0);
-
-    /* Shouldn't get here */
-    return StringValue(strdup(""));
-}
-
-
 static Value *CopyPartFn(const char *name, State *state, int argc __attribute__((unused)),
         Expr *argv[])
 {
@@ -391,31 +257,6 @@ done:
     return ret;
 }
 
-static Value *CopyShimFn(const char *name, State *state,
-        int argc __attribute__((unused)), Expr *argv[] __attribute__((unused)))
-{
-    char path[PATH_MAX];
-
-    /* If these fail directory probably already exists; we'll catch it
-     * in copy_file() at any rate */
-    mkdir("/bootloader/EFI", 0777);
-    mkdir("/bootloader/EFI/Boot", 0777);
-    snprintf(path, PATH_MAX - 1, "/bootloader/EFI/Boot/%s",
-            strcmp(UEFI_ARCH, "i386") ? "bootx64.efi" : "bootia32.efi");
-    if (copy_file("/bootloader/shim.efi", path)) {
-        ErrorAbort(state, "%s: couldn't update %s", name, path);
-        return NULL;
-    }
-    return StringValue(strdup(""));
-}
-
-int delete_cb(const char *fpath, const struct stat *sb __unused,
-                int typeflag __unused, struct FTW *ftwbuf __unused)
-{
-    remove(fpath);
-    return 0;
-}
-
 static const char *SFU_SRC = "/system/etc/firmware/BIOSUPDATE.fv";
 static const char *SFU_DST = "/bootloader/BIOSUPDATE.fv";
 
@@ -436,92 +277,6 @@ static Value *CopySFUFn(const char *name __unused, State *state, int argc __unus
     return StringValue(strdup(""));
 }
 
-static const char *CAP_DEST = "/bootloader/fwupdate";
-
-static Value *CopyCapsulesFn(const char* name, State* state, int argc, Expr* argv[])
-{
-    char *basedir;
-    char *detected_machine;
-    char cap_base_path[PATH_MAX];
-    struct stat sb;
-    DIR *dir = NULL;
-    struct dirent *dp;
-    regex_t capreg;
-
-    /* 1 argument: base directory for capsule files and destination directory
-     * policy: copy *.cap under <base>/<detected_machine>/
-     * If machine isn't detected, just look for .cap files in
-     * the base dir. We do not dive into any subdirectories */
-    if (argc != 1) {
-        ErrorAbort(state, "%s: expected 2 arguments", name);
-        goto done;
-    }
-
-    if (ReadArgs(state, argv, 1, &basedir))
-        return NULL;
-
-    if (strlen(basedir) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
-        goto done;
-    }
-
-    detected_machine = dmi_detect_machine();
-    if (detected_machine) {
-        printf("Detected %s machine type\n", detected_machine);
-        snprintf(cap_base_path, sizeof(cap_base_path), "%s/%s/", basedir,
-                detected_machine);
-        free(detected_machine);
-    } else {
-        printf("Machine type not specified\n");
-        snprintf(cap_base_path, sizeof(cap_base_path), "%s/", basedir);
-    }
-    if (stat(cap_base_path, &sb) || !S_ISDIR(sb.st_mode)) {
-        printf("Capsule update directory %s doesn't exist.\n", cap_base_path);
-        goto done; /* Not fatal, just nothing to do */
-    }
-
-    dir = opendir(cap_base_path);
-    if (!dir) {
-        ErrorAbort(state, "%s: couldn't examine capsule directory %s: %s",
-                name, cap_base_path, strerror(errno));
-        goto done;
-    }
-
-    if (regcomp(&capreg, ".*[.]cap$", REG_EXTENDED | REG_NOSUB)) {
-        ErrorAbort(state, "%s: regcomp: %s", name, strerror(errno));
-        goto done;
-    }
-
-    nftw(CAP_DEST, delete_cb, 64, FTW_DEPTH | FTW_PHYS);
-    if (mkdir(CAP_DEST, 0755)) {
-        ErrorAbort(state, "%s: Couldn't create capsule directory in ESP: %s",
-                name, strerror(errno));
-        goto done;
-    }
-
-    while ( (dp = readdir(dir)) ) {
-        name = dp->d_name;
-        char capfile[PATH_MAX];
-        char dest[PATH_MAX];
-
-        if (regexec(&capreg, name, 0, NULL, 0))
-            continue;
-
-        snprintf(capfile, sizeof(capfile), "%s/%s", cap_base_path, name);
-        snprintf(dest, sizeof(dest), "%s/%s", CAP_DEST, name);
-        printf("Copy %s to %s\n", capfile, dest);
-        if (copy_file(capfile, dest)) {
-            ErrorAbort(state, "%s: Failed to copy capsule file %s to %s",
-                    name, capfile, dest);
-            goto done;
-        }
-    }
-
-done:
-    if (dir)
-        closedir(dir);
-    return StringValue(strdup(""));
-}
 
 void Register_libupdater_esp(void)
 {
@@ -529,11 +284,6 @@ void Register_libupdater_esp(void)
 
     RegisterFunction("swap_entries", SwapEntriesFn);
     RegisterFunction("copy_partition", CopyPartFn);
-    RegisterFunction("copy_capsules", CopyCapsulesFn);
     RegisterFunction("copy_sfu", CopySFUFn);
-    RegisterFunction("set_bcb_command", SetBCBCommand);
-    RegisterFunction("get_bcb_status", GetBCBStatus);
-    RegisterFunction("copy_shim", CopyShimFn);
-    RegisterFunction("mount_ro", MountROFn);
 }
 
