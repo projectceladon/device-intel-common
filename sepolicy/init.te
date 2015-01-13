@@ -9,5 +9,7 @@ userdebug_or_eng(`
   domain_trans(init, rootfs, shell)
 ')
 
+domain_trans(init, rootfs, efiprop)
+
 # allow to write mediaserver pid to cgroup for mediaserver
 allow init mediaserver:process { setsched };
