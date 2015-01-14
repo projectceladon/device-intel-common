@@ -1,34 +1,59 @@
 #!/system/bin/sh
 
-BT_DEV_ID="OBDA8723"
-GPS_DEV_ID="BCM4752E"
-RFKILL_ROOT_DIR="/sys/class/rfkill"
+# Rfkill enables by default all radios it is responsible for at start.
+# It is up to each radio user space SW stack to switch rfkill off at
+# boot time but this is not always the case.
+# This script forces radios disabling in case their SW stack is not handling it.
+# It should be called from android init.rc at boot time
 
-# Look for the rfkill associated to BT device
-cd ${RFKILL_ROOT_DIR}
-rfkill_dirs=`/system/bin/ls -d rfkill*`
-for rfkill in ${rfkill_dirs}
+wifi="false"
+bt="false"
+gps="false"
+fm="false"
+nfc="false"
+
+# Parameters parsing
+while [[ $# > 0 ]]
 do
-    # Extract dev id from alias
-    alias=`cat ${rfkill}/device/modalias 2> /dev/null`
-    dev_id="${alias%:*}"
-    dev_id="${dev_id#*:}"
-
-    if [ "${BT_DEV_ID}" = "${dev_id}" ]; then
-        rfkill_id=${rfkill}
-    fi
-
-    if [ "${GPS_DEV_ID}" = "${dev_id}" ]; then
-        gps_rfkill_id=${rfkill}
-    fi
+param="$1"
+case $param in
+    wifi)
+    wifi="true"
+    ;;
+    bluetooth)
+    bt="true"
+    ;;
+    gps)
+    gps="true"
+    ;;
+    fm)
+    fm="true"
+    ;;
+    nfc)
+    nfc="true"
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+shift
 done
 
-# Force disable BT chip if needed
-bt_state=`getprop bluetooth.hwcfg`
-if [ ! -z "${rfkill_id}" ] && [ "${bt_state}" = "stop" ]; then
-    echo 0 > ${rfkill_id}/state
+# Force radios disabling through /dev/rfkill
+if [ $wifi == "true" ]; then
+    echo "\x00\x00\x00\x00\x01\x03\x01" > /dev/rfkill
+fi
+if [ $bt == "true" ]; then
+    echo "\x00\x00\x00\x00\x02\x03\x01" > /dev/rfkill
+fi
+if [ $gps == "true" ]; then
+    echo "\x00\x00\x00\x00\x06\x03\x01" > /dev/rfkill
+fi
+if [ $fm == "true" ]; then
+    echo "\x00\x00\x00\x00\x07\x03\x01" > /dev/rfkill
+fi
+if [ $nfc == "true" ]; then
+    echo "\x00\x00\x00\x00\x08\x03\x01" > /dev/rfkill
 fi
 
-if [ ! -z "${gps_rfkill_id}" ]; then
-    echo 0 > ${gps_rfkill_id}/state
-fi
+exit 0
