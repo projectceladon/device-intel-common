@@ -51,4 +51,10 @@
        <item>hspap:32768,262144,1048576,4096,16384,262144</item>
        <item>lte:655360,1310720,2621440,327680,655360,1310720</item>
     </string-array>
+
+    <!-- MMS user agent string -->
+    <string name="config_mms_user_agent" translatable="false">Common</string>
+    <!-- MMS user agent profile url -->
+    <string name="config_mms_user_agent_profile_url" translatable="false">http://software.intel.com/sites/landingpage/android/default_profile.xml</string>
+
 </resources>
