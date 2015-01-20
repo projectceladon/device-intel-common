@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"設定"</string>
+    <string name="telemetry_info">"お客様の利便性を向上させること、またソフトウェア・アップデートをお客様のデバイスに提供することを目的に、インテルのシステム・ソフトウェアではシステム情報を収集いたします。収集対象は、アプリケーションとシステムの異常終了の情報です。個人情報は収集されません。"</string>
+    <string name="telemetry_info2">"インテルは、お客様のプライバシーを尊重しております。インテルのプライバシー情報の取り扱いについては、http://www.intel.co.jp/content/www/jp/ja/privacy/intel-online-privacy-notice-summary.html を参照してください。"</string>
+	<string name="telemetry_allow">"許可する"</string>
+	<string name="telemetry_notallow">"許可しない"</string>
+	<string name="telemetry_title">"データレポート"</string>
+	<string name="title_activity_license">"データレポートについて"</string>
+	<string name="title_activity_license_loading">"読み込み中..."</string>
+	<string name="Cancel">"閉じる"</string>
+</resources>

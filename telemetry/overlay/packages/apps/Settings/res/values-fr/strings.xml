@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Paramètres"</string>
+    <string name="telemetry_info">"Le logiciel système Intel souhaite recueillir des informations système pour améliorer votre expérience et fournir des mises à jour logicielles pour votre périphérique. Nous recueillerons des informations sur les pannes d\'applications et de système. Aucune information personnelle n\'est collectée."</string>
+    <string name="telemetry_info2">"Intel respecte votre confidentialité. Pour en savoir plus sur les politiques Intel en matière de confidentialité, rendez-vous sur http://www.intel.fr/content/www/fr/fr/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"Autoriser"</string>
+	<string name="telemetry_notallow">"Ne pas autoriser"</string>
+	<string name="telemetry_title">"Communication des données"</string>
+	<string name="title_activity_license">"À propos de la communication des données"</string>
+	<string name="title_activity_license_loading">"Chargement en cours..."</string>
+	<string name="Cancel">"Fermer"</string>
+</resources>

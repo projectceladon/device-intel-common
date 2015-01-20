@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"الإعدادات"</string>
+    <string name="telemetry_info">"يودّ برنامج نظام إنتل تجميع معلومات حول النظام لتحسين تجربتك وتزويد هاتفك بتحديثات البرنامج. سنجمع معلومات حول التطبيق وأعطال النظام. لن يتم جمع أي معلومات شخصية."</string>
+    <string name="telemetry_info2">"تحترم شركة إنتل خصوصيتك. للحصول على مزيد من المعلومات حول ممارسات الخصوصية لإنتل، يرجى زيارة http://www.intel.com/content/www/xr/ar/privacy/intel-online-privacy-notice-summary.html"\n</string>
+	<string name="telemetry_allow">"سماح"</string>
+	<string name="telemetry_notallow">"عدم السماح"</string>
+	<string name="telemetry_title">"تقارير البيانات"</string>
+	<string name="title_activity_license">"حول تقارير البيانات"</string>
+	<string name="title_activity_license_loading">"جارٍ التحميل..."</string>
+	<string name="Cancel">"إغلاق"</string>
+</resources>

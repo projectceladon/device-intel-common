@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Nastavitve"</string>
+    <string name="telemetry_info">"Intelova sistemska programska oprema želi zbirati informacije o sistemu za izboljšanje vaše izkušnje in zagotavljanje posodobitev programske opreme za vašo napravo. Zbirali bomo informacije o programu in zrušitvah sistema. Osebnih podatkov ne bomo zbirali."</string>
+    <string name="telemetry_info2">"Intel spoštuje vašo zasebnost. Za več informacij o Intelovih praksah glede zasebnosti obiščite http://www.intel.com/privacy"</string>
+	<string name="telemetry_allow">"Dovoli"</string>
+	<string name="telemetry_notallow">"Ne dovoli"</string>
+	<string name="telemetry_title">"Poročanje podatkov"</string>
+	<string name="title_activity_license">"Kaj je poročanje podatkov"</string>
+	<string name="title_activity_license_loading">"Prenašanje ..."</string>
+	<string name="Cancel">"Zapri"</string>
+</resources>

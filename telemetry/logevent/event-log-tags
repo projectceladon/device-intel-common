@@ -1,0 +1,17 @@
+# The privacy compliant events from the events log are listed here.
+# Telemetry records will be created for all compliant events.
+# The compliant fields that should be included in the telemetry records
+# are documented here.
+#
+# the syntax for a field description is similar to what is found in
+# /etc/event-log-tags except for the addition of a new field that can have
+# one of three possible values 'C', 'N', or 'F' as below:
+# (<name>|[CNF]{1}|data type[|data unit])
+#
+# C - all values of this field are considered to be privacy compliant
+# N - no possible values of this field are considered to be compliant
+# F - some values of this field are considered to be compliant. The compliant
+# values can be obtained from a file in
+# /etc/tm/logevent/<tagnum>-<fieldnum>.valid
+
+#2722 battery_level (level|C|1|6),(voltage|C|1|1),(temperature|C|1|1)
