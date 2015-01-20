@@ -1,5 +1,6 @@
 # Rules for bootable/userfastboot
 type userfastboot, domain;
+userfastboot_only(
 allow userfastboot rootfs:file execute_no_trans;
 
 allow userfastboot block_device:blk_file { write read getattr open ioctl };
@@ -26,3 +27,4 @@ allow userfastboot node:tcp_socket node_bind;
 # This process needs almost all sensitive permissions out there (for eg rw rootfs)
 # so having it confined brings nothing in terms of security
 unconfined_domain(userfastboot);
+)
