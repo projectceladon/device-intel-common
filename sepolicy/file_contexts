@@ -71,3 +71,6 @@
 
 # i915 videostatus
 /sys/devices/pci0000:00/0000:00:02.0/drm/card0/power/i915_videostatus u:object_r:sysfs_videostatus:s0
+
+# Telemetry
+/data/telemetry(/.*)?       u:object_r:telemetry_data_file:s0

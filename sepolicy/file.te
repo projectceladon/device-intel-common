@@ -22,3 +22,6 @@ type gnss_socket, file_type;
 
 # i915 videostatus
 type sysfs_videostatus, fs_type, sysfs_type;
+
+# Telemetry
+type telemetry_data_file, file_type, data_file_type;
