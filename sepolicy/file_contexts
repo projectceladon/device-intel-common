@@ -21,9 +21,12 @@
 /dev/gps/ttyGPS             u:object_r:gps_device:s0
 /dev/gps/ttyGPSPowerControl u:object_r:gps_device:s0
 /dev/ttyS2                  u:object_r:gps_device:s0
-
+/dev/gsmtty7                u:object_r:gps_device:s0
+/system/bin/gnssStelp       u:object_r:gpsd_exec:s0
+/system/bin/gnssCG2000      u:object_r:gpsd_exec:s0
 /system/bin/gpsd            u:object_r:gpsd_exec:s0
 /system/bin/gpscerd         u:object_r:gpsd_exec:s0
+/dev/socket/gnss            u:object_r:gnss_socket:s0
 
 # COOMS
 /dev/ttyS1                  u:object_r:hci_attach_dev:s0

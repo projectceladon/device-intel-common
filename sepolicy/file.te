@@ -16,3 +16,6 @@ type hdcpd_data_file, file_type, data_file_type;
 
 #Powercap
 type sysfs_powercap, fs_type, sysfs_type;
+
+#gps
+type gnss_socket, file_type;
