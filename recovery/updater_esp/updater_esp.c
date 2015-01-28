@@ -262,24 +262,39 @@ done:
     return ret;
 }
 
-static const char *SFU_SRC = "/system/etc/firmware/BIOSUPDATE.fv";
 static const char *SFU_DST = "/bootloader/BIOSUPDATE.fv";
 
-static Value *CopySFUFn(const char *name __unused, State *state, int argc __unused,
-        Expr *argv[] __unused)
+static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
 {
     struct stat sb;
+    char *result = NULL;
+    char *sfu_src = NULL;
 
-    if (!stat(SFU_SRC, &sb)) {
-        if (copy_file(SFU_SRC, SFU_DST)) {
-            ErrorAbort(state, "Couldn't copy SFU capsule to ESP");
-            return NULL;
-        }
-        printf("Copied SFU capsule from %s to %s\n", SFU_SRC, SFU_DST);
-    } else {
-        printf("No SFU capsules to stage\n");
+    if (argc != 1)
+        return ErrorAbort(state, "%s() expects 1 argument, got %d", name, argc);
+
+    if (ReadArgs(state, argv, 1, &sfu_src))
+        return NULL;
+
+    if (strlen(sfu_src) == 0) {
+        ErrorAbort(state, "sfu_src argyment to %s can't be empty", name);
+        goto done;
     }
-    return StringValue(strdup(""));
+
+    if (!stat(sfu_src, &sb)) {
+        if (copy_file(sfu_src, SFU_DST)) {
+            ErrorAbort(state, "Couldn't copy SFU capsule to ESP");
+            goto done;
+        }
+        printf("Copied SFU capsule from %s to %s\n", sfu_src, SFU_DST);
+    } else {
+        printf("No SFU capsule found in %s to stage\n", sfu_src);
+    }
+    result = strdup("");
+
+done:
+    free(sfu_src);
+    return StringValue(result);
 }
 
 

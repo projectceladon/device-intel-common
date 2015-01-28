@@ -151,7 +151,7 @@ def IncrementalOTA_InstallEnd(info):
     else:
         system_mounted = False
 
-    info.script.script.append('copy_sfu();')
+    info.script.script.append('copy_sfu("/system/etc/firmware/BIOSUPDATE.fv");')
 
     info.script.script.append('unmount("/bootloader");')
     if system_mounted:
