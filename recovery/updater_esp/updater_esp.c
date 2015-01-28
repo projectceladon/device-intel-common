@@ -50,14 +50,16 @@ struct Capsule {
     int existence;
 };
 
-static Value *CopyPartFn(const char *name, State *state, int argc __attribute__((unused)),
-        Expr *argv[])
+static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
 {
     char *src = NULL;
     char *dest = NULL;
     int srcfd = -1;
     int destfd = -1;
     int result = -1;
+
+    if (argc != 2)
+        return ErrorAbort(state, "%s() expects 2 arguments, got %d", name, argc);
 
     if (ReadArgs(state, argv, 2, &src, &dest))
         return NULL;
@@ -188,7 +190,7 @@ static void swap64bit(uint64_t *a, uint64_t *b)
 
 
 static Value *SwapEntriesFn(const char *name, State *state,
-        int argc __attribute__((unused)), Expr *argv[])
+        int argc, Expr *argv[])
 {
     char *dev = NULL;
     char *part1 = NULL;
@@ -197,6 +199,9 @@ static Value *SwapEntriesFn(const char *name, State *state,
     struct gpt_entry *e1, *e2;
     struct gpt *gpt = NULL;
     Value *ret = NULL;
+
+    if (argc != 3)
+        return ErrorAbort(state, "%s() expects 3 arguments, got %d", name, argc);
 
     if (ReadArgs(state, argv, 3, &dev, &part1, &part2))
         return NULL;
