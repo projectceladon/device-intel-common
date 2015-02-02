@@ -1,7 +1,7 @@
 # pstore-clean
 type pstore-clean_data_file, file_type, data_file_type;
 
-# efivarfs - Used by userfastboot
+# efivarfs - Used by userfastboot and efiprop
 type efivarfs, fs_type;
 
 # binfmt_misc - Used by houdini
