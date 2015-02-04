@@ -6,7 +6,10 @@
     <ComponentLibrary>
 
         <ComponentType Name="PLAYBACK_TYPE">
-            <IntegerParameter Name="VOLUME" Size="8" Min="0" Max="39" ArrayLength="2" Mapping="Control:'%1 Playback Volume'" Description="Playback Volume min=-46.5dB, max=12dB, step=1.5dB"/>
+            <ParameterBlock Name="VOLUME" ArrayLength="2" Mapping="Volume:'%1 Playback Volume'" Description="Playback Volume min=-46.5dB, max=12dB, step=1.5dB">
+                <BooleanParameter Name="MUTED"/>
+                <IntegerParameter Name="LEVEL" Size="8" Min="0" Max="39"/>
+            </ParameterBlock>
             <BooleanParameter Name="SWITCH" ArrayLength="2" Mapping="Control:'%1 Playback Switch'"/>
         </ComponentType>
 
@@ -34,10 +37,16 @@
 
         <ComponentType Name="DIGITAL_TYPE">
             <ParameterBlock Name="DAC1">
-                <IntegerParameter Name="VOLUME" Size="8" Min="0" Max="228" ArrayLength="2" Mapping="Control:'DAC1 Playback Volume'" Description="DAC1 Volume min=-65.625dB, max=0dB, step=0.375dB"/>
+                <ParameterBlock Name="VOLUME" ArrayLength="2" Mapping="Volume:'DAC1 Playback Volume'" Description="DAC1 Volume min=-65.625dB, max=0dB, step=0.375dB">
+                    <BooleanParameter Name="MUTED"/>
+                    <IntegerParameter Name="LEVEL" Size="8" Min="0" Max="228"/>
+                </ParameterBlock>
             </ParameterBlock>
             <ParameterBlock Name="MONO_DAC">
-                <IntegerParameter Name="VOLUME" Size="8" Min="0" Max="228" ArrayLength="2" Mapping="Control:'Mono DAC Playback Volume'" Description="DAC1 Volume min=-65.625dB, max=0dB, step=0.375dB"/>
+                <ParameterBlock Name="VOLUME" ArrayLength="2" Mapping="Volume:'Mono DAC Playback Volume'" Description="DAC1 Volume min=-65.625dB, max=0dB, step=0.375dB">
+                    <BooleanParameter Name="MUTED"/>
+                    <IntegerParameter Name="LEVEL" Size="8" Min="0" Max="228"/>
+                </ParameterBlock>
                 <BooleanParameter Name="SWITCH" ArrayLength="2" Mapping="Control:'DAC2 Playback Switch'"/>
             </ParameterBlock>
         </ComponentType>

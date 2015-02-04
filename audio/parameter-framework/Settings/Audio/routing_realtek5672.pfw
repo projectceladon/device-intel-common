@@ -1,4 +1,42 @@
 ##############################
+#	 Mute & Unmute Steps
+##############################
+
+# Definition of Mute and Unmute for futur use in this supDomain
+supDomain: Mute.HWCodec
+	RoutageState Includes Flow
+
+	supDomain: HWCodec.Playback
+		domain: EarpieceIHF
+			conf: Unmute
+				OpenedPlaybackRoutes Includes HwCodec0IA
+
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/DAC1/VOLUME/0/MUTED = 0
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/DAC1/VOLUME/1/MUTED = 0
+
+			conf: Mute
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/DAC1/VOLUME/0/MUTED = 1
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/DAC1/VOLUME/1/MUTED = 1
+
+		domain: Headphones
+			conf: Unmute
+				OpenedPlaybackRoutes Includes HwCodec1IA
+				ANY
+					SelectedOutputDevice Includes Headset
+					SelectedOutputDevice Includes Headphones
+
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/HEADPHONE/ANALOG/VOLUME/0/MUTED = 0
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/HEADPHONE/ANALOG/VOLUME/1/MUTED = 0
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/MONO_DAC/VOLUME/0/MUTED = 0
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/MONO_DAC/VOLUME/1/MUTED = 0
+
+			conf: Mute
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/HEADPHONE/ANALOG/VOLUME/0/MUTED = 1
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/HEADPHONE/ANALOG/VOLUME/1/MUTED = 1
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/MONO_DAC/VOLUME/0/MUTED = 1
+				/Audio/REALTEK/SOUND_CARD/OUTPUT/DIGITAL/MONO_DAC/VOLUME/1/MUTED = 1
+
+##############################
 #	 Enable & Disable Steps
 ##############################
 
@@ -71,6 +109,7 @@ supDomain: Configure.HWCodec
 			/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/MONO/RIGHT/MUX_ADC1/SOURCE = ADC
 
 	supDomain: Playback
+		# For now earpiece is unused
 		domain: IHF
 			conf: Enable
 				ALL
