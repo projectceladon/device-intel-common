@@ -1,1 +1,2 @@
 binder_call(surfaceflinger, coreu)
+allow surfaceflinger sysfs_videostatus:file { getattr open write };
