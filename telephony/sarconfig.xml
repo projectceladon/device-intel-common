@@ -18,7 +18,7 @@
 
         <state name="wifi2g">
             <input-state name="wifi" state="2G"/>
-            <output name="cell" state="1"/>
+            <output name="cell" state="0"/>
         </state>
 
         <state name="wifi5g">

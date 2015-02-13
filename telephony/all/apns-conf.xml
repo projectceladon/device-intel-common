@@ -17298,11 +17298,10 @@
   <apn carrier="MMS CLARO"
       mcc="330"
       mnc="110"
-      apn="mmslte.claropr.com"
+      apn="mms.claropr.com"
       mmsproxy="10.50.38.3"
       mmsport="8799"
       mmsc="http://mmsg.claropr.com:10021/mmsc"
-      authtype='1'
       type="mms"
   />
 
@@ -26898,7 +26897,7 @@
       apn="plus.acs.jp"
       user="ym"
       password="ym"
-      mmsproxy="andmms.plusacs.ne.jp"
+      mmsproxy="andmms.plus.acs.ne.jp"
       mmsport="8080"
       mmsc="http://mms-s"
       type="default,mms,supl,hipri"
@@ -27372,13 +27371,6 @@
       apn="cmhk"
       mmsc="http://mms.hk.chinamobile.com/mms"
       type="default,supl,mms"
-  />
-
-  <apn carrier="CMHK Data"
-      mcc="454"
-      mnc="13"
-      apn="cmhk"
-      type="default,supl"
   />
 
   <apn carrier="SmarTone"
