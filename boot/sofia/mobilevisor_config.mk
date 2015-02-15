@@ -20,7 +20,7 @@ MV_CONFIG_PRODUCT_PATH := $(CURDIR)/mobilevisor/products
 MV_CONFIG_TEMPLATE_PATH := $(MV_CONFIG_PRODUCT_PATH)/configs
 MV_CONFIG_BUILD_OUT     := $(CURDIR)/$(PRODUCT_OUT)/vmm_build/configs
 MV_NUM_OF_CPUS ?= 2
-MV_CONFIG_PADDR ?= 0x30000000
+MV_CONFIG_PADDR ?= 0x1CC00000
 
 MV_CONFIG_INC_PATH         =
 MV_CONFIG_INC_PATH_VARIANT         =
@@ -112,12 +112,12 @@ force: ;
 
 define CREATE_MV_CONFIG_XML_RULES
 $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml : force | $(MV_CONFIG_BUILD_OUT)
-	python $(MOBILEVISOR_REL_PATH)/tools/preprocess.py \
-		-s $(MV_CONFIG_OPTION_common) \
+	icc -E -P \
+		$(MV_CONFIG_OPTION_common) \
 		$$(MV_CONFIG_OPTION_$(1)) \
-		$(MV_CONFIG_INC_PATH) -I $(MV_CONFIG_TEMPLATE_PATH) \
+		-I- $(MV_CONFIG_INC_PATH) -I $(MV_CONFIG_TEMPLATE_PATH) \
 		$(MV_CONFIG_TEMPLATE_PATH)/mvconfig.xml \
-		| xmllint --format - \
+		| sed '/^$$$$/d' | xmllint --format - \
 		> $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml
 
 mvconfig_$(1).fls : $(FLASHFILES_DIR)/mvconfig_$(1).fls
@@ -129,7 +129,7 @@ $(MV_CONFIG_BUILD_OUT)/%.bin: $(MV_CONFIG_BUILD_OUT)/%.xml | $(MV_CONFIG_BUILD_O
 	@$(MOBILEVISOR_REL_PATH)/tools/mvconfig $< $@
 
 $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls : $(MV_CONFIG_BUILD_OUT)/mvconfig_%.bin $(FLASHLOADER_FLS) | $(MV_CONFIG_FLS_OUTPUT)
-	@$(FLSTOOL) --prg $(BOARD_PRG_FILE) \
+	@$(FLSTOOL) --prg $(INTEL_PRG_FILE) \
 	           --output $@ \
 		   --tag MV_CONFIG \
 		   $(INJECT_FLASHLOADER_FLS) \

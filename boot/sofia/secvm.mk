@@ -24,18 +24,19 @@ BUILT_SECVM := $(SECVM_BUILD_DIR)/secvm.hex
 SECVM_FLS := $(FLASHFILES_DIR)/secvm.fls
 SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/secvm_signed.fls
 TARGET_BOARD_PLATFORM_VAR ?= $(TARGET_BOARD_PLATFORM)
+ 
 
 $(BUILT_SECVM): build_secvm
 
 build_secvm:
 	@echo Building ===== Building secvm =====
-	make -C $(SECVM_SRC_PATH) BASEBUILDDIR=$(SECVM_BUILD_OUT) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) PLATFORM=$(MODEM_PLATFORM)
+	make -C $(SECVM_SRC_PATH) FEAT_VPU_G1V6_H1V6=$(PRODUCT_FEAT_VPU_G1V6_H1V6) BASEBUILDDIR=$(SECVM_BUILD_OUT) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) PLATFORM=$(MODEM_PLATFORM)
 
 .PHONY: secvm
 secvm: $(BUILT_SECVM)
 
-$(SECVM_FLS): $(BUILT_SECVM) $(FLSTOOL) $(BOARD_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(BOARD_PRG_FILE) --output $@ --tag SECURE_VM $(INJECT_FLASHLOADER_FLS) $(BUILT_SECVM) --replace --to-fls2
+$(SECVM_FLS): $(BUILT_SECVM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag SECURE_VM $(INJECT_FLASHLOADER_FLS) $(BUILT_SECVM) --replace --to-fls2
 
 .PHONY: secvm.fls
 secvm.fls: $(SECVM_FLS)
@@ -55,6 +56,22 @@ secvm_info:
 	@echo "-make secvm_rebuild -- Rebuilds secvm code and generates flash file."
 
 build_info: secvm_info
+
+endif
+
+ifeq ($(DELIVERY_BUTTER), true)
+
+SECVM_FLS := $(FLASHFILES_DIR)/secvm.fls
+
+BUILT_SECVM := $(CURDIR)/../images/secure_vm/prebuilt/secvm/secvm.hex
+
+$(SECVM_FLS): $(BUILT_SECVM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag SECURE_VM $(INJECT_FLASHLOADER_FLS) $(BUILT_SECVM) --replace --to-fls2
+
+.PHONY: secvm.fls
+secvm.fls: $(SECVM_FLS)
+
+droidcore: secvm.fls
 
 endif
 
