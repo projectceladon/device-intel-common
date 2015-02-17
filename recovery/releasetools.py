@@ -13,79 +13,19 @@ import intel_common
 verbatim_targets = []
 patch_list = []
 delete_files = None
-target_data = None
-bootloader_update = False
-source_data = None
 OPTIONS = common.OPTIONS
 
-sfu_path = "SYSTEM/etc/firmware/BIOSUPDATE.fv"
-
-def LoadBootloaderFiles(tfpdir):
-    out = {}
-    data = intel_common.GetBootloaderImageFromTFP(tfpdir)
-    image = common.File("bootloader.img", data).WriteToTemp()
-
-    # Extract the contents of the VFAT bootloader image so we
-    # can compute diffs on a per-file basis
-    esp_root = tempfile.mkdtemp(prefix="bootloader-")
-    OPTIONS.tempfiles.append(esp_root)
-    intel_common.add_dir_to_path("/sbin")
-    subprocess.check_output(["mcopy", "-s", "-i", image.name, "::*", esp_root]);
-    image.close();
-
-    for dpath, dname, fnames in os.walk(esp_root):
-        for fname in fnames:
-            # Capsule update file -- gets consumed and deleted by the firmware
-            # at first boot, shouldn't try to patch it
-            if (fname == "BIOSUPDATE.fv"):
-                continue
-            abspath = os.path.join(dpath, fname)
-            relpath = os.path.relpath(abspath, esp_root)
-            data = open(abspath).read()
-            print relpath
-            out[relpath] = common.File("bootloader/" + relpath, data)
-
-    return out
-
 def IncrementalEspUpdateInit(info):
-    global target_data
-    global source_data
     global delete_files
-    global bootloader_update
+    global patch_list
+    global verbatim_targets
 
-    target_data = LoadBootloaderFiles(OPTIONS.target_tmp)
-    source_data = LoadBootloaderFiles(OPTIONS.source_tmp)
+    output_files, delete_files, patch_list, verbatim_targets = \
+            intel_common.ComputeBootloaderPatch(OPTIONS.source_tmp,
+                                                OPTIONS.target_tmp)
 
-    diffs = []
-
-    for fn in sorted(target_data.keys()):
-        tf = target_data[fn]
-        sf = source_data.get(fn, None)
-
-        if sf is None:
-            tf.AddToZip(info.output_zip)
-            verbatim_targets.append(fn)
-        elif tf.sha1 != sf.sha1:
-            diffs.append(common.Difference(tf, sf))
-
-    common.ComputeDifferences(diffs)
-
-    for diff in diffs:
-        tf, sf, d = diff.GetPatch()
-        if d is None or len(d) > tf.size * 0.95:
-            tf.AddToZip(info.output_zip)
-            verbatim_targets.append(tf.name)
-        else:
-            common.ZipWriteStr(info.output_zip, "patch/" + tf.name + ".p", d)
-            patch_list.append((tf.name, tf, sf, tf.size, common.sha1(d).hexdigest()))
-
-    delete_files = (["/"+i[0] for i in verbatim_targets] +
-                     ["/"+i for i in sorted(source_data) if i not in target_data])
-
-    if (delete_files or patch_list or verbatim_targets or
-            os.path.exists(os.path.join(OPTIONS.target_tmp, sfu_path))):
-        print "EFI System Partition will be updated"
-        bootloader_update = True
+    for f in output_files:
+        f.AddToZip(info.output_zip)
 
 
 def MountEsp(info, copy):
@@ -99,14 +39,13 @@ def MountEsp(info, copy):
 
 def IncrementalOTA_Assertions(info):
     IncrementalEspUpdateInit(info)
-    if bootloader_update:
-        MountEsp(info, True)
+    MountEsp(info, True)
 
 
 def IncrementalOTA_VerifyEnd(info):
     # Check ESP component patches
-    for fn, tf, sf, size, patch_sha in patch_list:
-        info.script.PatchCheck("/"+fn, tf.sha1, sf.sha1)
+    for tf, sf in patch_list:
+        info.script.PatchCheck("/"+tf.name, tf.sha1, sf.sha1)
 
 
 def swap_entries(info):
@@ -114,49 +53,23 @@ def swap_entries(info):
     info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
             (fstab['/bootloader'].device,))
 
-def HasRecoveryPatch(outdir):
-    return os.path.exists(os.path.join(outdir, "SYSTEM/recovery-from-boot.p"))
-
-def is_block_ota(info, incremental):
-    if not OPTIONS.block_based:
-        return False
-
-    if incremental:
-        return HasRecoveryPatch(OPTIONS.source_tmp) and HasRecoveryPatch(OPTIONS.target_tmp)
-    else:
-        return HasRecoveryPatch(OPTIONS.input_tmp)
-
 def IncrementalOTA_InstallEnd(info):
-    if not bootloader_update:
-        return
-
     if delete_files:
         info.script.Print("Removing unnecessary bootloader files...")
         info.script.DeleteFiles(delete_files)
 
     if patch_list:
         info.script.Print("Patching bootloader files...")
-        for item in patch_list:
-            fn, tf, sf, size, _ = item
-            info.script.ApplyPatch("/"+fn, "-", tf.size, tf.sha1, sf.sha1, "patch/"+fn+".p")
+        for tf, sf in patch_list:
+            info.script.ApplyPatch("/"+tf.name, "-", tf.size, tf.sha1,
+                                   sf.sha1, "patch/"+tf.name+".p")
 
     if verbatim_targets:
         info.script.Print("Adding new bootloader files...")
         info.script.UnpackPackageDir("bootloader", "/bootloader")
 
-    if is_block_ota(info, True):
-        print "This is a block-level OTA, mounting /system before SFU copy"
-        info.script.Mount("/system", "ext4=ro")
-        system_mounted = True
-    else:
-        system_mounted = False
-
-    info.script.script.append('copy_sfu("/system/etc/firmware/BIOSUPDATE.fv");')
-
+    info.script.script.append('copy_sfu("/bootloader/capsules/current.fv");')
     info.script.script.append('unmount("/bootloader");')
-    if system_mounted:
-        info.script.script.append('unmount("/system");')
-
     swap_entries(info)
 
 
