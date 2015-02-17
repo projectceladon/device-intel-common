@@ -1,0 +1,75 @@
+# HAL domain
+type hal, domain;
+type hal_exec, exec_type, file_type;
+
+init_daemon_domain(hal);
+
+# execs
+allow hal hal_exec:file execute_no_trans;
+allow hal system_file:file execute_no_trans;
+allow hal shell_exec:file rx_file_perms;
+
+# Capabilities
+allow hal self:capability { setuid setgid sys_module sys_admin dac_override chown fsetid net_admin fowner };
+
+# Device access
+write_klog(hal)
+allow hal gps_device:chr_file { getattr setattr };
+allow hal hal_device:file create_file_perms;
+allow hal device:dir { create setattr };
+allow hal device:lnk_file create;
+type_transition hal device:file hal_device;
+
+#sockets
+type_transition hal socket_device:sock_file hal_socket;
+allow hal hal_socket:sock_file create_file_perms;
+allow hal socket_device:dir { write remove_name add_name };
+allow hal property_socket:sock_file { write getattr };
+allow hal self:netlink_kobject_uevent_socket { read bind create setopt };
+allow hal init:unix_stream_socket connectto;
+
+#special fs
+allow hal proc:file write;
+allow hal proc_security:file { getattr open };
+allow hal sysfs:dir write;
+allow hal sysfs:file { write setattr };
+allow hal sysfs_devices_system_cpu:file write;
+allow hal sysfs_powercap:dir { read open search };
+allow hal sysfs_powercap:file { write open };
+allow hal tmpfs:chr_file { open write };
+
+allow hal system_data_file:dir { write remove_name add_name };
+allow hal system_data_file:file { write create unlink open setattr };
+allow hal system_file:dir mounton;
+allow hal wpa:dir mounton;
+allow hal system_file:filesystem { relabelto mount unmount };
+
+allow hal kernel:key search;
+allow hal kernel:system module_request;
+
+# Allow calling setfscreatecon
+allow hal self:process setfscreate;
+
+# Set properties
+allow hal hal_prop:property_service set;
+allow hal sensor_prop:property_service set;
+allow hal bluetooth_prop:property_service set;
+allow hal camera_prop:property_service set;
+allow hal gps_prop:property_service set;
+
+#Fuse-related
+allow hal hal_fuse:dir { create_dir_perms mounton };
+allow hal hal_fuse:file create_file_perms;
+
+allow hal fuse:filesystem relabelfrom;
+allow hal fuse_device:chr_file rw_file_perms;
+allow hal labeledfs:filesystem unmount;
+
+allow hal hci_attach_dev:chr_file create_file_perms;
+allow hal hci_attach_exec:file rx_file_perms;
+
+allow hal telemetry_data_file:dir rw_dir_perms;
+allow hal telemetry_data_file:file create_file_perms;
+
+allow hal oemfs:file r_file_perms;
+allow hal oemfs:dir r_dir_perms;

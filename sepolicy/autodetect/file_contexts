@@ -1,0 +1,13 @@
+#HAL
+/dev/socket/halbindings     u:object_r:hal_socket:s0
+
+/dev/hald.ready             u:object_r:hal_device:s0
+
+/system/bin/hald            u:object_r:hal_exec:s0
+/system/bin/hald_media_hook u:object_r:hal_exec:s0
+/system/bin/halctl          u:object_r:hal_exec:s0
+
+/system/rt/hal_fuse(/.*)?   u:object_r:hal_fuse:s0
+
+#rfkill
+/system/bin/rfkillp         u:object_r:rfkill_exec:s0

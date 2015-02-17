@@ -1,0 +1,2 @@
+allow platform_app hal_socket:sock_file write;
+allow platform_app hal:unix_stream_socket connectto;
