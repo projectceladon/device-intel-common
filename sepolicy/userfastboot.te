@@ -23,6 +23,8 @@ allow userfastboot self:tcp_socket create_stream_socket_perms;
 allow userfastboot port:tcp_socket name_bind;
 allow userfastboot node:tcp_socket node_bind;
 
+allow userfastboot kernel:system syslog_read;
+
 # Give fastboot unlimited powers to do its job
 # This process needs almost all sensitive permissions out there (for eg rw rootfs)
 # so having it confined brings nothing in terms of security
