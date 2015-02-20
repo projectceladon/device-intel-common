@@ -21,8 +21,6 @@
        SDK.  Instead, put them here. -->
   <private-symbols package="com.android.internal" />
 
-  <java-symbol type="string" name="volte_creator_jar_file_property" />
-  <java-symbol type="string" name="volte_creator_class_property" />
   <java-symbol type="drawable" name="stat_sys_ims_icon"/>
   <java-symbol type="array" name="config_oneDigitNumberPattern"/>
 </resources>

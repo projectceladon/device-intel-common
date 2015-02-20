@@ -17,10 +17,8 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- set the VoLte phone creator jar property -->
-    <add-resource type="string" name="volte_creator_jar_file_property" />
-    <string name="volte_creator_jar_file_property">/system/framework/com.intel.internal.telephony.imsconverged.jar</string>
-    <!-- set the volte phone creator class property -->
-    <add-resource type="string" name="volte_creator_class_property" />
-    <string name="volte_creator_class_property">com.intel.internal.telephony.imsconverged.PhoneCreator</string>
+    <!-- set the oem phone creator jar property -->
+    <string name="config_oem_phone_creator_jar_file">/system/framework/com.intel.internal.telephony.imsconverged.jar</string>
+    <!-- set the oem phone creator class property -->
+    <string name="config_oem_phone_creator_class_name">com.intel.internal.telephony.imsconverged.PhoneCreator</string>
 </resources>
