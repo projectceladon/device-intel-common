@@ -40,8 +40,8 @@ build_vmm_target: $(BUILT_LIBSOC_TARGET) $(BUILT_LIB_MOBILEVISOR_SVC_TARGET)
 	@echo Building ===== mobilevisor ======
 	make -C $(MOBILEVISOR_SRC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(VMM_BUILD_OUT) WHOLE_ARCHIVE_LIB_LIST+="$(BUILT_LIBSOC_TARGET) $(BUILT_LIB_MOBILEVISOR_SVC_TARGET) $(BUILT_MV_CORE_BIN)" PLATFORM=$(MODEM_PLATFORM)
 
-$(MOBILEVISOR_FLS): createflashfile_dir $(FLSTOOL) $(BOARD_PRG_FILE) $(BUILT_VMM_TARGET) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(BOARD_PRG_FILE) --output $@ --tag MOBILEVISOR $(INJECT_FLASHLOADER_FLS) $(BUILT_VMM_TARGET) --replace --to-fls2
+$(MOBILEVISOR_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_VMM_TARGET) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MOBILEVISOR $(INJECT_FLASHLOADER_FLS) $(BUILT_VMM_TARGET) --replace --to-fls2
 
 # Build VMM images as dependency to default android build target "droidcore"
 ifeq ($(GEN_VMM_FLS_FILES),true)
@@ -90,3 +90,39 @@ mobilevisor_info:
 
 build_info: mobilevisor_info
 endif
+
+ifeq ($(DELIVERY_BUTTER), true)
+MOBILEVISOR_FLS  := $(FLASHFILES_DIR)/mobilevisor.fls
+MVCONFIG_FLS  := $(FLASHFILES_DIR)/mvconfig.fls
+MVCONFIG_SMP_FLS  := $(FLASHFILES_DIR)/mvconfig_smp.fls
+
+#Required Intermiediate and final targets.
+BUILT_VMM_TARGET          := $(CURDIR)/../images/vmm_build/mobilevisor/mobilevisor.hex
+BUILT_VMM_TARGET_BIN      := $(CURDIR)/../images/vmm_build/mobilevisor/mobilevisor.bin
+BUILT_SMP_MVCONFIG_TARGET := $(CURDIR)/../images/mobilevisor/release/prebuilt/mvconfig_smp.bin
+BUILT_LIB_MOBILEVISOR_SVC_TARGET := $(CURDIR)/../images/vmm_build/lib_mobilevisor_service/lib_mobilevisor_service.a
+VMM_BUILD_OUT := $(CURDIR)/../images/vmm_build
+BUILT_MV_CORE_BIN := $(CURDIR)/../mobilevisor/release/lib_mobilevisor_core/debug/lib_mobilevisor_core.a
+
+$(BUILT_VMM_TARGET) $(BUILT_VMM_TARGET_BIN): build_vmm_target
+
+build_vmm_target: $(BUILT_LIBSOC_TARGET)
+	@echo Building ===== mobilevisor ======
+	make -C $(MOBILEVISOR_SRC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(VMM_BUILD_OUT) WHOLE_ARCHIVE_LIB_LIST+="$(BUILT_LIBSOC_TARGET) $(BUILT_LIB_MOBILEVISOR_SVC_TARGET) $(BUILT_MV_CORE_BIN)" PLATFORM=$(MODEM_PLATFORM)
+
+$(MOBILEVISOR_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_VMM_TARGET) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MOBILEVISOR $(INJECT_FLASHLOADER_FLS) $(BUILT_VMM_TARGET) --replace --to-fls2
+
+$(MVCONFIG_SMP_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_SMP_MVCONFIG_TARGET) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MV_CONFIG $(INJECT_FLASHLOADER_FLS) $(BUILT_SMP_MVCONFIG_TARGET) --replace --to-fls2
+
+.PHONY: mobilevisor.fls
+mobilevisor.fls:  $(MOBILEVISOR_FLS)
+droidcore: mobilevisor.fls
+
+.PHONY: mvconfig_smp.fls
+mvconfig_smp.fls:  $(MVCONFIG_SMP_FLS)
+droidcore: mvconfig_smp.fls
+
+endif
+
