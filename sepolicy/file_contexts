@@ -16,6 +16,13 @@
 # Audio
 /dev/snd/.*                 u:object_r:audio_device:s0
 
+# CWS Manufacturing
+/config/bluetooth(/.*)?     u:object_r:cws_manu_data_file:s0
+/config/gnss(/.*)?          u:object_r:cws_manu_data_file:s0
+/config/nfc(/.*)?           u:object_r:cws_manu_data_file:s0
+/config/wlan(/.*)?          u:object_r:cws_manu_data_file:s0
+/system/bin/cws_manu        u:object_r:cws_manu_exec:s0
+
 # GPS
 
 /dev/gps/ttyGPS             u:object_r:gps_device:s0
