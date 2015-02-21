@@ -1,0 +1,2 @@
+allow untrusted_app hal_socket:sock_file write;
+allow untrusted_app hal:unix_stream_socket connectto;
