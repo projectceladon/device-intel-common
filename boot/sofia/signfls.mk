@@ -28,9 +28,9 @@ SEC_DIR_PREFIX		:= dev
 endif
 
 SIGN_TOOL         := $(CURDIR)/modem/dwdtools/FlsSign/Linux/FlsSign_E2_Linux
-PRODUCT_KEYS_DIR  := $(CURDIR)/device/intel/sofia3g/security/$(SEC_DIR_PREFIX)_keys
-SIGN_SCRIPT_DIR   := $(CURDIR)/device/intel/sofia3g/security/$(SEC_DIR_PREFIX)_sign_scripts
-ZIP_CERTIFICATE	  := $(CURDIR)/device/intel/sofia3g/security/sofia3g_ini.zip
+PRODUCT_KEYS_DIR  := $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/security/$(SEC_DIR_PREFIX)_keys
+SIGN_SCRIPT_DIR   := $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/security/$(SEC_DIR_PREFIX)_sign_scripts
+ZIP_CERTIFICATE	  := $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/security/$(TARGET_BOARD_PLATFORM)_ini.zip
 
 ## FLS sign
 .PHONY: signfls

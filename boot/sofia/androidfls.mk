@@ -52,7 +52,7 @@ cache.fls: $(CACHE_FLS)
 boot.fls: $(BOOTIMG_FLS)
 recovery.fls: $(RECOVERY_FLS)
 
-ifeq ($(TARGET_BOARD_PLATFORM), sofia3g)
+ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS) $(RECOVERY_FLS)
 else
 android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS)
