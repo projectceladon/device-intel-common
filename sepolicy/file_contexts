@@ -75,7 +75,8 @@
 /system/vendor/bin/power_hal_helper    u:object_r:power_hal_helper_exec:s0
 
 # NFC
-/data/nfc(/.*)?            u:object_r:nfc_data_file:s0
+/data/nfc(/.*)?             u:object_r:nfc_data_file:s0
+/dev/nfcc                   u:object_r:nfc_device:s0
 
 # i915 videostatus
 /sys/devices/pci0000:00/0000:00:02.0/drm/card0/power/i915_videostatus u:object_r:sysfs_videostatus:s0
