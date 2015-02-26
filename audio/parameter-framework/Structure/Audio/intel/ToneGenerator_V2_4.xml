@@ -38,4 +38,10 @@
         <Component Name="t2" Type="SimpleTone"/>
         <Component Name="t3" Type="SimpleTone"/>
     </ComponentType>
+
+    <!-- Needs Gain.xml to be included too -->
+    <ComponentType Name="TonePipe" Extends="GainPipe">
+        <BooleanParameter Name="switch" Mapping="Control:%1 tone_generator 0 switch"/>
+        <Component Name="tone_generator" Type="ToneGenerator" Mapping="Amend2:tone_generator,Amend3:0"/>
+    </ComponentType>
 </ComponentTypeSet>
