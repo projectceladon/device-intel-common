@@ -1,7 +1,10 @@
 LOCAL_PATH := $(call my-dir)
 COMMON_PFW_CONFIG_PATH := $(call my-dir)
-CLEAR_PFW_VARS := $(COMMON_PFW_CONFIG_PATH)/clear_pfw_vars.mk
-BUILD_PFW_SETTINGS := $(COMMON_PFW_CONFIG_PATH)/build_pfw_settings.mk
+
+PFW_CORE := external/parameter-framework/core
+BUILD_PFW_SETTINGS := $(PFW_CORE)/support/android/build_pfw_settings.mk
+PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/Schemas
+PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 
 # defines:
 # - $(PFW_TUNING_ALLOWED)
