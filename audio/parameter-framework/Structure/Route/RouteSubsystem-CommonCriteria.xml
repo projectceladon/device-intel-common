@@ -135,26 +135,5 @@
             </BitParameterBlock>
         </ComponentType>
 
-        <ComponentType Name="PlatformCriteria">
-            <Component Name="mode" Type="Mode" Mapping="Name:Mode"/>
-            <Component Name="input_devices" Type="InputDevices" Mapping="Name:SelectedInputDevice"/>
-            <Component Name="output_devices" Type="OutputDevices" Mapping="Name:SelectedOutputDevice"/>
-            <Component Name="band_type" Type="Band" Mapping="Name:BandType"/>
-            <Component Name="screen_state" Type="State" Mapping="Name:ScreenState"/>
-            <Component Name="fm_mode" Type="State" Mapping="Name:FmMode"/>
-            <Component Name="input_sources" Type="InputSources" Mapping="Name:AudioSource"/>
-            <Component Name="output_flags" Type="OutputFlags" Mapping="Name:OutputFlags"/>
-            <Component Name="bt_headset_nrec" Type="Boolean" Mapping="Name:BtHeadsetNrEc"/>
-            <Component Name="bt_headset_band" Type="Band" Mapping="Name:BtHeadsetBandType"/>
-            <Component Name="hac_mode" Type="State" Mapping="Name:HAC"/>
-            <Component Name="tty_direction" Type="TtyDirection" Mapping="Name:TTYDirection"/>
-            <Component Name="bypass_non_linear_pp" Type="State" Mapping="Name:BypassNonLinearPp"/>
-            <Component Name="bypass_linear_pp" Type="State" Mapping="Name:BypassLinearPp"/>
-            <Component Name="mic_mute" Type="State" Mapping="Name:MicMute"/>
-            <Component Name="preproc_enabled" Type="Preprocessing" Mapping="Name:PreProcEnabled"/>
-            <Component Name="hfp_client_enabled" Type="State" Mapping="Name:HfpClientEnable"/>
-            <Component Name="hfp_client_set_sampling_rate" Type="Band" Mapping="Name:HfpClientBandType"/>
-        </ComponentType>
-
     </ComponentTypeSet>
 </ComponentLibrary>
