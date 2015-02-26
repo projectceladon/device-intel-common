@@ -25,8 +25,6 @@ endif
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.audio.common
 LOCAL_MODULE_TAGS := optional
-LOCAL_REQUIRED_MODULES :=  \
-    ConfigurationSubsystem.xml
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 LOCAL_REQUIRED_MODULES += \
