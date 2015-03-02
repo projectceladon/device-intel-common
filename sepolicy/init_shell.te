@@ -1,1 +1,5 @@
 allow init_shell self:capability sys_module;
+
+# for CWS manufacturing tool
+allow init_shell block_device:blk_file { read open };
+allow init_shell cws_manu_exec:file execute_no_trans;
