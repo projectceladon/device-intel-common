@@ -4,6 +4,9 @@ type pstore-clean_data_file, file_type, data_file_type;
 # efivarfs - Used by userfastboot and efiprop
 type efivarfs, fs_type;
 
+# CWS manufacturing data in /config/
+type cws_manu_data_file, file_type, data_file_type;
+
 # binfmt_misc - Used by houdini
 type binfmt_misc, fs_type;
 

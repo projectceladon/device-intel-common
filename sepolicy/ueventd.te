@@ -1,1 +1,5 @@
 allow ueventd sysfs_powercap:file { write open };
+
+# for CWS manufacturing tool
+allow ueventd cws_manu_data_file:dir search;
+allow ueventd cws_manu_data_file:file { read getattr open };
