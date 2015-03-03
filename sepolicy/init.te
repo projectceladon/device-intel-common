@@ -1,7 +1,6 @@
 userdebug_or_eng(`
   allow init kernel:security setenforce;
 ')
-allow init self:capability sys_module;
 
 domain_trans(init, rootfs, userfastboot)
 # for console in userfastboot
