@@ -1,3 +1,6 @@
+on init
+    write /proc/sys/fs/suid_dumpable 1
+
 on post-fs-data
     mkdir /data/tombstones 0755 system system
     mkdir /data/system 0755 system system
