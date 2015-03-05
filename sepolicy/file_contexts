@@ -79,6 +79,7 @@
 
 # Telemetry
 /data/telemetry(/.*)?       u:object_r:telemetry_data_file:s0
+/data/telemetry.image       u:object_r:telemetry_data_file:s0
 
 # ap[k]_logfs entry point script
 /system/bin/logcat_ep.sh        u:object_r:logsvc_exec:s0
