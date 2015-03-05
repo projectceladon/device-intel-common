@@ -1,2 +1,3 @@
 # Telemetry
 persist.intel.tm. u:object_r:telemetry_prop:s0
+intel.tm.         u:object_r:telemetry_prop:s0
