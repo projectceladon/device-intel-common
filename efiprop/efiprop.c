@@ -123,7 +123,7 @@ static int verify_data(char *data, size_t *size)
 
 	for (i = 0; i < *size - 1; i++)
 		if (!isgraph(data[i]) && !isspace(data[i])) {
-			debug("i=%d/%d, data[i]='%c'", i, *size, data[i]);
+			debug("i=%zd/%zd, data[i]='%c'", i, *size, data[i]);
 			goto fail;
 		}
 
