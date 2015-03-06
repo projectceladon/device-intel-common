@@ -130,7 +130,6 @@ modem_createdirs:
 modem_config: modem_createdirs
 	$(MAKE) -s -C $(CURDIR)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) config
 
-
 .PHONY: sdlgeninit
 sdlgeninit: modem_config
 	$(MAKE) -s -C $(CURDIR)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) runsdlcmd
