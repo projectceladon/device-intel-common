@@ -31,7 +31,7 @@ DATA_EXT := *.fls_ID0_*_LoadMap*
 BUILT_MODEM_DATA_EXT := $(SECBIN_TEMP)/modem/modem.fls_ID0_CUST_LoadMap0.bin
 BUILT_MODEM_SEC_BLK  := $(SECBIN_TEMP)/modem/modem.fls_ID0_CUST_SecureBlock.bin
 
-MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
+MODEM_BIN_LOAD_PATH := $(TARGET_OUT_VENDOR)/firmware
 
 INSTALLED_MODEM_DATA_EXT := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
 INSTALLED_MODEM_SEC_BLK  := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_SecureBlock.bin
