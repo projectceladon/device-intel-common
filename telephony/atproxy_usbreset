@@ -1,6 +1,6 @@
 #!/system/bin/sh
 value=`getprop sys.usb.config`
 persist_value=`getprop persist.sys.usb.config`
-if [ "$persist_value" != "$value" ]; then
-  setprop sys.usb.config $persist_value
+if [ -n "$value" ] && [ -n "$persist_value" ] && [ "$persist_value" != "$value" ]; then
+    setprop sys.usb.config $persist_value
 fi
