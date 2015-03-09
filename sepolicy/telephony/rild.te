@@ -1,0 +1,7 @@
+# Additional rild rules
+allow rild config_file:dir { search write add_name };
+allow rild config_file:file create_file_perms;
+unix_socket_connect(rild, mmgr, mmgr)
+allow rild radio_device:chr_file { read lock write open ioctl };
+allow rild system_data_file:dir { write add_name };
+allow rild system_data_file:file { write create };
