@@ -18,3 +18,4 @@ ExclusiveCriterion  ScreenState            :  Off               On
 ExclusiveCriterion  BypassNonLinearPp      :  Off               On
 ExclusiveCriterion  BypassLinearPp         :  Off               On
 ExclusiveCriterion  MicMute                :  Off               On
+ExclusiveCriterion  ScreenRotation         :  0                 90               180              270
