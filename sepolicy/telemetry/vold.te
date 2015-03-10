@@ -1,0 +1,3 @@
+# Vold needs read access to all loop devices and in effect to all image files
+# that may get loop-mounted
+allow vold telemetry_data_file:file r_file_perms;
