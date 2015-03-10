@@ -32,6 +32,7 @@
 /system/bin/gpscerd         u:object_r:gpsd_exec:s0
 /system/bin/gnssStelp       u:object_r:cg2k_exec:s0
 /system/bin/gnssCG2000      u:object_r:cg2k_exec:s0
+/dev/ttyS2                  u:object_r:gps_device:s0
 
 # COOMS
 /dev/ttyS1                  u:object_r:hci_attach_dev:s0
