@@ -7,6 +7,8 @@ type efivarfs, fs_type;
 # CWS manufacturing data in /config/
 type cws_manu_data_file, file_type, data_file_type;
 
+# Wifi MAC address in /config/wifi/
+type wlan_prov_data_file, file_type, data_file_type;
 
 # Config data files in /config/
 type config_file, file_type, data_file_type;

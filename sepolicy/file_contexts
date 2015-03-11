@@ -22,7 +22,9 @@
 /config/nfc(/.*)?           u:object_r:cws_manu_data_file:s0
 /config/wlan(/.*)?          u:object_r:cws_manu_data_file:s0
 /config(/.*)?               u:object_r:config_file:s0
+/config/wifi(/.*)?          u:object_r:wlan_prov_data_file:s0
 /system/bin/cws_manu        u:object_r:cws_manu_exec:s0
+/system/bin/wlan_prov       u:object_r:wlan_prov_exec:s0
 
 # Radio
 /dev/gsmtty7                u:object_r:radio_device:s0
