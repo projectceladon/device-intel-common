@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
+    <ComponentType Name="SampleSpecDomain">
+        <EnumParameter Name="mode" Size="8" Mapping="Control:%1 %2 mode 0">
+            <ValuePair Literal="narrow-band" Numerical="0"/>
+            <ValuePair Literal="wide-band" Numerical="1"/>
+        </EnumParameter>
+    </ComponentType>
+</ComponentTypeSet>
