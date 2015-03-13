@@ -177,7 +177,7 @@ neverallow { domain -debuggerd -vold -dumpstate -system_server } self:capability
 neverallow { domain -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt notuserfastboot } self:capability mknod;
 
 # Limit raw I/O to these whitelisted domains.
-neverallow { domain -coreu -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt -tee } self:capability sys_rawio;
+neverallow { domain -kernel -init -recovery -ueventd -watchdogd -healthd -vold -uncrypt -tee } self:capability sys_rawio;
 
 # No process can map low memory (< CONFIG_LSM_MMAP_MIN_ADDR).
 neverallow domain self:memprotect mmap_zero;
