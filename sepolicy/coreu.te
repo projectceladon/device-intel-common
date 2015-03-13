@@ -9,7 +9,7 @@ allow coreu coreu_tmpfs:file { lock create open };
 allow coreu debugfs:file read;
 allow coreu gpu_device:chr_file rw_file_perms;
 allow coreu msr_device:chr_file rw_file_perms;
-allow coreu self:capability { setuid sys_nice ipc_lock setgid sys_rawio };
+allow coreu self:capability { setuid sys_nice ipc_lock setgid };
 # Use binder_call macro here instead?
 allow coreu servicemanager:binder { transfer call };
 allow coreu sysfs:file write;
