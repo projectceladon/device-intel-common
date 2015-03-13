@@ -40,6 +40,8 @@ ifneq (,$(filter generate_intel_prebuilts publish_intel_prebuilts,$(MAKECMDGOALS
 # - project belongs to bsp-priv manifest group
 # - and project has g_external annotation set to 'bin' ('g' meaning 'generic' customer)
 $(eval _prebuilt_projects := $(shell repo forall -g bsp-priv -a g_external=bin -c 'echo $$REPO_PATH'))
+# Projects that are under restrictive IP Plan
+$(eval _private_projects := $(shell repo forall -g bsp-priv -c 'echo $$REPO_PATH'))
 
 # get the original path of the hooked build makefiles
 define original-metatarget
@@ -53,59 +55,94 @@ define external-echo-makefile
        echo $(1) >>$@;
 endef
 
-# $(1) : metatarget
-# $(2) : MULTI_PREBUILT variable
-# $(3) : LOCAL_BUILT_MODULE suffix variable
+# When odex is generated, .dex files are removed but .dex files should
+# be saved for external release as they can be used to rebuild a component
+# while odex can't.
+# This is not necessary for java libraries that have unstripped jar in out/target/common.
+# This requires patches in AOSP /build/ project to backup the .dex file.
+EXT_JAVA_BACKUP_SUFFIX := .dex
+
+# Check for IP violations when a module gets source files from another private project
+define external-check-ip
+$(eval ### Make sure the project does not reference other private projects) \
+$(foreach _prj, $(_private_projects), \
+    $(if $(findstring $(_prj)/, $(LOCAL_MODULE_MAKEFILE)), \
+    , \
+        $(if $(findstring $(_prj)/, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE)), \
+            $(info PRIVATE module [$(LOCAL_MODULE)] cannot use another PRIVATE module files directly to prevent IP violation) \
+            $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), \
+                $(if $(findstring $(_prj)/, $(s)), $(info >    [$(s)])) \
+            ) \
+            $(error Stop) \
+        ) \
+    ) \
+)
+endef
+
+# $(1): module source file
+# $(2): module arch -> 64 or 32 for native; empty otherwise
 #
 # .LOCAL_STRIP_MODULE is forced to false
 #
-# Two modules can have identical LOCAL_MODULE (e.g. target and host modules)
-# or same LOCAL_MODULE_STEM with 2 different LOCAL_MODULE.
-# To be sure to use a unique key when gathering files,
-# the key used is $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)
-#
+# Use the unique key as defined in base_rules.mk: module_id + bitness
 define external-gather-files
-$(if $(filter $(1),$(_metatarget)), \
-    $(foreach _prj, $(_prebuilt_projects), \
-        $(if $(findstring $(_prj), $(LOCAL_MODULE_MAKEFILE)), \
-        , \
-            $(if $(findstring $(_prj)/, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE)), \
-                $(info PRIVATE module [$(LOCAL_MODULE)] cannot use another PRIVATE module files directly to prevent IP violation) \
-                $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring $(_prj)/, $(s)), $(info >    [$(s)]))) \
-                $(error Stop) \
-            ) \
-        ) \
-    ) \
-    $(eval LOCAL_INSTALLED_MODULE_STEM := $(my_installed_module_stem)) \
-    $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_CLASS := $(strip $(LOCAL_MODULE_CLASS))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).OVERRIDE_BUILT_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(OVERRIDE_BUILT_MODULE_PATH))))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(my_built_module_stem))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(my_module_path))))) \
-    $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
-    $(if $(filter prebuilt,$(_metatarget)), \
-        $(eval _input_file := $(ext_prebuilt_src_file)), \
-        $(if $(filter java_library,$(_metatarget)), \
-            $(eval ### get unstripped jar) \
-            $(eval _input_file := $(common_javalib.jar)), \
-            $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
-        ) \
-    ) \
-    $(eval $(my).copyfiles := $($(my).copyfiles) $(_input_file):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
-    $(eval ### for java libraries, also keep jar with classes) \
-    $(if $(filter java_library,$(_metatarget)), \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(full_classes_jar):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM).classes.jar) \
-    ) \
-)
+$(call external-check-ip) \
+\
+$(eval _key := $(module_id)$(2)) \
+$(eval $(my).key_list := $($(my).key_list) $(_key)) \
+$(eval $(_key).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
+$(eval $(_key).LOCAL_MODULE_SUFFIX := $(strip $(LOCAL_MODULE_SUFFIX))) \
+$(eval $(_key).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
+$(eval ### For native, there is one prebuilt per arch. \
+           Fallback to module setting otherwise - eg. package odex ) \
+$(eval $(_key).LOCAL_MULTILIB := $(firstword $(2) $(LOCAL_MULTILIB))) \
+$(eval $(_key).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
+$(eval $(_key).LOCAL_MODULE_CLASS := $(strip $(LOCAL_MODULE_CLASS))) \
+$(eval $(_key).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
+$(eval $(_key).LOCAL_MODULE_STEM := $(LOCAL_MODULE_STEM)) \
+$(eval $(_key).LOCAL_MODULE_STEM_$(2) := $(LOCAL_MODULE_STEM_$(2))) \
+$(eval ### built stem must be preserved for javalib/packages - use the given stem if available ) \
+$(eval $(_key).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
+$(eval $(_key).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
+$(eval $(_key).LOCAL_STRIP_MODULE := ) \
+$(eval $(_key).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
+$(eval $(_key).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
+$(eval $(_key).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
+$(eval $(_key).LOCAL_MODULE_PATH := $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH)))) \
+$(eval $(_key).LOCAL_MODULE_PATH_$(2) := $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH_$(2))))) \
+$(eval $(_key).LOCAL_MODULE_RELATIVE_PATH := $(strip $(LOCAL_MODULE_RELATIVE_PATH))) \
+\
+$(eval ### Get source file) \
+$(eval _input_file := ) \
+$(if $(filter prebuilt,$(_metatarget)), \
+    $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file) \
+    $(eval ### TODO - get LOCAL_SRC_FILES_{arch} if available) \
+    $(eval _input_file := $(firstword \
+        $(LOCAL_PREBUILT_MODULE_FILE) \
+        $(if $(2), $(if $(LOCAL_SRC_FILES_$(2)), $(LOCAL_PATH)/$(LOCAL_SRC_FILES_$(2)))) \
+        $(LOCAL_PATH)/$(LOCAL_SRC_FILES) \
+        )) \
+) \
+$(if $(filter java_library,$(_metatarget)), \
+    $(eval ### get unstripped jar) \
+    $(eval _input_file := $(common_javalib.jar)) \
+) \
+$(if $(filter package,$(_metatarget)), \
+    $(eval ### get unstripped apk) \
+    $(eval _input_file := $(LOCAL_BUILT_MODULE)$(EXT_JAVA_BACKUP_SUFFIX)) \
+) \
+$(if $(1), \
+    $(eval ### get source file from parameter) \
+    $(eval _input_file := $(1)) \
+) \
+$(if $(_input_file),, \
+    $(eval ### default - get built module) \
+    $(eval _input_file := $(LOCAL_BUILT_MODULE)) \
+) \
+\
+$(eval $(_key).LOCAL_SRC_FILES := $(module_type)$(2)/$(LOCAL_MODULE)$(LOCAL_MODULE_SUFFIX)) \
+\
+$(eval $(my).copyfiles := $($(my).copyfiles) $(_input_file):$(dir $(my))$(module_type)$(2)/$(LOCAL_MODULE)$(LOCAL_MODULE_SUFFIX))
 endef
 
 define external-phony-package-boilerplate
@@ -117,48 +154,36 @@ define external-phony-package-boilerplate
   $(call external-echo-makefile,'include $$(BUILD_PHONY_PACKAGE)')
 endef
 
-# $(1): file list
-# $(2): IS_HOST_MODULE
-# $(3): MODULE_CLASS
-# $(4): MODULE_TAGS
-# $(5): OVERRIDE_BUILT_MODULE_PATH
-# $(6): UNINSTALLABLE_MODULE
-# $(7): BUILT_MODULE_STEM
-# $(8): LOCAL_STRIP_MODULE
-# $(9): LOCAL_MODULE
-# $(10): LOCAL_MODULE_STEM
-# $(11): LOCAL_CERTIFICATE
-# $(12): LOCAL_MODULE_PATH
-# $(13): LOCAL_REQUIRED_MODULES
-# $(14): LOCAL_SHARED_LIBRARIES
+# Write a prebuilt module definition to the output makefile.
 #
+# $(1): Unique identifier holding all the module variables.
+#       This can be seen as a structure representing a module.
 define external-auto-prebuilt-boilerplate
-$(if $(filter %: :%,$(1)), \
-  $(error $(LOCAL_PATH): Leading or trailing colons in "$(1)")) \
-$(foreach t,$(1), \
-  $(call external-echo-makefile, '') \
-  $(call external-echo-makefile, 'include $$(CLEAR_VARS)') \
-  $(call external-echo-makefile, 'LOCAL_IS_HOST_MODULE:=$(strip $(2))') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_CLASS:=$(strip $(3))') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_TAGS:=$(strip $(4))') \
-  $(call external-echo-makefile, 'OVERRIDE_BUILT_MODULE_PATH:=$(strip $(5))') \
-  $(call external-echo-makefile, 'LOCAL_UNINSTALLABLE_MODULE:=$(strip $(6))') \
-  $(call external-echo-makefile, 'LOCAL_SRC_FILES:=$(strip $(t))') \
-  $(if $(7), \
-    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(strip $(7))') \
-   , \
-    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(strip $(notdir $(t)))') \
-   ) \
-  $(call external-echo-makefile, 'LOCAL_STRIP_MODULE:=$(strip $(8))') \
-  $(call external-echo-makefile, 'LOCAL_MODULE:=$(strip $(9))') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_STEM:=$(strip $(10))') \
-  $(call external-echo-makefile, 'LOCAL_CERTIFICATE:=$(strip $(11))') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$(strip $(12))') \
-  $(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$(strip $(13))') \
-  $(call external-echo-makefile, 'LOCAL_SHARED_LIBRARIES:=$(strip $(14))') \
-  $(call external-echo-makefile, 'LOCAL_EXPORT_C_INCLUDE_DIRS:=$$(LOCAL_PATH)/include') \
-  $(call external-echo-makefile, 'include $$(BUILD_PREBUILT)') \
- )
+$(call external-echo-makefile, '') \
+$(call external-echo-makefile, 'include $$(CLEAR_VARS)') \
+$(call external-echo-makefile, 'LOCAL_MODULE:=$($(1).LOCAL_MODULE)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_SUFFIX:=$($(1).LOCAL_MODULE_SUFFIX)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_TAGS:=$($(1).LOCAL_MODULE_TAGS)') \
+$(call external-echo-makefile, 'LOCAL_MULTILIB:=$($(1).LOCAL_MULTILIB)') \
+$(call external-echo-makefile, 'LOCAL_IS_HOST_MODULE:=$($(1).LOCAL_IS_HOST_MODULE)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_CLASS:=$($(1).LOCAL_MODULE_CLASS)') \
+$(call external-echo-makefile, 'LOCAL_UNINSTALLABLE_MODULE:=$($(1).LOCAL_UNINSTALLABLE_MODULE)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_STEM:=$($(1).LOCAL_MODULE_STEM)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_STEM_32:=$($(1).LOCAL_MODULE_STEM_32)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_STEM_64:=$($(1).LOCAL_MODULE_STEM_64)') \
+$(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$($(1).LOCAL_BUILT_MODULE_STEM)') \
+$(call external-echo-makefile, 'LOCAL_INSTALLED_MODULE_STEM:=$($(1).LOCAL_INSTALLED_MODULE_STEM)') \
+$(call external-echo-makefile, 'LOCAL_STRIP_MODULE:=$($(1).LOCAL_STRIP_MODULE)') \
+$(call external-echo-makefile, 'LOCAL_SHARED_LIBRARIES:=$($(1).LOCAL_SHARED_LIBRARIES)') \
+$(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$($(1).LOCAL_REQUIRED_MODULES)') \
+$(call external-echo-makefile, 'LOCAL_CERTIFICATE:=$($(1).LOCAL_CERTIFICATE)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$($(1).LOCAL_MODULE_PATH)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_PATH_32:=$($(1).LOCAL_MODULE_PATH_32)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_PATH_64:=$($(1).LOCAL_MODULE_PATH_64)') \
+$(call external-echo-makefile, 'LOCAL_MODULE_RELATIVE_PATH:=$($(1).LOCAL_MODULE_RELATIVE_PATH)') \
+$(call external-echo-makefile, 'LOCAL_SRC_FILES:=$($(1).LOCAL_SRC_FILES)') \
+$(call external-echo-makefile, 'LOCAL_EXPORT_C_INCLUDE_DIRS:=$$(LOCAL_PATH)/include') \
+$(call external-echo-makefile, 'include $$(BUILD_PREBUILT)')
 endef
 
 # Copy several files.

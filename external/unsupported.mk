@@ -2,7 +2,7 @@
 # in private projects - ignore the projects that are never released.
 _need_prebuilts :=
 $(foreach project, $(_prebuilt_projects),\
-  $(if $(findstring $(project), $(LOCAL_MODULE_MAKEFILE)),\
+  $(if $(findstring $(project)/, $(LOCAL_MODULE_MAKEFILE)),\
     $(eval _need_prebuilts := true)))
 
 ifeq (true,$(_need_prebuilts))
