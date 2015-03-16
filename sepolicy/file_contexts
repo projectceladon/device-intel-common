@@ -21,7 +21,10 @@
 /config/gnss(/.*)?          u:object_r:cws_manu_data_file:s0
 /config/nfc(/.*)?           u:object_r:cws_manu_data_file:s0
 /config/wlan(/.*)?          u:object_r:cws_manu_data_file:s0
+/config(/.*)?               u:object_r:config_file:s0
+/config/wifi(/.*)?          u:object_r:wlan_prov_data_file:s0
 /system/bin/cws_manu        u:object_r:cws_manu_exec:s0
+/system/bin/wlan_prov       u:object_r:wlan_prov_exec:s0
 
 # Radio
 /dev/gsmtty7                u:object_r:radio_device:s0
@@ -73,7 +76,8 @@
 /system/vendor/bin/power_hal_helper    u:object_r:power_hal_helper_exec:s0
 
 # NFC
-/data/nfc(/.*)?            u:object_r:nfc_data_file:s0
+/data/nfc(/.*)?             u:object_r:nfc_data_file:s0
+/dev/nfcc                   u:object_r:nfc_device:s0
 
 # i915 videostatus
 /sys/devices/pci0000:00/0000:00:02.0/drm/card0/power/i915_videostatus u:object_r:sysfs_videostatus:s0
