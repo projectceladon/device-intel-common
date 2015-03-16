@@ -1,7 +1,10 @@
 LOCAL_PATH := $(call my-dir)
 COMMON_PFW_CONFIG_PATH := $(call my-dir)
-CLEAR_PFW_VARS := $(COMMON_PFW_CONFIG_PATH)/clear_pfw_vars.mk
-BUILD_PFW_SETTINGS := $(COMMON_PFW_CONFIG_PATH)/build_pfw_settings.mk
+
+PFW_CORE := external/parameter-framework/core
+BUILD_PFW_SETTINGS := $(PFW_CORE)/support/android/build_pfw_settings.mk
+PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/Schemas
+PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 
 # defines:
 # - $(PFW_TUNING_ALLOWED)
@@ -22,8 +25,6 @@ endif
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.audio.common
 LOCAL_MODULE_TAGS := optional
-LOCAL_REQUIRED_MODULES :=  \
-    ConfigurationSubsystem.xml
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 LOCAL_REQUIRED_MODULES += \
@@ -188,6 +189,15 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := Realtek564xSubsystem-common.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+LOCAL_REQUIRED_MODULES := libproperty-subsystem
+include $(BUILD_PREBUILT)
+
 ######### Audio Algos #########
 
 include $(CLEAR_VARS)
@@ -208,6 +218,14 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceVolume.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SampleSpecDomain.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
@@ -248,6 +266,22 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := Mdrc.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SbaEqualizers.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := HfSns2.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel

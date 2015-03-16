@@ -56,6 +56,7 @@ allow hal sensor_prop:property_service set;
 allow hal bluetooth_prop:property_service set;
 allow hal camera_prop:property_service set;
 allow hal gps_prop:property_service set;
+allow hal audio_prop:property_service set;
 
 #Fuse-related
 allow hal hal_fuse:dir { create_dir_perms mounton };

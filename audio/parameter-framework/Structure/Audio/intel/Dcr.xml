@@ -20,4 +20,9 @@
                                   Description="Output gain for the first section. The gain is actually a shift value so for instance a gain value of 1 gives a gain of 6 dB. To obtain a filter with 0dB gain in the passband the Sx_GAIN should be set to 1 to compensate for the divide by 2 of the B-coefficients."/>
         </ParameterBlock>
     </ComponentType>
+
+    <!-- Needs Gain.xml to be included too -->
+    <ComponentType Name="SspInPipe" Extends="GainPipe">
+        <Component Name="dcr" Type="Dcr" Mapping="Amend3:0"/>
+    </ComponentType>
 </ComponentTypeSet>

@@ -64,4 +64,9 @@
         <Component Name="s10" Type="LproFilterStageType"/>
         <Component Name="s11" Type="LproFilterStageType"/>
     </ComponentType>
+
+    <!-- Needs Gain.xml to be included too -->
+    <ComponentType Name="SpeakerProtPipe" Extends="GainPipe">
+        <Component Name="lpro" Type="Lpro" Mapping="Amend3:0"/>
+    </ComponentType>
 </ComponentTypeSet>
