@@ -22,5 +22,5 @@ service ap_logfs /system/bin/logcat_ep.sh /system/bin/logcat -b all -n 20 -r5000
     disabled
 
 service ap_log_srv /system/bin/start_log_srv.sh
-    class main
+    class late_start
     oneshot
