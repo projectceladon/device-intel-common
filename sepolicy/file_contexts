@@ -62,7 +62,7 @@
 /system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
 
 # Persistent partition
-/dev/block/platform/80860F14:00/by-name/android_persistent  u:object_r:frp_block_device:s0
+/dev/block/platform(/.*)?/.*/by-name/android_persistent  u:object_r:frp_block_device:s0
 
 # Thermal daemon
 /dev/acpi_thermal_rel       u:object_r:thermal_device:s0
