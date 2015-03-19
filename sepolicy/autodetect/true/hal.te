@@ -38,8 +38,12 @@ allow hal sysfs_powercap:dir { read open search };
 allow hal sysfs_powercap:file { write open };
 allow hal tmpfs:chr_file { open write };
 
-allow hal system_data_file:dir { write remove_name add_name };
+allow hal system_data_file:dir { write read open remove_name add_name rmdir };
 allow hal system_data_file:file { write create unlink open setattr };
+allow hal dalvikcache_data_file:dir { write remove_name };
+allow hal dalvikcache_data_file:file { unlink open };
+allow hal apk_data_file:dir { write remove_name };
+allow hal apk_data_file:file { unlink open };
 allow hal system_file:dir mounton;
 allow hal wpa:dir mounton;
 allow hal system_file:filesystem { relabelto mount unmount };
