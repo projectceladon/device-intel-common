@@ -4,7 +4,7 @@ InclusiveCriterion OutputFlags              :    Direct           Primary       
 InclusiveCriterion InputSources             :    Default          Mic           VoiceUplink   VoiceDownlink VoiceCall  Camcorder    VoiceRecognition VoiceCommunication RemoteSubmix      Hotword
 InclusiveCriterion TtyDirection             :    Downlink         Uplink
 InclusiveCriterion PreProcessorRequestedByActiveInput  : Aec      Agc           Ns            Bmf            Wnr
-InclusiveCriterion StatesChanged            :    AndroidMode      HasModem      ModemState    ModemAudioAvailable    HacSelected    TtyDirection     BtHeadsetNrEc      BtHeadsetBandType CsvBandType     VoIPBandType    ImsBandType     InputDevices    OutputDevices InputSources OutputFlags  DirectStream ScreenOn      ContextAwareness FmEnabled AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice BwxActivated HfpClientEnable HfpClientBandType
+InclusiveCriterion StatesChanged            :    AndroidMode      HasModem      ModemState    ModemAudioAvailable    HacSelected    TtyDirection     BtHeadsetNrEc      BtHeadsetBandType CsvBandType     VoIPBandType    ImsBandType     InputDevices    OutputDevices InputSources OutputFlags  DirectStream ScreenOn      ContextAwareness FmEnabled AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice BwxActivated HfpClientEnable HfpClientBandType ScreenRotation
 ExclusiveCriterion LpalDevice               :    None             Communication Ambient       Main        ScoHeadset     Headset    AuxDigital       VoiceCall          Back              RemoteSubmix    AnlgDockHeadset DgtlDockHeadset UsbAccessory    UsbDevice     FmTuner      TvTuner      Line         Spdif         BluetoothA2dp    Loopback
 ExclusiveCriterion AndroidMode              :    Normal           RingTone      InCsvCall     InVoipCall
 ExclusiveCriterion DirectStream             :    False            True
@@ -31,3 +31,4 @@ ExclusiveCriterion CmeModemStreamPlayback   :    False            True
 ExclusiveCriterion BwxActivated             :    False            True
 ExclusiveCriterion HfpClientEnable          :    False            True
 ExclusiveCriterion HfpClientBandType        :    Unknown          NB            WB            SuperWB
+ExclusiveCriterion ScreenRotation           :    0                90            180           270

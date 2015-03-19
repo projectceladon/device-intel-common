@@ -30,3 +30,4 @@ ExclusiveCriterion PersonalEqualization    :  None              Slight          
 ExclusiveCriterion ModemAudioIsSpeech      :  False             True
 ExclusiveCriterion HfpClientEnable         :  Off               On
 ExclusiveCriterion HfpClientBandType       :  Unknown           NB              WB          SuperWB
+ExclusiveCriterion ScreenRotation          :  0                 90              180         270
