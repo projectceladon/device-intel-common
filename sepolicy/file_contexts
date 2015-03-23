@@ -16,15 +16,19 @@
 # Audio
 /dev/snd/.*                 u:object_r:audio_device:s0
 
+# Config partition
+/config(/.*)?               u:object_r:config_file:s0
+
+# wlan provisionning
+/config/wifi(/.*)?          u:object_r:wlan_prov_data_file:s0
+/system/bin/wlan_prov       u:object_r:wlan_prov_exec:s0
+
 # CWS Manufacturing
 /config/bluetooth(/.*)?     u:object_r:cws_manu_data_file:s0
 /config/gnss(/.*)?          u:object_r:cws_manu_data_file:s0
 /config/nfc(/.*)?           u:object_r:cws_manu_data_file:s0
 /config/wlan(/.*)?          u:object_r:cws_manu_data_file:s0
-/config(/.*)?               u:object_r:config_file:s0
-/config/wifi(/.*)?          u:object_r:wlan_prov_data_file:s0
 /system/bin/cws_manu        u:object_r:cws_manu_exec:s0
-/system/bin/wlan_prov       u:object_r:wlan_prov_exec:s0
 /dev/block/platform/.*/.*/by-name/wlan_nvm      u:object_r:cws_manu_device:s0
 /dev/block/platform/.*/.*/by-name/bluetooth_nvm u:object_r:cws_manu_device:s0
 /dev/block/platform/.*/.*/by-name/gnss_nvm      u:object_r:cws_manu_device:s0
