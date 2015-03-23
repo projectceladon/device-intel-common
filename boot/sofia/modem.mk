@@ -186,8 +186,10 @@ MODEM_FLS     := $(FLASHFILES_DIR)/modem.fls
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 .PHONY: modem
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_PRODUCT))
 $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
+endif # BOARD_USE_FLS_PREBUILTS != true
 
 modem: $(MEX_SECBIN)
 	$(hide) rm $(MODEM_FLS)
@@ -195,6 +197,7 @@ droidcore: modem
 
 else
 .PHONY: modem.fls
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_PRODUCT))
 $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/dsp_image.fls --tag DSP_IMAGE $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
@@ -203,12 +206,13 @@ $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
+endif # BOARD_USE_FLS_PREBUILTS != true
 	
 modem.fls: $(MODEM_FLS)
 droidcore: modem.fls
-endif
+endif # TARGET_BOARD_PLATFORM == sofia3g
 
-endif
+endif # NON_IMC_BUILD == true
 
 ifeq ($(DELIVERY_BUTTER),true)
 MODEM_FLS     := $(FLASHFILES_DIR)/modem.fls
