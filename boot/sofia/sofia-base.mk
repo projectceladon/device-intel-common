@@ -25,7 +25,7 @@ LOCAL_PATH:= $(call my-dir)
 # Common
 #-----------------------
 
-FLSTOOL        = $(CURDIR)/modem/msw_tools/FlashTool/release/bin/FlsTool
+FLSTOOL        = $(CURDIR)/device/intel/common/tools/FlsTool
 FLASHFILES_DIR := $(PRODUCT_OUT)/fls
 SIGN_FLS_DIR   := $(CURDIR)/$(PRODUCT_OUT)/sign_fls
 
@@ -55,7 +55,7 @@ droidcore: createflashfile_dir
 build_info:
 	@echo "-------------------------------------------"
 
-SYSTEM_SIGNED_FLS_LIST =
+SYSTEM_SIGNED_FLS_LIST ?=
 SYSTEM_SEC_BIN_LIST =
 
 include $(LOCAL_PATH)/createprg.mk
