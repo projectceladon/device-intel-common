@@ -6,6 +6,7 @@ type mmgr_socket, file_type;
 type sysfs_hsic_enable, fs_type, sysfs_type;
 type sysfs_ssic_enable, fs_type, sysfs_type;
 type tmpfs_block_device, dev_type;
+type mmgr_radio_device, dev_type;
 
 # nvm
 type nvm_ctl_socket, file_type;

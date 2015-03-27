@@ -17,7 +17,7 @@
 /dev/gsmtty11                   u:object_r:radio_device:s0
 /dev/gsmtty15                   u:object_r:radio_device:s0
 /dev/gsmtty18                   u:object_r:radio_device:s0
-/dev/gsmtty19                   u:object_r:radio_device:s0
+/dev/gsmtty19                   u:object_r:mmgr_radio_device:s0
 
 # nvm_server
 /system/bin/nvm_server          u:object_r:nvm_server_exec:s0

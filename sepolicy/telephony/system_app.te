@@ -1,0 +1,5 @@
+# telephony specific rules
+allow system_app mmgr_socket:sock_file write;
+allow system_app tty_device:chr_file { read write ioctl open getattr };
+allow system_app mmgr:unix_stream_socket connectto;
+allow system_app mmgr_radio_device:chr_file { read write open ioctl getattr };
