@@ -52,6 +52,10 @@ def swap_entries(info):
     fstab = info.script.info.get("fstab", None)
     info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
             (fstab['/bootloader'].device,))
+    # Microsoft allows to use the FAT32 filesystem for the ESP
+    # partition only and in the context of a UEFI device.  We have to
+    # get rid of this potential second FAT32 partition.
+    info.script.script.append('wipe_block_device("%s", "4096");' % (fstab['/bootloader'].device))
 
 def IncrementalOTA_InstallEnd(info):
     if delete_files:
