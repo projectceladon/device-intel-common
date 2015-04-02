@@ -40,3 +40,6 @@ type log_file, file_type;
 
 # for log services
 type logsvc_exec, exec_type, file_type;
+
+# configfs
+type configfs, fs_type;
