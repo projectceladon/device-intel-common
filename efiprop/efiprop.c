@@ -27,8 +27,19 @@
 #include <getopt.h>
 #include <string.h>
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
+
 #define GUID_FORMAT	"%08x-%04x-%04x-%04x-%02x%02x%02x%02x%02x%02x"
 #define COMMAND		"efiprop"
+
+static const char *WHITELIST[] = {
+	"persist.fw_switching_support",
+	"persist.ims_support",
+	"persist.pws_support",
+	"persist.sys.telephony.off",
+	"service.amtl1.cfg",
+	"telephony.tcs.sw_folder"
+};
 
 static const efi_guid_t EFI_PROP_GUID =
  { 0xfb7e31f5, 0x21de, 0x4c4c, 0xb79e, { 0x16, 0x30, 0x51, 0xbb, 0x06, 0xdb } };
@@ -55,7 +66,7 @@ static void skip_whitespace(char **line)
 static void load_properties_from_string(char *data, size_t size)
 {
 	char *key, *value, *eol, *sol, *tmp;
-	unsigned lineno = 1;
+	unsigned i, lineno = 1;
 	int ret;
 
 	debug("starting to load properties");
@@ -99,6 +110,15 @@ static void load_properties_from_string(char *data, size_t size)
 
 		if (*value == '\0' || tmp - value + 2 > PROPERTY_VALUE_MAX) {
 			error("Invalid value at line %d", lineno);
+			return;
+		}
+
+		for (i = 0; i < ARRAY_SIZE(WHITELIST); i++)
+			if (!strcmp(WHITELIST[i], key))
+				break;
+
+		if (i == ARRAY_SIZE(WHITELIST)) {
+			error("%s property is not allowed", key);
 			return;
 		}
 
@@ -150,6 +170,7 @@ fail:
 void usage(int status)
 {
 	FILE *out = status == EXIT_SUCCESS ? stdout : stderr;
+	unsigned int i;
 
 	fprintf(out, "Usage: %s [ OPTIONS ] -e <efi-varmane>\n\
   Loads and sets the properties contained in the EFI EFI-VARNAME variable\n\
@@ -161,7 +182,11 @@ void usage(int status)
 	fprintf(out, "\
    --efi-varname, -e <name>   EFI variable NAME to load\n\
    --verbose                  print all debug messages\n\
-   --help, -h                 display this help and exit\n");
+   --help, -h                 display this help and exit\n\n\
+  %s is limited to the following properties:\n", COMMAND);
+
+	for (i = 0; i < ARRAY_SIZE(WHITELIST); i++)
+		fprintf(out, "  - %s\n", WHITELIST[i]);
 
 	exit(status);
 }
