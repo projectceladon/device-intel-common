@@ -47,7 +47,7 @@ guestvm2_clean:
 guestvm2_rebuild: guestvm2_clean guestvm2.fls
 
 .PHONY: sa_vmodem
-ifeq ($(TARGET_BOARD_PLATFORM), sofia3g)
+ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)), sofia3g)
 sa_vmodem: bootcore_fls modem.fls guestvm2.fls ucode_patch.fls splash_img.fls mobilevisor.fls secvm.fls $(MV_CONFIG_DEFAULT_FLS)
 else
 sa_vmodem: bootcore_fls modem.fls ucode_patch.fls splash_img.fls mobilevisor.fls $(MV_CONFIG_DEFAULT_FLS)
