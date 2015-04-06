@@ -1,1 +1,2 @@
 allow nfc surfaceflinger_tmpfs:file { read write };
+allow nfc nfc_data_file:file rw_file_perms;
