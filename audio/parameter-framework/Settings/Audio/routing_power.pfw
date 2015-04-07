@@ -12,8 +12,6 @@ supDomain: Routing.Enable
 			ANY
 				OpenedPlaybackRoutes Includes ModemIA
 				OpenedCaptureRoutes Includes FMIA
-				OpenedPlaybackRoutes Includes CmeVoice
-				OpenedCaptureRoutes Includes CmeVoice
 			/Audio/POWER/WAKE_LOCK/PARTIAL/LOCKED = 1
 
 		conf: Released
