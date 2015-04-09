@@ -7,7 +7,6 @@ binder_call(system_server, mmgr)
 
 allow mmgr init:unix_stream_socket connectto;
 allow mmgr property_socket:sock_file write;
-allow mmgr system_prop:property_service set;
 allow mmgr sysfs_wake_lock:file { read write open };
 allow mmgr config_file:dir create_dir_perms;
 allow mmgr config_file:file create_file_perms;
@@ -34,3 +33,6 @@ allow mmgr radio_device:chr_file { read write open ioctl unlink getattr };
 allow mmgr self:capability { chown fowner sys_admin };
 allow mmgr self:capability2 { block_suspend };
 allow mmgr proc_cpuinfo:file mounton;
+allow mmgr default_prop:property_service set;
+allow mmgr amtl_prop:property_service set;
+allow mmgr mmgr_prop:property_service set;

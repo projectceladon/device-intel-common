@@ -1,0 +1,2 @@
+#telephony specific system props for shell
+allow shell atproxy_prop:property_service set;
