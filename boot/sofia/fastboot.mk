@@ -15,7 +15,9 @@
 # ------------------------------------------------------------------------
 FASTBOOT_FLS_LIST  :=
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
+ifneq ($(TARGET_NO_RECOVERY),true)
 FASTBOOT_FLS_LIST  += $(RECOVERY_FLS)
+endif
 endif
 FASTBOOT_FLS_LIST  += $(BOOTIMG_FLS)
 FASTBOOT_FLS_LIST  += $(CACHE_FLS)

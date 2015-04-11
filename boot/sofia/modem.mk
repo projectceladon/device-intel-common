@@ -115,6 +115,9 @@ BUILT_MODEM_DATA_EXT := $(EXTRACT_TEMP)/modem/modem.fls_ID0_CUST_LoadMap0.bin
 
 $(BUILT_MODEM_DATA_EXT) : $(EXTRACT_TEMP)/modem
 
+.PHONY : force
+force: ;
+
 $(EXTRACT_TEMP)/modem : $(MODEM_FLS) force
 	$(FLSTOOL) -o $(EXTRACT_TEMP)/modem -x $(MODEM_FLS)
 
