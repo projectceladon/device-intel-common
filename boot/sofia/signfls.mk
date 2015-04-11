@@ -18,7 +18,6 @@ signfls_info:
 	@echo "----------------------------------------------------------"
 	@echo "-make signfls : Will generate all signed fls files"
 
-
 build_info: signfls_info
 
 ifeq ($(USE_PROD_KEYS),1)
@@ -32,48 +31,16 @@ PRODUCT_KEYS_DIR  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR
 SIGN_SCRIPT_DIR   := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR_PREFIX)_sign_scripts
 ZIP_CERTIFICATE	  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/sofia3g_ini.zip
 
-EXTRACT_DIR         := $(SIGN_FLS_DIR)/extract/
-PSI_FLASH_SECPACK   := $(EXTRACT_DIR)/psi_flash.fls_ID0_PSI_SecureBlock.bin
-SLB_SECPACK         := $(EXTRACT_DIR)/slb.fls_ID0_SLB_SecureBlock.bin
-BOOTIMG_SECPACK		:= $(EXTRACT_DIR)/boot.fls_ID0_CUST_SecureBlock.bin
-RECOVERY_SECPACK    := $(EXTRACT_DIR)/recovery.fls_ID0_CUST_SecureBlock.bin
-MEX_SECPACK		    := $(EXTRACT_DIR)/modem.fls_ID0_CUST_SecureBlock.bin
-MOBILEVISOR_SECPACK	:= $(EXTRACT_DIR)/mobilevisor.fls_ID0_CODE_SecureBlock.bin
-SPLASH_SECPACK		:= $(EXTRACT_DIR)/splash_img.fls_ID0_CUST_SecureBlock.bin
-SECVM_SECPACK		:= $(EXTRACT_DIR)/secvm.fls_ID0_CUST_SecureBlock.bin
-MVCONFIG_SECPACK	:= $(EXTRACT_DIR)/mvconfig_smp.fls_ID0_CUST_SecureBlock.bin
-UCODE_SECPACK	    := $(EXTRACT_DIR)/ucode_patch.fls_ID0_CUST_SecureBlock.bin
-SYSTEM_SECPACK	    := $(EXTRACT_DIR)/system.fls_ID0_CUST_SecureBlock.bin
-CACHE_SECPACK	    := $(EXTRACT_DIR)/cache.fls_ID0_CUST_SecureBlock.bin
-USERDATA_SECPACK	:= $(EXTRACT_DIR)/userdata.fls_ID0_CUST_SecureBlock.bin
-
-SECPACK_LIST        := $(PSI_FLASH_SECPACK)
-SECPACK_LIST        += $(SLB_SECPACK)
-SECPACK_LIST        += $(BOOTIMG_SECPACK)
-SECPACK_LIST        += $(RECOVERY_SECPACK)
-SECPACK_LIST        += $(MEX_SECPACK)
-SECPACK_LIST        += $(MOBILEVISOR_SECPACK)
-SECPACK_LIST        += $(SPLASH_SECPACK)
-SECPACK_LIST        += $(SECVM_SECPACK)
-SECPACK_LIST        += $(MVCONFIG_SECPACK)
-SECPACK_LIST        += $(UCODE_SECPACK)
-SECPACK_LIST        += $(SYSTEM_SECPACK)
-SECPACK_LIST        += $(CACHE_SECPACK)
-SECPACK_LIST        += $(USERDATA_SECPACK)
-
 ## FLS sign
 .PHONY: signfls
-
-signfls: create_sign_fls_dir sign_flashloader sign_bootloader sign_system create_vrl_bin
+signfls: signbs sign_system sign_vrl | createflashfile_dir
 
 .PHONY: signbs
-
-signbs: create_sign_fls_dir sign_flashloader sign_bootloader
+signbs: sign_bootloader | createflashfile_dir
 
 FLASHLOADER_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/flashloader.signing_script.txt
 PSI_RAM_SIGNED_FLS      := $(CURDIR)/$(PRODUCT_OUT)/flashloader/psi_ram_signed.fls
 EBL_SIGNED_FLS          := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl_signed.fls
-VRL_BIN                 := $(SIGN_FLS_DIR)/vrl.bin
 
 INJECT_SIGNED_FLASHLOADER_FLS  = --psi $(PSI_RAM_SIGNED_FLS) --ebl $(EBL_SIGNED_FLS)
 
@@ -83,7 +50,7 @@ $(PSI_RAM_SIGNED_FLS): $(PSI_RAM_FLS) $(FLASHLOADER_SIGN_SCRIPT) $(FLSTOOL)
 $(EBL_SIGNED_FLS): $(EBL_FLS) $(FLASHLOADER_SIGN_SCRIPT) $(FLSTOOL) $(PSI_RAM_SIGNED_FLS)
 	$(FLSTOOL) --sign $(EBL_FLS) --script $(FLASHLOADER_SIGN_SCRIPT) --psi $(PSI_RAM_SIGNED_FLS) -o $@ --replace
 
-sign_flashloader: create_sign_fls_dir $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)
+sign_flashloader: $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS) | createflashfile_dir
 
 BOOTLOADER_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/bootloader.signing_script.txt
 PSI_FLASH_SIGNED_FLS   := $(SIGN_FLS_DIR)/psi_flash_signed.fls
@@ -91,23 +58,79 @@ SLB_SIGNED_FLS         := $(SIGN_FLS_DIR)/slb_signed.fls
 
 $(PSI_FLASH_SIGNED_FLS): $(PSI_FLASH_FLS) $(BOOTLOADER_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
 	$(FLSTOOL) --sign $(PSI_FLASH_FLS) --script $(BOOTLOADER_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) --zip $(ZIP_CERTIFICATE) -o $@ --replace
-	$(FLSTOOL) -x $@ -o $(EXTRACT_DIR)
 
 $(SLB_SIGNED_FLS): $(SLB_FLS) $(BOOTLOADER_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
 	$(FLSTOOL) --sign $(SLB_FLS) --script $(BOOTLOADER_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-	$(FLSTOOL) -x $@ -o $(EXTRACT_DIR)
 
-sign_bootloader: create_sign_fls_dir sign_flashloader $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)
+sign_bootloader: sign_flashloader $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS) | createflashfile_dir
 
 SYSTEM_FLS_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/system.signing_script.txt
 
-sign_system: create_sign_fls_dir sign_flashloader $(SYSTEM_SIGNED_FLS_LIST)
+sign_system: sign_flashloader $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST) | createflashfile_dir
 
 $(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-	$(FLSTOOL) -x $@ -o $(EXTRACT_DIR)
 
-create_vrl_bin: $(VRL_BIN)
+$(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
+	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
-$(VRL_BIN): sign_bootloader sign_system
-	cat $(SECPACK_LIST) > $@
+
+## Firmware update
+VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
+FWU_IMAGE_BIN		:= $(FWU_IMG_DIR)/fwu_image.bin
+VRL_BIN             := $(FASTBOOT_IMG_DIR)/vrl.bin
+VRL_FLS				:= $(FLASHFILES_DIR)/vrl.fls
+VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
+
+.INTERMEDIATE: $(VRL_FLS)
+
+INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
+
+SECP_EXT := *.fls_ID0_*_SecureBlock.bin
+DATA_EXT := *.fls_ID0_*_LoadMap*
+
+define GEN_FIRMWARE_UPDATE_PACK_RULES
+$(EXTRACT_TEMP)/$(1): force $(SIGN_FLS_DIR)/$(1).fls | createflashfile_dir
+	$(FLSTOOL) -o $(EXTRACT_TEMP)/$(1) -x $(SIGN_FLS_DIR)/$(1).fls
+endef
+
+FWU_PACKAGE_LIST    = $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
+FWU_PACKAGE_LIST 	+= $(basename $(notdir $(SLB_SIGNED_FLS)))
+FWU_PACKAGE_LIST	+= $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
+
+FWU_PACKAGE_SECPACK_ONLY_LIST += $(basename $(notdir $(ANDROID_SIGNED_FLS_LIST)))
+
+FWU_DEP_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_LIST))
+$(foreach t,$(FWU_PACKAGE_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
+
+FWU_DEP_SECPACK_ONLY_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_SECPACK_ONLY_LIST))
+$(foreach t,$(FWU_PACKAGE_SECPACK_ONLY_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
+
+.PHONY: fwu_image
+fwu_image: $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
+	@echo "---------- Generate fwu_image --------------------"
+	$(foreach a, $(FWU_DEP_LIST), $(shell $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN)))
+	$(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(shell $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN)))
+	cp $(EXTRACT_TEMP)/$(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))/$(DATA_EXT) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(PSI_FLASH_FLS))).bin
+	cp $(EXTRACT_TEMP)/$(basename $(notdir $(SLB_SIGNED_FLS)))/$(DATA_EXT) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(SLB_FLS))).bin
+	@rm $(FWU_IMAGE_BIN)_temp
+	@echo "---------- Generate fwu_image Done ---------------"
+
+$(FWU_IMAGE_BIN) : fwu_image
+
+#create_vrl_bin: $(VRL_BIN)
+
+#create_vrl_fls: $(VRL_FLS) | create_vrl_bin
+
+sign_vrl: $(VRL_SIGNED_FLS)
+
+$(VRL_BIN): $(FWU_IMAGE_BIN) | createflashfile_dir
+	@echo "---------- Extract VRL Binary --------------------"
+	$(FWU_PACK_GENERATE_TOOL) -x $(FWU_IMAGE_BIN) -v $(VRL_BIN)
+
+$(VRL_FLS) : createflashfile_dir $(VRL_BIN) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag VRL $(VRL_BIN) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
+
+$(VRL_SIGNED_FLS) :  $(VRL_FLS) $(VRL_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
+	$(FLSTOOL) --sign $(VRL_FLS) --script $(VRL_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
+

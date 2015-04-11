@@ -14,72 +14,12 @@
 # limitations under the License.
 # ------------------------------------------------------------------------
 
-ifeq ($(BUILD_THREADX_FROM_SRC),true)
-BUILT_THREADX := $(PRODUCT_OUT)/threadx/threadx.hex
-THREADX_FLS   := $(FLASHFILES_DIR)/threadx.fls
-
-$(BUILT_THREADX): build_threadx_hex
-
-$(THREADX_FLS): $(BUILT_THREADX) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_THREADX) --replace --to-fls2
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-	$(FLSTOOL) -o $(SECBIN_TEMP)/threadx -x $(THREADX_FLS)
-endif
-threadx: create_secbin_dir
-
-build_threadx_hex:
-	$(MAKE) -C $(MOBILEVISOR_GUEST_PATH)/threadx PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z)  BASEBUILDDIR=$(CURDIR)/$(PRODUCT_OUT)
-
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-.PHONY: buildthreadx threadx
-else
-.PHONY: buildthreadx threadx.fls
-endif
-buildthreadx: $(BUILT_THREADX)
-
-threadx_info:
-	@echo "------------------------------------------------"
-	@echo "Threadx:"
-	@echo "-make buildthreadx : Will build the threadx code which can be used for VP."
-	@echo "-make threadx.fls : Will build and generate fls out of threadx which can act as Guest VM in liu of Modem"
-
-ifeq ($(GEN_THREADX_FLS_FILES),true)
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-threadx: $(THREADX_FLS)
-	$(hide) rm $(THREADX_FLS)
-droidcore: threadx
-else
-threadx.fls: $(THREADX_FLS)
-droidcore: threadx.fls
-endif
-else
-droidcore: $(BUILT_THREADX)
-endif
-endif
-
-ifeq ($(DELIVERY_BUTTER),true)
-THREADX_FLS   := $(FLASHFILES_DIR)/threadx.fls
-
-$(THREADX_FLS): $(BUILT_THREADX) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_THREADX) --replace --to-fls2
-
-
-.PHONY: buildthreadx threadx.fls
-buildthreadx: $(BUILT_THREADX)
-
-threadx.fls: $(THREADX_FLS)
-droidcore: threadx.fls
-
-endif
-
 MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
 
 ifeq ($(BUILD_MODEM_FROM_SRC),true)
 
 MODEM_MAKEDIR := $(CURDIR)/$(PRODUCT_OUT)/modem_build
 BUILT_MODEM   := $(MODEM_MAKEDIR)/$(MODEM_PROJECTNAME_VAR).ihex
-MODEM_FLS     := $(FLASHFILES_DIR)/modem.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
 
 ifeq ($(USER),tcloud)
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
@@ -89,7 +29,7 @@ MODEM_BUILD_ARGUMENTS += SDLROOT=$(CURDIR)/modem/system-build/HW_LTE_TDS
 endif
 else
 MODEM_BUILD_ARGUMENTS += SDLROOT=$(CURDIR)/$(PRODUCT_OUT)/sdlcode
-endif
+endif  #endif $(USER) = tcloud
 
 $(BUILT_MODEM): build_modem_hex
 
@@ -120,7 +60,7 @@ build_modem_hex: gen_3gfw_stt
 else
 build_modem_hex: gen_3gfw
 endif
-endif
+endif #endif $(BUILD_3GFW_FROM_SRC) = true
 
 .PHONY: modem_createdirs
 modem_createdirs:
@@ -147,50 +87,52 @@ build_modem_hex: sdlgencode
 	$(MAKE) -s -C $(CURDIR)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) 3GFW_GEN_PATH=$(3GFW_GEN_PATH) MAKEDIR=$(MODEM_MAKEDIR)
 endif
 
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-.PHONY: modem
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-
-modem: $(BUILT_MODEM_DATA_EXT) $(BUILT_MODEM_SEC_BLK) 
-	$(hide) rm $(MODEM_FLS)
-droidcore: modem
-else
-.PHONY: modem.fls
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/dsp_image.fls --tag DSP_IMAGE $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/lte.fls --tag LTE $(INJECT_FLASHLOADER_FLS) $(LTE_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_1.fls --tag LC_FW1 $(INJECT_FLASHLOADER_FLS) $(LC_FW1_BIN)  --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
-
-modem.fls: $(MODEM_FLS)
-droidcore: modem.fls
-endif
-
 modem_info:
 	@echo "-----------------------------------------------------"
 	@echo "Modem:"
 	@echo "-make modem.fls : Will build the Virtualized Modem configuration and generate fls file"
 	@echo "-make sdlgencode : Will generate Protocol Stack SDL Code"
 
-
 build_info: modem_info
 
-endif
+endif #endif $(BUILD_MODEM_FROM_SRC) = true
 
-ifeq ($(NON_IMC_BUILD),true)
-MODEM_FLS     := $(FLASHFILES_DIR)/modem.fls
+
+MODEM_FLS  := $(FLASHFILES_DIR)/modem.fls
+ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-.PHONY: modem
+.INTERMEDIATE: $(MODEM_FLS)
+.INTERMEDIATE: $(SIGN_FLS_DIR)/modem_signed.fls
+
+
 $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
 
-modem: $(MEX_SECBIN)
-	$(hide) rm $(MODEM_FLS)
+BUILT_MODEM_DATA_EXT := $(EXTRACT_TEMP)/modem/modem.fls_ID0_CUST_LoadMap0.bin
+
+$(BUILT_MODEM_DATA_EXT) : $(EXTRACT_TEMP)/modem
+
+$(EXTRACT_TEMP)/modem : $(MODEM_FLS) force
+	$(FLSTOOL) -o $(EXTRACT_TEMP)/modem -x $(MODEM_FLS)
+
+MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
+
+MODEM_INSTALL_PATH := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
+
+.PHONY: install_modem
+install_modem: $(BUILT_MODEM_DATA_EXT) | ${ACP}
+	@echo "Installing Modem Data Extract Binary to System Image.."
+	$(hide) mkdir -p $(MODEM_BIN_LOAD_PATH)
+	acp $< $(MODEM_INSTALL_PATH)
+
+ifeq ($(TARGET_LOAD_MODEM_DATA_EXTRACT),true)
+$(PRODUCT_OUT)/obj/PACKAGING/systemimage_intermediates/system.img: install_modem
+endif
+
+.PHONY: modem
+modem: $(BUILT_MODEM_DATA_EXT)
+
 droidcore: modem
 
 else
@@ -203,38 +145,9 @@ $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
-	
+
 modem.fls: $(MODEM_FLS)
 droidcore: modem.fls
-endif
+endif #endif $(TARGET_BOARD_PLATFORM) = sofia3g
 
-endif
 
-ifeq ($(DELIVERY_BUTTER),true)
-MODEM_FLS     := $(FLASHFILES_DIR)/modem.fls
-
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-.PHONY: modem
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-
-modem: $(MEX_SECBIN)
-	$(hide) rm $(MODEM_FLS)
-droidcore: modem
-
-else
-.PHONY: modem.fls
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/dsp_image.fls --tag DSP_IMAGE $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/lte.fls --tag LTE $(INJECT_FLASHLOADER_FLS) $(LTE_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_1.fls --tag LC_FW1 $(INJECT_FLASHLOADER_FLS) $(LC_FW1_BIN)  --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
-	
-modem.fls: $(MODEM_FLS)
-droidcore: modem.fls
-endif
-
-endif

@@ -18,16 +18,21 @@
 # Fls generation of AOSP image files
 # -------------------------------------
 
-SYSTEM_FLS		:= $(FLASHFILES_DIR)/system.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/system_signed.fls
-USERDATA_FLS 	:= $(FLASHFILES_DIR)/userdata.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/userdata_signed.fls
-CACHE_FLS 	  	:= $(FLASHFILES_DIR)/cache.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/cache_signed.fls
-BOOTIMG_FLS		:= $(FLASHFILES_DIR)/boot.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/boot_signed.fls
-RECOVERY_FLS		:= $(FLASHFILES_DIR)/recovery.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/recovery_signed.fls
+SYSTEM_FLS		         := $(FLASHFILES_DIR)/system.fls
+ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/system_signed.fls
+
+USERDATA_FLS 	         := $(FLASHFILES_DIR)/userdata.fls
+ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/userdata_signed.fls
+
+CACHE_FLS 	  	         := $(FLASHFILES_DIR)/cache.fls
+ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/cache_signed.fls
+
+BOOTIMG_FLS		         := $(FLASHFILES_DIR)/boot.fls
+SYSTEM_SIGNED_FLS_LIST   += $(SIGN_FLS_DIR)/boot_signed.fls
+
+RECOVERY_FLS		     := $(FLASHFILES_DIR)/recovery.fls
+SYSTEM_SIGNED_FLS_LIST   += $(SIGN_FLS_DIR)/recovery_signed.fls
+
 
 $(SYSTEM_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) systemimage $(INSTALLED_SYSTEMIMAGE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag SYSTEM $(INJECT_FLASHLOADER_FLS) $(INSTALLED_SYSTEMIMAGE) --replace --to-fls2

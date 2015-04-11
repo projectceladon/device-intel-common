@@ -196,7 +196,6 @@ ucode_patch.fls: $(UCODE_PATCH_FLS)
 
 ifeq ("$(wildcard $(UCODE_PATCH_BIN))","")
 $(UCODE_PATCH_FLS):
-$(error this shouldnt happen!)
 else
 SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/ucode_patch_signed.fls
 ifeq ($(BUILD_REL10_BOOTCORE), true)
@@ -299,7 +298,6 @@ BUILT_PSI_FLASH_XOR   := $(BOOTLOADER_BIN_PATH)/psi_flash.xor_script.txt
 BUILT_EBL_HEX         := $(BOOTLOADER_BIN_PATH)/ebl.hex
 BUILT_SLB_HEX         := $(BOOTLOADER_BIN_PATH)/slb.hex
 
-SPLASH_IMG_FILE_0      := $(CURDIR)/device/intel/common/vbt.bin
 SPLASH_IMG_FILE_1      := $(CURDIR)/device/intel/$(TARGET_PRODUCT)/splash_image/splash_screen.jpg
 SPLASH_IMG_FILE_2      := $(CURDIR)/device/intel/$(TARGET_PRODUCT)/splash_image/fastboot.jpg
 SPLASH_IMG_BIN_0       := $(BOOTLOADER_BIN_PATH)/splash_image/vbt.bin
