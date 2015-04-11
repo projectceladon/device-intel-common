@@ -58,7 +58,7 @@ boot.fls: $(BOOTIMG_FLS)
 recovery.fls: $(RECOVERY_FLS)
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)), sofia3g)
-android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS) $(RECOVERY_FLS)
+android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS) $(if $(findstring true,$(TARGET_NO_RECOVERY)),,$(RECOVERY_FLS))
 else
 android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS)
 endif

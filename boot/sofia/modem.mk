@@ -106,8 +106,10 @@ ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 .INTERMEDIATE: $(SIGN_FLS_DIR)/modem_signed.fls
 
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_PRODUCT))
 $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
+endif # BOARD_USE_FLS_PREBUILTS != true
 
 BUILT_MODEM_DATA_EXT := $(EXTRACT_TEMP)/modem/modem.fls_ID0_CUST_LoadMap0.bin
 
