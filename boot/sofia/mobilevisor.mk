@@ -23,7 +23,8 @@ BUILT_VMM_TARGET          := $(VMM_BUILD_OUT)/mobilevisor/mobilevisor.hex
 BUILT_VMM_TARGET_BIN	  := $(VMM_BUILD_OUT)/mobilevisor/mobilevisor.bin
 
 ##Temp Fix for override of Whole archive lib list.
-BUILT_MV_CORE_BIN       := $(MOBILEVISOR_REL_PATH)/lib_mobilevisor_core/debug/lib_mobilevisor_core.a
+ROOTDIR = $(PWD)
+BUILT_MV_CORE_BIN       := $(ROOTDIR)/$(MOBILEVISOR_REL_PATH)/lib_mobilevisor_core/debug/lib_mobilevisor_core.a
 
 MOBILEVISOR_FLS         := $(FLASHFILES_DIR)/mobilevisor.fls
 SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mobilevisor_signed.fls
