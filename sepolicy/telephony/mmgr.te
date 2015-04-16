@@ -29,6 +29,7 @@ allow mmgr tty_device:chr_file { read write ioctl open };
 allow mmgr device:dir read;
 allow mmgr tmpfs_block_device:blk_file { open read write ioctl getattr };
 allow mmgr tmpfs_block_device:dir { search write remove_name getattr };
+allow mmgr block_device:dir search;
 allow mmgr radio_device:chr_file { read write open ioctl unlink getattr };
 allow mmgr self:capability { chown fowner sys_admin };
 allow mmgr self:capability2 { block_suspend };
