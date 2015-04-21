@@ -26,6 +26,7 @@ allow telemetry property_socket:unix_stream_socket connectto;
 #tombstone
 allow telemetry tombstone_data_file:dir rw_dir_perms;
 allow telemetry tombstone_data_file:file create_file_perms;
+allow telemetry self:capability dac_read_search;
 
 # files
 allow telemetry telemetry_data_file:dir create_dir_perms;
