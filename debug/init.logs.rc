@@ -35,3 +35,20 @@ service ap_log_srv /system/bin/start_log_srv.sh
 service ap_log_srv_late /system/bin/start_log_srv.sh
     class late_start
     oneshot
+
+service earlylogs /system/bin/elogs.sh
+    class core
+    oneshot
+
+on nonencrypted
+    stop earlylogs
+
+on property:vold.decrypt=trigger_restart_framework
+    stop earlylogs
+
+on property:persist.service.elogs.enable=1
+    mkdir /cache/elogs 0770 system log
+    restorecon /cache/elogs
+
+on property:persist.service.elogs.enable=0
+    exec -- /system/bin/rm -rf /cache/elogs
