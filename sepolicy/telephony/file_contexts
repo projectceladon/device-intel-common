@@ -18,6 +18,7 @@
 /dev/mdm_ctrl1                  u:object_r:tty_device:s0
 /dev/ttyACM0                    u:object_r:tty_device:s0
 /dev/ttyACM1                    u:object_r:tty_device:s0
+/dev/gsmtty7                    u:object_r:radio_device:s0
 /dev/gsmtty11                   u:object_r:radio_device:s0
 /dev/gsmtty15                   u:object_r:radio_device:s0
 /dev/gsmtty18                   u:object_r:radio_device:s0

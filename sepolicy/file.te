@@ -30,6 +30,7 @@ type sysfs_powercap, fs_type, sysfs_type;
 
 #gps
 type gnss_socket, file_type;
+type gps_sysfs_file, fs_type, sysfs_type;
 
 # i915 videostatus
 type sysfs_videostatus, fs_type, sysfs_type;
