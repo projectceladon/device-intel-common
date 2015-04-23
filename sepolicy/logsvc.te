@@ -1,4 +1,4 @@
-# Rules for debug-logs speciffic services
+# Rules for debug-logs specific services
 type logsvc, domain;
 
 init_daemon_domain(logsvc);
@@ -21,3 +21,5 @@ allow logsvc kernel:system syslog_read;
 unix_socket_connect(logsvc, property, init);
 allow logsvc system_prop:property_service set;
 allow logsvc ctl_default_prop:property_service set;
+
+allow logsvc sth_device:chr_file rw_file_perms;

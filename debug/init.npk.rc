@@ -1,0 +1,2 @@
+service ap_lognpk /system/bin/logcat_ep.sh /system/bin/logcatext -b main -b system -b radio -b events -b crash -x
+    disabled

@@ -101,3 +101,6 @@
 
 # Logs
 /data/logs(/.*)?                u:object_r:log_file:s0
+
+# Intel trace hub (North Peak)
+/dev/[0-9]*-sth             u:object_r:sth_device:s0
