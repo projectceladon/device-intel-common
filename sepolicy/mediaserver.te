@@ -12,3 +12,6 @@ allow mediaserver system_data_file:sock_file write;
 
 # fix camera
 allow mediaserver surfaceflinger_tmpfs:file { read write };
+
+allow mediaserver telemetry_data_file:dir rw_dir_perms;
+allow mediaserver telemetry_data_file:file create_file_perms;

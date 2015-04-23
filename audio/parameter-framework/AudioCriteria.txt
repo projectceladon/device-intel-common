@@ -1,23 +1,21 @@
-ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone          InImsCall
-ExclusiveCriterion  FmMode                 :  Off               On
-InclusiveCriterion  TTYDirection           :  Downlink          Uplink
+ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone
+InclusiveCriterion  TtyDirection           :  Downlink          Uplink
 InclusiveCriterion  RoutageState           :  Configure         Flow             Path
-InclusiveCriterion  ClosingCaptureRoutes   :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        CmeVoice    BtHfp
-InclusiveCriterion  ClosingPlaybackRoutes  :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        CmeVoice    BtHfp
-InclusiveCriterion  OpenedCaptureRoutes    :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        CmeVoice    BtHfp
-InclusiveCriterion  OpenedPlaybackRoutes   :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        CmeVoice    BtHfp
-InclusiveCriterion  SelectedInputDevice    :  Communication     Ambient          Main             SCO_Headset      Headset           AuxDigital VoiceCall           Back           RemoteSubmix      AnlgDockHeadset                                                                   DgtlDockHeadset   UsbAccessory     UsbDevice        FmTuner          TvTuner           Line       Spdif               BluetoothA2dp  Loopback
-InclusiveCriterion  SelectedOutputDevice   :  Earpiece          IHF              Headset          Headphones       SCO               SCO_Headset SCO_CarKit         A2dp           A2dpHeadphones    A2dpSpeaker  AuxDigital                                                           AnlgDockHeadset   DgtlDockHeadset  UsbAccessory     UsbDevice        RemoteSubmix      TelephonyTx Line               HdmiArc        Spdif             Fm           AuxLine     SpeakerSafe
-InclusiveCriterion  AudioSource            :  Camcorder         Default          Mic              None             VoiceCall         VoiceCommunication             VoiceDownlink  VoiceRecognition  VoiceUplink  RemoteSubmix Hotword
-ExclusiveCriterion  BandRinging            :  NetworkGenerated  PhoneGenerated
+InclusiveCriterion  ClosingCaptureRoutes   :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp
+InclusiveCriterion  ClosingPlaybackRoutes  :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp
+InclusiveCriterion  OpenedCaptureRoutes    :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp
+InclusiveCriterion  OpenedPlaybackRoutes   :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp
+InclusiveCriterion  SelectedInputDevices    :  Communication     Ambient          Main             ScoHeadset      Headset           AuxDigital VoiceCall           Back           RemoteSubmix      AnlgDockHeadset                                                                   DgtlDockHeadset   UsbAccessory     UsbDevice        FmTuner          TvTuner           Line       Spdif               BluetoothA2dp  Loopback
+InclusiveCriterion  SelectedOutputDevices   :  Earpiece          Ihf              Headset          Headphones       Sco               ScoHeadset ScoCarkit         A2dp           A2dpHeadphones    A2dpSpeaker  AuxDigital                                                           AnlgDockHeadset   DgtlDockHeadset  UsbAccessory     UsbDevice        RemoteSubmix      TelephonyTx Line               HdmiArc        Spdif             Fm           AuxLine     SpeakerSafe
+InclusiveCriterion  InputSources            :  Camcorder         Default          Mic              None             VoiceCall         VoiceCommunication             VoiceDownlink  VoiceRecognition  VoiceUplink  RemoteSubmix Hotword
 ExclusiveCriterion  BandType               :  NB                SuperWB          Unknown          WB
 ExclusiveCriterion  BtHeadsetNrEc          :  False             True
 ExclusiveCriterion  BtHeadsetBandType      :  NB                SuperWB          Unknown          WB
-ExclusiveCriterion  HAC                    :  Off               On
+ExclusiveCriterion  HacSelected            :  False             True
 ExclusiveCriterion  ScreenState            :  Off               On
 ExclusiveCriterion  BypassNonLinearPp      :  Off               On
 ExclusiveCriterion  BypassLinearPp         :  Off               On
-ExclusiveCriterion  MicMute                :  Off               On
+ExclusiveCriterion  MicMuted               :  False             True
 InclusiveCriterion  PreProcEnabled         :  Aec               Agc              Ns              Bmf              Wnr
 ExclusiveCriterion BmfCameraOrientation    :  False             True
 ExclusiveCriterion BmfCameraLocation       :  False             True
@@ -28,6 +26,4 @@ ExclusiveCriterion  SlvActivated           :  False             True
 ExclusiveCriterion  BwxActivated           :  False             True
 ExclusiveCriterion PersonalEqualization    :  None              Slight          Medium           Strong
 ExclusiveCriterion ModemAudioIsSpeech      :  False             True
-ExclusiveCriterion HfpClientEnable         :  Off               On
-ExclusiveCriterion HfpClientBandType       :  Unknown           NB              WB          SuperWB
 ExclusiveCriterion ScreenRotation          :  0                 90              180         270

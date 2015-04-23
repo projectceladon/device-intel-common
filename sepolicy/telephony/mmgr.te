@@ -1,0 +1,36 @@
+# Rules for mmgr
+type mmgr, domain;
+type mmgr_exec, exec_type, file_type;
+init_daemon_domain(mmgr)
+binder_use(mmgr)
+binder_call(system_server, mmgr)
+
+allow mmgr init:unix_stream_socket connectto;
+allow mmgr property_socket:sock_file write;
+allow mmgr system_prop:property_service set;
+allow mmgr sysfs_wake_lock:file { read write open };
+allow mmgr config_file:dir { create_dir_perms getattr };
+allow mmgr config_file:file create_file_perms;
+allow mmgr log_file:dir create_dir_perms;
+allow mmgr log_file:file create_file_perms;
+allow mmgr factory_file:dir { create_dir_perms getattr };
+allow mmgr factory_file:file create_file_perms;
+allow mmgr usb_device:chr_file { read write getattr open ioctl };
+allow mmgr usb_device:dir { read open search };
+allow mmgr cache_file:dir create_dir_perms;
+allow mmgr cache_file:file { write create unlink open };
+allow mmgr sysfs_hsic_enable:file { write open read };
+allow mmgr sysfs_ssic_enable:file { write open read };
+allow mmgr self:process execmem;
+allow mmgr shell_exec:file { read execute open execute_no_trans };
+allow mmgr system_file:file execute_no_trans;
+allow mmgr zygote_exec:file { read getattr open execute execute_no_trans };
+allow mmgr sysfs_autosuspend_enable:file { write open };
+allow mmgr tty_device:chr_file { read write ioctl open };
+allow mmgr device:dir read;
+allow mmgr tmpfs_block_device:blk_file { open read write ioctl getattr };
+allow mmgr tmpfs_block_device:dir { search write remove_name getattr };
+allow mmgr radio_device:chr_file { read write open ioctl unlink getattr };
+allow mmgr self:capability { chown fowner sys_admin };
+allow mmgr self:capability2 { block_suspend };
+allow mmgr proc_cpuinfo:file mounton;
