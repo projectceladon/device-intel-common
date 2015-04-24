@@ -84,8 +84,6 @@ VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
 
 .INTERMEDIATE: $(VRL_FLS)
 
-INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
-
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
 DATA_EXT := *.fls_ID0_*_LoadMap*
 
