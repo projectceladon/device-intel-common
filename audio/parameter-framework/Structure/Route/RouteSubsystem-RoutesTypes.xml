@@ -30,12 +30,7 @@
             </ParameterBlock>
         </ComponentType>
 
-        <!-- Duplicated definition of output flags ... This
-        is needed because of how the route plugin will use the 'Criterion'
-        objects: the 'Criterion' instanciation mapping must be put on the
-        ParameterBlock.
-        WARNING: keep aligned with the criteria definition -->
-        <ComponentType Name="OutputFlags_">
+        <ComponentType Name="OutputFlags">
             <BitParameterBlock Name="output_flags" Size="32">
                 <BitParameter Name="direct" Size="1" Pos="0"/>
                 <BitParameter Name="primary" Size="1" Pos="1"/>
@@ -47,12 +42,7 @@
             </BitParameterBlock>
         </ComponentType>
 
-        <!-- Duplicated definition of input sources... This
-        is needed because of how the route plugin will use the 'Criterion'
-        objects: the 'Criterion' instanciation mapping must be put on the
-        ParameterBlock.
-        WARNING: keep aligned with the criteria definition -->
-        <ComponentType Name="InputSources_">
+        <ComponentType Name="InputSources">
             <BitParameterBlock Name="input_sources" Size="32">
                 <BitParameter Name="default" Size="1" Pos="0"/>
                 <BitParameter Name="mic" Size="1" Pos="1"/>
@@ -65,6 +55,13 @@
                 <BitParameter Name="remote_submix" Size="1" Pos="8"/>
                 <BitParameter Name="hotword" Size="1" Pos="9"/>
             </BitParameterBlock>
+        </ComponentType>
+
+        <ComponentType Name="InputFlags">
+          <BitParameterBlock Name="input_flags" Size="32">
+            <BitParameter Name="fast" Size="1" Pos="0"/>
+            <BitParameter Name="hw_hotword" Size="1" Pos="1"/>
+          </BitParameterBlock>
         </ComponentType>
 
         <!-- Base for playback StreamRoute configuration and capture StreamRoute configuration -->
@@ -95,15 +92,16 @@
         <ComponentType Name="StreamRouteConfigPlayback"
                        Extends="StreamRouteConfig"
                        Mapping="StreamRoute:'%1_%2'">
-            <Component Name="attributes" Type="OutputFlags_" Description="Applicable OutputFlags"/>
+            <Component Name="supported_flags" Type="OutputFlags" Description="Applicable OutputFlags"/>
+            <IntegerParameter Name="supported_use_cases" Size="32" Description="Not Used"/>
             <StringParameter Name="effects_supported" MaxLength="256"
                              Description="CSV Human readeable effects list"/>
         </ComponentType>
         <ComponentType Name="StreamRouteConfigCapture"
                        Extends="StreamRouteConfig"
                        Mapping="StreamRoute:'%1_%2'">
-            <Component Name="attributes" Type="InputSources_"
-                       Description="Applicable InputSources mask"/>
+            <Component Name="supported_flags" Type="InputFlags" Description="Applicable InputFlags"/>
+            <Component Name="supported_use_cases" Type="InputSources" Description="Applicable Input Use Cases mask"/>
             <StringParameter Name="effects_supported" MaxLength="256"
                              Description="CSV Human readeable effects list"/>
         </ComponentType>
