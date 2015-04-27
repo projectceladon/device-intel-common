@@ -32,3 +32,7 @@
 
 # factory files
 /factory(/.*)?                  u:object_r:factory_file:s0
+
+#mediaserver
+/dev/gsmtty13                   u:object_r:modem_audio_tty_device:s0
+/dev/gsmtty20                   u:object_r:modem_audio_tty_device:s0
