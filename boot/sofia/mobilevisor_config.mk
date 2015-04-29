@@ -86,6 +86,10 @@ ifeq '$(findstring 3gr,${TARGET_BOARD_PLATFORM})' '3gr'
 MV_CONFIG_OPTION_common    += -D __MV_SECVM_LOW_PRIO__
 endif
 
+ifeq ($(SECURE_PLAYBACK_ENABLE),true)
+MV_CONFIG_OPTION_common += -D __MV_SECURE_PLAYBACK__
+endif
+
 ifneq '$(MV_CONFIG_CHIP_VER)' ''
 MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM_VAR)/configs/$(MV_CONFIG_CHIP_VER)
 endif
