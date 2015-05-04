@@ -1,13 +1,13 @@
-InclusiveCriterion SelectedOutputDevices            :    Earpiece         Ihf           Headset       Headphones    Sco        ScoHeadset   ScoCarkit        A2dp               A2dpHeadphones    A2dpSpeaker     AuxDigital      AnlgDockHeadset DgtlDockHeadset UsbAccessory  UsbDevice    RemoteSubmix TelephonyTx  Line          HdmiArc          Spdif     Fm              AuxLine           SpeakerSafe
-InclusiveCriterion SelectedInputDevices             :    Communication    Ambient       Main          ScoHeadset    Headset    AuxDigital   VoiceCall        Back               RemoteSubmix      AnlgDockHeadset DgtlDockHeadset UsbAccessory    UsbDevice       FmTuner       TvTuner      Line         Spdif        BluetoothA2dp Loopback
+InclusiveCriterion SelectedOutputDevices    :    Earpiece         Ihf           Headset       Headphones    Sco        ScoHeadset   ScoCarkit        A2dp               A2dpHeadphones    A2dpSpeaker     AuxDigital      AnlgDockHeadset DgtlDockHeadset UsbAccessory  UsbDevice    RemoteSubmix TelephonyTx  Line          HdmiArc          Spdif     Fm              AuxLine           SpeakerSafe
+InclusiveCriterion SelectedInputDevices     :    Communication    Ambient       Main          ScoHeadset    Headset    AuxDigital   VoiceCall        Back               RemoteSubmix      AnlgDockHeadset DgtlDockHeadset UsbAccessory    UsbDevice       FmTuner       TvTuner      Line         Spdif        BluetoothA2dp Loopback
 InclusiveCriterion OutputFlags              :    Direct           Primary       Fast          Deep          Offload    NonBlocking  HwAvSync
+InclusiveCriterion InputFlags               :    Fast             HwHotword
 InclusiveCriterion InputSources             :    Default          Mic           VoiceUplink   VoiceDownlink VoiceCall  Camcorder    VoiceRecognition VoiceCommunication RemoteSubmix      Hotword
 InclusiveCriterion TtyDirection             :    Downlink         Uplink
-InclusiveCriterion PreProcEnabled  : Aec      Agc           Ns            Bmf            Wnr
-InclusiveCriterion StatesChanged            :    Mode      HasModem      ModemState    ModemAudioAvailable    HacSelected    TtyDirection    BtHeadsetBandType      CsvBandType     VoIPBandType    SelectedInputDevices    SelectedOutputDevices InputSources OutputFlags  DirectStream ScreenState      ContextAwareness FmEnabled AlwaysListening MicMuted PreProcEnabled LpalDevice BwxActivated HfpClientEnable HfpClientBandType ScreenRotation
+InclusiveCriterion PreProcEnabled           :    Aec              Agc           Ns            Bmf            Wnr
+InclusiveCriterion StatesChanged            :    Mode      HasModem      ModemState    ModemAudioAvailable    HacSelected    TtyDirection    BtHeadsetBandType      CsvBandType     VoIPBandType    SelectedInputDevices    SelectedOutputDevices InputSources OutputFlags InputFlags ScreenState ContextAwareness FmEnabled AlwaysListening MicMuted PreProcEnabled LpalDevice BwxActivated HfpClientEnable HfpClientBandType ScreenRotation
 ExclusiveCriterion LpalDevice               :    None             Communication Ambient       Main        ScoHeadset     Headset    AuxDigital       VoiceCall          Back              RemoteSubmix    AnlgDockHeadset DgtlDockHeadset UsbAccessory    UsbDevice     FmTuner      TvTuner      Line         Spdif         BluetoothA2dp    Loopback
-ExclusiveCriterion Mode              :    Normal           RingTone      InCsvCall     InVoipCall
-ExclusiveCriterion DirectStream             :    False            True
+ExclusiveCriterion Mode                     :    Normal           RingTone      InCsvCall     InVoipCall
 ExclusiveCriterion ModemAudioAvailable      :    False            True
 ExclusiveCriterion FmEnabled                :    False            True
 ExclusiveCriterion HacSelected              :    False            True
