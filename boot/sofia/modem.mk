@@ -141,6 +141,7 @@ modem: $(BUILT_MODEM_DATA_EXT)
 droidcore: modem
 
 else
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_PRODUCT))
 .PHONY: modem.fls
 $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
@@ -150,6 +151,12 @@ $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
+else
+modem.fls: $(FLASHFILES_DIR)/dsp_image.fls $(FLASHFILES_DIR)/lte.fls $(FLASHFILES_DIR)/imc_fw_block_1.fls \
+	            $(FLASHFILES_DIR)/imc_fw_block_2.fls $(FLASHFILES_DIR)/imc_bootloader_a.fls $(FLASHFILES_DIR)/imc_bootloader_b.fls
+.PHONY: force
+force: ;
+endif# BOARD_USE_FLS_PREBUILTS != true
 
 modem.fls: $(MODEM_FLS)
 droidcore: modem.fls
