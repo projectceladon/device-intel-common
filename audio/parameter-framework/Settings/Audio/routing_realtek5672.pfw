@@ -100,7 +100,6 @@ supDomain: Configure.HWCodec
 			/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/INTERFACE_MIXER/AIF1/ADC2_IN1/SOURCE = IF1_ADC2_IN
 
 			# dmic
-			/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/STEREO1/STEREO/MUX_DMIC/SOURCE = DMIC1
 			/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/STEREO1/STEREO/MUX_ADC2/LEFT/SOURCE = DMIC
 			/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/STEREO1/STEREO/MUX_ADC2/RIGHT/SOURCE = DMIC
 
@@ -151,7 +150,22 @@ supDomain: Configure.HWCodec
 				/Audio/REALTEK/SOUND_CARD/MIXER/ANALOG/HPOUT_MIXER/HPVOL/SWITCH = 0
 
 	supDomain: Capture
-		domain: MainMic
+
+		domain: Mics
+			# InCall
+			# Use the 2 mics on the side of the board
+			conf: SideMics
+				ANY
+					OpenedPlaybackRoutes Includes ModemIA
+					Mode Is InVoipCall
+					InputSources Is VoiceCommunication
+
+				/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/STEREO1/STEREO/MUX_DMIC/SOURCE = DMIC2
+
+			conf: BackMic
+				/Audio/REALTEK/SOUND_CARD/MIXER/DIGITAL/ADC_MIXER/STEREO1/STEREO/MUX_DMIC/SOURCE = DMIC1
+
+		domain: Digital
 			conf: Enable
 				OpenedCaptureRoutes Includes HwCodec0IA
 
