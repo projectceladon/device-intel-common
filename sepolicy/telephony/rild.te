@@ -5,3 +5,4 @@ unix_socket_connect(rild, mmgr, mmgr)
 allow rild radio_device:chr_file { read lock write open ioctl };
 allow rild system_data_file:dir { write add_name };
 allow rild system_data_file:file { write create };
+allow rild atproxy_prop:property_service set;
