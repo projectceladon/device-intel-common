@@ -16,7 +16,7 @@
 ifeq ($(BUILD_VMM_FROM_SRC),true)
 #Source Paths configured in Base Android.mk
 #Build Output path.
-MV_CONFIG_PRODUCT_PATH := $(CURDIR)/mobilevisor/products
+MV_CONFIG_PRODUCT_PATH := $(SOFIA_FW_SRC_BASE)/mobilevisor/products
 MV_CONFIG_TEMPLATE_PATH := $(MV_CONFIG_PRODUCT_PATH)/configs
 MV_CONFIG_BUILD_OUT     := $(CURDIR)/$(PRODUCT_OUT)/vmm_build/configs
 MV_NUM_OF_CPUS ?= 2
