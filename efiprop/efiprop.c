@@ -40,7 +40,9 @@ static const char *WHITELIST[] = {
 	"service.amtl1.cfg",
 	"telephony.tcs.sw_folder",
 	"ro.swconf.info",
-	"persist.disable_NVM_Server"
+	"ro.swconf.info.tel",
+	"persist.disable_NVM_Server",
+	"persist.tcs.hw_filename"
 };
 
 static const efi_guid_t EFI_PROP_GUID =
