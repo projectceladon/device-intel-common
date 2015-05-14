@@ -9,6 +9,8 @@
 /sys/devices/pci0000:00/0000:00:14.0/usb2/2-5/power/wakeup               u:object_r:sysfs_ssic_enable:s0
 /sys/bus/usb/devices/2-0:1.0/port5/usb3_lpm                              u:object_r:sysfs_ssic_enable:s0
 /sys/bus/usb/devices/1-0:1.0/port6/power/pm_qos_no_power_off             u:object_r:sysfs_hsic_enable:s0
+/sys/devices/pci0000:00/0000:00:14.0/usb1/1-3/power/control              u:object_r:sysfs_hsic_enable:s0
+/sys/devices/pci0000:00/0000:00:14.0/usb1/1-3/power/usb2_hardware_lpm    u:object_r:sysfs_hsic_enable:s0
 /dev/block/platform/pci0000:00/80860F14:00/by-name/android_config        u:object_r:tmpfs_block_device:s0
 /dev/block/platform/pci0000:00/80860F14:00/by-name/android_factory       u:object_r:tmpfs_block_device:s0
 /dev/block/platform/pci0000:00/80860F14:00/by-name/modem1_cal            u:object_r:tmpfs_block_device:s0
