@@ -12,3 +12,6 @@ allow system_server thermal:unix_dgram_socket sendto;
 #enable use of configfs
 allow system_server configfs:dir create_dir_perms;
 
+# sensor hub
+unix_socket_connect(system_server, sensorhubd, sensorhubd);
+allow system_server sensorhubd_socket:sock_file rw_file_perms;
