@@ -87,7 +87,6 @@ SLB_FLS                := $(FLASHFILES_DIR)/slb.fls
 
 KEYSTORE_SIGNER := $(ANDROID_BUILD_TOP)/$(HOST_OUT_EXECUTABLES)/keystore_signer
 
-#This must be included here for ddrinject makefile to take over the variables here and define additional ones used below
 include $(LOCAL_PATH)/ddrinject.mk
 
 MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
