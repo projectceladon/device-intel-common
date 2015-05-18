@@ -1,0 +1,28 @@
+userdebug_or_eng(`
+  # npk init
+  type npk_init, domain;
+  type npk_init_exec, exec_type, file_type;
+  init_daemon_domain(npk_init)
+
+  # allow
+  #   - /system/bin/sh
+  allow npk_init shell_exec:file read;
+
+  #   - ls, cd
+  allow npk_init system_file:file execute_no_trans;
+
+  #   - start/stop ap_lognpk
+  unix_socket_connect(npk_init, property, init)
+  allow npk_init default_prop:property_service set;
+  allow npk_init ctl_default_prop:property_service set;
+
+  #   - modifying /sys/bus/intel_th
+  #   - modifying /sys/class/stm_source
+  allow npk_init sysfs:file write;
+
+  #     - modifying /sys/bus/intel_th/devices/0-msc0/{nr_pages,mode}
+  # => allow npk_init self:capability sys_rawio;
+  # /!\ This is a NEVERALLOW.
+  #     Run the service in permissive mode instead (not in user).
+  permissive npk_init;
+')

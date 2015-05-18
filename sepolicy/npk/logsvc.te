@@ -1,0 +1,2 @@
+# Let log service write to the trace hub device
+allow logsvc sth_device:chr_file rw_file_perms;
