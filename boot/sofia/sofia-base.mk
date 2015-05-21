@@ -38,11 +38,11 @@ SECVM_SRC_PATH  ?= $(SOFIA_FW_SRC_BASE)/secure_vm
 GUESTVM2_SRC_PATH  ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests/vm2
 MOBILEVISOR_SVC_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/services
 MOBILEVISOR_SRC_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/products
-MOBILEVISOR_REL_PATH ?= mobilevisor/release
+MOBILEVISOR_REL_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/release
 MOBILEVISOR_GUEST_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests
 BLOB_BUILDER_SCRIPT ?= $(MOBILEVISOR_REL_PATH)/tools/vmmBlobBuilder.py
 BINARY_MERGE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/binary_merge
-VBT_GENERATE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/vbtgen
+VBT_GENERATE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/vbtgen$(if $(findstring 3gr,$(TARGET_BOARD_PLATFORM)),_vop)
 FWU_PACK_GENERATE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/fwpgen
 
 createflashfile_dir:
