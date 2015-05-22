@@ -374,14 +374,16 @@
             <BooleanParameter Name="SWITCH" Mapping="Control:'%1 %2 %3 %4 Switch'"/>
         </ComponentType>
 
+        <ComponentType Name="DAC_MIXER_SWITCH">
+            <BooleanParameter Name="SWITCH" Mapping="Control:'%1 %2 %3 %4 Switch'"/>
+        </ComponentType>
+
         <ComponentType Name="MONO_DAC_MIXER_RIGHT_CHANNEL">
            <Component Name="L2" Type="DAC_MIXER_VALUE" Mapping="Amend4:L2"/>
-           <Component Name="R1" Type="DAC_MIXER_VALUE" Mapping="Amend4:R1"/>
            <Component Name="R2" Type="DAC_MIXER_VALUE" Mapping="Amend4:R2"/>
         </ComponentType>
 
         <ComponentType Name="MONO_DAC_MIXER_LEFT_CHANNEL">
-           <Component Name="L1" Type="DAC_MIXER_VALUE" Mapping="Amend4:L1"/>
            <Component Name="L2" Type="DAC_MIXER_VALUE" Mapping="Amend4:L2"/>
            <Component Name="R2" Type="DAC_MIXER_VALUE" Mapping="Amend4:R2"/>
         </ComponentType>
@@ -392,15 +394,15 @@
         </ComponentType>
 
         <ComponentType Name="STEREO_DAC_MIXER_RIGHT_CHANNEL">
-           <Component Name="L1" Type="DAC_MIXER_VALUE" Mapping="Amend4:L1"/>
-           <Component Name="R1" Type="DAC_MIXER_VALUE" Mapping="Amend4:R1"/>
+           <Component Name="L1" Type="DAC_MIXER_SWITCH" Mapping="Amend4:L1"/>
+           <Component Name="R1" Type="DAC_MIXER_SWITCH" Mapping="Amend4:R1"/>
            <Component Name="R2" Type="DAC_MIXER_VALUE" Mapping="Amend4:R2"/>
         </ComponentType>
 
         <ComponentType Name="STEREO_DAC_MIXER_LEFT_CHANNEL">
-           <Component Name="L1" Type="DAC_MIXER_VALUE" Mapping="Amend4:L1"/>
+           <Component Name="L1" Type="DAC_MIXER_SWITCH" Mapping="Amend4:L1"/>
            <Component Name="L2" Type="DAC_MIXER_VALUE" Mapping="Amend4:L2"/>
-           <Component Name="R1" Type="DAC_MIXER_VALUE" Mapping="Amend4:R1"/>
+           <Component Name="R1" Type="DAC_MIXER_SWITCH" Mapping="Amend4:R1"/>
         </ComponentType>
 
         <ComponentType Name="STEREO_DAC_MIXER_TYPE">
@@ -409,13 +411,11 @@
         </ComponentType>
 
         <ComponentType Name="DIG_DAC_MIXER_RIGHT_CHANNEL">
-           <Component Name="R" Type="DAC_MIXER_VALUE" Mapping="Amend4:R,Amend3:Sto DAC Mix"/>
            <Component Name="R2" Type="DAC_MIXER_VALUE" Mapping="Amend4:R2,Amend3:DAC"/>
            <Component Name="L2" Type="DAC_MIXER_VALUE" Mapping="Amend4:L2,Amend3:DAC"/>
         </ComponentType>
 
         <ComponentType Name="DIG_DAC_MIXER_LEFT_CHANNEL">
-           <Component Name="L" Type="DAC_MIXER_VALUE" Mapping="Amend4:L,Amend3:Sto DAC Mix"/>
            <Component Name="R2" Type="DAC_MIXER_VALUE" Mapping="Amend4:R2,Amend3:DAC"/>
            <Component Name="L2" Type="DAC_MIXER_VALUE" Mapping="Amend4:L2,Amend3:DAC"/>
         </ComponentType>

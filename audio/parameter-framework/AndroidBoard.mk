@@ -14,7 +14,7 @@ PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 
 # The value of PFW_TUNING_ALLOWED will be used to remplace the
 # "@TUNING_ALLOWED@" pattern in top-level configuration files templates
-ifneq ($(TARGET_BUILD_VARIANT),user)
+ifeq ($(TARGET_BUILD_VARIANT),eng)
 PFW_TUNING_ALLOWED := true
 else
 PFW_TUNING_ALLOWED := false
