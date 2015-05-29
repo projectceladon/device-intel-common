@@ -4,7 +4,9 @@
 		<vendorId value="8086"/>
 		<productId value="0a80"/>
 		<facing value="CAMERA_FACING_BACK"/>
-		<orientation value="0"/>
+		<orientation value="90"/>
+		<focal-length value="1860"/>
+		<aperture value="2.4"/>
 		<plugin name="ds4"/>
 	</prop>
 </camera>
