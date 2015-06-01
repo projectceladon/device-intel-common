@@ -6,5 +6,5 @@ allow nvm_server mmgr:unix_stream_socket connectto;
 allow nvm_server mmgr_socket:sock_file write;
 allow nvm_server config_file:file create_file_perms;
 allow nvm_server config_file:dir { search write add_name };
-allow nvm_server radio_device:chr_file { read lock write open ioctl };
-allow nvm_server tty_device:chr_file { read write ioctl open };
+allow nvm_server radio_device:chr_file { read lock write open };
+allow nvm_server tty_device:chr_file { read write open };

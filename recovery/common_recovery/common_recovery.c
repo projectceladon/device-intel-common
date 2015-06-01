@@ -29,6 +29,8 @@
 #include <updater/updater.h>
 #include <cutils/properties.h>
 
+#include <string.h>
+
 #define CHUNK 1024*1024
 
 ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)

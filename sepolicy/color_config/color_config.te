@@ -6,7 +6,7 @@ init_daemon_domain(color_config)
 
 allow color_config shell_exec:file execute;
 allow color_config oemfs:dir search;
-allow color_config gpu_device:chr_file { read write getattr open ioctl };
+allow color_config gpu_device:chr_file { read write getattr open };
 allow color_config shell_exec:file { read execute open execute_no_trans };
 # refine in the next round: /sys/class/drm/card0/ needs to be labelled more fine-grained
 allow color_config sysfs:file { write setattr };

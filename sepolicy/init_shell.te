@@ -1,1 +1,1 @@
-allow init_shell self:capability sys_module;
+#allow init_shell self:capability sys_module;
