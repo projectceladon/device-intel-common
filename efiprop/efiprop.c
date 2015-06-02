@@ -42,7 +42,8 @@ static const char *WHITELIST[] = {
 	"ro.swconf.info",
 	"ro.swconf.info.tel",
 	"persist.disable_NVM_Server",
-	"persist.tcs.hw_filename"
+	"persist.tcs.hw_filename",
+	"telephony.test.mode"
 };
 
 static const efi_guid_t EFI_PROP_GUID =
