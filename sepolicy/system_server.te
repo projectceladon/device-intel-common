@@ -12,3 +12,5 @@ allow system_server thermal:unix_dgram_socket sendto;
 #enable use of configfs
 allow system_server configfs:dir create_dir_perms;
 
+# bluetooth
+allow system_server bluetooth_service:service_manager add;

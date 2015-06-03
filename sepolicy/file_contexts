@@ -14,6 +14,11 @@
 /dev/video([0-9])+          u:object_r:camera_device:s0
 /dev/media([0-9])+          u:object_r:camera_device:s0
 
+# Bluetooth
+/dev/ttyHSU0                u:object_r:bluetooth_device:s0
+/config/bt                  u:object_r:bluetooth_data_file:s0
+/sys/devices/pci0000:00/8086228A:00/.*/rfkill/rfkill[0-9]+/state	u:object_r:sysfs_bluetooth_writable:s0
+
 # Audio
 /dev/snd/.*                 u:object_r:audio_device:s0
 

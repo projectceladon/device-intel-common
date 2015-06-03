@@ -3,3 +3,4 @@ type msr_device, dev_type;
 type rfkill_device, dev_type;
 type thermal_device, dev_type;
 type cws_manu_device, dev_type;
+type bluetooth_device, dev_type;
