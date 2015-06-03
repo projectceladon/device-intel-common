@@ -38,6 +38,9 @@
 # Radio
 /dev/gsmtty7                u:object_r:radio_device:s0
 
+# NFC
+/data/nfc                   u:object_r:nfc_data_file:s0
+
 # GPS
 /dev/socket/gnss            u:object_r:gnss_socket:s0
 /system/bin/gpsd            u:object_r:gpsd_exec:s0
