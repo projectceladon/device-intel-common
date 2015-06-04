@@ -82,6 +82,10 @@ $(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_FILE_LIST,$(t))))
 ########################### 
 MV_CONFIG_OPTION_common    = -D __MV_NUM_OF_CPUS__=$(MV_NUM_OF_CPUS) -D __MV_PROD_NAME__=$(PRODUCT_NAME) -D __MV_CONFIG_START_PADDR__=$(MV_CONFIG_PADDR)
 
+ifdef TARGET_MVCONFIG_OPTIONS
+MV_CONFIG_OPTION_common    += $(TARGET_MVCONFIG_OPTIONS)
+endif
+
 ifeq '$(findstring 3gr,${TARGET_BOARD_PLATFORM})' '3gr'
 MV_CONFIG_OPTION_common    += -D __MV_SECVM_LOW_PRIO__
 endif
