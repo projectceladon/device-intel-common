@@ -10,5 +10,5 @@ else
         insmod /system/lib/modules/mac80211.ko
 fi
 
-insmod /system/lib/modules/iwlwifi.ko nvm_file=iwl_nvm.bin d0i3_debug=1
+insmod /system/lib/modules/iwlwifi.ko nvm_file=iwl_nvm.bin
 insmod /system/lib/modules/iwlmvm.ko power_scheme=1
