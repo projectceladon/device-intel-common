@@ -3,9 +3,11 @@
 <telephony_config>
 	<modems_info>
 		<modem_info>
-			<core
-				swRevision="2.1"
-			/>
+			<tlvs_info>
+				<tlv_info
+					filename="2048_Increase_UART_BaudRate.tlv"
+				/>
+			</tlvs_info>
 		</modem_info>
 	</modems_info>
 </telephony_config>
