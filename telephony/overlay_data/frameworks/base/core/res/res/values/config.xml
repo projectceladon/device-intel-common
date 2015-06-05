@@ -37,10 +37,10 @@
 
     <bool name="config_hotswapCapable">true</bool>
 
-    <!-- Configure mobile network MTU (MTU size - 1358 is the value recommended in 3GPP 23.060 for
+    <!-- Configure mobile network MTU (MTU size - 1410 is the good medium value for
          both support of IPv4 and IPv6 traffic)>. The overlay default is set
          here but each carrier may have a specific value set in an overlay config.xml file. -->
-    <integer name="config_mobile_mtu">1358</integer>
+    <integer name="config_mobile_mtu">1410</integer>
     <!-- Configure mobile tcp buffer sizes in the form:
          rat-name:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
          If no value is found for the rat-name in use, the system default will be applied.
