@@ -26,6 +26,7 @@ LOCAL_PATH:= $(call my-dir)
 #-----------------------
 
 FLSTOOL             = $(CURDIR)/device/intel/common/tools/FlsTool
+INSTALLED_OEMIMAGE_TARGET = $(CURDIR)/device/intel/common/oem/oem.img
 IMAGES_DIR         := $(PRODUCT_OUT)/fls
 FLASHFILES_DIR     := $(IMAGES_DIR)/fls
 SIGN_FLS_DIR       := $(IMAGES_DIR)/signed_fls
