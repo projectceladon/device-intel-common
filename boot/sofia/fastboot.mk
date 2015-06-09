@@ -35,9 +35,10 @@ DATA_EXT_NAME := *.fls_ID0_*_LoadMap*
 
 .PHONY: fastboot_img
 define FB_IMG_GEN
-fastboot_$(basename $(notdir $(1))): force $(1) | createflashfile_dir ${ACP}
+fastboot_$(basename $(notdir $(1))): force $(1) | createflashfile_dir $(ACP)
 	$(FLSTOOL) -o $(EXTRACT_TEMP)/$(basename $(notdir $(1))) -x $(1)
-	acp $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
+	echo $(ACP) $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
+	cat $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) > $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
 fastboot_img: fastboot_$(basename $(notdir $(1)))
 endef
 
