@@ -27,12 +27,14 @@ ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/userdata_signed.fls
 CACHE_FLS 	  	         := $(FLASHFILES_DIR)/cache.fls
 ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/cache_signed.fls
 
+OEM_FLS                      := $(FLASHFILES_DIR)/oem.fls
+ANDROID_SIGNED_FLS_LIST   += $(SIGN_FLS_DIR)/oem_signed.fls
+
 BOOTIMG_FLS		         := $(FLASHFILES_DIR)/boot.fls
 SYSTEM_SIGNED_FLS_LIST   += $(SIGN_FLS_DIR)/boot_signed.fls
 
 RECOVERY_FLS		     := $(FLASHFILES_DIR)/recovery.fls
 SYSTEM_SIGNED_FLS_LIST   += $(SIGN_FLS_DIR)/recovery_signed.fls
-
 
 $(SYSTEM_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) systemimage $(INSTALLED_SYSTEMIMAGE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag SYSTEM $(INJECT_FLASHLOADER_FLS) $(INSTALLED_SYSTEMIMAGE) --replace --to-fls2
@@ -43,22 +45,26 @@ $(USERDATA_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) userdataimage 
 $(CACHE_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) cacheimage $(INSTALLED_CACHEIMAGE_TARGET) $(PSI_RAM_FLB) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag CACHE $(INJECT_FLASHLOADER_FLS) $(INSTALLED_CACHEIMAGE_TARGET) --replace --to-fls2
 
+$(OEM_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(INSTALLED_OEMIMAGE_TARGET) $(PSI_RAM_FLB) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag OEM $(INJECT_FLASHLOADER_FLS) $(INSTALLED_OEMIMAGE_TARGET) --replace --to-fls2
+
 $(BOOTIMG_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_RAMDISK_TARGET) $(INSTALLED_KERNEL_TARGET) bootimage $(INSTALLED_BOOTIMAGE_TARGET) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag BOOT_IMG $(INJECT_FLASHLOADER_FLS) $(INSTALLED_BOOTIMAGE_TARGET) --replace --to-fls2
 $(RECOVERY_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(INSTALLED_KERNEL_TARGET) recoveryimage $(INSTALLED_RECOVERYIMAGE_TARGET) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg=$(INTEL_PRG_FILE) --output $@ --tag=RECOVERY $(INJECT_FLASHLOADER_FLS) $(INSTALLED_RECOVERYIMAGE_TARGET) --replace --to-fls2
 
 
-.PHONY: system.fls userdata.fls cache.fls boot.fls recovery.fls
+.PHONY: system.fls userdata.fls cache.fls oem.fls boot.fls recovery.fls
 
 system.fls: $(SYSTEM_FLS)
 userdata.fls: $(USERDATA_FLS)
 cache.fls: $(CACHE_FLS)
+oem.fls: $(OEM_FLS)
 boot.fls: $(BOOTIMG_FLS)
 recovery.fls: $(RECOVERY_FLS)
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)), sofia3g)
-android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS) $(if $(findstring true,$(TARGET_NO_RECOVERY)),,$(RECOVERY_FLS))
+android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(OEM_FLS) $(BOOTIMG_FLS) $(if $(findstring true,$(TARGET_NO_RECOVERY)),,$(RECOVERY_FLS))
 else
 android_fls: $(SYSTEM_FLS) $(USERDATA_FLS) $(CACHE_FLS) $(BOOTIMG_FLS)
 endif
@@ -76,6 +82,7 @@ flsinfo:
 	@echo "-make boot.fls : Will create fls file for boot image."
 	@echo "-make cache.fls : Will create fls file for cache image."
 	@echo "-make recovery.fls : Will create fls file for recovery image."
+	@echo "-make oem.fls : Will create fls file for oem image."
 
 build_info: flsinfo
 
