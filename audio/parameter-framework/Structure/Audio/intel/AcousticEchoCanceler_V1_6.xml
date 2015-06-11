@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="AcousticEchoCanceler" Mapping="ByteControlWithLength:%1 %2 %3 params aec">
+    <ComponentType Name="AcousticEchoCanceler_V1_6" Mapping="ByteControlWithLength:%1 %2 %3 params aec">
         <Component Name="switch" Type="SwitchParam"/>
         <BitParameterBlock Name="sw_flag" Size="16"
             Description="This parameter controls the version of current AEC.">

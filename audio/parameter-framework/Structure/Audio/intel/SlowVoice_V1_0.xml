@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="SlowVoice" Mapping="ByteControlWithLength:%1 %2 %3 params slv">
+    <ComponentType Name="SlowVoice_V1_0" Mapping="ByteControlWithLength:%1 %2 %3 params slv">
         <Component Name="switch" Type="SwitchParam"/>
         <IntegerParameter Name="sw_flag" Size="16" Min="0" Max="65536"
                              Description="Module version. Default=0"/>

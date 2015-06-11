@@ -313,7 +313,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     MediaAlgos_Gen3_5.xml \
     AutomaticGainControlAudio_V1_0.xml \
-    BeamformingAudio_V1.0.xml \
+    BeamForming_V1_2.xml \
     WindNoiseReductionAudio_V1_0.xml \
 
 include $(BUILD_PHONY_PACKAGE)
@@ -327,21 +327,21 @@ LOCAL_REQUIRED_MODULES :=  \
     NoiseReduction_V1_1.xml \
     ComfortNoiseInjector_V1_1.xml \
     ComfortNoiseInjector_V1_2.xml \
-    AutomaticGainControlVoice_V1_3.xml \
+    AutomaticGainControl_V1_3.xml \
     FbaFir_V1_1.xml \
     FbaIir_V1_1.xml \
     DualMicrophoneNoiseReduction_V1_5.xml \
     SpectralEchoReduction_V2_5.xml \
-    BeamformingVoice_V1.1.xml \
+    BeamForming_V1_1.xml \
     EchoDelayLine_V1_1.xml \
     GainLossControl_V1_0.xml \
     AcousticEchoCanceler_V1_6.xml \
-    ReferenceLine_V1_1.xml \
+    EchoReferenceLine_V1_1.xml \
     NonLinearFilter_V1_0.xml \
     TrafficNoiseReduction_V1_0.xml \
     DynamicRangeProcessor_V1_4.xml \
     BandWidthExtender_V1_0.xml \
-    WindNoiseReductionVoice_V1_0.xml \
+    WindNoiseReduction_V1_0.xml \
     SlowVoice_V1_0.xml \
     MultibandDynamicRangeProcessor_V1_0.xml
 
@@ -412,7 +412,7 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := AutomaticGainControlVoice_V1_3.xml
+LOCAL_MODULE := AutomaticGainControl_V1_3.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
@@ -444,7 +444,7 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := BeamformingVoice_V1.1.xml
+LOCAL_MODULE := BeamForming_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
@@ -452,7 +452,7 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := BeamformingAudio_V1.0.xml
+LOCAL_MODULE := BeamForming_V1_2.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
@@ -484,7 +484,7 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := ReferenceLine_V1_1.xml
+LOCAL_MODULE := EchoReferenceLine_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
@@ -524,7 +524,7 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := WindNoiseReductionVoice_V1_0.xml
+LOCAL_MODULE := WindNoiseReduction_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel

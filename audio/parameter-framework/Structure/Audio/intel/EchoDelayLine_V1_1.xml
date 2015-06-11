@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="EchoDelayLine" Mapping="ByteControlWithLength:%1 %2 %3 params delay">
+    <ComponentType Name="EchoDelayLine_V1_1" Mapping="ByteControlWithLength:%1 %2 %3 params delay">
         <Component Name="switch" Type="SwitchParam"/>
         <IntegerParameter Name="sw_flag" Size="16"
             Description="Echo Line Delay version: 0 is v1.1"/>

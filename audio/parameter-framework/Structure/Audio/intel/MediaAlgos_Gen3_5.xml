@@ -3,6 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../Schemas/ComponentTypeSet.xsd">
     <xi:include href="AutomaticGainControlAudio_V1_0.xml"/>
-    <xi:include href="BeamformingAudio_V1.0.xml"/>
+    <xi:include href="BeamForming_V1_2.xml"/>
     <xi:include href="WindNoiseReductionAudio_V1_0.xml"/>
 </ComponentTypeSet>

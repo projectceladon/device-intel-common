@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="AutomaticGainControlVoice" Mapping="ByteControlWithLength:%1 %2 %3 params agc">
+    <ComponentType Name="AutomaticGainControl_V1_3" Mapping="ByteControlWithLength:%1 %2 %3 params agc">
         <Component Name="switch" Type="SwitchParam"/>
         <IntegerParameter Name="sw_flag" Size="16"
                           Description="This parameter controls the version of current AGC: 0 is v1.05; 1 is v1.1; 3 is v1.2; 5 is v1.1+v1.3; 7 is v1.2+v1.3"/>

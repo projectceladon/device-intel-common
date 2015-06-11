@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="WindNoiseReductionVoice" Mapping="ByteControlWithLength:%1 %2 %3 params wnr">
+    <ComponentType Name="WindNoiseReduction_V1_0" Mapping="ByteControlWithLength:%1 %2 %3 params wnr">
         <Component Name="switch" Type="SwitchParam"/>
         <IntegerParameter Name="sw_flag" Size="16"
             Description="WNR version: 0 is v1.0"/>

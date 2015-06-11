@@ -19,7 +19,7 @@
                 <FixedPointParameter Name="mic_4" Size="16" Integral="2" Fractional="13" ArrayLength="128"
                              Description="Filter coefficients for the left channel connected to microphone 4. Class 2 parameter. Default=0"/>
     </ComponentType>
-    <ComponentType Name="BeamformingAudio" Mapping="ByteControlWithLength:%1 %2 %3 params">
+    <ComponentType Name="Beamforming_V1_2" Mapping="ByteControlWithLength:%1 %2 %3 params">
         <Component Name="switch" Type="SwitchParam"/>
         <EnumParameter Name="sw_flag" Size="16" Description="Module version. Default=BMF_1.1">
             <ValuePair Literal="BMF_1.1" Numerical="0"/>

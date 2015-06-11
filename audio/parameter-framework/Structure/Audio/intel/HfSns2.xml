@@ -5,8 +5,8 @@
     <ComponentType Name="EqPipeHfSns2">
         <Component Name="gain" Type="Gain" Mapping="Amend1:hf_sns_out,Amend2:gain,Amend3:0"/>
         <ParameterBlock Name="equalizer">
-            <Component Name="fir" Type="FbaFir" Mapping="Amend1:speech_out,Amend2:ul_module,Amend3:0,Amend4:fir_hf_sns"/>
-            <Component Name="iir" Type="FbaIir" Mapping="Amend1:speech_out,Amend2:ul_module,Amend3:0,Amend4:iir_hf_sns"/>
+            <Component Name="fir" Type="FbaFir_V1_1" Mapping="Amend1:speech_out,Amend2:ul_module,Amend3:0,Amend4:fir_hf_sns"/>
+            <Component Name="iir" Type="FbaIir_V1_1" Mapping="Amend1:speech_out,Amend2:ul_module,Amend3:0,Amend4:iir_hf_sns"/>
         </ParameterBlock>
     </ComponentType>
 </ComponentTypeSet>
