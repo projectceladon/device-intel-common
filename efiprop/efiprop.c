@@ -43,6 +43,7 @@ static const char *WHITELIST[] = {
 	"ro.swconf.info.tel",
 	"persist.disable_NVM_Server",
 	"telephony.test.mode"
+	"persist.fw_switching_support"
 };
 
 static const efi_guid_t EFI_PROP_GUID =
