@@ -1,0 +1,2 @@
+on post-fs
+    insmod /system/lib/modules/lm_dump.ko
