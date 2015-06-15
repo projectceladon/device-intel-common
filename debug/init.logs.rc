@@ -21,6 +21,17 @@ service apk_logfs /system/bin/logcat_ep.sh /system/bin/logcatext -b all -n 20 -r
 service ap_logfs /system/bin/logcat_ep.sh /system/bin/logcat -b all -n 20 -r5000 -v threadtime -f /data/logs/aplog
     disabled
 
+# Service called when the configuration is updated through properties
 service ap_log_srv /system/bin/start_log_srv.sh
+    disabled
+    oneshot
+
+# Service called at boot time after data is decrypted
+#
+# This is done through the late_start class.
+# ap_log_srv cannot be used for that as it will be started when persist
+# properties are loaded. Starting a class of services will only launch
+# the services that haven't been started yet.
+service ap_log_srv_late /system/bin/start_log_srv.sh
     class late_start
     oneshot

@@ -5,8 +5,8 @@ on early-init
     write /proc/self/coredump_filter 0x2F
 
 on post-fs-data
-    mkdir /data/logs/core 0773 root log
-    write /proc/sys/kernel/core_pattern /data/logs/core/%t_%e_%p.core
+    mkdir /data/core 0773 root log
+    write /proc/sys/kernel/core_pattern /data/core/%t_%e_%p.core
 
 on property:persist.core.enabled=0
     setrlimit 4 0 0
