@@ -15,3 +15,5 @@ allow mediaserver surfaceflinger_tmpfs:file { read write };
 
 allow mediaserver telemetry_data_file:dir rw_dir_perms;
 allow mediaserver telemetry_data_file:file create_file_perms;
+
+allow mediaserver system_app_data_file:dir search;
