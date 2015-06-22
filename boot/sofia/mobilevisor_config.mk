@@ -142,11 +142,8 @@ $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls : $(MV_CONFIG_BUILD_OUT)/mvconfig_%.bin $
 		   $< \
 		   --replace --to-fls2
 
-# Build VMM images as dependency to default android build target "droidcore"
-droidcore: $(MV_CONFIG_DEFAULT_FLS)
-
-$(MV_CONFIG_DEFAULT_FLS): $(MV_CONFIG_FLS_LIST)
-	@cp -f $(MV_CONFIG_FLS_OUTPUT)/$(notdir $@) $@
+$(FLASHFILES_DIR)/mvconfig_%.fls: $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls
+	$(copy-file-to-new-target)
 
 $(MV_CONFIG_BUILD_OUT):
 	@mkdir -p $(MV_CONFIG_BUILD_OUT)
@@ -159,6 +156,4 @@ mvconfig_info:
 
 build_info: mvconfig_info
 
-.PHONY: mvconfig
-mvconfig: $(MV_CONFIG_DEFAULT_FLS)
 endif
