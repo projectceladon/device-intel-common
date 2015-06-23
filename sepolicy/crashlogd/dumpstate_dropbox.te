@@ -4,7 +4,7 @@ userdebug_or_eng(`
   domain_auto_trans(init, dumpstate_dropbox_exec, dumpstate_dropbox)
   domain_auto_trans(dumpstate_dropbox, dumpstate_exec, dumpstate)
 
-  allow dumpstate_dropbox log_file:dir { write remove_name add_name };
+  allow dumpstate_dropbox log_file:dir { write remove_name add_name search };
   allow dumpstate_dropbox log_file:file { write getattr setattr read create unlink open };
   allow dumpstate_dropbox self:capability { chown dac_override };
   allow dumpstate_dropbox servicemanager:binder call;
@@ -12,7 +12,8 @@ userdebug_or_eng(`
   allow dumpstate_dropbox system_file:file execute_no_trans;
   allow dumpstate_dropbox system_server:binder call;
 
-  allow dumpstate dumpstate_dropbox:fd use;
+  allow domain dumpstate_dropbox:fd use;
+  allow domain log_file:file write;
 
   binder_use(dumpstate_dropbox);
   binder_call(system_server, dumpstate_dropbox);
