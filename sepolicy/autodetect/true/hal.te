@@ -13,7 +13,7 @@ allow hal shell_exec:file rx_file_perms;
 allow hal self:capability { setuid setgid sys_module sys_admin dac_override chown fsetid net_admin fowner };
 
 # Device access
-write_klog(hal)
+#write_klog(hal)
 allow hal gps_device:chr_file { getattr setattr };
 allow hal hal_device:file create_file_perms;
 allow hal device:dir { create setattr };
