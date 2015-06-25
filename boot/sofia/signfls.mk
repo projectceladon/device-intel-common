@@ -99,6 +99,7 @@ $(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fl
 ## Firmware update
 VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
 FWU_IMAGE_BIN       := $(FWU_IMG_DIR)/fwu_image.bin
+FWU_IMAGE_FLS       := $(FLASHFILES_DIR)/fwu_image.fls
 VRL_BIN             := $(FASTBOOT_IMG_DIR)/vrl.bin
 VRL_FLS             := $(FLASHFILES_DIR)/vrl.fls
 VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
@@ -131,12 +132,10 @@ $(foreach t,$(FWU_PACKAGE_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t
 FWU_DEP_SECPACK_ONLY_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_SECPACK_ONLY_LIST))
 $(foreach t,$(FWU_PACKAGE_SECPACK_ONLY_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
 
-
 FWU_COMMAND = $(foreach a, $(FWU_DEP_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 FWU_ADDI_COMMAND = $(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 
-.PHONY: fwu_image
-fwu_image: $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
+$(FWU_IMAGE_BIN): $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
 	@echo "---------- Generate fwu_image --------------------"
 	$(FWU_COMMAND)
 	$(FWU_ADDI_COMMAND)
@@ -145,7 +144,11 @@ fwu_image: $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createfla
 	@rm $(FWU_IMAGE_BIN)_temp
 	@echo "---------- Generate fwu_image Done ---------------"
 
-$(FWU_IMAGE_BIN) : fwu_image
+.PHONY: fwu_image
+fwu_image: $(FWU_IMAGE_BIN)
+
+$(FWU_IMAGE_FLS):  createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FWU_IMAGE_BIN) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag FW_UPDATE $(INJECT_FLASHLOADER_FLS) $(FWU_IMAGE_BIN) --replace --to-fls2
 
 #create_vrl_bin: $(VRL_BIN)
 
