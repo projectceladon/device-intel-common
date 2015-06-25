@@ -15,7 +15,7 @@ allow coreu self:capability { setuid sys_nice ipc_lock setgid };
 allow coreu servicemanager:binder { transfer call };
 allow coreu sysfs:file write;
 allow coreu system_data_file:dir { write add_name };
-allow coreu system_data_file:file { create write lock open };
+#allow coreu system_data_file:file { create write lock open };
 allow coreu tmpfs:dir { write add_name };
 allow coreu self:capability dac_override;
 allow coreu self:capability sys_admin;
