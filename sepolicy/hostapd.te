@@ -1,2 +1,0 @@
-#============= hostapd ==============
-allow hostapd kernel:system module_request;

@@ -1,2 +1,0 @@
-allow vold hal:unix_stream_socket connectto;
-allow vold hal_socket:sock_file write;

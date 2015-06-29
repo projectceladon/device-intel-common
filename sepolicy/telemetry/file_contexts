@@ -1,9 +1,0 @@
-#Telemetry
-/system/bin/tm_fprobe       u:object_r:telemetry_exec:s0
-/system/bin/tm_dmesg_probe  u:object_r:telemetry_exec:s0
-/system/bin/tm_pstore_probe u:object_r:telemetry_exec:s0
-/system/bin/tm_record       u:object_r:telemetry_exec:s0
-/system/bin/telemetryd      u:object_r:telemetry_exec:s0
-/system/bin/tm_logcount_probe u:object_r:telemetry_exec:s0
-/system/bin/tm_logprobe     u:object_r:telemetry_exec:s0
-/system/bin/tm_storage_setup u:object_r:system_file:s0

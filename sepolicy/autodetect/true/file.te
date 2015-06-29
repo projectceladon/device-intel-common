@@ -1,3 +1,0 @@
-# HAL
-type hal_socket, file_type;
-type hal_fuse, file_type;

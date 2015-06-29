@@ -1,3 +1,0 @@
-allow bootanim hal:unix_stream_socket connectto;
-allow bootanim hal_socket:sock_file write;
-allow bootanim unlabeled:dir search;

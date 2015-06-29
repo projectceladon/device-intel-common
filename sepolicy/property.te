@@ -1,2 +1,0 @@
-type system_power_hal_prop, property_type;
-type cam_flash_thrtl_prop, property_type;
