@@ -30,6 +30,7 @@ $(BUILT_LIBSOC_TARGET): build_soclib
 
 build_soclib:
 	@echo Building ===== lib_soc =====
+	$(if SOCLIB_FEATURES, FEATURE="$(SOCLIB_FEATURES)") \
 	$(MAKE) -C $(SOCLIB_SRC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(SOCLIB_BUILD_OUT) DELIVERY_BUTTER=true PLATFORM=$(MODEM_PLATFORM)
 
 .PHONY: vmm_lib_soc
