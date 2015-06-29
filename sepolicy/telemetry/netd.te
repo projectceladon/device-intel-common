@@ -1,2 +1,0 @@
-allow netd telemetry:fd use;
-allow netd telemetry:tcp_socket { read write setopt getopt };

@@ -1,5 +1,0 @@
-# Intel trace hub (North Peak) init service
-/system/bin/init.npk.sh     u:object_r:npk_init_exec:s0
-
-# Intel trace hub (North Peak) device
-/dev/[0-9]*-sth             u:object_r:sth_device:s0
