@@ -186,7 +186,7 @@ $(UCODE_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOAD
 SPLASH_IMG_OUTPUT_DIR  		:= $(CURDIR)/$(PRODUCT_OUT)
 SPLASH_IMG_BIN_PATH    		:= $(BL_OUTPUT_DIR)/splash_image
 SPLASH_IMG_FILE_1      		:= $(TARGET_DEVICE_DIR)/splash_image/splash_screen.jpg
-SPLASH_IMG_FILE_2      		:= $(TARGET_DEVICE_DIR)/splash_image/fastboot.jpg
+SPLASH_IMG_FILE_2      		:= $(TARGET_DEVICE_DIR)/splash_image/fastboot.png
 SPLASH_DISPLAY_DTS			:= $(SPLASH_IMG_BIN_PATH)/splash_display_config.dts
 SPLASH_IMG_DISPLAY_CONFIG   := $(SPLASH_IMG_BIN_PATH)/vbt.bin
 SPLASH_IMG_HEADER	   		:= $(SPLASH_IMG_BIN_PATH)/splash_hdr.bin
