@@ -1,0 +1,27 @@
+{"config":
+  [{"filename":"flash.json", "name":"full", "flashtype":"fastboot"}],
+"commands":
+  [{"type":"prop", "target":"INSTALLED_BUILD_PROP_TARGET"},
+   {"type":"fls", "core":"up,smp", "partition":"psi_flash", "target":"PSI_FLASH_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"slb", "target":"SLB_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"hypervisor", "target":"MOBILEVISOR_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"boot", "target":"BOOTIMG_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"cache", "target":"CACHE_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"secvm", "target":"SECVM_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"splash", "target":"SPLASH_IMG_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"system", "target":"SYSTEM_FLS", "timeout":600000},
+   {"type":"fls", "core":"up,smp", "partition":"userdata", "target":"USERDATA_FLS", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"modem", "target":"MODEM_FLS", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"dsp_image", "target":"DSP_IMAGE_FLS", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"lte", "target":"LTE_FLS", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"imc_fw_block_1", "target":"IMC_FW_BLOCK_1", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"imc_fw_block_2", "target":"IMC_FW_BLOCK_2", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"imc_bootloader_a", "target":"IMC_BOOTLOADER_A", "timeout":300000},
+   {"type":"fls", "core":"up,smp", "partition":"imc_bootloader_b", "target":"IMC_BOOTLOADER_B", "timeout":300000},
+   {"type":"fls", "core":"up", "partition":"mvconfig", "target":"MVCONFIG_FLS", "timeout":120000},
+   {"type":"fls", "core":"smp", "partition":"mvconfig", "target":"MV_CONFIG_DEFAULT_FLS", "timeout":120000},
+   {"type":"fls", "core":"up,smp", "partition":"ucode_patch", "target":"UCODE_PATCH_FLS", "timeout":120000}],
+"configurations":
+  [{"config_name":"up_fls_config", "brief":"FLS configurations to flash UP FLS file only with DownloaderTool", "description":"UP FLS configurations", "groupsState":{}, "name":"UP FLS only", "parameters":{}, "startState":"dnx_fw"},
+   {"config_name":"smp_fls_config", "brief":"FLS configurations to flash SMP FLS file only with DownloaderTool", "description":"SMP FLS configurations", "groupsState":{}, "name":"SMP FLS only", "parameters":{}, "startState":"dnx_fw"},
+   {"config_name":"smp_fls_erase_config", "brief":"FLS configurations to erase and flash SMP FLS file only with DownloaderTool", "description":"SMP FLS configurations", "groupsState":{}, "name":"SMP FLS only w/ erase", "parameters":{}, "startState":"dnx_fw"}]}

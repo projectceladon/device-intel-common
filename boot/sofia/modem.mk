@@ -99,6 +99,25 @@ endif #endif $(BUILD_MODEM_FROM_SRC) = true
 
 
 MODEM_FLS  := $(FLASHFILES_DIR)/modem.fls
+
+PSI_FLASH_FLS ?= $(FLASHFILES_DIR)/psi_flash.fls
+SLB_FLS ?= $(FLASHFILES_DIR)/slb.fls
+MOBILEVISOR_FLS ?= $(FLASHFILES_DIR)/mobilevisor.fls
+SECVM_FLS ?= $(FLASHFILES_DIR)/secvm.fls
+SPLASH_IMG_FLS ?= $(FLASHFILES_DIR)/splash_img.fls
+UCODE_PATCH_FLS ?= $(FLASHFILES_DIR)/ucode_patch.fls
+
+ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
+DSP_IMAGE_FLS := $(FLASHFILES_DIR)/dsp_image.fls
+LTE_FLS := $(FLASHFILES_DIR)/lte.fls
+IMC_FW_BLOCK_1 := $(FLASHFILES_DIR)/imc_fw_block_1.fls
+IMC_FW_BLOCK_2 := $(FLASHFILES_DIR)/imc_fw_block_2.fls
+IMC_BOOTLOADER_A := $(FLASHFILES_DIR)/imc_bootloader_a.fls
+IMC_BOOTLOADER_B := $(FLASHFILES_DIR)/imc_bootloader_b.fls
+endif
+
+
+
 ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
 ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
 ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
