@@ -17,6 +17,9 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
+/* default name on 1A */
+#define BTM_DEF_LOCAL_NAME "lightningpeak-1A"
+
 #define INTEL_CONTROLLER       TRUE
 #define INTEL_LNP_UART         TRUE
 #define HCI_MAX_SIMUL_CMDS     1
