@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="ChannelDelay">
-                <IntegerParameter Name="mic_1" Size="16" Min="0" Max="256"
-                             Description="Delay value for the channel connected to microphone 1. Class 2 parameter. Default=0"/>
-                <IntegerParameter Name="mic_2" Size="16" Min="0" Max="256"
-                             Description="Delay value for the channel connected to microphone 2. Class 2 parameter. Default=0"/>
+    <ComponentType Name="Channel4micsDelay">
+                <IntegerParameter Name="mics" Size="16" Min="0" Max="256"  ArrayLength="4"
+                             Description="Delay value for the channel connected to each microphone. Class 2 parameter. Default=0"/>
     </ComponentType>
-    <ComponentType Name="ChannelGain">
-                <IntegerParameter Name="mic_1" Size="16" Min="-400" Max="120" Signed="true"
-                             Description="Gain value for the channel connected to microphone 1 . Class 2 parameter. Default=0"/>
-                <IntegerParameter Name="mic_2" Size="16" Min="-400" Max="120" Signed="true"
-                             Description="Gain value for the channel connected to microphone 2 . Class 2 parameter. Default=0"/>
+    <ComponentType Name="Channel4micsGain">
+                <IntegerParameter Name="mics" Size="16" Min="-400" Max="120" Signed="true" ArrayLength="4"
+                             Description="Gain value for the channel connected to each microphone. Class 2 parameter. Default=0"/>
     </ComponentType>
-    <ComponentType Name="ChannelFilterCoefs">
+    <ComponentType Name="Channel4micsFilterCoefs">
                 <FixedPointParameter Name="mic_1" Size="16" Integral="2" Fractional="13" ArrayLength="64"
-                             Description="Filter coefficients for the left channel connected to microphone 1. Class 2 parameter. Default=0"/>
+                             Description="Filter coefficients for the channel connected to microphone 1. Class 2 parameter. Default=0"/>
                 <FixedPointParameter Name="mic_2" Size="16" Integral="2" Fractional="13" ArrayLength="64"
-                             Description="Filter coefficients for the left channel connected to microphone 1. Class 2 parameter. Default=0"/>
+                             Description="Filter coefficients for the channel connected to microphone 2. Class 2 parameter. Default=0"/>
+                <FixedPointParameter Name="mic_3" Size="16" Integral="2" Fractional="13" ArrayLength="64"
+                             Description="Filter coefficients for the channel connected to microphone 3. Class 2 parameter. Default=0"/>
+                <FixedPointParameter Name="mic_4" Size="16" Integral="2" Fractional="13" ArrayLength="64"
+                             Description="Filter coefficients for the channel connected to microphone 4. Class 2 parameter. Default=0"/>
     </ComponentType>
     <ComponentType Name="BeamformingVoice" Mapping="ByteControlWithLength:%1 %2 %3 params bmf">
         <Component Name="switch" Type="SwitchParam"/>
@@ -37,28 +37,28 @@
             <ValuePair Literal="enable" Numerical="2"/>
         </EnumParameter>
         <ParameterBlock Name="switch_mat">
-            <EnumParameter Name="in" Size="16" ArrayLength="8" Description="Specify microphones connexion for each input channel of the first switch matrix. Up to two microphones signals can be added or subtracted. Class 2 parameter. Default=0">
+            <EnumParameter Name="in" Size="16" ArrayLength="32" Description="Specify microphones connexion for each input channel of the first switch matrix. Up to four microphones signals can be added or subtracted. Class 2 parameter. Default=0">
                 <ValuePair Literal="disable" Numerical="0"/>
                 <ValuePair Literal="enable_signal_addition" Numerical="1"/>
                 <ValuePair Literal="enable_signal_substraction" Numerical="-1"/>
             </EnumParameter>
-            <EnumParameter Name="out" Size="16" ArrayLength="8" Description="Specify microphones connexion for each output channel of the first switch matrix. Up to two microphones signals can be added or subtracted. Class 2 parameter. Default=0">
+            <EnumParameter Name="out" Size="16" ArrayLength="32" Description="Specify microphones connexion for each output channel of the first switch matrix. Up to four microphones signals can be added or subtracted. Class 2 parameter. Default=0">
                 <ValuePair Literal="disable" Numerical="0"/>
                 <ValuePair Literal="enable_signal_addition" Numerical="1"/>
                 <ValuePair Literal="enable_signal_substraction" Numerical="-1"/>
             </EnumParameter>
         </ParameterBlock>
         <ParameterBlock Name="delay">
-            <Component Name="left_channel" Type="ChannelDelay"/>
-            <Component Name="right_channel" Type="ChannelDelay"/>
+            <Component Name="left_channel" Type="Channel4micsDelay"/>
+            <Component Name="right_channel" Type="Channel4micsDelay"/>
         </ParameterBlock>
         <ParameterBlock Name="gain">
-            <Component Name="left_channel" Type="ChannelGain"/>
-            <Component Name="right_channel" Type="ChannelGain"/>
+            <Component Name="left_channel" Type="Channel4micsGain"/>
+            <Component Name="right_channel" Type="Channel4micsGain"/>
         </ParameterBlock>
         <ParameterBlock Name="filter_coefs">
-            <Component Name="left_channel" Type="ChannelFilterCoefs"/>
-            <Component Name="right_channel" Type="ChannelFilterCoefs"/>
+            <Component Name="left_channel" Type="Channel4micsFilterCoefs"/>
+            <Component Name="right_channel" Type="Channel4micsFilterCoefs"/>
         </ParameterBlock>
     </ComponentType>
 </ComponentTypeSet>
