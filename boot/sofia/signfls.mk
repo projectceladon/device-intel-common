@@ -105,6 +105,12 @@ VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
 
 .INTERMEDIATE: $(VRL_FLS)
 
+#FIXME : Breaks "make dist" on LTE, needed for 3GR OTA
+# Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
+endif
+
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
 DATA_EXT := *.fls_ID0_*_LoadMap*
 
