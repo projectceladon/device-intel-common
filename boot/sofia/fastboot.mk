@@ -14,6 +14,7 @@
 # limitations under the License.
 # ------------------------------------------------------------------------
 FASTBOOT_FLS_LIST  :=
+BOOTLOADER_SIGNED_FLS_LIST  :=
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 ifneq ($(TARGET_NO_RECOVERY),true)
 FASTBOOT_FLS_LIST  += $(RECOVERY_FLS)
@@ -48,3 +49,24 @@ $(foreach t,$(FASTBOOT_FLS_LIST),$(eval $(call FB_IMG_GEN,$(t))))
 #$(foreach f, $(FASTBOOT_FLS_LIST), $(shell $(FLSTOOL) -x $(f) -o $(EXTRACT_TEMP)))
 
 droidcore: fastboot_img
+
+SECP_EXT_NAME := *.fls_ID0_*_SecureBlock.bin
+
+BOOT_SIGNED_FLS = boot_signed
+RECOVERY_SIGNED_FLS = recovery_signed
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SLB_SIGNED_FLS)))
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
+
+BOOTLOADER_SIGNED_FLS_LIST := $(filter-out $(BOOT_SIGNED_FLS) $(RECOVERY_SIGNED_FLS), $(BOOTLOADER_SIGNED_FLS_LIST))
+BOOTLOADER_DEP := $(addprefix $(EXTRACT_TEMP)/,$(BOOTLOADER_SIGNED_FLS_LIST))
+
+BOOTLOADER_IMAGE := $(FASTBOOT_IMG_DIR)/bootloader
+
+bootloader_img: fastboot_img $(BOOTLOADER_DEP) | createflashfile_dir ${ACP}
+	$(foreach a, $(BOOTLOADER_DEP), $(shell $(FWU_PACK_GENERATE_TOOL) --input $(BOOTLOADER_IMAGE) --output $(BOOTLOADER_IMAGE)_temp --secpack $(a)/$(SECP_EXT_NAME) --data $(a)/$(DATA_EXT_NAME) ; acp $(BOOTLOADER_IMAGE)_temp $(BOOTLOADER_IMAGE)))
+	rm $(BOOTLOADER_IMAGE)_temp
+
+$(BOOTLOADER_IMAGE) : bootloader_img
+
+INSTALLED_RADIOIMAGE_TARGET += $(BOOTLOADER_IMAGE)
