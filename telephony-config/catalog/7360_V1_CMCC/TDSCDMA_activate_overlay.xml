@@ -3,9 +3,11 @@
 <telephony_config>
 	<modems_info>
 		<modem_info>
-			<core
-				swRevision="1.0"
-			/>
+			<tlvs_info>
+				<tlv_info
+					filename="2048_3G_TDSCDMA_activate.tlv"
+				/>
+			</tlvs_info>
 		</modem_info>
 	</modems_info>
 </telephony_config>

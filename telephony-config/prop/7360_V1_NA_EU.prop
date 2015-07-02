@@ -1,0 +1,5 @@
+persist.ims_support=0
+telephony.tcs.sw_folder=7360_V1_NA_EU
+ro.swconf.info=7360_V1_NA_EU
+ro.swconf.info.tel=7360_V1_NA_EU
+persist.tcs.hw_filename=/etc/telephony/XMM7360_CONF_2.xml
