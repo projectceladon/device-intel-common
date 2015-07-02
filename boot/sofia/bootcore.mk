@@ -185,14 +185,14 @@ $(UCODE_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOAD
 
 SPLASH_IMG_OUTPUT_DIR  		:= $(CURDIR)/$(PRODUCT_OUT)
 SPLASH_IMG_BIN_PATH    		:= $(BL_OUTPUT_DIR)/splash_image
-SPLASH_IMG_FILE_1      		:= $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/$(TARGET_PRODUCT)/splash_image/splash_screen.jpg
-SPLASH_IMG_FILE_2      		:= $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/$(TARGET_PRODUCT)/splash_image/fastboot.jpg
+SPLASH_IMG_FILE_1      		:= $(TARGET_DEVICE_DIR)/splash_image/splash_screen.jpg
+SPLASH_IMG_FILE_2      		:= $(TARGET_DEVICE_DIR)/splash_image/fastboot.jpg
 SPLASH_DISPLAY_DTS			:= $(SPLASH_IMG_BIN_PATH)/splash_display_config.dts
 SPLASH_IMG_DISPLAY_CONFIG   := $(SPLASH_IMG_BIN_PATH)/vbt.bin
 SPLASH_IMG_HEADER	   		:= $(SPLASH_IMG_BIN_PATH)/splash_hdr.bin
 SPLASH_IMG_BIN_FONT             := $(SPLASH_IMG_BIN_PATH)/slbfont.bin
-SPLASH_IMG_FONT_CONFIG          := $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/$(TARGET_PRODUCT)/splash_image/slbfont.cfg
-SPLASH_IMG_FILE_FONT          := $(CURDIR)/device/intel/$(TARGET_BOARD_PLATFORM)/$(TARGET_PRODUCT)/splash_image/slbfont.png
+SPLASH_IMG_FONT_CONFIG          := $(TARGET_DEVICE_DIR)/splash_image/slbfont.cfg
+SPLASH_IMG_FILE_FONT          := $(TARGET_DEVICE_DIR)/splash_image/slbfont.png
 SPLASH_IMG_BIN_0			:= $(SPLASH_IMG_BIN_PATH)/splash_config.bin
 SPLASH_IMG_BIN_1       		:= $(SPLASH_IMG_BIN_PATH)/splash_screen.bin
 SPLASH_IMG_BIN_2       		:= $(SPLASH_IMG_BIN_PATH)/fastboot.bin
