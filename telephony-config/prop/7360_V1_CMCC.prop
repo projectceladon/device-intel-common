@@ -2,4 +2,3 @@ persist.ims_support=0
 telephony.tcs.sw_folder=7360_V1_CMCC
 ro.swconf.info=7360_V1_CMCC
 ro.swconf.info.tel=7360_V1_CMCC
-persist.tcs.hw_filename=/etc/telephony/XMM7360_CONF_2.xml
