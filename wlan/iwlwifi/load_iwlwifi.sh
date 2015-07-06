@@ -11,4 +11,4 @@ else
 fi
 
 insmod /system/lib/modules/iwlwifi.ko nvm_file=iwl_nvm.bin d0i3_debug=1
-insmod /system/lib/modules/iwlmvm.ko power_scheme=1
+insmod /system/lib/modules/iwlmvm.ko power_scheme=1 always_on=1
