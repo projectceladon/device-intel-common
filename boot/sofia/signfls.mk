@@ -127,6 +127,10 @@ FWU_PACKAGE_LIST  = $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
 FWU_PACKAGE_LIST += $(basename $(notdir $(SLB_SIGNED_FLS)))
 FWU_PACKAGE_LIST += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
 
+#remove boot/recovery from the fwu_image
+#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output.
+FWU_PACKAGE_BIN_LIST := $(filter-out boot_signed recovery_signed, $(FWU_PACKAGE_LIST))
+
 FWU_PACKAGE_SECPACK_ONLY_LIST += $(basename $(notdir $(ANDROID_SIGNED_FLS_LIST)))
 
 FWU_DEP_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_LIST))
@@ -135,7 +139,10 @@ $(foreach t,$(FWU_PACKAGE_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t
 FWU_DEP_SECPACK_ONLY_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_SECPACK_ONLY_LIST))
 $(foreach t,$(FWU_PACKAGE_SECPACK_ONLY_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
 
-FWU_COMMAND = $(foreach a, $(FWU_DEP_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
+#remove boot/recovery in fwu_image
+FWU_DEP_BIN_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_BIN_LIST))
+
+FWU_COMMAND = $(foreach a, $(FWU_DEP_BIN_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 FWU_ADDI_COMMAND = $(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 
 $(FWU_IMAGE_BIN): $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
