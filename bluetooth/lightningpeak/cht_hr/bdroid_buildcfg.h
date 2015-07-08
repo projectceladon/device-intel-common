@@ -25,8 +25,12 @@
 #define PRELOAD_MAX_RETRY_ATTEMPTS 1
 #define PRELOAD_START_TIMEOUT_MS 80000
 #define BLE_VND_INCLUDED TRUE
-#define BTM_WBS_INCLUDED TRUE
-#define BTIF_HF_WBS_PREFERRED TRUE
+
+/*To enable WBS */
+#define BTM_WBS_INCLUDED              TRUE
+#define BTIF_HF_WBS_PREFERRED         TRUE
+#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
+
 /* TODO: to be enabled when audio stack is ready */
 //#define A2DP_OFFLOAD_INCLUDED TRUE
 
