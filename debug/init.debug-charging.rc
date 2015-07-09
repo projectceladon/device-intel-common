@@ -1,4 +1,8 @@
 on charger
+    trigger early-fs
+    trigger charger_adb
+
+on charger_adb
     mkdir /system
     mount ext4 /dev/block/by-name/android_system /system ro
 
