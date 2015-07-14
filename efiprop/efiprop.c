@@ -42,7 +42,7 @@ static const char *WHITELIST[] = {
 	"ro.swconf.info",
 	"ro.swconf.info.tel",
 	"persist.disable_NVM_Server",
-	"telephony.test.mode"
+	"telephony.test.mode",
 	"persist.fw_switching_support"
 };
 
