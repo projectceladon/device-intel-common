@@ -26,13 +26,13 @@
 #define PRELOAD_START_TIMEOUT_MS 80000
 #define BLE_VND_INCLUDED TRUE
 
-/*To enable WBS */
+/* To enable WBS */
 #define BTM_WBS_INCLUDED              TRUE
 #define BTIF_HF_WBS_PREFERRED         TRUE
 #define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
 
-/* TODO: to be enabled when audio stack is ready */
-//#define A2DP_OFFLOAD_INCLUDED TRUE
+/* To enable offloaded A2DP (SBC + APTX) */
+#define A2DP_OFFLOAD_INCLUDED TRUE
 
 /* standard scan */
 #define BTM_DEFAULT_SCAN_TYPE BTM_SCAN_TYPE_STANDARD
