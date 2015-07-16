@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 
+ifneq ($(IMC_STYLE_BUILD),true)
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -23,4 +24,4 @@ LOCAL_C_INCLUDES += bootable/recovery \
                     system/core
 LOCAL_MODULE := librecovery_sofia3g_intel
 include $(BUILD_STATIC_LIBRARY)
-
+endif
