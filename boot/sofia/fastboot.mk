@@ -15,15 +15,6 @@
 # ------------------------------------------------------------------------
 FASTBOOT_FLS_LIST  :=
 BOOTLOADER_SIGNED_FLS_LIST  :=
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-ifneq ($(TARGET_NO_RECOVERY),true)
-FASTBOOT_FLS_LIST  += $(RECOVERY_FLS)
-endif
-endif
-FASTBOOT_FLS_LIST  += $(BOOTIMG_FLS)
-FASTBOOT_FLS_LIST  += $(CACHE_FLS)
-FASTBOOT_FLS_LIST  += $(USERDATA_FLS)
-FASTBOOT_FLS_LIST  += $(SYSTEM_FLS)
 FASTBOOT_FLS_LIST  += $(PSI_FLASH_FLS)
 FASTBOOT_FLS_LIST  += $(SLB_FLS)
 FASTBOOT_FLS_LIST  += $(UCODE_PATCH_FLS)
@@ -52,13 +43,10 @@ droidcore: fastboot_img
 
 SECP_EXT_NAME := *.fls_ID0_*_SecureBlock.bin
 
-BOOT_SIGNED_FLS = boot_signed
-RECOVERY_SIGNED_FLS = recovery_signed
 BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
 BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SLB_SIGNED_FLS)))
 BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
 
-BOOTLOADER_SIGNED_FLS_LIST := $(filter-out $(BOOT_SIGNED_FLS) $(RECOVERY_SIGNED_FLS), $(BOOTLOADER_SIGNED_FLS_LIST))
 BOOTLOADER_DEP := $(addprefix $(EXTRACT_TEMP)/,$(BOOTLOADER_SIGNED_FLS_LIST))
 
 BOOTLOADER_IMAGE := $(FASTBOOT_IMG_DIR)/bootloader
@@ -73,5 +61,5 @@ $(BOOTLOADER_IMAGE) : bootloader_img
 #enabled this should be fixed.
 # Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
 ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-INSTALLED_RADIOIMAGE_TARGET += $(BOOTLOADER_IMAGE)
+SOFIA_PROVDATA_FILES += $(BOOTLOADER_IMAGE)
 endif

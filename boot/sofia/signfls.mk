@@ -95,6 +95,9 @@ $(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls
 $(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES += $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)  $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)  $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST)
+endif
 
 ## Firmware update
 VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
@@ -109,7 +112,7 @@ VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
 #FIXME : Breaks "make dist" on LTE, needed for 3GR OTA
 # Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
 ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
+SOFIA_PROVDATA_FILES += $(FWU_IMAGE_BIN)
 endif
 
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
@@ -149,6 +152,10 @@ fwu_image: $(FWU_IMAGE_BIN)
 
 $(FWU_IMAGE_FLS):  createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FWU_IMAGE_BIN) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag FW_UPDATE $(INJECT_FLASHLOADER_FLS) $(FWU_IMAGE_BIN) --replace --to-fls2
+
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES += $(FWU_IMAGE_FLS)
+endif
 
 #create_vrl_bin: $(VRL_BIN)
 

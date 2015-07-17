@@ -27,7 +27,8 @@ ROOTDIR = $(PWD)
 BUILT_MV_CORE_BIN       := $(ROOTDIR)/$(MOBILEVISOR_REL_PATH)/lib_mobilevisor_core/debug/linux/lib_mobilevisor_core.a
 
 MOBILEVISOR_FLS         := $(FLASHFILES_DIR)/mobilevisor.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mobilevisor_signed.fls
+MOBILEVISOR_SIGNED_FLS  := $(SIGN_FLS_DIR)/mobilevisor_signed.fls
+SYSTEM_SIGNED_FLS_LIST  += $(MOBILEVISOR_SIGNED_FLS)
 
 $(VMM_BUILD_OUT):
 	mkdir -p $(VMM_BUILD_OUT)
@@ -124,6 +125,8 @@ droidcore: mobilevisor.fls
 .PHONY: mvconfig_smp.fls
 mvconfig_smp.fls:  $(MVCONFIG_SMP_FLS)
 droidcore: mvconfig_smp.fls
+
+SOFIA_PROVDATA_FILES += $(MVCONFIG_SMP_FLS)
 
 endif
 
