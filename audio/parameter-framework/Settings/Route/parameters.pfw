@@ -281,6 +281,22 @@ supDomain: Parameter
 			component: /Route/route_mgr/criteria/mode
 				mode = InCsvCall
 
+		conf: InIms
+			ALL
+				Mode Is InCsvCall
+				ModemAudioAvailable IsNot True
+				ANY
+					SelectedOutputDevices Is Ihf
+					SelectedOutputDevices Is Headset
+					SelectedOutputDevices Is Headphones
+					SelectedOutputDevices Is Earpiece
+					SelectedOutputDevices Is Sco
+					SelectedOutputDevices Is ScoHeadset
+					SelectedOutputDevices Is ScoCarkit
+
+			component: /Route/route_mgr/criteria/mode
+				mode = InImsCall
+
 		conf: InCommunication
 			ALL
 				Mode Is InVoipCall
@@ -307,8 +323,11 @@ supDomain: Parameter
 			ANY
 				ALL
 					Mode Is InCsvCall
-					ModemAudioAvailable Is True
-					CsvBandType Is NB
+					ANY
+						ImsBandType Is NB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is NB
 				ALL
 					VoIPBandType Is NB
 					Mode IsNot InCsvCall
@@ -323,8 +342,11 @@ supDomain: Parameter
 			ANY
 				ALL
 					Mode Is InCsvCall
-					ModemAudioAvailable Is True
-					CsvBandType Is WB
+					ANY
+						ImsBandType Is WB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is WB
 				ALL
 					VoIPBandType Is WB
 					Mode IsNot InCsvCall
@@ -339,8 +361,11 @@ supDomain: Parameter
 			ANY
 				ALL
 					Mode Is InCsvCall
-					ModemAudioAvailable Is True
-					CsvBandType Is SuperWB
+					ANY
+						ImsBandType Is SuperWB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is SuperWB
 				ALL
 					VoIPBandType Is SuperWB
 					Mode IsNot InCsvCall

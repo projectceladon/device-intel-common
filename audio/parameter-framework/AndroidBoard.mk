@@ -7,19 +7,19 @@ PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/Schemas
 PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 
 # defines:
-# - $(PFW_TUNING_ALLOWED)
+# - $(TUNING_SUFFIX)
+# - @TUNING_ALLOWED@
 
-# requires:
-# $(DEVICE_SOUND_CARD_NAME) to be provided
-
-# The value of PFW_TUNING_ALLOWED will be used to remplace the
+# The value of @TUNING_ALLOWED@  will be used to remplace the
 # "@TUNING_ALLOWED@" pattern in top-level configuration files templates
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-PFW_TUNING_ALLOWED := true
+# TUNING_SUFFIX is used to change module names when tuning is allowed
+# or not, forcing rebuild when tuning parameter is modified
+ifneq ($(TARGET_BUILD_VARIANT),user)
 AUDIO_PATTERNS += @TUNING_ALLOWED@=true
+TUNING_SUFFIX :=
 else
-PFW_TUNING_ALLOWED := false
 AUDIO_PATTERNS += @TUNING_ALLOWED@=false
+TUNING_SUFFIX := NoTuning
 endif
 
 BUILD_REPLACE_PATTERNS_IN_FILE := $(COMMON_PFW_CONFIG_PATH)/build_replace_patterns_in_file.mk
@@ -46,7 +46,7 @@ LOCAL_REQUIRED_MODULES :=  \
     SysfsVibratorClass.xml \
     MiscConfigurationSubsystem.xml \
     SysfsVibratorSubsystem.xml \
-    ParameterFrameworkConfigurationVibrator.xml \
+    VibratorParameterFramework$(TUNING_SUFFIX).xml \
     vibrator
 include $(BUILD_PHONY_PACKAGE)
 
@@ -76,24 +76,6 @@ include $(BUILD_PREBUILT)
 
 
 ##################################################
-######### Route PFW #########
-# Route PFW top-level configuration file
-include $(CLEAR_VARS)
-LOCAL_MODULE := ParameterFrameworkConfigurationRoute.xml
-LOCAL_MODULE_STEM := ParameterFrameworkConfigurationRoute-$(DEVICE_SOUND_CARD_NAME)-default.xml
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_RELATIVE_PATH := parameter-framework
-LOCAL_SRC_FILES := $(LOCAL_MODULE).in
-
-include $(BUILD_SYSTEM)/base_rules.mk
-
-$(LOCAL_BUILT_MODULE): MY_FILE := $(LOCAL_PATH)/$(LOCAL_MODULE).in
-$(LOCAL_BUILT_MODULE): MY_TUNING_ALLOWED := $(PFW_TUNING_ALLOWED)
-$(LOCAL_BUILT_MODULE):
-	$(hide) mkdir -p $(dir $@)
-	sed -e 's/@TUNING_ALLOWED@/$(MY_TUNING_ALLOWED)/' $(MY_FILE) > $@
-
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := RouteClass-common.xml
@@ -575,11 +557,12 @@ include $(BUILD_PREBUILT)
 ######### Vibrator Structures #########
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := ParameterFrameworkConfigurationVibrator.xml
+LOCAL_MODULE := VibratorParameterFramework$(TUNING_SUFFIX).xml
+LOCAL_MODULE_STEM := VibratorParameterFramework.xml
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES := $(LOCAL_MODULE).in
+LOCAL_SRC_FILES := $(LOCAL_MODULE_STEM).in
 REPLACE_PATTERNS := $(AUDIO_PATTERNS)
 include $(BUILD_REPLACE_PATTERNS_IN_FILE)
 

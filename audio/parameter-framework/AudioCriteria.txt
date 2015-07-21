@@ -1,4 +1,4 @@
-ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone
+ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone           InImsCall
 InclusiveCriterion  TtyDirection           :  Downlink          Uplink
 InclusiveCriterion  RoutageState           :  Configure         Flow             Path
 InclusiveCriterion  ClosingCaptureRoutes   :  AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp       DMicIA

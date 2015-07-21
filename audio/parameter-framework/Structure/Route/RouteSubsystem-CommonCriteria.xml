@@ -8,6 +8,7 @@
                 <ValuePair Literal="RingTone" Numerical="1"/>
                 <ValuePair Literal="InCsvCall" Numerical="2"/>
                 <ValuePair Literal="InVoipCall" Numerical="3"/>
+                <ValuePair Literal="InImsCall" Numerical="4"/>
             </EnumParameter>
         </ComponentType>
 
