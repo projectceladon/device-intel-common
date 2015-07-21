@@ -1,16 +1,15 @@
 on early-boot
     # setup configfs
     mount configfs configfs /sys/kernel/config
-    mkdir /sys/kernel/config/stp-policy/sth
-    write /sys/kernel/config/stp-policy/sth/device 0-sth
+    mkdir /sys/kernel/config/stp-policy/0-sth.default
 
     # masters/channels allocation
-    mkdir /sys/kernel/config/stp-policy/sth/console
-    write /sys/kernel/config/stp-policy/sth/console/masters "256 259"
-    write /sys/kernel/config/stp-policy/sth/console/channels "7 10"
-    mkdir /sys/kernel/config/stp-policy/sth/user
-    write /sys/kernel/config/stp-policy/sth/user/masters "260 1023"
-    write /sys/kernel/config/stp-policy/sth/user/channels "0 127"
+    mkdir /sys/kernel/config/stp-policy/0-sth.default/console
+    write /sys/kernel/config/stp-policy/0-sth.default/console/masters "256 259"
+    write /sys/kernel/config/stp-policy/0-sth.default/console/channels "7 10"
+    mkdir /sys/kernel/config/stp-policy/0-sth.default/user
+    write /sys/kernel/config/stp-policy/0-sth.default/user/masters "260 1023"
+    write /sys/kernel/config/stp-policy/0-sth.default/user/channels "0 127"
 
 service init_npk /system/bin/init.npk.sh
     # execute only once, after data is decrypted and persist properties are set
