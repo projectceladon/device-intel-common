@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <sys/stat.h>
+#include <string.h>
 
 #define LOG_TAG "set_storage"
 #include <log/log.h>
