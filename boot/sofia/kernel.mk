@@ -101,7 +101,7 @@ kernel: $(INSTALLED_KERNEL_TARGET)
 .PHONY: kernel_clean
 kernel_clean:
 	@echo Cleaning kernel build files
-	make -C $(KERNEL_DIR) O=$(KERNEL_OUT_DIR) mrproper
+	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT_DIR) mrproper
 
 .PHONY: kernel_rebuild
 kernel_rebuild: kernel_clean kernel

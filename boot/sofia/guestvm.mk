@@ -28,7 +28,7 @@ $(BUILT_GUESTVM2): build_guestvm2
 
 build_guestvm2:
 	@echo Building ===== Building guestvm2 =====
-	make -C $(GUESTVM2_SRC_PATH) PLATFORM=$(MODEM_PLATFORM) BASEBUILDDIR=$(GUESTVM2_BUILD_OUT)
+	$(MAKE) -C $(GUESTVM2_SRC_PATH) PLATFORM=$(MODEM_PLATFORM) BASEBUILDDIR=$(GUESTVM2_BUILD_OUT)
 
 .PHONY: guestvm2
 guestvm2: $(BUILT_GUESTVM2)

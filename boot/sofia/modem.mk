@@ -99,7 +99,34 @@ endif #endif $(BUILD_MODEM_FROM_SRC) = true
 
 
 MODEM_FLS  := $(FLASHFILES_DIR)/modem.fls
+
+PSI_FLASH_FLS ?= $(FLASHFILES_DIR)/psi_flash.fls
+SLB_FLS ?= $(FLASHFILES_DIR)/slb.fls
+MOBILEVISOR_FLS ?= $(FLASHFILES_DIR)/mobilevisor.fls
+SECVM_FLS ?= $(FLASHFILES_DIR)/secvm.fls
+SPLASH_IMG_FLS ?= $(FLASHFILES_DIR)/splash_img.fls
+UCODE_PATCH_FLS ?= $(FLASHFILES_DIR)/ucode_patch.fls
+
+ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
+DSP_IMAGE_FLS := $(FLASHFILES_DIR)/dsp_image.fls
+LTE_FLS := $(FLASHFILES_DIR)/lte.fls
+IMC_FW_BLOCK_1 := $(FLASHFILES_DIR)/imc_fw_block_1.fls
+IMC_FW_BLOCK_2 := $(FLASHFILES_DIR)/imc_fw_block_2.fls
+IMC_BOOTLOADER_A := $(FLASHFILES_DIR)/imc_bootloader_a.fls
+IMC_BOOTLOADER_B := $(FLASHFILES_DIR)/imc_bootloader_b.fls
+endif
+
+
+
 ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
+ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/lte_signed.fls
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_1_signed.fls
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_2_signed.fls
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_a_signed.fls
+ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_b_signed.fls
+endif
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 .INTERMEDIATE: $(MODEM_FLS)
@@ -126,10 +153,10 @@ MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
 MODEM_INSTALL_PATH := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
 
 .PHONY: install_modem
-install_modem: $(BUILT_MODEM_DATA_EXT) | ${ACP}
+install_modem: $(BUILT_MODEM_DATA_EXT) | $(ACP)
 	@echo "Installing Modem Data Extract Binary to System Image.."
 	$(hide) mkdir -p $(MODEM_BIN_LOAD_PATH)
-	acp $< $(MODEM_INSTALL_PATH)
+	$(ACP) $< $(MODEM_INSTALL_PATH)
 
 ifeq ($(TARGET_LOAD_MODEM_DATA_EXTRACT),true)
 $(PRODUCT_OUT)/obj/PACKAGING/systemimage_intermediates/system.img: install_modem

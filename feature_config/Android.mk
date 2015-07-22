@@ -1,5 +1,8 @@
 # Add features to the list as new features are supported in the build tree
 INTEL_SUPPORTED_FEATURES := \
+        INTEL_FEATURE_AWARESERVICE \
+        INTEL_FEATURE_ADAPTIVE_AUTHENTICATION \
+        INTEL_FEATURE_CTA_SUPPORT \
 #       INTEL_FEATURE_SUPL20_ECID
 
 LOCAL_PATH := $(call my-dir)

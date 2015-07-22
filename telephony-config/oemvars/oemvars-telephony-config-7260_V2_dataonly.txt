@@ -1,3 +1,0 @@
-GUID = fb7e31f5-21de-4c4c-9eb7-163051bb06db
-
-TelephonyConfig    persist.ims_support=0%0Atelephony.tcs.sw_folder=7260_V2_dataonly%0Aro.swconf.info=7260_V2_dataonly

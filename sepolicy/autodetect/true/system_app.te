@@ -1,3 +1,0 @@
-allow system_app hal:unix_stream_socket connectto;
-allow system_app hal_socket:sock_file write;
-

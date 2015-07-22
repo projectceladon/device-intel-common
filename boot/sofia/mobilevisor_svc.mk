@@ -24,11 +24,9 @@ TARGET_BOARD_PLATFORM_VAR ?= $(TARGET_BOARD_PLATFORM)
 
 $(BUILT_LIB_MOBILEVISOR_SVC_TARGET): build_mobilevisor_service
 
-mk_mobilevisor_service = + make -C $(MOBILEVISOR_SVC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(MOBILEVISOR_SVC_BUILD_OUT) PLATFORM=$(MODEM_PLATFORM)
-
 build_mobilevisor_service:
 	@echo Building ===== lib_mobilevisor_service =====
-	$(mk_mobilevisor_service)
+	$(MAKE) -C $(MOBILEVISOR_SVC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(MOBILEVISOR_SVC_BUILD_OUT) PLATFORM=$(MODEM_PLATFORM)
 
 .PHONY: vmm_lib_mobilevisor_service
 vmm_lib_mobilevisor_service: $(BUILT_LIB_MOBILEVISOR_SVC_TARGET)

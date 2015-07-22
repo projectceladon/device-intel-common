@@ -14,6 +14,7 @@
 # limitations under the License.
 # ------------------------------------------------------------------------
 FASTBOOT_FLS_LIST  :=
+BOOTLOADER_SIGNED_FLS_LIST  :=
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 ifneq ($(TARGET_NO_RECOVERY),true)
 FASTBOOT_FLS_LIST  += $(RECOVERY_FLS)
@@ -35,9 +36,10 @@ DATA_EXT_NAME := *.fls_ID0_*_LoadMap*
 
 .PHONY: fastboot_img
 define FB_IMG_GEN
-fastboot_$(basename $(notdir $(1))): force $(1) | createflashfile_dir ${ACP}
+fastboot_$(basename $(notdir $(1))): force $(1) | createflashfile_dir $(ACP)
 	$(FLSTOOL) -o $(EXTRACT_TEMP)/$(basename $(notdir $(1))) -x $(1)
-	acp $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
+	echo $(ACP) $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
+	cat $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) > $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
 fastboot_img: fastboot_$(basename $(notdir $(1)))
 endef
 
@@ -47,3 +49,29 @@ $(foreach t,$(FASTBOOT_FLS_LIST),$(eval $(call FB_IMG_GEN,$(t))))
 #$(foreach f, $(FASTBOOT_FLS_LIST), $(shell $(FLSTOOL) -x $(f) -o $(EXTRACT_TEMP)))
 
 droidcore: fastboot_img
+
+SECP_EXT_NAME := *.fls_ID0_*_SecureBlock.bin
+
+BOOT_SIGNED_FLS = boot_signed
+RECOVERY_SIGNED_FLS = recovery_signed
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SLB_SIGNED_FLS)))
+BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
+
+BOOTLOADER_SIGNED_FLS_LIST := $(filter-out $(BOOT_SIGNED_FLS) $(RECOVERY_SIGNED_FLS), $(BOOTLOADER_SIGNED_FLS_LIST))
+BOOTLOADER_DEP := $(addprefix $(EXTRACT_TEMP)/,$(BOOTLOADER_SIGNED_FLS_LIST))
+
+BOOTLOADER_IMAGE := $(FASTBOOT_IMG_DIR)/bootloader
+
+bootloader_img: fastboot_img $(BOOTLOADER_DEP) | createflashfile_dir ${ACP}
+	$(foreach a, $(BOOTLOADER_DEP), $(shell $(FWU_PACK_GENERATE_TOOL) --input $(BOOTLOADER_IMAGE) --output $(BOOTLOADER_IMAGE)_temp --secpack $(a)/$(SECP_EXT_NAME) --data $(a)/$(DATA_EXT_NAME) ; acp $(BOOTLOADER_IMAGE)_temp $(BOOTLOADER_IMAGE)))
+	rm $(BOOTLOADER_IMAGE)_temp
+
+$(BOOTLOADER_IMAGE) : bootloader_img
+
+#FIXME : Breaks "make dist" on LTE. Once build fwu_image on LTE is
+#enabled this should be fixed.
+# Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+INSTALLED_RADIOIMAGE_TARGET += $(BOOTLOADER_IMAGE)
+endif

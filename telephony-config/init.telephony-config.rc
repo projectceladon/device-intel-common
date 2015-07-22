@@ -1,0 +1,7 @@
+service telephony-config /sbin/efiprop -e TelephonyConfig
+    oneshot
+    disabled
+    seclabel u:r:efiprop:s0
+
+on late-init
+    start telephony-config

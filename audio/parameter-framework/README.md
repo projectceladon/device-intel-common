@@ -37,7 +37,7 @@ In the context of Android, there are additional details:
       extension (e.g. `ParameterFrameworkConfiguration.xml.in`);
     * it shall set the "TuningAllowed" property to `@TUNING_ALLOWED@`;
     * the makefile shall change this value at build time (see an example in
-      `AndroidBoard.mk`).
+      `AndroidBoard.mk`), using the BUILD_REPLACE_PATTERNS_IN_FILE macro.
     
     That allows to maintain only one file per PFW instance instead of two.
 
@@ -47,6 +47,8 @@ In the context of Android, there are additional details:
     often the same for all platforms and only the name of the soundcard on the
     platform changes (`Mapping="Card:foobar"` in the `<Subsystem>` tag). In
     this example, this can be achieved with `Mapping=Card:@SOUND_CARD_NAME@`.
+    The macro BUILD_REPLACE_PATTERNS_IN_FILE can be used to replace this pattern
+    by the right value at build time (see below an explanation about this macro).
 
 3.  The `xi:include` mechanism in Structure files should be used wisely. Its
     purpose is to factorize parts of Structures that can be reused and allow to:
@@ -199,3 +201,37 @@ The important parts are the `PFW_`-prefixed variables:
 Before using any `PFW_` variable, you must call `include $(CLEAR_PFW_VARS)` and
 you can call `include $(BUILD_PFW_SETTINGS)` to trigger XML generation. These
 two variables are defined by `AndroidBoard.mk`.
+
+## Replace patterns in configuration files
+
+We provide a build rule to replace patterns by their associated values in
+configuration files.
+
+Here is a usage example:
+
+    include $(CLEAR_VARS)
+    LOCAL_MODULE := ParameterFrameworkConfiguration.xml
+    LOCAL_SRC_FILES := $(LOCAL_MODULE).in
+    LOCAL_MODULE_TAGS := optional
+    LOCAL_MODULE_CLASS := ETC
+    LOCAL_MODULE_RELATIVE_PATH := parameter-framework
+    LOCAL_REQUIRED_MODULES := \
+        WM8281Subsystem.xml \
+        IMCSubsystem.xml \
+        SstSubsystem.xml
+    REPLACE_PATTERNS := @SOUND_CARD_NAME@=floridaaudio \
+                        @TUNING_ALLOWED@=true
+    include $(BUILD_REPLACE_PATTERNS_IN_FILE)
+
+Important variables are the following ones;
+* `LOCAL_SRC_FILES`: the input file containing the patterns to be replaced
+* `REPLACE_PATTERNS`: contains a list of space separated pairs, each describing
+    a pattern and its value. A pattern is separated from its value by a '=' character.
+* `PATTERN_SEPARATOR`: optional variable that can be used to specify a different
+    separator for the patterns. By default its value is '='.
+
+Here, we will replace @SOUND_CARD_NAME@ by 'floridaaudio' and @TUNING_ALLOWED@
+by 'true' in the file '$(LOCAL_MODULE).in'.
+
+The call to `include $(BUILD_REPLACE_PATTERNS_IN_FILE)` triggers the whole process.
+

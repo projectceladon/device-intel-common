@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComponentLibrary>
+    <!--digital output volume and switch-->
+    <ComponentType Name="Digital">
+        <IntegerParameter Name="volume" Size="8" Min="0" Max="191" ArrayLength="2"
+                          Mapping="Control:'%1 Digital Volume'"/>
+        <BooleanParameter Name="switch" ArrayLength="2" Mapping="Control:'%1 Digital Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="HpoutDigital" Extends="Digital">
+        <BooleanParameter Name="dre_switch" ArrayLength="2" Mapping="Control:'%1 DRE Switch'"/>
+        <BooleanParameter Name="sc_protect_switch" Mapping="Control:'%1 SC Protect Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="SpkDigital" Extends="Digital">
+        <BooleanParameter Name="second_switch" ArrayLength="2" Mapping="Control:'%1 Switch'"/>
+        <BooleanParameter Name="high_perf_switch" Mapping="Control:'%1 High Performance Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="Headphone">
+        <Component Name="1" Type="HpoutDigital" Mapping="Amend1:HPOUT1"/>
+        <Component Name="2" Type="HpoutDigital" Mapping="Amend1:HPOUT2"/>
+        <Component Name="3" Type="HpoutDigital" Mapping="Amend1:HPOUT3"/>
+        <BooleanParameter Name="switch" Mapping="Control:'Headphones Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="Speaker">
+        <Component Name="analog" Type="Digital" Mapping="Amend1:Speaker"/>
+        <ParameterBlock Name="digital">
+            <Component Name="1" Type="SpkDigital" Mapping="Amend1:SPKDAT1"/>
+            <Component Name="2" Type="SpkDigital" Mapping="Amend1:SPKDAT2"/>
+        </ParameterBlock>
+        <BooleanParameter Name="switch" Mapping="Control:'Ext Spk Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="Ramp">
+        <EnumParameter Name="rate" Size="8" Mapping="Control:%2 Ramp %3">
+            <ValuePair Literal="0ms" Numerical="0"/>
+            <ValuePair Literal="0.5ms" Numerical="1"/>
+            <ValuePair Literal="1ms" Numerical="2"/>
+            <ValuePair Literal="2ms" Numerical="3"/>
+            <ValuePair Literal="4ms" Numerical="4"/>
+            <ValuePair Literal="8ms" Numerical="5"/>
+            <ValuePair Literal="15ms" Numerical="6"/>
+            <ValuePair Literal="30ms" Numerical="7"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="Output">
+        <ParameterBlock Name="volume_ramp" Mapping="Amend2:Output">
+            <Component Name="down" Type="Ramp" Mapping="Amend3:Down"/>
+            <Component Name="up" Type="Ramp" Mapping="Amend3:Up"/>
+        </ParameterBlock>
+        <Component Name="headphone" Type="Headphone"/>
+        <Component Name="speaker" Type="Speaker"/>
+        <ParameterBlock Name="earpiece">
+            <BooleanParameter Name="switch" Mapping="Control:'EP Switch'"/>
+        </ParameterBlock>
+    </ComponentType>
+
+    <!--analog input volume and switch-->
+    <ComponentType Name="DigiTypeMono">
+        <IntegerParameter Name="volume" Size="8" Min="0" Max="191"
+                          Mapping="Control:'%1 Digital Volume'"/>
+    </ComponentType>
+
+    <ComponentType Name="LineinValue" Extends="DigiTypeMono">
+        <BooleanParameter Name="performance" Mapping="Control:'%1 HPF Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="LineinVolumeValue" Extends="LineinValue">
+        <IntegerParameter Name="mono_volume" Size="8" Min="0" Max="31"
+                          Mapping="Control:'%1 Volume'"/>
+    </ComponentType>
+
+    <ComponentType Name="Linein">
+        <ParameterBlock Name="volume_ramp" Mapping="Amend2:Input">
+            <Component Name="down" Type="Ramp" Mapping="Amend3:Down"/>
+            <Component Name="up" Type="Ramp" Mapping="Amend3:Up"/>
+        </ParameterBlock>
+        <ParameterBlock Name="1">
+            <Component Name="left" Type="LineinVolumeValue" Mapping="Amend1:IN1L"/>
+            <Component Name="right" Type="LineinVolumeValue" Mapping="Amend1:IN1R"/>
+        </ParameterBlock>
+        <ParameterBlock Name="2">
+            <Component Name="left" Type="LineinVolumeValue" Mapping="Amend1:IN2L"/>
+            <Component Name="right" Type="LineinVolumeValue" Mapping="Amend1:IN2R"/>
+        </ParameterBlock>
+        <ParameterBlock Name="3">
+            <Component Name="left" Type="LineinVolumeValue" Mapping="Amend1:IN3L"/>
+            <Component Name="right" Type="LineinVolumeValue" Mapping="Amend1:IN3R"/>
+        </ParameterBlock>
+        <ParameterBlock Name="4">
+            <Component Name="left" Type="LineinValue" Mapping="Amend1:IN4L"/>
+            <Component Name="right" Type="LineinValue" Mapping="Amend1:IN4R"/>
+        </ParameterBlock>
+    </ComponentType>
+
+    <!--DMIC CLK control-->
+    <ComponentType Name="OsrItem">
+        <EnumParameter Name="sysclk" Size="8" Mapping="Control:'%1 OSR'">
+            <ValuePair Literal="1.526MHz" Numerical="0"/>
+            <ValuePair Literal="3.072MHz" Numerical="1"/>
+            <ValuePair Literal="6.144MHz" Numerical="2"/>
+            <ValuePair Literal="768KHz" Numerical="3"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="OsrSource">
+        <Component Name="in1" Type="OsrItem" Mapping="Amend1:IN1"/>
+        <Component Name="in2" Type="OsrItem" Mapping="Amend1:IN2"/>
+        <Component Name="in3" Type="OsrItem" Mapping="Amend1:IN3"/>
+        <Component Name="in4" Type="OsrItem" Mapping="Amend1:IN4"/>
+    </ComponentType>
+
+    <ComponentType Name="Input">
+        <Component Name="linein" Type="Linein" Description="Input Signal Path"/>
+        <ParameterBlock Name="amic">
+            <BooleanParameter Name="switch" Mapping="Control:'AMIC Switch'"/>
+        </ParameterBlock>
+        <ParameterBlock Name="dmic">
+            <Component Name="osr" Type="OsrSource" Description="DMIC Sysclk Select"/>
+            <BooleanParameter Name="switch" Mapping="Control:'DMIC Switch'"/>
+        </ParameterBlock>
+    </ComponentType>
+
+    <!--Digital core mixer-->
+    <ComponentType Name="Source">
+        <EnumParameter Name="source" Size="8" Mapping="Control:'%1 %2 %3'">
+            <ValuePair Literal="None" Numerical="0"/>
+            <ValuePair Literal="Tone Generator 1" Numerical="1"/>
+            <ValuePair Literal="Tone Generator 2" Numerical="2"/>
+            <ValuePair Literal="Haptics" Numerical="3"/>
+            <ValuePair Literal="AEC" Numerical="4"/>
+            <ValuePair Literal="Mic Mute Mixer" Numerical="5"/>
+            <ValuePair Literal="Noise Generator" Numerical="6"/>
+            <ValuePair Literal="IN1L" Numerical="7"/>
+            <ValuePair Literal="IN1R" Numerical="8"/>
+            <ValuePair Literal="IN2L" Numerical="9"/>
+            <ValuePair Literal="IN2R" Numerical="10"/>
+            <ValuePair Literal="IN3L" Numerical="11"/>
+            <ValuePair Literal="IN3R" Numerical="12"/>
+            <ValuePair Literal="IN4L" Numerical="13"/>
+            <ValuePair Literal="IN4R" Numerical="14"/>
+            <ValuePair Literal="AIF1RX1" Numerical="15"/>
+            <ValuePair Literal="AIF1RX2" Numerical="16"/>
+            <ValuePair Literal="AIF1RX3" Numerical="17"/>
+            <ValuePair Literal="AIF1RX4" Numerical="18"/>
+            <ValuePair Literal="AIF1RX5" Numerical="19"/>
+            <ValuePair Literal="AIF1RX6" Numerical="20"/>
+            <ValuePair Literal="AIF1RX7" Numerical="21"/>
+            <ValuePair Literal="AIF1RX8" Numerical="22"/>
+            <ValuePair Literal="AIF2RX1" Numerical="23"/>
+            <ValuePair Literal="AIF2RX2" Numerical="24"/>
+            <ValuePair Literal="AIF2RX3" Numerical="25"/>
+            <ValuePair Literal="AIF2RX4" Numerical="26"/>
+            <ValuePair Literal="AIF2RX5" Numerical="27"/>
+            <ValuePair Literal="AIF2RX6" Numerical="28"/>
+            <ValuePair Literal="AIF3RX1" Numerical="29"/>
+            <ValuePair Literal="AIF3RX2" Numerical="30"/>
+            <ValuePair Literal="SLIMRX1" Numerical="31"/>
+            <ValuePair Literal="SLIMRX2" Numerical="32"/>
+            <ValuePair Literal="SLIMRX3" Numerical="33"/>
+            <ValuePair Literal="SLIMRX4" Numerical="34"/>
+            <ValuePair Literal="SLIMRX5" Numerical="35"/>
+            <ValuePair Literal="SLIMRX6" Numerical="36"/>
+            <ValuePair Literal="SLIMRX7" Numerical="37"/>
+            <ValuePair Literal="SLIMRX8" Numerical="38"/>
+            <ValuePair Literal="EQ1" Numerical="39"/>
+            <ValuePair Literal="EQ2" Numerical="40"/>
+            <ValuePair Literal="EQ3" Numerical="41"/>
+            <ValuePair Literal="EQ4" Numerical="42"/>
+            <ValuePair Literal="DRC1L" Numerical="43"/>
+            <ValuePair Literal="DRC1R" Numerical="44"/>
+            <ValuePair Literal="DRC2L" Numerical="45"/>
+            <ValuePair Literal="DRC2R" Numerical="46"/>
+            <ValuePair Literal="LHPF1" Numerical="47"/>
+            <ValuePair Literal="LHPF2" Numerical="48"/>
+            <ValuePair Literal="LHPF3" Numerical="49"/>
+            <ValuePair Literal="LHPF4" Numerical="50"/>
+            <ValuePair Literal="DSP1.1" Numerical="51"/>
+            <ValuePair Literal="DSP1.2" Numerical="52"/>
+            <ValuePair Literal="DSP1.3" Numerical="53"/>
+            <ValuePair Literal="DSP1.4" Numerical="54"/>
+            <ValuePair Literal="DSP1.5" Numerical="55"/>
+            <ValuePair Literal="DSP1.6" Numerical="56"/>
+            <ValuePair Literal="DSP2.1" Numerical="57"/>
+            <ValuePair Literal="DSP2.2" Numerical="58"/>
+            <ValuePair Literal="DSP2.3" Numerical="59"/>
+            <ValuePair Literal="DSP2.4" Numerical="60"/>
+            <ValuePair Literal="DSP2.5" Numerical="61"/>
+            <ValuePair Literal="DSP2.6" Numerical="62"/>
+            <ValuePair Literal="DSP3.1" Numerical="63"/>
+            <ValuePair Literal="DSP3.2" Numerical="64"/>
+            <ValuePair Literal="DSP3.3" Numerical="65"/>
+            <ValuePair Literal="DSP3.4" Numerical="66"/>
+            <ValuePair Literal="DSP3.5" Numerical="67"/>
+            <ValuePair Literal="DSP3.6" Numerical="68"/>
+            <ValuePair Literal="DSP4.1" Numerical="69"/>
+            <ValuePair Literal="DSP4.2" Numerical="70"/>
+            <ValuePair Literal="DSP4.3" Numerical="71"/>
+            <ValuePair Literal="DSP4.4" Numerical="72"/>
+            <ValuePair Literal="DSP4.5" Numerical="73"/>
+            <ValuePair Literal="DSP4.6" Numerical="74"/>
+            <ValuePair Literal="ASRC1L" Numerical="75"/>
+            <ValuePair Literal="ASRC1R" Numerical="76"/>
+            <ValuePair Literal="ASRC2L" Numerical="77"/>
+            <ValuePair Literal="ASRC2R" Numerical="78"/>
+            <ValuePair Literal="ISRC1INT1" Numerical="79"/>
+            <ValuePair Literal="ISRC1INT2" Numerical="80"/>
+            <ValuePair Literal="ISRC1INT3" Numerical="81"/>
+            <ValuePair Literal="ISRC1INT4" Numerical="82"/>
+            <ValuePair Literal="ISRC1DEC1" Numerical="83"/>
+            <ValuePair Literal="ISRC1DEC2" Numerical="84"/>
+            <ValuePair Literal="ISRC1DEC3" Numerical="85"/>
+            <ValuePair Literal="ISRC1DEC4" Numerical="86"/>
+            <ValuePair Literal="ISRC2INT1" Numerical="87"/>
+            <ValuePair Literal="ISRC2INT2" Numerical="88"/>
+            <ValuePair Literal="ISRC2INT3" Numerical="89"/>
+            <ValuePair Literal="ISRC2INT4" Numerical="90"/>
+            <ValuePair Literal="ISRC2DEC1" Numerical="91"/>
+            <ValuePair Literal="ISRC2DEC2" Numerical="92"/>
+            <ValuePair Literal="ISRC2DEC3" Numerical="93"/>
+            <ValuePair Literal="ISRC2DEC4" Numerical="94"/>
+            <ValuePair Literal="ISRC3INT1" Numerical="95"/>
+            <ValuePair Literal="ISRC3INT2" Numerical="96"/>
+            <ValuePair Literal="ISRC3INT3" Numerical="97"/>
+            <ValuePair Literal="ISRC3INT4" Numerical="98"/>
+            <ValuePair Literal="ISRC3DEC1" Numerical="99"/>
+            <ValuePair Literal="ISRC3DEC2" Numerical="100"/>
+            <ValuePair Literal="ISRC3DEC3" Numerical="101"/>
+            <ValuePair Literal="ISRC3DEC4" Numerical="102"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="SourceVolume" Extends="Source">
+        <IntegerParameter Name="volume" Size="8" Mapping="Control:'%1 %2 %3 Volume'"/>
+    </ComponentType>
+
+    <ComponentType Name="MixerElement">
+        <Component Name="input1" Type="SourceVolume" Mapping="Amend3:1"/>
+        <Component Name="input2" Type="SourceVolume" Mapping="Amend3:2"/>
+        <Component Name="input3" Type="SourceVolume" Mapping="Amend3:3"/>
+        <Component Name="input4" Type="SourceVolume" Mapping="Amend3:4"/>
+    </ComponentType>
+
+    <ComponentType Name="MixerWithoutVolumeElement">
+        <Component Name="input1" Type="Source" Mapping="Amend3:1"/>
+        <Component Name="input2" Type="Source" Mapping="Amend3:2"/>
+        <Component Name="input3" Type="Source" Mapping="Amend3:3"/>
+        <Component Name="input4" Type="Source" Mapping="Amend3:4"/>
+    </ComponentType>
+
+    <ComponentType Name="ExtendedMixerElement" Extends="MixerWithoutVolumeElement">
+        <Component Name="input5" Type="Source" Mapping="Amend3:5"/>
+        <Component Name="input6" Type="Source" Mapping="Amend3:6"/>
+    </ComponentType>
+
+    <!--DSP Mixer and firmware-->
+    <ComponentType Name="DspFirmware">
+        <EnumParameter Name="firmware" Size="8" Mapping="Control:'%1 Firmware'">
+            <ValuePair Literal="MBC/VSS" Numerical="0"/>
+            <ValuePair Literal="Tx" Numerical="1"/>
+            <ValuePair Literal="Tx Speaker" Numerical="2"/>
+            <ValuePair Literal="Rx ANC" Numerical="3"/>
+            <ValuePair Literal="Ez2Control" Numerical="4"/>
+            <ValuePair Literal="Trace" Numerical="5"/>
+            <ValuePair Literal="EDAC" Numerical="6"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="DspRate">
+        <EnumParameter Name="sample_rate" Size="8" Mapping="Control:'%1 Rate'">
+            <ValuePair Literal="SYNCCLK rate 1" Numerical="0"/>
+            <ValuePair Literal="SYNCCLK rate 2" Numerical="1"/>
+            <ValuePair Literal="SYNCCLK rate 3" Numerical="2"/>
+            <ValuePair Literal="ASYNCCLK rate" Numerical="3"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="Src">
+        <EnumParameter Name="src_value" Size="8" Mapping="Control:'%1 Input'">
+            <ValuePair Literal="None" Numerical="0"/>
+            <ValuePair Literal="Tone Generator 1" Numerical="1"/>
+            <ValuePair Literal="Tone Generator 2" Numerical="2"/>
+            <ValuePair Literal="Haptics" Numerical="3"/>
+            <ValuePair Literal="AEC" Numerical="4"/>
+            <ValuePair Literal="Mic Mute Mixer" Numerical="5"/>
+            <ValuePair Literal="Noise Generator" Numerical="6"/>
+            <ValuePair Literal="IN1L" Numerical="7"/>
+            <ValuePair Literal="IN1R" Numerical="8"/>
+            <ValuePair Literal="IN2L" Numerical="9"/>
+            <ValuePair Literal="IN2R" Numerical="10"/>
+            <ValuePair Literal="IN3L" Numerical="11"/>
+            <ValuePair Literal="IN3R" Numerical="12"/>
+            <ValuePair Literal="IN4L" Numerical="13"/>
+            <ValuePair Literal="IN4R" Numerical="14"/>
+            <ValuePair Literal="AIF1RX1" Numerical="15"/>
+            <ValuePair Literal="AIF1RX2" Numerical="16"/>
+            <ValuePair Literal="AIF1RX3" Numerical="17"/>
+            <ValuePair Literal="AIF1RX4" Numerical="18"/>
+            <ValuePair Literal="AIF1RX5" Numerical="19"/>
+            <ValuePair Literal="AIF1RX6" Numerical="20"/>
+            <ValuePair Literal="AIF1RX7" Numerical="21"/>
+            <ValuePair Literal="AIF1RX8" Numerical="22"/>
+            <ValuePair Literal="AIF2RX1" Numerical="23"/>
+            <ValuePair Literal="AIF2RX2" Numerical="24"/>
+            <ValuePair Literal="AIF2RX3" Numerical="25"/>
+            <ValuePair Literal="AIF2RX4" Numerical="26"/>
+            <ValuePair Literal="AIF2RX5" Numerical="27"/>
+            <ValuePair Literal="AIF2RX6" Numerical="28"/>
+            <ValuePair Literal="AIF3RX1" Numerical="29"/>
+            <ValuePair Literal="AIF3RX2" Numerical="30"/>
+            <ValuePair Literal="SLIMRX1" Numerical="31"/>
+            <ValuePair Literal="SLIMRX2" Numerical="32"/>
+            <ValuePair Literal="SLIMRX3" Numerical="33"/>
+            <ValuePair Literal="SLIMRX4" Numerical="34"/>
+            <ValuePair Literal="SLIMRX5" Numerical="35"/>
+            <ValuePair Literal="SLIMRX6" Numerical="36"/>
+            <ValuePair Literal="SLIMRX7" Numerical="37"/>
+            <ValuePair Literal="SLIMRX8" Numerical="38"/>
+            <ValuePair Literal="EQ1" Numerical="39"/>
+            <ValuePair Literal="EQ2" Numerical="40"/>
+            <ValuePair Literal="EQ3" Numerical="41"/>
+            <ValuePair Literal="EQ4" Numerical="42"/>
+            <ValuePair Literal="DRC1L" Numerical="43"/>
+            <ValuePair Literal="DRC1R" Numerical="44"/>
+            <ValuePair Literal="DRC2L" Numerical="45"/>
+            <ValuePair Literal="DRC2R" Numerical="46"/>
+            <ValuePair Literal="LHPF1" Numerical="47"/>
+            <ValuePair Literal="LHPF2" Numerical="48"/>
+            <ValuePair Literal="LHPF3" Numerical="49"/>
+            <ValuePair Literal="LHPF4" Numerical="50"/>
+            <ValuePair Literal="DSP1.1" Numerical="51"/>
+            <ValuePair Literal="DSP1.2" Numerical="52"/>
+            <ValuePair Literal="DSP1.3" Numerical="53"/>
+            <ValuePair Literal="DSP1.4" Numerical="54"/>
+            <ValuePair Literal="DSP1.5" Numerical="55"/>
+            <ValuePair Literal="DSP1.6" Numerical="56"/>
+            <ValuePair Literal="DSP2.1" Numerical="57"/>
+            <ValuePair Literal="DSP2.2" Numerical="58"/>
+            <ValuePair Literal="DSP2.3" Numerical="59"/>
+            <ValuePair Literal="DSP2.4" Numerical="60"/>
+            <ValuePair Literal="DSP2.5" Numerical="61"/>
+            <ValuePair Literal="DSP2.6" Numerical="62"/>
+            <ValuePair Literal="DSP3.1" Numerical="63"/>
+            <ValuePair Literal="DSP3.2" Numerical="64"/>
+            <ValuePair Literal="DSP3.3" Numerical="65"/>
+            <ValuePair Literal="DSP3.4" Numerical="66"/>
+            <ValuePair Literal="DSP3.5" Numerical="67"/>
+            <ValuePair Literal="DSP3.6" Numerical="68"/>
+            <ValuePair Literal="DSP4.1" Numerical="69"/>
+            <ValuePair Literal="DSP4.2" Numerical="70"/>
+            <ValuePair Literal="DSP4.3" Numerical="71"/>
+            <ValuePair Literal="DSP4.4" Numerical="72"/>
+            <ValuePair Literal="DSP4.5" Numerical="73"/>
+            <ValuePair Literal="DSP4.6" Numerical="74"/>
+            <ValuePair Literal="ASRC1L" Numerical="75"/>
+            <ValuePair Literal="ASRC1R" Numerical="76"/>
+            <ValuePair Literal="ASRC2L" Numerical="77"/>
+            <ValuePair Literal="ASRC2R" Numerical="78"/>
+            <ValuePair Literal="ISRC1INT1" Numerical="79"/>
+            <ValuePair Literal="ISRC1INT2" Numerical="80"/>
+            <ValuePair Literal="ISRC1INT3" Numerical="81"/>
+            <ValuePair Literal="ISRC1INT4" Numerical="82"/>
+            <ValuePair Literal="ISRC1DEC1" Numerical="83"/>
+            <ValuePair Literal="ISRC1DEC2" Numerical="84"/>
+            <ValuePair Literal="ISRC1DEC3" Numerical="85"/>
+            <ValuePair Literal="ISRC1DEC4" Numerical="86"/>
+            <ValuePair Literal="ISRC2INT1" Numerical="87"/>
+            <ValuePair Literal="ISRC2INT2" Numerical="88"/>
+            <ValuePair Literal="ISRC2INT3" Numerical="89"/>
+            <ValuePair Literal="ISRC2INT4" Numerical="90"/>
+            <ValuePair Literal="ISRC2DEC1" Numerical="91"/>
+            <ValuePair Literal="ISRC2DEC2" Numerical="92"/>
+            <ValuePair Literal="ISRC2DEC3" Numerical="93"/>
+            <ValuePair Literal="ISRC2DEC4" Numerical="94"/>
+            <ValuePair Literal="ISRC3INT1" Numerical="95"/>
+            <ValuePair Literal="ISRC3INT2" Numerical="96"/>
+            <ValuePair Literal="ISRC3INT3" Numerical="97"/>
+            <ValuePair Literal="ISRC3INT4" Numerical="98"/>
+            <ValuePair Literal="ISRC3DEC1" Numerical="99"/>
+            <ValuePair Literal="ISRC3DEC2" Numerical="100"/>
+            <ValuePair Literal="ISRC3DEC3" Numerical="101"/>
+            <ValuePair Literal="ISRC3DEC4" Numerical="102"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <!--ISRC FSL/H-->
+    <ComponentType Name="IsrSampleRate">
+        <EnumParameter Name="sample_rate" Size="8" Mapping="Control:'%1 %2'">
+            <ValuePair Literal="SYNCCLK rate 1" Numerical="0"/>
+            <ValuePair Literal="SYNCCLK rate 2" Numerical="1"/>
+            <ValuePair Literal="SYNCCLK rate 3" Numerical="2"/>
+            <ValuePair Literal="ASYNCCLK rate" Numerical="3"/>
+        </EnumParameter>
+    </ComponentType>
+
+    <ComponentType Name="IsrcFslh">
+        <Component Name="1" Type="IsrSampleRate" Mapping="Amend1:ISRC1"/>
+        <Component Name="2" Type="IsrSampleRate" Mapping="Amend1:ISRC2"/>
+        <Component Name="3" Type="IsrSampleRate" Mapping="Amend1:ISRC3"/>
+    </ComponentType>
+
+    <!--DRC Control-->
+    <!-- AIF / DRC common settings -->
+    <ComponentType Name="DrcControl">
+        <BitParameterBlock Name="control_1" Size="16">
+            <BitParameter Name="sig_det_rms" Size="5" Pos="3" Description="Signal Dectect RMS Threshold"/>
+            <BitParameter Name="sig_det_pk" Size="2" Pos="1" Description="Signal Dectect Peak Threshold"/>
+            <BitParameter Name="ng_enabled" Size="1" Pos="0" Description="Noise Gate enable"/>
+            <BitParameter Name="sig_det_mode" Size="1" Pos="15" Description="Signal Detect Mode"/>
+            <BitParameter Name="sig_det_enabled" Size="1" Pos="14" Description="Signal Detect enable"/>
+            <BitParameter Name="knee2_op_enabled" Size="1" Pos="13" Description="Gate threshold 'Knee2' output enable"/>
+            <BitParameter Name="qr_enabled" Size="1" Pos="12" Description="Quick-release enable"/>
+            <BitParameter Name="anticlip_enabled" Size="1" Pos="11" Description="Anti-clip enable"/>
+        </BitParameterBlock>
+        <IntegerParameter Name="control_2" Size="16"/>
+        <BitParameterBlock Name="control_3" Size="16">
+            <BitParameter Name="ng_min_gain" Size="4" Pos="4" Description="Minimum gain to attenuate audio signals when the noise gate is activated"/>
+            <BitParameter Name="ng_exp" Size="2" Pos="2" Description="Noise Gate slope"/>
+            <BitParameter Name="qr_thr" Size="2" Pos="0" Description="Quick-release threshold (crest factor in dB)"/>
+            <BitParameter Name="qr_dcy" Size="2" Pos="14" Description="Quick-release decay rate (seconds/6dB)"/>
+            <BitParameter Name="hi_comp" Size="3" Pos="11" Description="Compressor slope (upper region)"/>
+            <BitParameter Name="lo_comp" Size="3" Pos="8" Description="Compressor slope (lower region)"/>
+        </BitParameterBlock>
+        <IntegerParameter Name="control_4" Size="16"/>
+        <IntegerParameter Name="control_5" Size="16"/>
+    </ComponentType>
+
+    <!--EQ control-->
+    <ComponentType Name="EqItem">
+        <ParameterBlock Name="band_control">
+            <IntegerParameter Name="mode_switch" Size="8" Mapping="Control:'%1 Mode Switch'"/>
+            <IntegerParameter Name="b1_gain" Size="8" Mapping="Control:'%1 B1 Volume'"/>
+            <IntegerParameter Name="b2_gain" Size="8" Mapping="Control:'%1 B2 Volume'"/>
+            <IntegerParameter Name="b3_gain" Size="8" Mapping="Control:'%1 B3 Volume'"/>
+            <IntegerParameter Name="b4_gain" Size="8" Mapping="Control:'%1 B4 Volume'"/>
+            <IntegerParameter Name="b5_gain" Size="8" Mapping="Control:'%1 B5 Volume'"/>
+        </ParameterBlock>
+        <IntegerParameter Name="coefficients" Size="8" ArrayLength="38" Mapping="ByteControl:'%1 Coefficients'"/>
+    </ComponentType>
+
+    <!--LHPF control-->
+    <ComponentType Name="LhpfItem">
+        <EnumParameter Name="mode" Size="8" Mapping="Control:'%1 Mode'">
+            <ValuePair Literal="Low-pass" Numerical="0"/>
+            <ValuePair Literal="High-pass" Numerical="1"/>
+        </EnumParameter>
+        <IntegerParameter Name="coeff" Size="16" Min="0" Max="65535" ArrayLength="2" Mapping="Control:'%1 Coefficients'" Description="Coefficients"/>
+    </ComponentType>
+
+    <ComponentType Name="DigitalCore">
+        <ParameterBlock Name="dsp" Description="Dsp">
+            <ParameterBlock Name="1">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DSP1L,Amend2:Input"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DSP1R,Amend2:Input"/>
+                <Component Name="aux" Type="ExtendedMixerElement" Mapping="Amend1:DSP1,Amend2:Aux"/>
+                <Component Name="dsp_firmware" Type="DspFirmware" Mapping="Amend1:DSP1"/>
+                <Component Name="dsp_rate" Type="DspRate" Mapping="Amend1:DSP1"/>
+            </ParameterBlock>
+            <ParameterBlock Name="2">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DSP2L,Amend2:Input"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DSP2R,Amend2:Input"/>
+                <Component Name="aux" Type="ExtendedMixerElement" Mapping="Amend1:DSP2,Amend2:Aux"/>
+                <Component Name="dsp_firmware" Type="DspFirmware" Mapping="Amend1:DSP2"/>
+                <Component Name="dsp_rate" Type="DspRate" Mapping="Amend1:DSP2"/>
+            </ParameterBlock>
+            <ParameterBlock Name="3">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DSP3L,Amend2:Input"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DSP3R,Amend2:Input"/>
+                <Component Name="aux" Type="ExtendedMixerElement" Mapping="Amend1:DSP3,Amend2:Aux"/>
+                <Component Name="dsp_firmware" Type="DspFirmware" Mapping="Amend1:DSP3"/>
+                <Component Name="dsp_rate" Type="DspRate" Mapping="Amend1:DSP3"/>
+            </ParameterBlock>
+            <ParameterBlock Name="4">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DSP4L,Amend2:Input"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DSP4R,Amend2:Input"/>
+                <Component Name="aux" Type="ExtendedMixerElement" Mapping="Amend1:DSP4,Amend2:Aux"/>
+                <Component Name="dsp_firmware" Type="DspFirmware" Mapping="Amend1:DSP4"/>
+                <Component Name="dsp_rate" Type="DspRate" Mapping="Amend1:DSP4"/>
+            </ParameterBlock>
+        </ParameterBlock>
+        <ParameterBlock Name="sr" Description="Sample Rate">
+            <!--ASRC digital mixer-->
+            <ParameterBlock Name="asynchronous" Description="Asrc">
+                <ParameterBlock Name="1" Description="AsrcFirstLine">
+                    <Component Name="left" Type="Src" Mapping="Amend1:ASRC1L"/>
+                    <Component Name="right" Type="Src" Mapping="Amend1:ASRC1R"/>
+                </ParameterBlock>
+                <ParameterBlock Name="2" Description="AsrcSecondLine">
+                    <Component Name="left" Type="Src" Mapping="Amend1:ASRC2L"/>
+                    <Component Name="right" Type="Src" Mapping="Amend1:ASRC2R"/>
+                </ParameterBlock>
+            </ParameterBlock>
+            <!--ISRC DEC/INT digital mixer-->
+            <ParameterBlock Name="isochronous" Description="Isrc">
+                <ParameterBlock Name="decimation" Description="IsrcDec">
+                    <ParameterBlock Name="1" Description="DecFirstBlock">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC1DEC1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC1DEC2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC1DEC3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC1DEC4"/>
+                    </ParameterBlock>
+                    <ParameterBlock Name="2" Description="DecFirstBloc">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC2DEC1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC2DEC2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC2DEC3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC2DEC4"/>
+                    </ParameterBlock>
+                    <ParameterBlock Name="3" Description="DecThirdBlock">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC3DEC1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC3DEC2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC3DEC3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC3DEC4"/>
+                    </ParameterBlock>
+                </ParameterBlock>
+                <ParameterBlock Name="interpolation" Description="IsrcInt">
+                    <ParameterBlock Name="1" Description="IntFirstBlock">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC1INT1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC1INT2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC1INT3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC1INT4"/>
+                    </ParameterBlock>
+                    <ParameterBlock Name="2" Description="IntSecondBlock">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC2INT1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC2INT2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC2INT3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC2INT4"/>
+                    </ParameterBlock>
+                    <ParameterBlock Name="3" Description="IntThirdBlock">
+                        <Component Name="input1" Type="Src" Mapping="Amend1:ISRC3INT1"/>
+                        <Component Name="input2" Type="Src" Mapping="Amend1:ISRC3INT2"/>
+                        <Component Name="input3" Type="Src" Mapping="Amend1:ISRC3INT3"/>
+                        <Component Name="input4" Type="Src" Mapping="Amend1:ISRC3INT4"/>
+                    </ParameterBlock>
+                </ParameterBlock>
+                <Component Name="fsl" Type="IsrcFslh" Mapping="Amend2:FSL"/>
+                <Component Name="fsh" Type="IsrcFslh" Mapping="Amend2:FSH"/>
+            </ParameterBlock>
+        </ParameterBlock>
+        <ParameterBlock Name="drc" Description="Dynamic Range Control">
+            <Component Name="1" Type="DrcControl" Mapping="ByteControl:DRC1"/>
+            <Component Name="2" Type="DrcControl" Mapping="ByteControl:DRC2"/>
+        </ParameterBlock>
+        <!--4 independent equalisers-->
+        <ParameterBlock Name="eq" Description="5-Band Equalizer">
+            <Component Name="1" Type="EqItem" Mapping="Amend1:EQ1"/>
+            <Component Name="2" Type="EqItem" Mapping="Amend1:EQ2"/>
+            <Component Name="3" Type="EqItem" Mapping="Amend1:EQ3"/>
+            <Component Name="4" Type="EqItem" Mapping="Amend1:EQ4"/>
+        </ParameterBlock>
+        <ParameterBlock Name="lhpf" Description="Low Pass High Pass Filter">
+            <Component Name="filter1" Type="LhpfItem" Mapping="Amend1:LHPF1"/>
+            <Component Name="filter2" Type="LhpfItem" Mapping="Amend1:LHPF2"/>
+            <Component Name="filter3" Type="LhpfItem" Mapping="Amend1:LHPF3"/>
+            <Component Name="filter4" Type="LhpfItem" Mapping="Amend1:LHPF4"/>
+        </ParameterBlock>
+        <ParameterBlock Name="noise" Description="Noise Generator">
+            <IntegerParameter Name="volume" Size="8" Min="0" Max="22"
+                              Mapping="Control:'Noise Generator Volume'"/>
+        </ParameterBlock>
+    </ComponentType>
+
+    <!--Headphone digital mixer-->
+    <ComponentType Name="NgSwitch">
+        <BooleanParameter Name="switch" Mapping="Control:'%1 NG %3 Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="MixerWithNgElement" Extends="MixerElement">
+        <ParameterBlock Name="ng">
+            <Component Name="hpout1l" Type="NgSwitch" Mapping="Amend3:HPOUT1L"/>
+            <Component Name="hpout1r" Type="NgSwitch" Mapping="Amend3:HPOUT1R"/>
+            <Component Name="hpout2l" Type="NgSwitch" Mapping="Amend3:HPOUT2L"/>
+            <Component Name="hpout2r" Type="NgSwitch" Mapping="Amend3:HPOUT2R"/>
+            <Component Name="hpout3l" Type="NgSwitch" Mapping="Amend3:HPOUT3L"/>
+            <Component Name="hpout3r" Type="NgSwitch" Mapping="Amend3:HPOUT3R"/>
+            <Component Name="spkdat1l" Type="NgSwitch" Mapping="Amend3:SPKDAT1L"/>
+            <Component Name="spkdat1r" Type="NgSwitch" Mapping="Amend3:SPKDAT1R"/>
+            <Component Name="spkdat2l" Type="NgSwitch" Mapping="Amend3:SPKDAT2L"/>
+            <Component Name="spkdat2r" Type="NgSwitch" Mapping="Amend3:SPKDAT2R"/>
+            <Component Name="spkoutl" Type="NgSwitch" Mapping="Amend3:SPKOUTL"/>
+            <Component Name="spkoutr" Type="NgSwitch" Mapping="Amend3:SPKOUTR"/>
+        </ParameterBlock>
+    </ComponentType>
+
+    <ComponentType Name="NoiseGate">
+        <EnumParameter Name="hold" Size="8" Mapping="Control:'%1 Hold'">
+            <ValuePair Literal="30ms" Numerical="0"/>
+            <ValuePair Literal="120ms" Numerical="1"/>
+            <ValuePair Literal="250ms" Numerical="2"/>
+            <ValuePair Literal="500ms" Numerical="3"/>
+        </EnumParameter>
+        <EnumParameter Name="threshold" Size="8" Mapping="Control:'%1 Threshold Volume'">
+            <ValuePair Literal="-60dB" Numerical="0"/>
+            <ValuePair Literal="-66dB" Numerical="1"/>
+            <ValuePair Literal="-72dB" Numerical="2"/>
+            <ValuePair Literal="-78dB" Numerical="3"/>
+            <ValuePair Literal="-84dB" Numerical="4"/>
+            <ValuePair Literal="-90dB" Numerical="5"/>
+            <ValuePair Literal="-96dB" Numerical="6"/>
+            <ValuePair Literal="-102dB" Numerical="7"/>
+        </EnumParameter>
+        <BooleanParameter Name="switch" Mapping="Control:'%1 Switch'"/>
+    </ComponentType>
+
+    <ComponentType Name="DigitalMixer" Mapping="Amend2:Input">
+        <ParameterBlock Name="aif" Description="Serial Digital Audio Interface">
+            <ParameterBlock Name="aif1">
+                <Component Name="channel1" Type="MixerElement" Mapping="Amend1:AIF1TX1"/>
+                <Component Name="channel2" Type="MixerElement" Mapping="Amend1:AIF1TX2"/>
+                <Component Name="channel3" Type="MixerElement" Mapping="Amend1:AIF1TX3"/>
+                <Component Name="channel4" Type="MixerElement" Mapping="Amend1:AIF1TX4"/>
+                <Component Name="channel5" Type="MixerElement" Mapping="Amend1:AIF1TX5"/>
+                <Component Name="channel6" Type="MixerElement" Mapping="Amend1:AIF1TX6"/>
+                <Component Name="channel7" Type="MixerElement" Mapping="Amend1:AIF1TX7"/>
+                <Component Name="channel8" Type="MixerElement" Mapping="Amend1:AIF1TX8"/>
+            </ParameterBlock>
+            <ParameterBlock Name="aif2">
+                <Component Name="channel1" Type="MixerElement" Mapping="Amend1:AIF2TX1"/>
+                <Component Name="channel2" Type="MixerElement" Mapping="Amend1:AIF2TX2"/>
+                <Component Name="channel3" Type="MixerElement" Mapping="Amend1:AIF2TX3"/>
+                <Component Name="channel4" Type="MixerElement" Mapping="Amend1:AIF2TX4"/>
+                <Component Name="channel5" Type="MixerElement" Mapping="Amend1:AIF2TX5"/>
+                <Component Name="channel6" Type="MixerElement" Mapping="Amend1:AIF2TX6"/>
+            </ParameterBlock>
+            <ParameterBlock Name="aif3">
+                <Component Name="channel1" Type="MixerElement" Mapping="Amend1:AIF3TX1"/>
+                <Component Name="channel2" Type="MixerElement" Mapping="Amend1:AIF3TX2"/>
+            </ParameterBlock>
+        </ParameterBlock>
+        <ParameterBlock Name="slimtx" Description="Slimbus Interface">
+            <Component Name="1" Type="MixerElement" Mapping="Amend1:SLIMTX1"/>
+            <Component Name="2" Type="MixerElement" Mapping="Amend1:SLIMTX2"/>
+            <Component Name="3" Type="MixerElement" Mapping="Amend1:SLIMTX3"/>
+            <Component Name="4" Type="MixerElement" Mapping="Amend1:SLIMTX4"/>
+            <Component Name="5" Type="MixerElement" Mapping="Amend1:SLIMTX5"/>
+            <Component Name="6" Type="MixerElement" Mapping="Amend1:SLIMTX6"/>
+            <Component Name="7" Type="MixerElement" Mapping="Amend1:SLIMTX7"/>
+            <Component Name="8" Type="MixerElement" Mapping="Amend1:SLIMTX8"/>
+        </ParameterBlock>
+        <!--DRC digital mixer-->
+        <ParameterBlock Name="drc" Description="Dynamic Range Control"> <!-- 2 independent Drcs -->
+            <ParameterBlock Name="1" Description="DrcFirstLine">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DRC1L"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DRC1R"/>
+            </ParameterBlock>
+            <ParameterBlock Name="2" Description="DrcSecondLine">
+                <Component Name="left" Type="MixerElement" Mapping="Amend1:DRC2L"/>
+                <Component Name="right" Type="MixerElement" Mapping="Amend1:DRC2R"/>
+            </ParameterBlock>
+        </ParameterBlock>
+        <!--EQ digital mixer-->
+        <ParameterBlock Name="eq" Description="Equalizer">
+            <Component Name="1" Type="MixerElement" Mapping="Amend1:EQ1"/>
+            <Component Name="2" Type="MixerElement" Mapping="Amend1:EQ2"/>
+            <Component Name="3" Type="MixerElement" Mapping="Amend1:EQ3"/>
+            <Component Name="4" Type="MixerElement" Mapping="Amend1:EQ4"/>
+        </ParameterBlock>
+        <!--LHPF digital mixer-->
+        <ParameterBlock Name="lhpf" Description="Low High Pass Filter">
+            <Component Name="filter1" Type="MixerElement" Mapping="Amend1:LHPF1"/>
+            <Component Name="filter2" Type="MixerElement" Mapping="Amend1:LHPF2"/>
+            <Component Name="filter3" Type="MixerElement" Mapping="Amend1:LHPF3"/>
+            <Component Name="filter4" Type="MixerElement" Mapping="Amend1:LHPF4"/>
+        </ParameterBlock>
+        <!--Noise Generator mixer-->
+        <Component Name="noise" Type="MixerElement" Mapping="Amend1:Noise"
+                   Description="Noise Generator"/>
+        <!--PWM digital mixer-->
+        <ParameterBlock Name="pwm" Description="PWM Generator">
+            <!-- 2 independent Pwm signal generators -->
+            <Component Name="1" Type="MixerWithoutVolumeElement" Mapping="Amend1:PWM1"/>
+            <Component Name="2" Type="MixerWithoutVolumeElement" Mapping="Amend1:PWM2"/>
+        </ParameterBlock>
+        <!--Mic mixer-->
+        <Component Name="mic" Type="MixerElement" Mapping="Amend1:Mic"
+                   Description="Mic mute Mixer"/>
+        <!--Echo cancellation mixer-->
+        <ParameterBlock Name="echo_cancellation" Description="EchoCancellation">
+            <EnumParameter Name="reference" Size="8" Mapping="Control:'AEC Loopback'">
+                <ValuePair Literal="HPOUT1L" Numerical="0"/>
+                <ValuePair Literal="HPOUT1R" Numerical="1"/>
+                <ValuePair Literal="HPOUT2L" Numerical="2"/>
+                <ValuePair Literal="HPOUT2R" Numerical="3"/>
+                <ValuePair Literal="EPOUT" Numerical="4"/>
+                <ValuePair Literal="SPKOUTL" Numerical="5"/>
+                <ValuePair Literal="SPKOUTR" Numerical="6"/>
+                <ValuePair Literal="SPKDAT1L" Numerical="7"/>
+                <ValuePair Literal="SPKDAT1R" Numerical="8"/>
+            </EnumParameter>
+        </ParameterBlock>
+        <!-- Noise Gate mixer -->
+        <Component Name="noise_gate" Type="NoiseGate" Mapping="Amend1:Noise Gate"/>
+        <!-- Headphone mixer -->
+        <ParameterBlock Name="headphone" Description="HeadphoneMixer">
+            <ParameterBlock Name="1" Description="HpFirstLine">
+                <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:HPOUT1L"/>
+                <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:HPOUT1R"/>
+            </ParameterBlock>
+            <ParameterBlock Name="2" Description="HpSecondLine">
+                <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:HPOUT2L"/>
+                <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:HPOUT2R"/>
+            </ParameterBlock>
+            <ParameterBlock Name="3" Description="HpThirdLine">
+                <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:HPOUT3L"/>
+                <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:HPOUT3R"/>
+            </ParameterBlock>
+        </ParameterBlock>
+        <!-- Speaker mixer -->
+        <ParameterBlock Name="speaker" Description="SpeakerMixer">
+            <ParameterBlock Name="analog" Description="SpkAnalogMixer">
+                <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:SPKOUTL"/>
+                <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:SPKOUTR"/>
+            </ParameterBlock>
+            <ParameterBlock Name="digital" Description="SpkDigitalMixer">
+                <ParameterBlock Name="1" Description="DigitalFirst">
+                    <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:SPKDAT1L"/>
+                    <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:SPKDAT1R"/>
+                </ParameterBlock>
+                <ParameterBlock Name="2" Description="DigitalSecond">
+                    <Component Name="left" Type="MixerWithNgElement" Mapping="Amend1:SPKDAT2L"/>
+                    <Component Name="right" Type="MixerWithNgElement" Mapping="Amend1:SPKDAT2R"/>
+                </ParameterBlock>
+            </ParameterBlock>
+        </ParameterBlock>
+    </ComponentType>
+
+</ComponentLibrary>

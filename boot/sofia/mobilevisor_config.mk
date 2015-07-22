@@ -36,25 +36,19 @@ endif
 # 512mb
 # smp_64bit
 #################################
-ifeq '$(MV_CONFIG_TYPE)' 'modemonly'
-MV_CONFIG_DEFAULT_FLS = $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(MV_CONFIG_TYPE).fls
-MV_CONFIG_DEFAULT_BIN = $(MV_CONFIG_BUILD_OUT)/mvconfig_$(MV_CONFIG_TYPE).bin
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_TYPE)_signed.fls
+ifneq '$(MV_CONFIG_TYPE)' ''
+MV_CONFIG_DEFAULT_TYPE = $(MV_CONFIG_TYPE)
 else
-  ifeq '$(MV_CONFIG_BITNESS)' '64'
-MV_CONFIG_TYPE += smp_64bit
-MV_CONFIG_DEFAULT_FLS = $(MV_CONFIG_FLS_OUTPUT)/mvconfig_smp_64bit.fls
-MV_CONFIG_DEFAULT_BIN = $(MV_CONFIG_BUILD_OUT)/mvconfig_smp_64bit.bin
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_smp_64bit_signed.fls
-  else
 MV_CONFIG_TYPE += up
 MV_CONFIG_TYPE += smp
 MV_CONFIG_TYPE += smp_profiling
-MV_CONFIG_DEFAULT_FLS = $(MV_CONFIG_FLS_OUTPUT)/mvconfig_smp.fls
-MV_CONFIG_DEFAULT_BIN = $(MV_CONFIG_BUILD_OUT)/mvconfig_smp.bin
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_smp_signed.fls
-  endif
+MV_CONFIG_DEFAULT_TYPE = smp
 endif
+
+MV_CONFIG_DEFAULT_FLS = $(FLASHFILES_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE).fls
+MV_CONFIG_DEFAULT_BIN = $(MV_CONFIG_BUILD_OUT)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE).bin
+SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE)_signed.fls
+
 
 #############################
 # create fls, bin, xml list #
@@ -132,7 +126,7 @@ $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml : force | $(MV_CONFIG_BUILD_OUT)
 		| sed '/^$$$$/d' | xmllint --format - \
 		> $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml
 
-mvconfig_$(1).fls : $(FLASHFILES_DIR)/mvconfig_$(1).fls
+mvconfig_$(1).fls : $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
 endef
 
 $(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_XML_RULES,$(t))))
@@ -148,11 +142,8 @@ $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls : $(MV_CONFIG_BUILD_OUT)/mvconfig_%.bin $
 		   $< \
 		   --replace --to-fls2
 
-# Build VMM images as dependency to default android build target "droidcore"
-droidcore: mvconfig_copy_default
-
-mvconfig_copy_default: $(MV_CONFIG_FLS_LIST)
-	@cp -f $(MV_CONFIG_DEFAULT_FLS) $(FLASHFILES_DIR)
+$(FLASHFILES_DIR)/mvconfig_%.fls: $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls
+	$(copy-file-to-new-target)
 
 $(MV_CONFIG_BUILD_OUT):
 	@mkdir -p $(MV_CONFIG_BUILD_OUT)
@@ -165,6 +156,4 @@ mvconfig_info:
 
 build_info: mvconfig_info
 
-.PHONY: mvconfig
-mvconfig: mvconfig_copy_default
 endif
