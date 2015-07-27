@@ -33721,18 +33721,49 @@
       type="default"
   />
 
-  <apn carrier="C4I internet"
+  <apn carrier="Comm4Innov IPv4"
       mcc="208"
       mnc="92"
       apn="internet.v4.pft"
       type="default"
+      protocol="IP"
+      roaming_protocol="IPV4V6"
   />
 
-  <apn carrier="C4I IMS"
+  <apn carrier="Comm4Innov IMS IPv4"
       mcc="208"
       mnc="92"
       apn="ims"
       type="ims"
+      protocol="IP"
+      roaming_protocol="IPV4V6"
+  />
+
+  <apn carrier="Comm4Innov IPv6"
+      mcc="208"
+      mnc="92"
+      apn="internet.v6.pft"
+      type="default"
+      protocol="IPV6"
+      roaming_protocol="IPV4V6"
+  />
+
+  <apn carrier="Comm4Innov IPv6 (via IPV4V6)"
+      mcc="208"
+      mnc="92"
+      apn="internet.v6.pft"
+      type="default"
+      protocol="IPV4V6"
+      roaming_protocol="IPV4V6"
+  />
+
+  <apn carrier="Comm4Innov IPv4 (via IPv4v6)"
+      mcc="208"
+      mnc="92"
+      apn="internet.v4.pft"
+      type="default"
+      protocol="IPV4V6"
+      roaming_protocol="IPV4V6"
   />
 
   <apn carrier="Spirent"
