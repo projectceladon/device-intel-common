@@ -2,4 +2,4 @@ persist.ims_support=0
 telephony.test.mode=true
 telephony.tcs.sw_folder=7360_V1_allbands
 ro.swconf.info=7360_V1_allbands
-ro.swconf.info.tel=7360_V1_allbands
+ro.swconf.info.telephony=7360_V1_allbands

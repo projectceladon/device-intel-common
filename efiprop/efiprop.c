@@ -40,7 +40,7 @@ static const char *WHITELIST[] = {
 	"service.amtl1.cfg",
 	"telephony.tcs.sw_folder",
 	"ro.swconf.info",
-	"ro.swconf.info.tel",
+	"ro.swconf.info.telephony",
 	"persist.disable_NVM_Server",
 	"telephony.test.mode",
 	"persist.fw_switching_support"
