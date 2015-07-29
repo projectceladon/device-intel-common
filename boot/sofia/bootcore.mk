@@ -244,7 +244,7 @@ $(SPLASH_IMG_FLS): createflashfile_dir $(INTEL_PRG_FILE) $(FLSTOOL) $(DISPLAY_BI
 endif # ifeq ($(BUILD_BOOTCORE_FROM_SRC),true)
 
 .PHONY: bootrom_patch.fls
-BOOTROM_PATCH_BIN := $(CURDIR)/device/intel/$(TARGET_PRODUCT)/bootrom_patch/bootrom_patch.bin
+BOOTROM_PATCH_BIN := $(CURDIR)/device/intel/$(TARGET_DEVICE)/bootrom_patch/bootrom_patch.bin
 BOOTROM_PATCH_FLS := $(FLASHFILES_DIR)/bootrom_patch.fls
 
 $(BOOTROM_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BOOTROM_PATCH_BIN) $(FLASHLOADER_FLS)
