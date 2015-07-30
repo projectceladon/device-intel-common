@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sarconfig>
-    <input name="prox" class="com.intel.internal.telephony.SARManager.AlwaysConnectedProxSensorInput"></input>
+    <input name="prox" class="com.intel.internal.telephony.SARManager.AlwaysConnectedProxSensorInput" sensorstringtype="intel.sensor.sar" sensorindex="1"></input>
     <input name="wifi" class="com.intel.internal.telephony.SARManager.WifiInput"></input>
 
     <!--  3 backoffs levels: 0, 1, 2 -->
