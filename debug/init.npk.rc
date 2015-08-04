@@ -11,12 +11,13 @@ on early-boot
     write /sys/kernel/config/stp-policy/0-sth.default/user/masters "260 1023"
     write /sys/kernel/config/stp-policy/0-sth.default/user/channels "0 127"
 
-service init_npk /system/bin/init.npk.sh
+service init_npk /system/vendor/bin/init.npk.sh
     # execute only once, after data is decrypted and persist properties are set
     class late_start
     oneshot
 
-service ap_lognpk /system/bin/logcat_ep.sh /system/bin/logcatext -b main -b system -b radio -b events -b crash -x
+service ap_lognpk /system/vendor/bin/logcat_ep.sh /system/vendor/bin/logcatext -b main -b system \
+                  -b radio -b events -b crash -x
     disabled
 
 on property:npk.cfg.update=*
