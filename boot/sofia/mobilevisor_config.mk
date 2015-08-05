@@ -16,17 +16,51 @@
 ifeq ($(BUILD_VMM_FROM_SRC),true)
 #Source Paths configured in Base Android.mk
 #Build Output path.
-MV_CONFIG_PRODUCT_PATH := $(SOFIA_FW_SRC_BASE)/mobilevisor/products
+MV_CONFIG_PRODUCT_PATH  := $(SOFIA_FW_SRC_BASE)/mobilevisor/products
 MV_CONFIG_TEMPLATE_PATH := $(MV_CONFIG_PRODUCT_PATH)/configs
-MV_CONFIG_BUILD_OUT     := $(CURDIR)/$(PRODUCT_OUT)/vmm_build/configs
-MV_NUM_OF_CPUS ?= 2
-MV_CONFIG_PADDR ?= 0x1CC00000
 
-MV_CONFIG_INC_PATH         =
-MV_CONFIG_INC_PATH_VARIANT         =
+define CREATE_MV_FILE_LIST
+# $(1) == each SOFIA_FIRMWARE_VARIANT
+# $(2) == each MV_CONFIG_TYPE
+MV_CONFIG_XML_LIST.$(1)      += $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml
+MV_CONFIG_BIN_LIST.$(1)      += $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).bin
+MV_CONFIG_FLS_LIST.$(1)      += $$(MV_CONFIG_FLS_OUTPUT.$(1))/mvconfig_$(2).fls
+endef
 
-ifneq '$(MV_CONFIG_TYPE)' ''
-MV_CONFIG_INC_PATH_VARIANT = $(MV_CONFIG_TYPE)
+define CREATE_MV_CONFIG_XML_RULES
+# $(1) == each SOFIA_FIRMWARE_VARIANT
+# $(2) == each MV_CONFIG_TYPE
+$$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml : force | $$(MV_CONFIG_BUILD_OUT.$(1))
+	icc -E -P \
+		$$(MV_CONFIG_OPTION_common.$(1)) \
+		$$(MV_CONFIG_OPTION_$(2).$(1)) \
+		-I- $$(MV_CONFIG_INC_PATH.$(1)) -I $$(MV_CONFIG_TEMPLATE_PATH) \
+		$$(MV_CONFIG_TEMPLATE_PATH)/mvconfig.xml \
+		| sed '/^$$$$/d' | xmllint --format - \
+		> $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml
+
+mvconfig_$(2).fls.$(1) : $$(MV_CONFIG_FLS_OUTPUT.$(1))/mvconfig_$(2).fls
+endef
+
+define ADD_ALL_MV_CONIFG
+# $(1) == each SOFIA_FIRMWARE_VARIANT
+# $(2) == each MV_CONFIG_TYPE
+SOFIA_PROVDATA_FILES.$(1) += $$(FLASHFILES_DIR.$(1))/mvconfig_$(2).fls
+MV_CONFIG_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mvconfig_$(2)_signed.fls
+endef
+
+define mobilevisor_config_per_variant
+
+MV_CONFIG_BUILD_OUT.$(1)     := $$(SOFIA_FIRMWARE_OUT.$(1))/vmm_build/configs
+MV_NUM_OF_CPUS.$(1) ?= $(if $(MV_NUM_OF_CPUS),$(MV_NUM_OF_CPUS),2)
+MV_CONFIG_CHIP_VER.$(1) ?= $(MV_CONFIG_CHIP_VER)
+MV_CONFIG_PADDR.$(1) ?= $(if $(MV_CONFIG_PADDR),$(MV_CONFIG_PADDR),0x1CC00000)
+
+MV_CONFIG_INC_PATH.$(1)         =
+MV_CONFIG_INC_PATH_VARIANT.$(1)         =
+
+ifneq '$$(MV_CONFIG_TYPE.$(1))' ''
+MV_CONFIG_INC_PATH_VARIANT.$(1) = $$(MV_CONFIG_TYPE.$(1))
 endif
 
 #################################
@@ -36,78 +70,70 @@ endif
 # 512mb
 # smp_64bit
 #################################
-ifneq '$(MV_CONFIG_TYPE)' ''
-MV_CONFIG_DEFAULT_TYPE = $(MV_CONFIG_TYPE)
+ifneq '$$(MV_CONFIG_TYPE.$(1))' ''
+MV_CONFIG_DEFAULT_TYPE.$(1) = $$(MV_CONFIG_TYPE.$(1))
 else
-MV_CONFIG_TYPE += up
-MV_CONFIG_TYPE += smp
-MV_CONFIG_TYPE += smp_profiling
-MV_CONFIG_DEFAULT_TYPE = smp
+MV_CONFIG_TYPE.$(1) += up
+MV_CONFIG_TYPE.$(1) += smp
+MV_CONFIG_TYPE.$(1) += smp_profiling
+MV_CONFIG_DEFAULT_TYPE.$(1) = smp
 endif
 
-MV_CONFIG_DEFAULT_FLS = $(FLASHFILES_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE).fls
-MV_CONFIG_DEFAULT_BIN = $(MV_CONFIG_BUILD_OUT)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE).bin
-MV_CONFIG_DEFAULT_SIGNED_FLS := $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE)_signed.fls
+MV_CONFIG_DEFAULT_FLS.$(1) = $$(FLASHFILES_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1)).fls
+MV_CONFIG_DEFAULT_BIN.$(1) = $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1)).bin
+MV_CONFIG_DEFAULT_SIGNED_FLS.$(1) := $$(SIGN_FLS_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1))_signed.fls
+SYSTEM_SIGNED_FLS_LIST.$(1) += $$(MV_CONFIG_DEFAULT_SIGNED_FLS.$(1))
+
+$$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call ADD_ALL_MV_CONIFG,$(1),$$(t))))
+SOFIA_PROVDATA_FILES.$(1) += $$(MV_CONFIG_SIGNED_FLS_LIST.$(1))
 
 #############################
 # create fls, bin, xml list #
 #############################
-MV_CONFIG_XML_LIST =
-MV_CONFIG_BIN_LIST =
-MV_CONFIG_FLS_LIST =
+MV_CONFIG_XML_LIST.$(1) =
+MV_CONFIG_BIN_LIST.$(1) =
+MV_CONFIG_FLS_LIST.$(1) =
 
-MV_CONFIG_FLS_OUTPUT = $(FLASHFILES_DIR)/mvconfigs
-$(MV_CONFIG_FLS_OUTPUT) :
-	mkdir -p $@
+MV_CONFIG_FLS_OUTPUT.$(1) = $$(FLASHFILES_DIR.$(1))/mvconfigs
+$$(MV_CONFIG_FLS_OUTPUT.$(1)):
+	mkdir -p $$@
 
-define CREATE_MV_FILE_LIST
-MV_CONFIG_XML_LIST      += $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml
-MV_CONFIG_BIN_LIST      += $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).bin
-MV_CONFIG_FLS_LIST      += $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
-endef
+$$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call CREATE_MV_FILE_LIST,$(1),$$(t))))
 
-$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_FILE_LIST,$(t))))
-
-.SECONDARY: $(MV_CONFIG_BIN_LIST)
+.SECONDARY: $$(MV_CONFIG_BIN_LIST.$(1))
 
 ###########################
 # type build option       #
 ########################### 
-MV_CONFIG_OPTION_common    = -D __MV_NUM_OF_CPUS__=$(MV_NUM_OF_CPUS) -D __MV_PROD_NAME__=$(PRODUCT_NAME) -D __MV_CONFIG_START_PADDR__=$(MV_CONFIG_PADDR)
+MV_CONFIG_OPTION_common.$(1)    = -D __MV_NUM_OF_CPUS__=$$(MV_NUM_OF_CPUS.$(1)) -D __MV_PROD_NAME__=$$(PRODUCT_NAME) -D __MV_CONFIG_START_PADDR__=$$(MV_CONFIG_PADDR.$(1))
 
-ifdef TARGET_MVCONFIG_OPTIONS
-MV_CONFIG_OPTION_common    += $(TARGET_MVCONFIG_OPTIONS)
+ifdef TARGET_MVCONFIG_OPTIONS.$(1)
+MV_CONFIG_OPTION_common.$(1)    += $$(TARGET_MVCONFIG_OPTIONS.$(1))
 endif
 
-ifeq '$(findstring 3gr,${TARGET_BOARD_PLATFORM})' '3gr'
-MV_CONFIG_OPTION_common    += -D __MV_SECVM_LOW_PRIO__
+ifeq '$$(findstring 3gr,${TARGET_BOARD_PLATFORM})' '3gr'
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_SECVM_LOW_PRIO__
 endif
 
-ifeq ($(SECURE_PLAYBACK_ENABLE),true)
-MV_CONFIG_OPTION_common += -D __MV_SECURE_PLAYBACK__
+ifeq ($$(SECURE_PLAYBACK_ENABLE),true)
+MV_CONFIG_OPTION_common.$(1) += -D __MV_SECURE_PLAYBACK__
 endif
 
-ifneq '$(MV_CONFIG_CHIP_VER)' ''
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM_VAR)/configs/$(MV_CONFIG_CHIP_VER)
+ifneq '$$(MV_CONFIG_CHIP_VER.$(1))' ''
+MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs/$$(MV_CONFIG_CHIP_VER.$(1))
 endif
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM_VAR)/configs/$(MV_CONFIG_INC_PATH_VARIANT)
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM_VAR)/configs
-MV_CONFIG_OPTION_common    += -D __MV_PLATFORM_VAR__=$(TARGET_BOARD_PLATFORM_VAR)
+MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs/$$(MV_CONFIG_INC_PATH_VARIANT.$(1))
+MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM_VAR__=$$(TARGET_BOARD_PLATFORM_VAR)
 
-ifneq '$(MV_CONFIG_CHIP_VER)' ''
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM)/configs/$(MV_CONFIG_CHIP_VER)
-endif
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM)/configs/$(MV_CONFIG_INC_PATH_VARIANT)
-MV_CONFIG_INC_PATH         += -I $(MV_CONFIG_PRODUCT_PATH)/$(TARGET_BOARD_PLATFORM)/configs
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM__=$$(TARGET_BOARD_PLATFORM)
 
-MV_CONFIG_OPTION_common    += -D __MV_PLATFORM__=$(TARGET_BOARD_PLATFORM)
-
-MV_CONFIG_OPTION_up        = 
-MV_CONFIG_OPTION_smp       = -D __MV_SMP__
-MV_CONFIG_OPTION_smp_64bit     = -D __MV_64BIT_LINUX__ -D __MV_SMP__
-MV_CONFIG_OPTION_smp_profiling = -D __MV_PROFILING__ -D __MV_SMP__
-MV_CONFIG_OPTION_modemonly = -D __MV_MODEM_ONLY__
-MV_CONFIG_OPTION_512mb = -D __MV_SMP__
+MV_CONFIG_OPTION_up.$(1)        = 
+MV_CONFIG_OPTION_smp.$(1)       = -D __MV_SMP__
+MV_CONFIG_OPTION_smp_64bit.$(1)     = -D __MV_64BIT_LINUX__ -D __MV_SMP__
+MV_CONFIG_OPTION_smp_profiling.$(1) = -D __MV_PROFILING__ -D __MV_SMP__
+MV_CONFIG_OPTION_modemonly.$(1) = -D __MV_MODEM_ONLY__
+MV_CONFIG_OPTION_512mb.$(1) = -D __MV_SMP__
 
 ###########################
 # create rules
@@ -115,37 +141,33 @@ MV_CONFIG_OPTION_512mb = -D __MV_SMP__
 .PHONY : force
 force: ;
 
-define CREATE_MV_CONFIG_XML_RULES
-$(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml : force | $(MV_CONFIG_BUILD_OUT)
-	icc -E -P \
-		$(MV_CONFIG_OPTION_common) \
-		$$(MV_CONFIG_OPTION_$(1)) \
-		-I- $(MV_CONFIG_INC_PATH) -I $(MV_CONFIG_TEMPLATE_PATH) \
-		$(MV_CONFIG_TEMPLATE_PATH)/mvconfig.xml \
-		| sed '/^$$$$/d' | xmllint --format - \
-		> $(MV_CONFIG_BUILD_OUT)/mvconfig_$(1).xml
+$$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call CREATE_MV_CONFIG_XML_RULES,$(1),$$(t))))
 
-mvconfig_$(1).fls : $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
-endef
+$$(MV_CONFIG_BUILD_OUT.$(1))/%.bin: $$(MV_CONFIG_BUILD_OUT.$(1))/%.xml | $$(MV_CONFIG_BUILD_OUT.$(1))
+	@$$(MOBILEVISOR_REL_PATH)/tools/mvconfig $$< $$@
 
-$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_XML_RULES,$(t))))
-
-$(MV_CONFIG_BUILD_OUT)/%.bin: $(MV_CONFIG_BUILD_OUT)/%.xml | $(MV_CONFIG_BUILD_OUT)
-	@$(MOBILEVISOR_REL_PATH)/tools/mvconfig $< $@
-
-$(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls : $(MV_CONFIG_BUILD_OUT)/mvconfig_%.bin $(FLASHLOADER_FLS) | $(MV_CONFIG_FLS_OUTPUT)
-	@$(FLSTOOL) --prg $(INTEL_PRG_FILE) \
-	           --output $@ \
+$$(MV_CONFIG_FLS_OUTPUT.$(1))/mvconfig_%.fls : $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_%.bin $$(FLASHLOADER_FLS.$(1)) | $$(MV_CONFIG_FLS_OUTPUT.$(1))
+	@$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) \
+	           --output $$@ \
 		   --tag MV_CONFIG \
-		   $(INJECT_FLASHLOADER_FLS) \
-		   $< \
+		   $$(INJECT_FLASHLOADER_FLS.$(1)) \
+		   $$< \
 		   --replace --to-fls2
 
-$(FLASHFILES_DIR)/mvconfig_%.fls: $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls
-	$(copy-file-to-new-target)
+$$(FLASHFILES_DIR.$(1))/mvconfig_%.fls: $$(MV_CONFIG_FLS_OUTPUT.$(1))/mvconfig_%.fls
+	$$(copy-file-to-new-target)
 
-$(MV_CONFIG_BUILD_OUT):
-	@mkdir -p $(MV_CONFIG_BUILD_OUT)
+$$(MV_CONFIG_BUILD_OUT.$(1)):
+	@mkdir -p $$(MV_CONFIG_BUILD_OUT.$(1))
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+	$(eval $(call mobilevisor_config_per_variant,$(variant))))
+
+$(foreach mvvariant,$(MV_CONFIG_TYPE.$(firstword $(SOFIA_FIRMWARE_VARIANTS))),\
+	$(eval .PHONY: mvconfig_$(mvvariant).fls)\
+	$(eval mvconfig_$(mvvariant).fls: $(addprefix mvconfig_$(mvvariant).fls.,$(SOFIA_FIRMWARE_VARIANTS))))
 
 mvconfig_info:
 	@echo "---------------------------------------------------------------------"

@@ -16,6 +16,9 @@
 
 
 ifeq ($(BUILD_GUESTVM2_FROM_SRC),true)
+
+$(error unmaintained)
+
 #Source Paths configured in Base Android.mk
 #Build Output path.
 GUESTVM2_BUILD_OUT := $(CURDIR)/$(PRODUCT_OUT)

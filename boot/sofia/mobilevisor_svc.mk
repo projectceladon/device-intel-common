@@ -16,18 +16,22 @@
 
 #Source Paths configured in Base Android.mk
 #Build Output path.
-MOBILEVISOR_SVC_BUILD_OUT := $(CURDIR)/$(PRODUCT_OUT)
 
-BUILT_LIB_MOBILEVISOR_SVC_TARGET := $(MOBILEVISOR_SVC_BUILD_OUT)/lib_mobilevisor_service/lib_mobilevisor_service.a
+define mobilevisor_svc_per_variant
 
-TARGET_BOARD_PLATFORM_VAR ?= $(TARGET_BOARD_PLATFORM)
+BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/lib_mobilevisor_service/lib_mobilevisor_service.a
 
-$(BUILT_LIB_MOBILEVISOR_SVC_TARGET): build_mobilevisor_service
+$$(BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1)): build_mobilevisor_service.$(1)
 
-build_mobilevisor_service:
-	@echo Building ===== lib_mobilevisor_service =====
-	$(MAKE) -C $(MOBILEVISOR_SVC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(MOBILEVISOR_SVC_BUILD_OUT) PLATFORM=$(MODEM_PLATFORM)
+.PHONY: build_mobilevisor_service.$(1)
+build_mobilevisor_service.$(1):
+	@echo Building ===== lib_mobilevisor_service.$(1) =====
+	$$(MAKE) -C $$(MOBILEVISOR_SVC_PATH) PROJECTNAME=$$(shell echo $$(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) PLATFORM=$$(MODEM_PLATFORM)
 
-.PHONY: vmm_lib_mobilevisor_service
-vmm_lib_mobilevisor_service: $(BUILT_LIB_MOBILEVISOR_SVC_TARGET)
+endef
 
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call mobilevisor_svc_per_variant,$(variant))))
+
+.PHONY: build_mobilevisor_service
+build_mobilevisor_service: $(addprefix build_mobilevisor_service.,$(SOFIA_FIRMWARE_VARIANTS))

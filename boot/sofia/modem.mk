@@ -14,77 +14,83 @@
 # limitations under the License.
 # ------------------------------------------------------------------------
 
-MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
+MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
+MODEM_INSTALL_PATH := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
+
+define modem_per_variant
 
 ifeq ($(BUILD_MODEM_FROM_SRC),true)
 
-MODEM_MAKEDIR := $(CURDIR)/$(PRODUCT_OUT)/modem_build
-BUILT_MODEM   := $(MODEM_MAKEDIR)/$(MODEM_PROJECTNAME_VAR).ihex
+MODEM_MAKEDIR.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/modem_build
+BUILT_MODEM.$(1)   := $$(MODEM_MAKEDIR.$(1))/$$(MODEM_PROJECTNAME_VAR).ihex
 
-ifeq ($(USER),tcloud)
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-MODEM_BUILD_ARGUMENTS += SDLROOT=$(SOFIA_FW_SRC_BASE)/modem/system-build/HW_SIC
+MODEM_BUILD_ARGUMENTS.$(1) ?= $(MODEM_BUILD_ARGUMENTS)
+ifeq ($$(USER),tcloud)
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)),sofia3g)
+MODEM_BUILD_ARGUMENTS.$(1) += SDLROOT=$$(SOFIA_FW_SRC_BASE)/modem/system-build/HW_SIC
 else
-MODEM_BUILD_ARGUMENTS += SDLROOT=$(SOFIA_FW_SRC_BASE)/modem/system-build/HW_LTE_TDS
+MODEM_BUILD_ARGUMENTS.$(1) += SDLROOT=$$(SOFIA_FW_SRC_BASE)/modem/system-build/HW_LTE_TDS
 endif
 else
-MODEM_BUILD_ARGUMENTS += SDLROOT=$(CURDIR)/$(PRODUCT_OUT)/sdlcode
-endif  #endif $(USER) = tcloud
+MODEM_BUILD_ARGUMENTS.$(1) += SDLROOT=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/sdlcode)
+endif  #endif $$(USER) = tcloud
 
-$(BUILT_MODEM): build_modem_hex
+$$(BUILT_MODEM.$(1)): build_modem_hex.$(1)
 
-ifeq ($(BUILD_3GFW_FROM_SRC),true)
+ifeq ($$(BUILD_3GFW_FROM_SRC),true)
 
-GEN_3G_FW_STT_FILE :=  $(CURDIR)/$(PRODUCT_OUT)/3gfw/swtdus_swtools/sttdecoder_3gfw/make_sttdecoder/bin/hybrid_image/ming_rel/sttdecoder_3gfw.dll
+GEN_3G_FW_STT_FILE.$(1) :=  $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw/swtdus_swtools/sttdecoder_3gfw/make_sttdecoder/bin/hybrid_image/ming_rel/sttdecoder_3gfw.dll)
 
-3GFW_GEN_PATH := $(CURDIR)/$(PRODUCT_OUT)/3gfw/umts_fw_dev/firmware/bin/ram_image/rvds_dbg
+3GFW_GEN_PATH.$(1) := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw/umts_fw_dev/firmware/bin/ram_image/rvds_dbg)
 
-$(GEN_3G_FW_C_FILE): gen_3gfw
-$(GEN_3G_FW_STT_FILE): gen_3gfw_stt
+$$(GEN_3G_FW_C_FILE.$(1)): gen_3gfw
+$$(GEN_3G_FW_STT_FILE.$(1)): gen_3gfw_stt
 
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-gen_3gfw:
-	$(MAKE) -C $(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$(FW3G_PRODUCT) OUTPUTDIR=$(CURDIR)/$(PRODUCT_OUT)/3gfw ram_image_nc
+.PHONY: gen_3gfw.$(1)
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)),sofia3g)
+gen_3gfw.$(1):
+	$$(MAKE) -C $$(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$$(FW3G_PRODUCT) OUTPUTDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw) ram_image_nc
 else
-gen_3gfw:
-	$(MAKE) -C $(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$(FW3G_PRODUCT) OUTPUTDIR=$(CURDIR)/$(PRODUCT_OUT)/3gfw rom_image
-	$(MAKE) -C $(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$(FW3G_PRODUCT) OUTPUTDIR=$(CURDIR)/$(PRODUCT_OUT)/3gfw ram_image_nc
+gen_3gfw.$(1):
+	$$(MAKE) -C $$(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$$(FW3G_PRODUCT) OUTPUTDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw) rom_image
+	$$(MAKE) -C $$(FW3G_SRC_PATH) CFG=RVDS_DBG UBN=0 RBN=030 TARGET_PRODUCT=$$(FW3G_PRODUCT) OUTPUTDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw) ram_image_nc
 endif
 
-gen_3gfw_stt: gen_3gfw
-	$(MAKE) -C $(FW3G_SRC_PATH) CFG=MING_REL UBN=0 RBN=030 TARGET_PRODUCT=$(FW3G_PRODUCT) OUTPUTDIR=$(CURDIR)/$(PRODUCT_OUT)/3gfw stt_decoder
+.PHONY: gen_3gfw_stt.$(1)
+gen_3gfw_stt.$(1): gen_3gfw.$(1)
+	$$(MAKE) -C $$(FW3G_SRC_PATH) CFG=MING_REL UBN=0 RBN=030 TARGET_PRODUCT=$$(FW3G_PRODUCT) OUTPUTDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/3gfw) stt_decoder
 
 
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-build_modem_hex: gen_3gfw_stt
+ifeq ($$(TARGET_BUILD_VARIANT),eng)
+build_modem_hex.$(1): gen_3gfw_stt.$(1)
 else
-build_modem_hex: gen_3gfw
+build_modem_hex.$(1): gen_3gfw.$(1)
 endif
-endif #endif $(BUILD_3GFW_FROM_SRC) = true
+endif #endif $$(BUILD_3GFW_FROM_SRC) = true
 
-.PHONY: modem_createdirs
-modem_createdirs:
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) createdirs
+.PHONY: modem_createdirs.$(1)
+modem_createdirs.$(1):
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1)) createdirs
 
-.PHONY: modem_config
-modem_config: modem_createdirs
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) config
+.PHONY: modem_config.$(1)
+modem_config.$(1): modem_createdirs.$(1)
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1)) config
 
-.PHONY: sdlgeninit
-sdlgeninit: modem_config
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) runsdlcmd
+.PHONY: sdlgeninit.$(1)
+sdlgeninit.$(1): modem_config.$(1)
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1)) runsdlcmd
 
-.PHONY: sdlgencode
-sdlgencode: sdlgeninit
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) MAKEDIR=$(MODEM_MAKEDIR) SDLSCR=YES SDLCODEGEN=YES runsdlscr
+.PHONY: sdlgencode.$(1)
+sdlgencode.$(1): sdlgeninit.$(1)
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1)) SDLSCR=YES SDLCODEGEN=YES runsdlscr
 
-.PHONY: build_modem_hex
-ifeq ($(USER),tcloud)
-build_modem_hex: modem_config
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) 3GFW_GEN_PATH=$(3GFW_GEN_PATH) MAKEDIR=$(MODEM_MAKEDIR)
+.PHONY: build_modem_hex.$(1)
+ifeq ($$(USER),tcloud)
+build_modem_hex.$(1): modem_config.$(1)
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) 3GFW_GEN_PATH=$$(3GFW_GEN_PATH.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1))
 else
-build_modem_hex: sdlgencode
-	$(MAKE) -s -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) $(MODEM_BUILD_ARGUMENTS) 3GFW_GEN_PATH=$(3GFW_GEN_PATH) MAKEDIR=$(MODEM_MAKEDIR)
+build_modem_hex.$(1): sdlgencode.$(1)
+	$$(MAKE) -s -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) $$(MODEM_BUILD_ARGUMENTS.$(1)) 3GFW_GEN_PATH=$$(3GFW_GEN_PATH.$(1)) MAKEDIR=$$(MODEM_MAKEDIR.$(1))
 endif
 
 modem_info:
@@ -95,69 +101,93 @@ modem_info:
 
 build_info: modem_info
 
-endif #endif $(BUILD_MODEM_FROM_SRC) = true
+endif #endif $$(BUILD_MODEM_FROM_SRC) = true
 
+BUILT_MODEM.$(1) ?= $(BUILT_MODEM)
 
-MODEM_FLS  := $(FLASHFILES_DIR)/modem.fls
-SOFIA_PROVDATA_FILES += $(MODEM_FLS)
+MODEM_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
+SOFIA_PROVDATA_FILES.$(1) += $$(MODEM_FLS.$(1))
 
-PSI_FLASH_FLS ?= $(FLASHFILES_DIR)/psi_flash.fls
-SLB_FLS ?= $(FLASHFILES_DIR)/slb.fls
-MOBILEVISOR_FLS ?= $(FLASHFILES_DIR)/mobilevisor.fls
-SECVM_FLS ?= $(FLASHFILES_DIR)/secvm.fls
-SPLASH_IMG_FLS ?= $(FLASHFILES_DIR)/splash_img.fls
-UCODE_PATCH_FLS ?= $(FLASHFILES_DIR)/ucode_patch.fls
-SOFIA_PROVDATA_FILES += $(PSI_FLASH_FLS) $(SLB_FLS) $(MOBILEVISOR_FLS) $(SECVM_FLS) $(SPLASH_IMG_FLS) $(UCODE_PATCH_FLS)
+PSI_FLASH_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/psi_flash.fls
+SLB_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/slb.fls
+MOBILEVISOR_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/mobilevisor.fls
+SECVM_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/secvm.fls
+SPLASH_IMG_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/splash_img.fls
+UCODE_PATCH_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/ucode_patch.fls
+SOFIA_PROVDATA_FILES.$(1) += $$(PSI_FLASH_FLS.$(1)) $$(SLB_FLS.$(1)) $$(MOBILEVISOR_FLS.$(1)) $$(SECVM_FLS.$(1)) $$(SPLASH_IMG_FLS.$(1)) $$(UCODE_PATCH_FLS.$(1))
 
-
-#ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
-#DSP_IMAGE_FLS := $(FLASHFILES_DIR)/dsp_image.fls
-#LTE_FLS := $(FLASHFILES_DIR)/lte.fls
-#IMC_FW_BLOCK_1 := $(FLASHFILES_DIR)/imc_fw_block_1.fls
-#IMC_FW_BLOCK_2 := $(FLASHFILES_DIR)/imc_fw_block_2.fls
-#IMC_BOOTLOADER_A := $(FLASHFILES_DIR)/imc_bootloader_a.fls
-#IMC_BOOTLOADER_B := $(FLASHFILES_DIR)/imc_bootloader_b.fls
-#SOFIA_PROVDATA_FILES += $(DSP_IMAGE_FLS) $(LTE_FLS) $(IMC_FW_BLOCK_1) $(IMC_FW_BLOCK_2) $(IMC_BOOTLOADER_A) $(IMC_BOOTLOADER_B)
+#ifeq ($$(TARGET_BOARD_PLATFORM),sofia_lte)
+#DSP_IMAGE_FLS.$(1) := $$(FLASHFILES_DIR.$(1))/dsp_image.fls
+#LTE_FLS.$(1) := $$(FLASHFILES_DIR.$(1))/lte.fls
+#IMC_FW_BLOCK_1.$(1) := $$(FLASHFILES_DIR.$(1))/imc_fw_block_1.fls
+#IMC_FW_BLOCK_2.$(1) := $$(FLASHFILES_DIR.$(1))/imc_fw_block_2.fls
+#IMC_BOOTLOADER_A.$(1) := $$(FLASHFILES_DIR.$(1))/imc_bootloader_a.fls
+#IMC_BOOTLOADER_B.$(1) := $$(FLASHFILES_DIR.$(1))/imc_bootloader_b.fls
+#SOFIA_PROVDATA_FILES.$(1) += $$(DSP_IMAGE_FLS.$(1)) $$(LTE_FLS.$(1)) $$(IMC_FW_BLOCK_1.$(1)) $$(IMC_FW_BLOCK_2.$(1)) $$(IMC_BOOTLOADER_A.$(1)) $$(IMC_BOOTLOADER_B.$(1))
 #endif
 
-
-
-ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
-#ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/lte_signed.fls
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_1_signed.fls
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_2_signed.fls
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_a_signed.fls
-#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_b_signed.fls
+MODEM_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
+ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/modem_signed.fls
+#ifeq ($$(TARGET_BOARD_PLATFORM),sofia_lte)
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/dsp_image_signed.fls
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/lte_signed.fls
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/imc_fw_block_1_signed.fls
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/imc_fw_block_2_signed.fls
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/imc_bootloader_a_signed.fls
+#ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/imc_bootloader_b_signed.fls
 #endif
 
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-.INTERMEDIATE: $(MODEM_FLS)
-.INTERMEDIATE: $(SIGN_FLS_DIR)/modem_signed.fls
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)),sofia3g)
+.INTERMEDIATE: $$(MODEM_FLS.$(1))
+.INTERMEDIATE: $$(SIGN_FLS_DIR.$(1))/modem_signed.fls
 
-
-ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
+ifneq ($$(BOARD_USE_FLS_PREBUILTS),$$(TARGET_DEVICE))
+$$(MODEM_FLS.$(1)): $$(BUILT_MODEM.$(1)) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag MODEM_IMG $$(INJECT_FLASHLOADER_FLS.$(1)) $$(BUILT_MODEM.$(1)) --replace --to-fls2
 endif # BOARD_USE_FLS_PREBUILTS != true
 
-BUILT_MODEM_DATA_EXT := $(EXTRACT_TEMP)/modem/modem.fls_ID0_CUST_LoadMap0.bin
+BUILT_MODEM_DATA_EXT.$(1) := $$(EXTRACT_TEMP.$(1))/modem/modem.fls_ID0_CUST_LoadMap0.bin
 
-$(BUILT_MODEM_DATA_EXT) : $(EXTRACT_TEMP)/modem
+$$(BUILT_MODEM_DATA_EXT.$(1)) : $$(EXTRACT_TEMP.$(1))/modem
 
 .PHONY : force
 force: ;
 
-$(EXTRACT_TEMP)/modem : $(MODEM_FLS) force
-	$(FLSTOOL) -o $(EXTRACT_TEMP)/modem -x $(MODEM_FLS)
+$$(EXTRACT_TEMP.$(1))/modem : $$(MODEM_FLS.$(1)) force
+	$$(FLSTOOL) -o $$(EXTRACT_TEMP.$(1))/modem -x $$(MODEM_FLS.$(1))
 
-MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
+else
 
-MODEM_INSTALL_PATH := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
+ifneq ($$(BOARD_USE_FLS_PREBUILTS),$$(TARGET_DEVICE))
+.PHONY: modem.fls
+$$(MODEM_FLS.$(1)): $$(BUILT_MODEM.$(1)) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag MODEM_IMG $$(INJECT_FLASHLOADER_FLS.$(1)) $$(BUILT_MODEM.$(1)) --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/dsp_image.fls --tag DSP_IMAGE $$(INJECT_FLASHLOADER_FLS.$(1)) $$(BUILT_MODEM.$(1)) --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/lte.fls --tag LTE $$(INJECT_FLASHLOADER_FLS.$(1)) $$(LTE_BIN.$(1)) --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/imc_fw_block_1.fls --tag LC_FW1 $$(INJECT_FLASHLOADER_FLS.$(1)) $$(LC_FW1_BIN.$(1))  --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/imc_fw_block_2.fls --tag LC_FW2 $$(INJECT_FLASHLOADER_FLS.$(1)) $$(LC_FW2_BIN.$(1)) --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/imc_bootloader_a.fls --tag MINI_BL_1 $$(INJECT_FLASHLOADER_FLS.$(1)) $$(MINI_BL1_BIN.$(1)) --replace --to-fls2
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(FLASHFILES_DIR.$(1))/imc_bootloader_b.fls --tag MINI_BL_2 $$(INJECT_FLASHLOADER_FLS.$(1)) $$(MINI_BL2_BIN.$(1)) --replace --to-fls2
+else
+#modem.fls.$(1): $$(FLASHFILES_DIR.$(1))/dsp_image.fls $$(FLASHFILES_DIR.$(1))/lte.fls $$(FLASHFILES_DIR.$(1))/imc_fw_block_1.fls \
+	            $$(FLASHFILES_DIR.$(1))/imc_fw_block_2.fls $$(FLASHFILES_DIR.$(1))/imc_bootloader_a.fls $$(FLASHFILES_DIR.$(1))/imc_bootloader_b.fls
+.PHONY: force
+force: ;
+endif# BOARD_USE_FLS_PREBUILTS != true
+
+modem.fls.$(1): $$(MODEM_FLS.$(1))
+
+endif
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call modem_per_variant,$(variant))))
+
+ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 
 .PHONY: install_modem
-install_modem: $(BUILT_MODEM_DATA_EXT) | $(ACP)
+install_modem: $(BUILT_MODEM_DATA_EXT.$(firstword $(SOFIA_FIRMWARE_VARIANTS))) | $(ACP)
 	@echo "Installing Modem Data Extract Binary to System Image.."
 	$(hide) mkdir -p $(MODEM_BIN_LOAD_PATH)
 	$(ACP) $< $(MODEM_INSTALL_PATH)
@@ -167,30 +197,15 @@ $(PRODUCT_OUT)/obj/PACKAGING/systemimage_intermediates/system.img: install_modem
 endif
 
 .PHONY: modem
-modem: $(BUILT_MODEM_DATA_EXT)
+modem: $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(BUILT_MODEM_DATA_EXT.$(variant)))
 
 droidcore: modem
 
 else
-ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+
 .PHONY: modem.fls
-$(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag MODEM_IMG $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/dsp_image.fls --tag DSP_IMAGE $(INJECT_FLASHLOADER_FLS) $(BUILT_MODEM) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/lte.fls --tag LTE $(INJECT_FLASHLOADER_FLS) $(LTE_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_1.fls --tag LC_FW1 $(INJECT_FLASHLOADER_FLS) $(LC_FW1_BIN)  --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_fw_block_2.fls --tag LC_FW2 $(INJECT_FLASHLOADER_FLS) $(LC_FW2_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
-else
-#modem.fls: $(FLASHFILES_DIR)/dsp_image.fls $(FLASHFILES_DIR)/lte.fls $(FLASHFILES_DIR)/imc_fw_block_1.fls \
-	            $(FLASHFILES_DIR)/imc_fw_block_2.fls $(FLASHFILES_DIR)/imc_bootloader_a.fls $(FLASHFILES_DIR)/imc_bootloader_b.fls
-.PHONY: force
-force: ;
-endif# BOARD_USE_FLS_PREBUILTS != true
+modem.fls: $(addprefix modem.fls.,$(SOFIA_FIRMWARE_VARIANTS))
 
-modem.fls: $(MODEM_FLS)
 droidcore: modem.fls
-endif #endif $(TARGET_BOARD_PLATFORM) = sofia3g
 
-
+endif

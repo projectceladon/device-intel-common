@@ -25,27 +25,67 @@ LOCAL_PATH:= $(call my-dir)
 # Common
 #-----------------------
 
-FLSTOOL             = $(CURDIR)/device/intel/common/tools/FlsTool
-INSTALLED_OEMIMAGE_TARGET = $(CURDIR)/device/intel/common/oem/oem.img
-IMAGES_DIR         := $(PRODUCT_OUT)/fls
-FLASHFILES_DIR     := $(IMAGES_DIR)/fls
-SIGN_FLS_DIR       := $(IMAGES_DIR)/signed_fls
-FASTBOOT_IMG_DIR   := $(IMAGES_DIR)/fastboot
-FWU_IMG_DIR        := $(IMAGES_DIR)/fwu_image
-EXTRACT_TEMP	   := $(SIGN_FLS_DIR)/extract
+FLSTOOL                          = $(CURDIR)/device/intel/common/tools/FlsTool
+INSTALLED_OEMIMAGE_TARGET        = $(CURDIR)/device/intel/common/oem/oem.img
+IMAGES_DIR                      :=
+FLASHFILES_DIR                  :=
+SIGN_FLS_DIR                    :=
+FASTBOOT_IMG_DIR                :=
+FWU_IMG_DIR                     :=
+EXTRACT_TEMP                    :=
 
-SOCLIB_SRC_PATH ?= $(SOFIA_FW_SRC_BASE)/soclib
-SECVM_SRC_PATH  ?= $(SOFIA_FW_SRC_BASE)/secure_vm
-GUESTVM2_SRC_PATH  ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests/vm2
-MOBILEVISOR_SVC_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/services
-MOBILEVISOR_SRC_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/products
-MOBILEVISOR_REL_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/release
-MOBILEVISOR_GUEST_PATH ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests
-BLOB_BUILDER_SCRIPT ?= $(MOBILEVISOR_REL_PATH)/tools/vmmBlobBuilder.py
-BINARY_MERGE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/binary_merge
-VBT_GENERATE_TOOL ?= $(MOBILEVISOR_REL_PATH)/tools/vbtgen$(if $(findstring 3gr,$(TARGET_BOARD_PLATFORM)),_vop)
-FWU_PACK_GENERATE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/fwpgen
+SOCLIB_SRC_PATH                 ?= $(SOFIA_FW_SRC_BASE)/soclib
+SECVM_SRC_PATH                  ?= $(SOFIA_FW_SRC_BASE)/secure_vm
+GUESTVM2_SRC_PATH               ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests/vm2
+MOBILEVISOR_SVC_PATH            ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/services
+MOBILEVISOR_SRC_PATH            ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/products
+MOBILEVISOR_REL_PATH            ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/release
+MOBILEVISOR_GUEST_PATH          ?= $(SOFIA_FW_SRC_BASE)/mobilevisor/guests
+BLOB_BUILDER_SCRIPT             ?= $(MOBILEVISOR_REL_PATH)/tools/vmmBlobBuilder.py
+BINARY_MERGE_TOOL                = $(MOBILEVISOR_REL_PATH)/tools/binary_merge
+VBT_GENERATE_TOOL               ?= $(MOBILEVISOR_REL_PATH)/tools/vbtgen$(if $(findstring 3gr,$(TARGET_BOARD_PLATFORM)),_vop)
+FWU_PACK_GENERATE_TOOL           = $(MOBILEVISOR_REL_PATH)/tools/fwpgen
 
+TARGET_BOARD_PLATFORM_VAR       ?= $(TARGET_BOARD_PLATFORM)
+SOFIA_FIRMWARE_VARIANTS         ?= $(TARGET_PRODUCT)
+MODEM_PROJECTNAME_VAR           ?= $(MODEM_PROJECTNAME)
+
+define sofia_base_per_variant
+
+ifeq ($(words $(SOFIA_FIRMWARE_VARIANTS)),1)
+IMAGES_DIR.$(1)                 := $$(PRODUCT_OUT)/fls
+else
+IMAGES_DIR.$(1)                 := $$(PRODUCT_OUT)/fls_$(1)_$(TARGET_BUILD_VARIANT)
+endif
+
+SOFIA_PROVDATA_FILES.$(1)       += $$(FLSTOOL)
+INTEL_PRG_FILE.$(1)             := $$(INTEL_PRG_FILE)
+MV_CONFIG_DEFAULT_FLS.$(1)      := $$(MV_CONFIG_DEFAULT_FLS)
+FLASHFILES_DIR.$(1)             := $$(IMAGES_DIR.$(1))/fls
+SIGN_FLS_DIR.$(1)               := $$(IMAGES_DIR.$(1))/signed_fls
+FASTBOOT_IMG_DIR.$(1)           := $$(IMAGES_DIR.$(1))/fastboot
+FWU_IMG_DIR.$(1)                := $$(IMAGES_DIR.$(1))/fwu_image
+EXTRACT_TEMP.$(1)               := $$(SIGN_FLS_DIR.$(1))/extract
+
+IMAGES_DIR                      += $$(IMAGES_DIR.$(1))
+FLASHFILES_DIR                  += $$(FLASHFILES_DIR.$(1))
+SIGN_FLS_DIR                    += $$(SIGN_FLS_DIR.$(1))
+FASTBOOT_IMG_DIR                += $$(FASTBOOT_IMG_DIR.$(1))
+FWU_IMG_DIR                     += $$(FWU_IMG_DIR.$(1))
+EXTRACT_TEMP                    += $$(EXTRACT_TEMP.$(1))
+
+SOFIA_FIRMWARE_OUT.$(1)         := $$(PRODUCT_OUT)/sofia_fw_$$(TARGET_BUILD_VARIANT)/$(1)
+$$(SOFIA_FIRMWARE_OUT.$(1)):
+	mkdir -p $$@
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call sofia_base_per_variant,$(variant))))
+
+FASTBOOT_IMG_DIR := $(strip $(FASTBOOT_IMG_DIR))
+
+.PHONY: createflashfile_dir
 createflashfile_dir:
 	mkdir -p $(IMAGES_DIR)
 	mkdir -p $(FLASHFILES_DIR)
@@ -59,8 +99,6 @@ droidcore: createflashfile_dir
 .PHONY: build_info
 build_info:
 	@echo "-------------------------------------------"
-
-SYSTEM_SIGNED_FLS_LIST ?=
 
 include $(LOCAL_PATH)/createprg.mk
 include $(LOCAL_PATH)/soclib.mk
@@ -78,3 +116,7 @@ include $(LOCAL_PATH)/signfls.mk
 include $(LOCAL_PATH)/fastboot.mk
 
 include $(all-subdir-makefiles)
+
+ifeq ($(words $(SOFIA_FIRMWARE_VARIANTS)),1)
+SOFIA_PROVDATA_FILES += $(SOFIA_PROVDATA_FILES.$(word 1,$(SOFIA_FIRMWARE_VARIANTS))) $(INTEL_PRG_FILE)
+endif

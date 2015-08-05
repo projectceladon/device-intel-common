@@ -18,27 +18,41 @@
 # Fls generation of AOSP image files
 # -------------------------------------
 
-OEM_FLS                  := $(FLASHFILES_DIR)/oem.fls
-OEM_SIGNED_FLS           := $(SIGN_FLS_DIR)/oem_signed.fls
+define androidfls_per_variant
 
-ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-ANDROID_SIGNED_FLS_LIST  += $(OEM_SIGNED_FLS)
-SOFIA_PROVDATA_FILES += $(OEM_FLS)
+OEM_FLS.$(1)         := $$(FLASHFILES_DIR.$(1))/oem.fls
+OEM_SIGNED_FLS.$(1)  += $$(SIGN_FLS_DIR.$(1))/oem_signed.fls
+
+ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+ANDROID_SIGNED_FLS_LIST.$(1)  += $$(OEM_SIGNED_FLS.$(1))
+SOFIA_PROVDATA_FILES.$(1) += $$(OEM_FLS.$(1))
 endif
 
-$(OEM_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(INSTALLED_OEMIMAGE_TARGET) $(PSI_RAM_FLB) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag OEM $(INJECT_FLASHLOADER_FLS) $(INSTALLED_OEMIMAGE_TARGET) --replace --to-fls2
+$$(OEM_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(INSTALLED_OEMIMAGE_TARGET) $$(PSI_RAM_FLB.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag OEM $$(INJECT_FLASHLOADER_FLS.$(1)) $$(INSTALLED_OEMIMAGE_TARGET) --replace --to-fls2
+
+.PHONY: oem.fls.$(1)
+
+oem.fls.$(1): $$(OEM_FLS.$(1))
+
+oem.fls: oem.fls.$(1)
+
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)), sofia3g)
+android_fls.$(1): $$(OEM_FLS.$(1))
+else
+android_fls.$(1):
+	@echo "Android Images: nothing to do"
+endif
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call androidfls_per_variant,$(variant))))
 
 .PHONY: oem.fls
 
-oem.fls: $(OEM_FLS)
-
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)), sofia3g)
-android_fls: $(OEM_FLS)
-else
-android_fls:
-	@echo "Android Images: nothing to do"
-endif
+.PHONY: android_fls
+android_fls: $(addprefix android_fls.,$(SOFIA_FIRMWARE_VARIANTS))
 
 ifeq ($(GEN_ANDROID_FLS_FILES),true)
 droidcore: android_fls

@@ -15,140 +15,263 @@
 # ------------------------------------------------------------------------
 
 ifeq ($(BUILD_BOOTCORE_FROM_SRC),true)
-BL_OUTPUT_DIR         := $(CURDIR)/$(PRODUCT_OUT)
 
-BOOTLDR_TMP_DIR       := $(PRODUCT_OUT)/bootloader_tmp
-
-SIGN_TOOL             := $(SOFIA_FW_SRC_BASE)/modem/dwdtools/FlsSign/Linux/FlsSign_E2_Linux
-
-ifeq '$(findstring $(MODEM_PROJECTNAME),${MODEM_PLATFORM})' '$(MODEM_PROJECTNAME)'
-  BOOTLOADER_BIN_PATH := ${BL_OUTPUT_DIR}/bootloader/${MODEM_PLATFORM}
-else
-  BOOTLOADER_BIN_PATH := ${BL_OUTPUT_DIR}/bootloader/$(MODEM_PROJECTNAME)_$(MODEM_PLATFORM)
-endif
-
-ifeq ($(BUILD_REL10_BOOTCORE), true)
-  BUILT_PSI_RAM_HEX     := $(BOOTLOADER_BIN_PATH)/target_psi_ram/psi_ram.hex
-  BUILT_PSI_RAM_XOR     := $(BOOTLOADER_BIN_PATH)/scripts/psi_ram.xor_script.txt
-  BUILT_PSI_RAM_VER     := $(BOOTLOADER_BIN_PATH)/project.cfg.log
-  BUILT_PSI_RAM_ELF     := $(BOOTLOADER_BIN_PATH)/target_psi_ram/psi_ram.elf
-  BUILT_PSI_FLASH_HEX   := $(BOOTLOADER_BIN_PATH)/target_psi_flash/psi_flash.hex
-  BUILT_PSI_FLASH_XOR   := $(BOOTLOADER_BIN_PATH)/scripts/psi_flash.xor_script.txt
-  BUILT_PSI_FLASH_VER   := $(BOOTLOADER_BIN_PATH)/project.cfg.log
-  BUILT_PSI_FLASH_ELF   := $(BOOTLOADER_BIN_PATH)/target_psi_flash/psi_flash.elf
-  BUILT_EBL_HEX         := $(BOOTLOADER_BIN_PATH)/target_ebl/ebl.hex
-  BUILT_EBL_VER         := $(BOOTLOADER_BIN_PATH)/project.cfg.log
-  BUILT_SLB_HEX         := $(BOOTLOADER_BIN_PATH)/target_slb/slb.hex
-  BUILT_SLB_VER         := $(BOOTLOADER_BIN_PATH)/project.cfg.log
-else
-  BUILT_PSI_RAM_HEX     := $(BOOTLOADER_BIN_PATH)/psi_ram/psi_ram.hex
-  BUILT_PSI_RAM_XOR     := $(BOOTLOADER_BIN_PATH)/psi_ram/scripts/psi_ram.xor_script.txt
-  BUILT_PSI_RAM_VER     := $(BOOTLOADER_BIN_PATH)/psi_ram/psi_ram.version.txt
-  BUILT_PSI_RAM_ELF     := $(BOOTLOADER_BIN_PATH)/psi_ram/psi_ram.elf
-  BUILT_PSI_FLASH_HEX   := $(BOOTLOADER_BIN_PATH)/psi_flash/psi_flash.hex
-  BUILT_PSI_FLASH_XOR   := $(BOOTLOADER_BIN_PATH)/psi_flash/scripts/psi_flash.xor_script.txt
-  BUILT_PSI_FLASH_VER   := $(BOOTLOADER_BIN_PATH)/psi_flash/psi_flash.version.txt
-  BUILT_PSI_FLASH_ELF   := $(BOOTLOADER_BIN_PATH)/psi_flash/psi_flash.elf
-  BUILT_EBL_HEX         := $(BOOTLOADER_BIN_PATH)/ebl/ebl.hex
-  BUILT_EBL_VER         := $(BOOTLOADER_BIN_PATH)/ebl/ebl.version.txt
-  BUILT_SLB_HEX         := $(BOOTLOADER_BIN_PATH)/slb/slb.hex
-  BUILT_SLB_VER         := $(BOOTLOADER_BIN_PATH)/slb/slb.version.txt
-endif
-
-BOOTLOADER_BINARIES    = $(BUILT_PSI_RAM_HEX)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_RAM_XOR)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_RAM_VER)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_RAM_ELF)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_FLASH_HEX)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_FLASH_XOR)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_FLASH_VER)
-BOOTLOADER_BINARIES   += $(BUILT_PSI_FLASH_ELF)
-BOOTLOADER_BINARIES   += $(BUILT_EBL_HEX)
-BOOTLOADER_BINARIES   += $(BUILT_EBL_VER)
-BOOTLOADER_BINARIES   += $(BUILT_SLB_HEX)
-BOOTLOADER_BINARIES   += $(BUILT_SLB_VER)
-
-PSI_RAM_BEFORE_DDR_INJECT_FLS    := $(BOOTLDR_TMP_DIR)/psi_ram.before.ddrinject.fls
-PSI_FLASH_BEFORE_DDR_INJECT_FLS  := $(BOOTLDR_TMP_DIR)/psi_flash.before.ddrinject.fls
-
-PSI_RAM_FLS            := $(CURDIR)/$(PRODUCT_OUT)/flashloader/psi_ram.fls
-EBL_FLS                := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl.fls
-EBL_UPLOAD_FLS         := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl_upload.fls
-
-SOFIA_PROVDATA_FILES += $(PSI_RAM_FLS) $(EBL_FLS)
-
-ifeq ($(BUILD_REL10_BOOTCORE), true)
-FLASHLOADER_FLS        := $(PSI_RAM_FLS) $(EBL_FLS)
-INJECT_FLASHLOADER_FLS := --psi $(PSI_RAM_FLS) --ebl $(EBL_FLS)
-else
-FLASHLOADER_FLS        := $(PSI_RAM_FLS) $(EBL_UPLOAD_FLS)
-INJECT_FLASHLOADER_FLS := --psi $(PSI_RAM_FLS) --ebl-sec $(EBL_FLS)
-endif
-
-PSI_FLASH_FLS          := $(FLASHFILES_DIR)/psi_flash.fls
-SLB_FLS                := $(FLASHFILES_DIR)/slb.fls
-
+SIGN_TOOL       := $(SOFIA_FW_SRC_BASE)/modem/dwdtools/FlsSign/Linux/FlsSign_E2_Linux
 KEYSTORE_SIGNER := $(ANDROID_BUILD_TOP)/$(HOST_OUT_EXECUTABLES)/keystore_signer
+DTC             := $(LOCAL_KERNEL_PATH)/dtc
+
+ifeq ($(BUILD_REL10_BOOTCORE), true)
+UCODE_PATCH_PRG_TAG=UCODE_PATCH
+else
+UCODE_PATCH_PRG_TAG=UC_PATCH
+endif
+
+define bootcore_per_variant
+
+ifneq (1,$(words $(SOFIA_FIRMWARE_VARIANTS)))
+BOOTCORE_FEATURES.$(1) += FEAT_DTB_FROM_BLOBSTORE
+BLOBSTORE_DTB_KEY.$(1) := $$(shell python $$(BOARD_DEVICE_MAPPING) $(1))
+endif
+
+BOOTLDR_TMP_DIR.$(1)       := $$(SOFIA_FIRMWARE_OUT.$(1))/bootloader_tmp
+
+ifeq '$$(findstring $$(MODEM_PROJECTNAME),$${MODEM_PLATFORM})' '$$(MODEM_PROJECTNAME)'
+  BOOTLOADER_BIN_PATH.$(1) := $${SOFIA_FIRMWARE_OUT.$(1)}/bootloader/$${MODEM_PLATFORM}
+else
+  BOOTLOADER_BIN_PATH.$(1) := $${SOFIA_FIRMWARE_OUT.$(1)}/bootloader/$$(MODEM_PROJECTNAME)_$$(MODEM_PLATFORM)
+endif
+
+ifeq ($$(BUILD_REL10_BOOTCORE), true)
+  BUILT_PSI_RAM_HEX.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/target_psi_ram/psi_ram.hex
+  BUILT_PSI_RAM_XOR.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/scripts/psi_ram.xor_script.txt
+  BUILT_PSI_RAM_VER.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/project.cfg.log
+  BUILT_PSI_RAM_ELF.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/target_psi_ram/psi_ram.elf
+  BUILT_PSI_FLASH_HEX.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/target_psi_flash/psi_flash.hex
+  BUILT_PSI_FLASH_XOR.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/scripts/psi_flash.xor_script.txt
+  BUILT_PSI_FLASH_VER.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/project.cfg.log
+  BUILT_PSI_FLASH_ELF.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/target_psi_flash/psi_flash.elf
+  BUILT_EBL_HEX.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/target_ebl/ebl.hex
+  BUILT_EBL_VER.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/project.cfg.log
+  BUILT_SLB_HEX.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/target_slb/slb.hex
+  BUILT_SLB_VER.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/project.cfg.log
+else
+  BUILT_PSI_RAM_HEX.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/psi_ram/psi_ram.hex
+  BUILT_PSI_RAM_XOR.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/psi_ram/scripts/psi_ram.xor_script.txt
+  BUILT_PSI_RAM_VER.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/psi_ram/psi_ram.version.txt
+  BUILT_PSI_RAM_ELF.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/psi_ram/psi_ram.elf
+  BUILT_PSI_FLASH_HEX.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/psi_flash/psi_flash.hex
+  BUILT_PSI_FLASH_XOR.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/psi_flash/scripts/psi_flash.xor_script.txt
+  BUILT_PSI_FLASH_VER.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/psi_flash/psi_flash.version.txt
+  BUILT_PSI_FLASH_ELF.$(1)   := $$(BOOTLOADER_BIN_PATH.$(1))/psi_flash/psi_flash.elf
+  BUILT_EBL_HEX.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/ebl/ebl.hex
+  BUILT_EBL_VER.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/ebl/ebl.version.txt
+  BUILT_SLB_HEX.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/slb/slb.hex
+  BUILT_SLB_VER.$(1)         := $$(BOOTLOADER_BIN_PATH.$(1))/slb/slb.version.txt
+endif
+
+BOOTLOADER_BINARIES.$(1)    = $$(BUILT_PSI_RAM_HEX.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_RAM_XOR.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_RAM_VER.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_RAM_ELF.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_FLASH_HEX.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_FLASH_XOR.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_FLASH_VER.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_PSI_FLASH_ELF.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_EBL_HEX.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_EBL_VER.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_SLB_HEX.$(1))
+BOOTLOADER_BINARIES.$(1)   += $$(BUILT_SLB_VER.$(1))
+
+PSI_RAM_BEFORE_DDR_INJECT_FLS.$(1)    := $$(BOOTLDR_TMP_DIR.$(1))/psi_ram.before.ddrinject.fls
+PSI_FLASH_BEFORE_DDR_INJECT_FLS.$(1)  := $$(BOOTLDR_TMP_DIR.$(1))/psi_flash.before.ddrinject.fls
+
+PSI_RAM_FLS.$(1)            := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1)))/flashloader/psi_ram.fls
+EBL_FLS.$(1)                := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1)))/flashloader/ebl.fls
+EBL_UPLOAD_FLS.$(1)         := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1)))/flashloader/ebl_upload.fls
+
+SOFIA_PROVDATA_FILES.$(1) += $$(PSI_RAM_FLS.$(1)) $$(EBL_FLS.$(1))
+
+ifeq ($$(BUILD_REL10_BOOTCORE), true)
+FLASHLOADER_FLS.$(1)        := $$(PSI_RAM_FLS.$(1)) $$(EBL_FLS.$(1))
+INJECT_FLASHLOADER_FLS.$(1) := --psi $$(PSI_RAM_FLS.$(1)) --ebl $$(EBL_FLS.$(1))
+else
+FLASHLOADER_FLS.$(1)        := $$(PSI_RAM_FLS.$(1)) $$(EBL_UPLOAD_FLS.$(1))
+INJECT_FLASHLOADER_FLS.$(1) := --psi $$(PSI_RAM_FLS.$(1)) --ebl-sec $$(EBL_FLS.$(1))
+endif
+
+PSI_FLASH_FLS.$(1)          := $$(FLASHFILES_DIR.$(1))/psi_flash.fls
+SLB_FLS.$(1)                := $$(FLASHFILES_DIR.$(1))/slb.fls
 
 #This must be included here for ddrinject makefile to take over the variables here and define additional ones used below
-include $(LOCAL_PATH)/ddrinject.mk
+include $$(LOCAL_PATH)/ddrinject.mk
 
-MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
+.PHONY: bootcore.$(1) bootcore_fls.$(1) bootcore_clean.$(1) bootcore_rebuild.$(1)
 
-.PHONY: bootcore bootcore_fls bootcore_clean bootcore_rebuild
-
-ifeq ($(BUILD_REL10_BOOTCORE), true)
-bootcore:
-	$(MAKE) -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PLATFORM=$(MODEM_PLATFORM) PROJECTNAME=$(MODEM_PROJECTNAME_VAR) MAKEDIR=$(BOOTLOADER_BIN_PATH) $(MODEM_BUILD_ARGUMENTS) INT_STAGE=BOOTSYSTEM ADD_FEATURE+=FEAT_BOOTSYSTEM_DRV_DISPLAY ADD_FEATURE+=FEAT_BOOTSYSTEM_PROXY_INFO_TO_MOBILEVISOR ADD_FEATURE+=FEAT_BOOTSYSTEM_VMM_ENABLED bootsystem
+ifeq ($$(BUILD_REL10_BOOTCORE), true)
+bootcore.$(1):
+	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PLATFORM=$$(MODEM_PLATFORM) PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) MAKEDIR=$$(BOOTLOADER_BIN_PATH.$(1)) $$(MODEM_BUILD_ARGUMENTS) INT_STAGE=BOOTSYSTEM ADD_FEATURE+=FEAT_BOOTSYSTEM_DRV_DISPLAY ADD_FEATURE+=FEAT_BOOTSYSTEM_PROXY_INFO_TO_MOBILEVISOR ADD_FEATURE+=FEAT_BOOTSYSTEM_VMM_ENABLED bootsystem
 else
-bootcore: $(BUILT_LIBSOC_TARGET) keystore_signer libssl_static2 libcrypto_static2
-	$(if BOOTCORE_FEATURES, FEATURE="$(BOOTCORE_FEATURES)") \
-	$(MAKE) -C $(SOFIA_FW_SRC_BASE)/bootsystems/make PLATFORM=$(MODEM_PLATFORM) PROJECTNAME=$(MODEM_PROJECTNAME_VAR) BL_OUTPUT_DIR=$(BL_OUTPUT_DIR) SOC_LIB=$(BUILT_LIBSOC_TARGET) KEYSTORE_SIGNER=$(KEYSTORE_SIGNER) all
+bootcore.$(1): $$(BUILT_LIBSOC_TARGET.$(1)) keystore_signer libssl_static2 libcrypto_static2
+	$$(if BOOTCORE_FEATURES.$(1), FEATURE="$$(BOOTCORE_FEATURES.$(1))") BLOBSTORE_DTB_KEY="$$(BLOBSTORE_DTB_KEY.$(1))" \
+	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/bootsystems/make PLATFORM=$$(MODEM_PLATFORM) PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) BL_OUTPUT_DIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) SOC_LIB=$$(abspath $$(BUILT_LIBSOC_TARGET.$(1))) KEYSTORE_SIGNER=$$(KEYSTORE_SIGNER) all
 endif
 
-$(BOOTLOADER_BINARIES): bootcore
+$$(BOOTLOADER_BINARIES.$(1)): bootcore
 
-bootcore_clean:
-	rm -rf $(BOOTLOADER_BIN_PATH) $(BOOTLDR_TMP_DIR)
+bootcore_clean.$(1):
+	rm -rf $$(BOOTLOADER_BIN_PATH.$(1)) $$(BOOTLDR_TMP_DIR.$(1))
 
-bootcore_rebuild: bootcore_clean bootcore_fls
+bootcore_rebuild.$(1): bootcore_clean bootcore_fls
 
-createflashloader_dir:
-	mkdir -p $(PRODUCT_OUT)/flashloader
+createflashloader_dir.$(1):
+	mkdir -p $$(SOFIA_FIRMWARE_OUT.$(1))/flashloader
 
-$(BOOTLDR_TMP_DIR):
-	mkdir -p $@
+$$(BOOTLDR_TMP_DIR.$(1)):
+	mkdir -p $$@
 
-ifneq ($(INTEL_DDR_CTL_PARAMS_FILE),)
+ifneq ($$(INTEL_DDR_CTL_PARAMS_FILE.$(1)),)
 # If DDR parameter header file is specified then create intermediate PSI FLS
 # files and postprocess with FlsSign to inject the Denali settings
-$(PSI_RAM_FLS): createflashloader_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_PSI_RAM_XOR) $(BUILT_PSI_RAM_HEX) $(BUILT_PSI_RAM_VER) $(SIGN_TOOL) $(PSI_RAM_DDRINJECT_SCRIPT) $(BOOTLDR_TMP_DIR)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(PSI_RAM_BEFORE_DDR_INJECT_FLS) --script $(BUILT_PSI_RAM_XOR) --meta $(BUILT_PSI_RAM_VER) --tag PSI_RAM $(BUILT_PSI_RAM_HEX) --replace --to-fls2
-	@echo Injecting custom DDR parameters to $@...
-	$(SIGN_TOOL) $(PSI_RAM_BEFORE_DDR_INJECT_FLS) -s $(PSI_RAM_DDRINJECT_SCRIPT) -o $@
+$$(PSI_RAM_FLS.$(1)): createflashloader_dir.$(1) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_PSI_RAM_XOR.$(1)) $$(BUILT_PSI_RAM_HEX.$(1)) $$(BUILT_PSI_RAM_VER.$(1)) $$(SIGN_TOOL) $$(PSI_RAM_DDRINJECT_SCRIPT.$(1)) $$(BOOTLDR_TMP_DIR.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(PSI_RAM_BEFORE_DDR_INJECT_FLS.$(1)) --script $$(BUILT_PSI_RAM_XOR.$(1)) --meta $$(BUILT_PSI_RAM_VER.$(1)) --tag PSI_RAM $$(BUILT_PSI_RAM_HEX.$(1)) --replace --to-fls2
+	@echo Injecting custom DDR parameters to $$@...
+	$$(SIGN_TOOL) $$(PSI_RAM_BEFORE_DDR_INJECT_FLS.$(1)) -s $$(PSI_RAM_DDRINJECT_SCRIPT.$(1)) -o $$@
 
-$(PSI_FLASH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_PSI_FLASH_XOR) $(BUILT_PSI_FLASH_HEX) $(BUILT_PSI_FLASH_VER) $(FLASHLOADER_FLS) $(SIGN_TOOL) $(PSI_FLASH_DDRINJECT_SCRIPT) $(BOOTLDR_TMP_DIR)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(PSI_FLASH_BEFORE_DDR_INJECT_FLS) --script $(BUILT_PSI_FLASH_XOR) --meta $(BUILT_PSI_FLASH_VER) --tag PSI_FLASH $(BUILT_PSI_FLASH_HEX) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
-	@echo Injecting custom DDR parameters to $@...
-	$(SIGN_TOOL) $(PSI_FLASH_BEFORE_DDR_INJECT_FLS) --noinjremove -s $(PSI_FLASH_DDRINJECT_SCRIPT) -o $@
+$$(PSI_FLASH_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_PSI_FLASH_XOR.$(1)) $$(BUILT_PSI_FLASH_HEX.$(1)) $$(BUILT_PSI_FLASH_VER.$(1)) $$(FLASHLOADER_FLS.$(1)) $$(SIGN_TOOL) $$(PSI_FLASH_DDRINJECT_SCRIPT.$(1)) $$(BOOTLDR_TMP_DIR.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$(PSI_FLASH_BEFORE_DDR_INJECT_FLS.$(1)) --script $$(BUILT_PSI_FLASH_XOR.$(1)) --meta $$(BUILT_PSI_FLASH_VER.$(1)) --tag PSI_FLASH $$(BUILT_PSI_FLASH_HEX.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
+	@echo Injecting custom DDR parameters to $$@...
+	$$(SIGN_TOOL) $$(PSI_FLASH_BEFORE_DDR_INJECT_FLS.$(1)) --noinjremove -s $$(PSI_FLASH_DDRINJECT_SCRIPT.$(1)) -o $$@
 else
-$(PSI_RAM_FLS): createflashloader_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_PSI_RAM_XOR) $(BUILT_PSI_RAM_HEX) $(BUILT_PSI_RAM_VER)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --script $(BUILT_PSI_RAM_XOR) --meta $(BUILT_PSI_RAM_VER) --tag PSI_RAM $(BUILT_PSI_RAM_HEX) --replace --to-fls2
+$$(PSI_RAM_FLS.$(1)): createflashloader_dir.$(1) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_PSI_RAM_XOR.$(1)) $$(BUILT_PSI_RAM_HEX.$(1)) $$(BUILT_PSI_RAM_VER.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --script $$(BUILT_PSI_RAM_XOR.$(1)) --meta $$(BUILT_PSI_RAM_VER.$(1)) --tag PSI_RAM $$(BUILT_PSI_RAM_HEX.$(1)) --replace --to-fls2
 
-$(EBL_FLS): createflashloader_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_EBL_HEX) $(BUILT_EBL_VER) $(PSI_RAM_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --meta $(BUILT_EBL_VER) --tag EBL $(BUILT_EBL_HEX) --replace --to-fls2
+$$(EBL_FLS.$(1)): createflashloader_dir.$(1) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_EBL_HEX.$(1)) $$(BUILT_EBL_VER.$(1)) $$(PSI_RAM_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --meta $$(BUILT_EBL_VER.$(1)) --tag EBL $$(BUILT_EBL_HEX.$(1)) --replace --to-fls2
 
-$(EBL_UPLOAD_FLS): $(EBL_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --meta $(BUILT_EBL_VER) --tag EBL $(BUILT_EBL_HEX) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
+$$(EBL_UPLOAD_FLS.$(1)): $$(EBL_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --meta $$(BUILT_EBL_VER.$(1)) --tag EBL $$(BUILT_EBL_HEX.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
 
-$(PSI_FLASH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_PSI_FLASH_XOR) $(BUILT_PSI_FLASH_HEX) $(BUILT_PSI_FLASH_VER) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --script $(BUILT_PSI_FLASH_XOR) --meta $(BUILT_PSI_FLASH_VER) --tag PSI_FLASH $(BUILT_PSI_FLASH_HEX) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
+$$(PSI_FLASH_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_PSI_FLASH_XOR.$(1)) $$(BUILT_PSI_FLASH_HEX.$(1)) $$(BUILT_PSI_FLASH_VER.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --script $$(BUILT_PSI_FLASH_XOR.$(1)) --meta $$(BUILT_PSI_FLASH_VER.$(1)) --tag PSI_FLASH $$(BUILT_PSI_FLASH_HEX.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
 
-$(SLB_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_SLB_HEX) $(BUILT_SLB_VER) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --meta $(BUILT_SLB_VER) --tag SLB $(BUILT_SLB_HEX) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
-endif # ifneq ($(INTEL_DDR_CTL_PARAMS_FILE),)
+$$(SLB_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_SLB_HEX.$(1)) $$(BUILT_SLB_VER.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --meta $$(BUILT_SLB_VER.$(1)) --tag SLB $$(BUILT_SLB_HEX.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
+endif # ifneq ($$(INTEL_DDR_CTL_PARAMS_FILE.$(1)),)
 
-bootcore_fls: $(PSI_FLASH_FLS) $(SLB_FLS)
+bootcore_fls.$(1): $$(PSI_FLASH_FLS.$(1)) $$(SLB_FLS.$(1))
+
+
+UCODE_PATCH_FLS.$(1) := $$(FLASHFILES_DIR.$(1))/ucode_patch.fls
+UCODE_PATCH_SIGNED_FLS.$(1) := $$(SIGN_FLS_DIR.$(1))/ucode_patch_signed.fls
+SYSTEM_SIGNED_FLS_LIST.$(1) += $$(UCODE_PATCH_SIGNED_FLS.$(1))
+
+$$(UCODE_PATCH_FLS.$(1)): ucode_patch.fls.$(1)
+
+.PHONY: ucode_patch.fls.$(1)
+ucode_patch.fls.$(1): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(FLASHLOADER_FLS.$(1))
+	make -C $$(SOCLIB_SRC_PATH) -f ucode_patch/Makefile \
+  PROJECTNAME=$$(shell echo $$(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) \
+  PLATFORM=$$(MODEM_PLATFORM) FLSTOOL=$$(FLSTOOL) INTEL_PRG_FILE=$$(INTEL_PRG_FILE.$(1)) \
+  UCODE_PATCH_PRG_TAG=$$(UCODE_PATCH_PRG_TAG) INJECT="$$(INJECT_FLASHLOADER_FLS.$(1))" \
+  UCODE_PATCH_FLS=$$(abspath $$(UCODE_PATCH_FLS.$(1)))
+
+.PHONY: splash_img.fls.$(1)
+
+SPLASH_IMG_BIN_PATH.$(1)        := $$(SOFIA_FIRMWARE_OUT.$(1))/splash_image
+SPLASH_IMG_FILE_1.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/splash_screen.jpg
+SPLASH_IMG_FILE_2.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/fastboot.png
+SPLASH_DISPLAY_DTS.$(1)         := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_display_config.dts
+SPLASH_IMG_DISPLAY_CONFIG.$(1)  := $$(SPLASH_IMG_BIN_PATH.$(1))/vbt.bin
+SPLASH_IMG_HEADER.$(1)          := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_hdr.bin
+SPLASH_IMG_BIN_FONT.$(1)        := $$(SPLASH_IMG_BIN_PATH.$(1))/slbfont.bin
+SPLASH_IMG_FONT_CONFIG.$(1)     ?= $$(TARGET_DEVICE_DIR)/splash_image/slbfont.cfg
+SPLASH_IMG_FILE_FONT.$(1)       ?= $$(TARGET_DEVICE_DIR)/splash_image/slbfont.png
+SPLASH_IMG_BIN_0.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_config.bin
+SPLASH_IMG_BIN_1.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_screen.bin
+SPLASH_IMG_BIN_2.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/fastboot.bin
+DISPLAY_BIN.$(1)                := $$(SPLASH_IMG_BIN_PATH.$(1))/display.bin
+SPLASH_IMG_FLS.$(1)             := $$(FLASHFILES_DIR.$(1))/splash_img.fls
+SPLASH_IMG_SIGNED_FLS.$(1)      := $$(SIGN_FLS_DIR.$(1))/splash_img_signed.fls
+SYSTEM_SIGNED_FLS_LIST.$(1)     += $$(SPLASH_IMG_SIGNED_FLS.$(1))
+LOCAL_DTB_PATH.$(1)             ?= $$(if $$(wildcard $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb),\
+                                         $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb,\
+                                         $$(LOCAL_KERNEL_PATH)/$$(BOARD_DTB_FILE))
+
+
+ifneq ("$$(wildcard $$(SPLASH_IMG_FILE_1.$(1)))","")
+  ifneq ("$$(wildcard $$(SPLASH_IMG_FILE_2.$(1)))","")
+    splash_img.fls.$(1): $$(SPLASH_IMG_FLS.$(1))
+  else
+    splash_img.fls.$(1):
+  endif
+else
+splash_img.fls.$(1):
+endif
+
+$$(SPLASH_IMG_BIN_PATH.$(1)):
+	mkdir -p $$@
+
+$$(SPLASH_IMG_BIN_FONT.$(1)): $$(SPLASH_IMG_FILE_FONT.$(1)) | $$(SPLASH_IMG_BIN_PATH.$(1))
+	convert $$(SPLASH_IMG_FILE_FONT.$(1)) -depth 8 rgba:$$(SPLASH_IMG_BIN_FONT.$(1))
+
+$(DTC): $(LOCAL_KERNEL)
+$$(SPLASH_IMG_BIN_0.$(1)): $$(LOCAL_DTB_PATH.$(1)) $$(SPLASH_IMG_FONT_CONFIG.$(1)) $(DTC) | $$(SPLASH_IMG_BIN_PATH.$(1))
+	$$(DTC) -I dtb -O dts -o $$(SPLASH_DISPLAY_DTS.$(1)) $$(LOCAL_DTB_PATH.$(1))
+	$$(VBT_GENERATE_TOOL) -i $$(SPLASH_DISPLAY_DTS.$(1)) -o $$(SPLASH_IMG_DISPLAY_CONFIG.$(1)) -splash $$(SPLASH_IMG_HEADER.$(1)) -font_config $$(SPLASH_IMG_FONT_CONFIG.$(1))
+	cat $$(SPLASH_IMG_HEADER.$(1)) $$(SPLASH_IMG_DISPLAY_CONFIG.$(1)) > $$(SPLASH_IMG_BIN_0.$(1))
+
+$$(SPLASH_IMG_BIN_1.$(1)): $$(SPLASH_IMG_FILE_1.$(1)) | $$(SPLASH_IMG_BIN_PATH.$(1))
+	convert $$(SPLASH_IMG_FILE_1.$(1)) -depth 8 rgba:$$(SPLASH_IMG_BIN_1.$(1))
+$$(SPLASH_IMG_BIN_2.$(1)): $$(SPLASH_IMG_FILE_2.$(1)) | $$(SPLASH_IMG_BIN_PATH.$(1))
+	convert $$(SPLASH_IMG_FILE_2.$(1)) -depth 8 rgba:$$(SPLASH_IMG_BIN_2.$(1))
+
+$$(DISPLAY_BIN.$(1)) : $$(SPLASH_IMG_BIN_0.$(1)) $$(SPLASH_IMG_BIN_1.$(1)) $$(SPLASH_IMG_BIN_2.$(1)) $$(SPLASH_IMG_BIN_FONT.$(1)) $$(BINARY_MERGE_TOOL)
+	$$(BINARY_MERGE_TOOL) -o $$@ -b 512  -p 0 $$(SPLASH_IMG_BIN_0.$(1)) $$(SPLASH_IMG_BIN_1.$(1)) $$(SPLASH_IMG_BIN_2.$(1)) $$(SPLASH_IMG_BIN_FONT.$(1))
+
+$$(SPLASH_IMG_FLS.$(1)): createflashfile_dir $$(INTEL_PRG_FILE.$(1)) $$(FLSTOOL) $$(DISPLAY_BIN.$(1)) $$(FLASHLOADER_FLS.$(1))
+	echo "$$(FLSTOOL)"
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag SPLASH_SCRN $$(DISPLAY_BIN.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
+
+BOOTROM_PATCH_BIN.$(1) ?= $$(TARGET_DEVICE_DIR)/bootrom_patch/bootrom_patch.bin
+BOOTROM_PATCH_FLS.$(1) := $$(FLASHFILES_DIR.$(1))/bootrom_patch.fls
+
+$$(BOOTROM_PATCH_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BOOTROM_PATCH_BIN.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag BM_PATCH $$(BOOTROM_PATCH_BIN.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
+
+.PHONY: bootrom_patch.fls.$(1)
+ifeq ("$$(wildcard $$(BOOTROM_PATCH_BIN.$(1)))","")
+bootrom_patch.fls.$(1):
+	@echo "*** Boot ROM patch does not exist, skip generation ***"
+	@echo "*** Boot ROM patch file path: $$(BOOTROM_PATCH_BIN.$(1))"
+else
+bootrom_patch.fls.$(1): $$(BOOTROM_PATCH_FLS.$(1))
+endif
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call bootcore_per_variant,$(variant))))
+
+PSI_RAM_FLS := $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(PSI_RAM_FLS.$(variant)))
+EBL_FLS := $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(EBL_FLS.$(variant)))
+
+.PHONY: bootcore
+bootcore: $(addprefix bootcore.,$(SOFIA_FIRMWARE_VARIANTS))
+
+.PHONY: bootcore_fls
+bootcore_fls: $(addprefix bootcore_fls.,$(SOFIA_FIRMWARE_VARIANTS))
+
+.PHONY: bootcore_rebuild
+bootcore_rebuild: $(addprefix bootcore_rebuild.,$(SOFIA_FIRMWARE_VARIANTS))
+
+.PHONY: bootrom_patch.fls
+bootrom_patch.fls: $(addprefix bootrom_patch.fls.,$(SOFIA_FIRMWARE_VARIANTS))
+
+.PHONY: ucode_patch.fls
+ucode_patch.fls: $(addprefix ucode_patch.fls.,$(SOFIA_FIRMWARE_VARIANTS))
+
+.PHONY: splash_img.fls
+splash_img.fls: $(addprefix splash_img.fls.,$(SOFIA_FIRMWARE_VARIANTS))
 
 createboothexinfo:
 	@echo "----------------------------------------------------------"
@@ -163,102 +286,4 @@ build_info: createboothexinfo
 
 droidcore: bootcore_fls ucode_patch.fls splash_img.fls
 
-.PHONY: ucode_patch.fls
-
-UCODE_PATCH_FLS := $(FLASHFILES_DIR)/ucode_patch.fls
-UCODE_PATCH_SIGNED_FLS := $(SIGN_FLS_DIR)/ucode_patch_signed.fls
-SYSTEM_SIGNED_FLS_LIST += $(UCODE_PATCH_SIGNED_FLS)
-
-ucode_patch.fls: $(UCODE_PATCH_FLS)
-
-ifeq ($(BUILD_REL10_BOOTCORE), true)
-UCODE_PATCH_PRG_TAG=UCODE_PATCH
-else
-UCODE_PATCH_PRG_TAG=UC_PATCH
-endif
-
-$(UCODE_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	make -C $(SOCLIB_SRC_PATH) -f ucode_patch/Makefile \
-  PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) \
-  PLATFORM=$(MODEM_PLATFORM) FLSTOOL=$(FLSTOOL) INTEL_PRG_FILE=$(INTEL_PRG_FILE) \
-  UCODE_PATCH_PRG_TAG=$(UCODE_PATCH_PRG_TAG) INJECT="$(INJECT_FLASHLOADER_FLS)" \
-  UCODE_PATCH_FLS=$(CURDIR)/$(UCODE_PATCH_FLS)
-
-.PHONY: splash_img.fls
-
-SPLASH_IMG_OUTPUT_DIR  		:= $(CURDIR)/$(PRODUCT_OUT)
-SPLASH_IMG_BIN_PATH    		:= $(BL_OUTPUT_DIR)/splash_image
-SPLASH_IMG_FILE_1      		:= $(TARGET_DEVICE_DIR)/splash_image/splash_screen.jpg
-SPLASH_IMG_FILE_2      		:= $(TARGET_DEVICE_DIR)/splash_image/fastboot.png
-SPLASH_DISPLAY_DTS			:= $(SPLASH_IMG_BIN_PATH)/splash_display_config.dts
-SPLASH_IMG_DISPLAY_CONFIG   := $(SPLASH_IMG_BIN_PATH)/vbt.bin
-SPLASH_IMG_HEADER	   		:= $(SPLASH_IMG_BIN_PATH)/splash_hdr.bin
-SPLASH_IMG_BIN_FONT             := $(SPLASH_IMG_BIN_PATH)/slbfont.bin
-SPLASH_IMG_FONT_CONFIG          := $(TARGET_DEVICE_DIR)/splash_image/slbfont.cfg
-SPLASH_IMG_FILE_FONT          := $(TARGET_DEVICE_DIR)/splash_image/slbfont.png
-SPLASH_IMG_BIN_0			:= $(SPLASH_IMG_BIN_PATH)/splash_config.bin
-SPLASH_IMG_BIN_1       		:= $(SPLASH_IMG_BIN_PATH)/splash_screen.bin
-SPLASH_IMG_BIN_2       		:= $(SPLASH_IMG_BIN_PATH)/fastboot.bin
-DISPLAY_BIN := $(SPLASH_IMG_BIN_PATH)/display.bin
-SPLASH_IMG_FLS         		:= $(FLASHFILES_DIR)/splash_img.fls
-DTC							:= $(LOCAL_KERNEL_PATH)/dtc
-SPLASH_IMG_SIGNED_FLS           := $(SIGN_FLS_DIR)/splash_img_signed.fls
-SYSTEM_SIGNED_FLS_LIST          += $(SPLASH_IMG_SIGNED_FLS)
-
-ifneq ("$(wildcard $(SPLASH_IMG_FILE_1))","")
-  ifneq ("$(wildcard $(SPLASH_IMG_FILE_2))","")
-    splash_img.fls: $(SPLASH_IMG_FLS)
-  else
-    splash_img.fls:
-  endif
-else
-splash_img.fls:
-endif
-
-createsplashimg_dir:
-	mkdir -p $(SPLASH_IMG_BIN_PATH)
-
-LOCAL_DTB_PATH := $(LOCAL_KERNEL_PATH)/$(BOARD_DTB_FILE)
-
-$(SPLASH_IMG_BIN_FONT): createsplashimg_dir $(SPLASH_IMG_FILE_FONT)
-	convert $(SPLASH_IMG_FILE_FONT) -depth 8 rgba:$(SPLASH_IMG_BIN_FONT)
-
-$(DTC): $(LOCAL_KERNEL)
-$(SPLASH_IMG_BIN_0): createsplashimg_dir $(DTC)
-	$(DTC) -I dtb -O dts -o $(SPLASH_DISPLAY_DTS) $(LOCAL_DTB_PATH)
-	$(VBT_GENERATE_TOOL) -i $(SPLASH_DISPLAY_DTS) -o $(SPLASH_IMG_DISPLAY_CONFIG) -splash $(SPLASH_IMG_HEADER) -font_config $(SPLASH_IMG_FONT_CONFIG)
-	cat $(SPLASH_IMG_HEADER) $(SPLASH_IMG_DISPLAY_CONFIG) > $(SPLASH_IMG_BIN_0)
-
-$(SPLASH_IMG_BIN_1): createsplashimg_dir
-	convert $(SPLASH_IMG_FILE_1) -depth 8 rgba:$(SPLASH_IMG_BIN_1)
-$(SPLASH_IMG_BIN_2): createsplashimg_dir
-	convert $(SPLASH_IMG_FILE_2) -depth 8 rgba:$(SPLASH_IMG_BIN_2)
-
-$(DISPLAY_BIN) : $(SPLASH_IMG_BIN_0) $(SPLASH_IMG_BIN_1) $(SPLASH_IMG_BIN_2) $(SPLASH_IMG_BIN_FONT) $(BINARY_MERGE_TOOL)
-	$(BINARY_MERGE_TOOL) -o $@ -b 512  -p 0 $(SPLASH_IMG_BIN_0) $(SPLASH_IMG_BIN_1) $(SPLASH_IMG_BIN_2) $(SPLASH_IMG_BIN_FONT)
-
-$(SPLASH_IMG_FLS): createflashfile_dir $(INTEL_PRG_FILE) $(FLSTOOL) $(DISPLAY_BIN) $(FLASHLOADER_FLS)
-	echo "$(FLSTOOL)"
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag SPLASH_SCRN $(DISPLAY_BIN) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
-
-
-
-
-
-
 endif # ifeq ($(BUILD_BOOTCORE_FROM_SRC),true)
-
-.PHONY: bootrom_patch.fls
-BOOTROM_PATCH_BIN := $(CURDIR)/device/intel/$(TARGET_DEVICE)/bootrom_patch/bootrom_patch.bin
-BOOTROM_PATCH_FLS := $(FLASHFILES_DIR)/bootrom_patch.fls
-
-$(BOOTROM_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BOOTROM_PATCH_BIN) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag BM_PATCH $(BOOTROM_PATCH_BIN) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
-
-ifeq ("$(wildcard $(BOOTROM_PATCH_BIN))","")
-bootrom_patch.fls:
-	@echo "*** Boot ROM patch does not exist, skip generation ***"
-	@echo "*** Boot ROM patch file path: $(BOOTROM_PATCH_BIN)"
-else
-bootrom_patch.fls: $(BOOTROM_PATCH_FLS)
-endif

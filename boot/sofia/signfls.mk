@@ -29,166 +29,178 @@ SIGN_TOOL        := $(SOFIA_FW_SRC_BASE)/modem/dwdtools/FlsSign/Linux/FlsSign_E2
 PRODUCT_KEYS_DIR := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR_PREFIX)_keys
 SIGN_SCRIPT_DIR  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR_PREFIX)_sign_scripts
 ZIP_CERTIFICATE  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(TARGET_PROJECT)_ini.zip
-
-define ADD_ALL_MV_CONIFG
-SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
-SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
-endef
-
-ifeq ($(TARGET_PROJECT), sofia_lte)
-    PSI_RAM_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/psi_flash.fls
-    EBL_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/slb.fls
-    PSI_FLASH_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/psi_flash.fls
-    SLB_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/slb.fls
-    FWU_PACK_GENERATE_TOOL = $(CURDIR)/hardware/intel/sofia_lte-fls/tools/fwpgen
-    MV_CONFIG_TYPE += smp
-    MV_CONFIG_DEFAULT_TYPE = smp
-    SYSTEM_SIGNED_FLS_LIST = $(SIGN_FLS_DIR)/ucode_patch_signed.fls
-    SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/splash_img_signed.fls
-    SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mobilevisor_signed.fls
-    SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/secvm_signed.fls
-endif
-
-$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
-
-## FLS sign
-.PHONY: signfls
-ifeq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-# The VRL feature is not supported on SoFIA LTE yet
-signfls: signbs sign_system | createflashfile_dir
-else
-signfls: signbs sign_system sign_vrl | createflashfile_dir
-endif
-
-.PHONY: signbs
-signbs: sign_bootloader | createflashfile_dir
-
 FLASHLOADER_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/flashloader.signing_script.txt
-PSI_RAM_SIGNED_FLS      := $(CURDIR)/$(PRODUCT_OUT)/flashloader/psi_ram_signed.fls
-EBL_SIGNED_FLS          := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl_signed.fls
-EBL_UPLOAD_SIGNED_FLS   := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl_upload_signed.fls
-
-ifeq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-INJECT_SIGNED_FLASHLOADER_FLS  = --psi $(PSI_RAM_SIGNED_FLS) --ebl $(EBL_SIGNED_FLS)
-else
-INJECT_SIGNED_FLASHLOADER_FLS  = --psi $(PSI_RAM_SIGNED_FLS) --ebl-sec $(EBL_SIGNED_FLS)
-endif
-
-$(PSI_RAM_SIGNED_FLS): $(PSI_RAM_FLS) $(FLASHLOADER_SIGN_SCRIPT) $(FLSTOOL)
-	$(FLSTOOL) --sign $(PSI_RAM_FLS) --script $(FLASHLOADER_SIGN_SCRIPT) -o $@ --replace
-
-ifeq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-$(EBL_SIGNED_FLS): $(EBL_FLS) $(FLASHLOADER_SIGN_SCRIPT) $(FLSTOOL) $(PSI_RAM_SIGNED_FLS)
-	$(FLSTOOL) --sign $(EBL_FLS) --script $(FLASHLOADER_SIGN_SCRIPT) --psi $(PSI_RAM_SIGNED_FLS) -o $@ --replace
-else
-$(EBL_SIGNED_FLS): $(EBL_FLS) $(FLASHLOADER_SIGN_SCRIPT) $(FLSTOOL) $(PSI_RAM_SIGNED_FLS)
-	$(FLSTOOL) --sign $(EBL_FLS) --script $(FLASHLOADER_SIGN_SCRIPT) -o $@ --replace
-
-$(EBL_UPLOAD_SIGNED_FLS): $(EBL_SIGNED_FLS)
-	$(FLSTOOL) --sign $(EBL_FLS) --script $(FLASHLOADER_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-endif
-
-ifeq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-sign_flashloader: $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS) | createflashfile_dir
-else
-sign_flashloader: $(PSI_RAM_SIGNED_FLS) $(EBL_UPLOAD_SIGNED_FLS) | createflashfile_dir
-endif
-
 BOOTLOADER_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/bootloader.signing_script.txt
-PSI_FLASH_SIGNED_FLS   := $(SIGN_FLS_DIR)/psi_flash_signed.fls
-SLB_SIGNED_FLS         := $(SIGN_FLS_DIR)/slb_signed.fls
-
-$(PSI_FLASH_SIGNED_FLS): $(PSI_FLASH_FLS) $(BOOTLOADER_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
-	$(FLSTOOL) --sign $(PSI_FLASH_FLS) --script $(BOOTLOADER_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) --zip $(ZIP_CERTIFICATE) -o $@ --replace
-
-$(SLB_SIGNED_FLS): $(SLB_FLS) $(BOOTLOADER_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
-	$(FLSTOOL) --sign $(SLB_FLS) --script $(BOOTLOADER_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-
-sign_bootloader: sign_flashloader $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS) | createflashfile_dir
-
 SYSTEM_FLS_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/system.signing_script.txt
-
-sign_system: sign_flashloader $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST) | createflashfile_dir
-
-$(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
-	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-
-$(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
-	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-
-SOFIA_PROVDATA_FILES += $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)  $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)  $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST)
-
-## Firmware update
 VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
-FWU_IMAGE_BIN       := $(FWU_IMG_DIR)/fwu_image.bin
-FWU_IMAGE_FLS       := $(FLASHFILES_DIR)/fwu_image.fls
-VRL_BIN             := $(FASTBOOT_IMG_DIR)/vrl.bin
-VRL_FLS             := $(FLASHFILES_DIR)/vrl.fls
-VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
-
-.INTERMEDIATE: $(VRL_FLS)
-
-SOFIA_PROVDATA_FILES += $(FWU_IMAGE_BIN)
-
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
 DATA_EXT := *.fls_ID0_*_LoadMap*
 
+ifeq ($(TARGET_PROJECT), sofia_lte)
+FWU_PACK_GENERATE_TOOL = $(CURDIR)/hardware/intel/sofia_lte-fls/tools/fwpgen
+endif
+
+define signfls_per_variant
+
+ifeq ($$(TARGET_PROJECT), sofia_lte)
+    PSI_RAM_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_flash.fls
+    EBL_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/slb.fls
+    PSI_FLASH_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_flash.fls
+    SLB_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/slb.fls
+    MV_CONFIG_DEFAULT_TYPE.$(1) = smp
+    SYSTEM_SIGNED_FLS_LIST.$(1) = $$(SIGN_FLS_DIR.$(1))/ucode_patch_signed.fls
+    SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/splash_img_signed.fls
+    SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1))_signed.fls
+    SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mobilevisor_signed.fls
+    SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/secvm_signed.fls
+endif
+
+## FLS sign
+.PHONY: signfls.$(1)
+ifeq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+# The VRL feature is not supported on SoFIA LTE yet
+signfls.$(1): signbs.$(1) sign_system.$(1) | createflashfile_dir
+else
+signfls.$(1): signbs.$(1) sign_system.$(1) sign_vrl.$(1) | createflashfile_dir
+endif
+
+.PHONY: signbs.$(1)
+signbs.$(1): sign_bootloader.$(1) | createflashfile_dir
+
+PSI_RAM_SIGNED_FLS.$(1)      := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/flashloader/psi_ram_signed.fls)
+EBL_SIGNED_FLS.$(1)          := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/flashloader/ebl_signed.fls)
+EBL_UPLOAD_SIGNED_FLS.$(1)   := $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/flashloader/ebl_upload_signed.fls)
+
+ifeq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+INJECT_SIGNED_FLASHLOADER_FLS.$(1)  = --psi $$(PSI_RAM_SIGNED_FLS.$(1)) --ebl $$(EBL_SIGNED_FLS.$(1))
+else
+INJECT_SIGNED_FLASHLOADER_FLS.$(1)  = --psi $$(PSI_RAM_SIGNED_FLS.$(1)) --ebl-sec $$(EBL_SIGNED_FLS.$(1))
+endif
+
+$$(PSI_RAM_SIGNED_FLS.$(1)): $$(PSI_RAM_FLS.$(1)) $$(FLASHLOADER_SIGN_SCRIPT) $$(FLSTOOL)
+	$$(FLSTOOL) --sign $$(PSI_RAM_FLS.$(1)) --script $$(FLASHLOADER_SIGN_SCRIPT) -o $$@ --replace
+
+ifeq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+$$(EBL_SIGNED_FLS.$(1)): $$(EBL_FLS.$(1)) $$(FLASHLOADER_SIGN_SCRIPT) $$(FLSTOOL) $$(PSI_RAM_SIGNED_FLS.$(1))
+	$$(FLSTOOL) --sign $$(EBL_FLS.$(1)) --script $$(FLASHLOADER_SIGN_SCRIPT) --psi $$(PSI_RAM_SIGNED_FLS.$(1)) -o $$@ --replace
+else
+$$(EBL_SIGNED_FLS.$(1)): $$(EBL_FLS.$(1)) $$(FLASHLOADER_SIGN_SCRIPT) $$(FLSTOOL) $$(PSI_RAM_SIGNED_FLS.$(1))
+	$$(FLSTOOL) --sign $$(EBL_FLS.$(1)) --script $$(FLASHLOADER_SIGN_SCRIPT) -o $$@ --replace
+
+$$(EBL_UPLOAD_SIGNED_FLS.$(1)): $$(EBL_SIGNED_FLS.$(1))
+	$$(FLSTOOL) --sign $$(EBL_FLS.$(1)) --script $$(FLASHLOADER_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+endif
+
+ifeq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+sign_flashloader.$(1): $$(PSI_RAM_SIGNED_FLS.$(1)) $$(EBL_SIGNED_FLS.$(1)) | createflashfile_dir
+else
+sign_flashloader.$(1): $$(PSI_RAM_SIGNED_FLS.$(1)) $$(EBL_UPLOAD_SIGNED_FLS.$(1)) | createflashfile_dir
+endif
+
+PSI_FLASH_SIGNED_FLS.$(1)   := $$(SIGN_FLS_DIR.$(1))/psi_flash_signed.fls
+SLB_SIGNED_FLS.$(1)         := $$(SIGN_FLS_DIR.$(1))/slb_signed.fls
+
+$$(PSI_FLASH_SIGNED_FLS.$(1)): $$(PSI_FLASH_FLS.$(1)) $$(BOOTLOADER_SIGN_SCRIPT) $$(FLSTOOL) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$(PSI_FLASH_FLS.$(1)) --script $$(BOOTLOADER_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) --zip $$(ZIP_CERTIFICATE) -o $$@ --replace
+
+$$(SLB_SIGNED_FLS.$(1)): $$(SLB_FLS.$(1)) $$(BOOTLOADER_SIGN_SCRIPT) $$(FLSTOOL) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$(SLB_FLS.$(1)) --script $$(BOOTLOADER_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+
+sign_bootloader.$(1): sign_flashloader.$(1) $$(PSI_FLASH_SIGNED_FLS.$(1)) $$(SLB_SIGNED_FLS.$(1)) | createflashfile_dir
+
+sign_system.$(1): sign_flashloader.$(1) $$(SYSTEM_SIGNED_FLS_LIST.$(1)) $$(ANDROID_SIGNED_FLS_LIST.$(1)) $$(MV_CONFIG_SIGNED_FLS_LIST.$(1)) | createflashfile_dir
+
+$$(SYSTEM_SIGNED_FLS_LIST.$(1)): $$(SIGN_FLS_DIR.$(1))/%_signed.fls: $$(FLASHFILES_DIR.$(1))/%.fls $$(FLSTOOL) $$(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$< --script $$(SYSTEM_FLS_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+
+$$(ANDROID_SIGNED_FLS_LIST.$(1)): $$(SIGN_FLS_DIR.$(1))/%_signed.fls: $$(FLASHFILES_DIR.$(1))/%.fls $$(FLSTOOL) $$(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$< --script $$(SYSTEM_FLS_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+
+$$(MV_CONFIG_SIGNED_FLS_LIST.$(1)): $$(SIGN_FLS_DIR.$(1))/%_signed.fls: $$(FLASHFILES_DIR.$(1))/%.fls $$(FLSTOOL) $$(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$< --script $$(SYSTEM_FLS_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+
+ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES.$(1) += $$(PSI_RAM_SIGNED_FLS.$(1)) $$(EBL_SIGNED_FLS.$(1))  $$(PSI_FLASH_SIGNED_FLS.$(1)) $$(SLB_SIGNED_FLS.$(1))  $$(SYSTEM_SIGNED_FLS_LIST.$(1)) $$(ANDROID_SIGNED_FLS_LIST.$(1))
+endif
+
+## Firmware update
+FWU_IMAGE_BIN.$(1)       := $$(FWU_IMG_DIR.$(1))/fwu_image.bin
+FWU_IMAGE_FLS.$(1)       := $$(FLASHFILES_DIR.$(1))/fwu_image.fls
+VRL_BIN.$(1)             := $$(FASTBOOT_IMG_DIR.$(1))/vrl.bin
+VRL_FLS.$(1)             := $$(FLASHFILES_DIR.$(1))/vrl.fls
+VRL_SIGNED_FLS.$(1)      := $$(SIGN_FLS_DIR.$(1))/vrl_signed.fls
+
+.INTERMEDIATE: $$(VRL_FLS.$(1))
+
+SOFIA_PROVDATA_FILES.$(1) += $$(FWU_IMAGE_BIN.$(1))
+
 define GEN_FIRMWARE_UPDATE_PACK_RULES
-$(EXTRACT_TEMP)/$(1): force $(SIGN_FLS_DIR)/$(1).fls | createflashfile_dir
-	$(FLSTOOL) -o $(EXTRACT_TEMP)/$(1) -x $(SIGN_FLS_DIR)/$(1).fls
+$$(EXTRACT_TEMP.$(1))/$$(1): force $$(SIGN_FLS_DIR.$(1))/$$(1).fls | createflashfile_dir
+	$$(FLSTOOL) -o $$(EXTRACT_TEMP.$(1))/$$(1) -x $$(SIGN_FLS_DIR.$(1))/$$(1).fls
 endef
 
-FWU_PACKAGE_LIST  = $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
-FWU_PACKAGE_LIST += $(basename $(notdir $(SLB_SIGNED_FLS)))
-FWU_PACKAGE_LIST += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
+FWU_PACKAGE_LIST.$(1)  = $$(basename $$(notdir $$(PSI_FLASH_SIGNED_FLS.$(1))))
+FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SLB_SIGNED_FLS.$(1))))
+FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SYSTEM_SIGNED_FLS_LIST.$(1))))
 
 #remove boot/recovery from the fwu_image
 #boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output.
-FWU_PACKAGE_BIN_LIST := $(filter-out boot_signed recovery_signed, $(FWU_PACKAGE_LIST))
+FWU_PACKAGE_BIN_LIST.$(1) := $$(filter-out boot_signed recovery_signed, $$(FWU_PACKAGE_LIST.$(1)))
 
-FWU_PACKAGE_SECPACK_ONLY_LIST += $(basename $(notdir $(ANDROID_SIGNED_FLS_LIST)))
+FWU_PACKAGE_SECPACK_ONLY_LIST.$(1) += $$(basename $$(notdir $$(ANDROID_SIGNED_FLS_LIST.$(1))))
 
-FWU_DEP_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_LIST))
-$(foreach t,$(FWU_PACKAGE_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
+FWU_DEP_LIST.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(FWU_PACKAGE_LIST.$(1)))
+$$(foreach t,$$(FWU_PACKAGE_LIST.$(1)),$$(eval $$(call GEN_FIRMWARE_UPDATE_PACK_RULES,$$(t))))
 
-FWU_DEP_SECPACK_ONLY_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_SECPACK_ONLY_LIST))
-$(foreach t,$(FWU_PACKAGE_SECPACK_ONLY_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
+FWU_DEP_SECPACK_ONLY_LIST.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(FWU_PACKAGE_SECPACK_ONLY_LIST.$(1)))
+$$(foreach t,$$(FWU_PACKAGE_SECPACK_ONLY_LIST.$(1)),$$(eval $$(call GEN_FIRMWARE_UPDATE_PACK_RULES,$$(t))))
 
 #remove boot/recovery in fwu_image
-FWU_DEP_BIN_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_BIN_LIST))
+FWU_DEP_BIN_LIST.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(FWU_PACKAGE_BIN_LIST.$(1)))
 
-FWU_COMMAND = $(foreach a, $(FWU_DEP_BIN_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
-FWU_ADDI_COMMAND = $(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
+FWU_COMMAND.$(1) = $$(foreach a, $$(FWU_DEP_BIN_LIST.$(1)), $$(FWU_PACK_GENERATE_TOOL) --input $$(FWU_IMAGE_BIN.$(1)) --output $$(FWU_IMAGE_BIN.$(1))_temp --secpack $$(a)/$$(SECP_EXT) --data $$(a)/$$(DATA_EXT); cp $$(FWU_IMAGE_BIN.$(1))_temp $$(FWU_IMAGE_BIN.$(1));)
+FWU_ADDI_COMMAND.$(1) = $$(foreach a, $$(FWU_DEP_SECPACK_ONLY_LIST.$(1)), $$(FWU_PACK_GENERATE_TOOL) --input $$(FWU_IMAGE_BIN.$(1)) --output $$(FWU_IMAGE_BIN.$(1))_temp --secpack $$(a)/$$(SECP_EXT) ; cp $$(FWU_IMAGE_BIN.$(1))_temp $$(FWU_IMAGE_BIN.$(1));)
 
-$(FWU_IMAGE_BIN): $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
+$$(FWU_IMAGE_BIN.$(1)): $$(FWU_DEP_LIST.$(1)) $$(FWU_DEP_SECPACK_ONLY_LIST.$(1)) fastboot_img.$(1) | createflashfile_dir
 	@echo "---------- Generate fwu_image --------------------"
-	$(FWU_COMMAND)
-	$(FWU_ADDI_COMMAND)
-	cp $(EXTRACT_TEMP)/$(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))/$(DATA_EXT) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(PSI_FLASH_FLS))).bin
-	cp $(EXTRACT_TEMP)/$(basename $(notdir $(SLB_SIGNED_FLS)))/$(DATA_EXT) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(SLB_FLS))).bin
-	@rm $(FWU_IMAGE_BIN)_temp
+	$$(FWU_COMMAND.$(1))
+	$$(FWU_ADDI_COMMAND.$(1))
+	cp $$(EXTRACT_TEMP.$(1))/$$(basename $$(notdir $$(PSI_FLASH_SIGNED_FLS.$(1))))/$$(DATA_EXT) $$(FASTBOOT_IMG_DIR.$(1))/$$(basename $$(notdir $$(PSI_FLASH_FLS.$(1)))).bin
+	cp $$(EXTRACT_TEMP.$(1))/$$(basename $$(notdir $$(SLB_SIGNED_FLS.$(1))))/$$(DATA_EXT) $$(FASTBOOT_IMG_DIR.$(1))/$$(basename $$(notdir $$(SLB_FLS.$(1)))).bin
+	@rm $$(FWU_IMAGE_BIN.$(1))_temp
 	@echo "---------- Generate fwu_image Done ---------------"
 
-.PHONY: fwu_image
-fwu_image: $(FWU_IMAGE_BIN)
+.PHONY: fwu_image.$(1)
+fwu_image.$(1): $$(FWU_IMAGE_BIN.$(1))
 
-$(FWU_IMAGE_FLS):  createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FWU_IMAGE_BIN) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag FW_UPDATE $(INJECT_FLASHLOADER_FLS) $(FWU_IMAGE_BIN) --replace --to-fls2
+$$(FWU_IMAGE_FLS.$(1)):  createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(FWU_IMAGE_BIN.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag FW_UPDATE $$(INJECT_FLASHLOADER_FLS.$(1)) $$(FWU_IMAGE_BIN.$(1)) --replace --to-fls2
 
-SOFIA_PROVDATA_FILES += $(FWU_IMAGE_FLS)
+SOFIA_PROVDATA_FILES.$(1) += $$(FWU_IMAGE_FLS.$(1))
 
-#create_vrl_bin: $(VRL_BIN)
+#create_vrl_bin: $$(VRL_BIN)
 
-#create_vrl_fls: $(VRL_FLS) | create_vrl_bin
+#create_vrl_fls: $$(VRL_FLS) | create_vrl_bin
 
-sign_vrl: $(VRL_SIGNED_FLS)
+sign_vrl.$(1): $$(VRL_SIGNED_FLS.$(1))
 
-$(VRL_BIN): $(FWU_IMAGE_BIN) force | createflashfile_dir
+$$(VRL_BIN.$(1)): $$(FWU_IMAGE_BIN.$(1)) force | createflashfile_dir
 	@echo "---------- Extract VRL Binary --------------------"
-	$(FWU_PACK_GENERATE_TOOL) -x $(FWU_IMAGE_BIN) -v $(VRL_BIN)
+	$$(FWU_PACK_GENERATE_TOOL) -x $$(FWU_IMAGE_BIN.$(1)) -v $$(VRL_BIN.$(1))
 
-$(VRL_FLS) : createflashfile_dir $(VRL_BIN) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
-	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag VRL $(VRL_BIN) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
+$$(VRL_FLS.$(1)) : createflashfile_dir $$(VRL_BIN.$(1)) $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(FLASHLOADER_FLS.$(1))
+	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag VRL $$(VRL_BIN.$(1)) $$(INJECT_FLASHLOADER_FLS.$(1)) --replace --to-fls2
 
-$(VRL_SIGNED_FLS) :  $(VRL_FLS) $(VRL_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
-	$(FLSTOOL) --sign $(VRL_FLS) --script $(VRL_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
+$$(VRL_SIGNED_FLS.$(1)) :  $$(VRL_FLS.$(1)) $$(VRL_SIGN_SCRIPT) $$(FLSTOOL) sign_flashloader.$(1)
+	$$(FLSTOOL) --sign $$(VRL_FLS.$(1)) --script $$(VRL_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call signfls_per_variant,$(variant))))
+
+PSI_RAM_SIGNED_FLS := $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(PSI_RAM_SIGNED_FLS.$(variant)))
+EBL_SIGNED_FLS := $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(EBL_SIGNED_FLS.$(variant)))
+
+.PHONY: 
+signfls: $(addprefix signfls.,$(SOFIA_FIRMWARE_VARIANTS))

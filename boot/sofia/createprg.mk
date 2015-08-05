@@ -14,26 +14,47 @@
 # limitations under the License.
 # ------------------------------------------------------------------------
 
-INTEL_PRG_PATH = $(CURDIR)/$(PRODUCT_OUT)/scatter_obj
 ifeq ($(GEN_PRG_FROM_SRC),true)
-INTEL_PRG_FILE = $(INTEL_PRG_PATH)/modem_sw.prg
 
-MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
+INTEL_PRG_PATH :=
+INTEL_PRG_FILE :=
+
+define createprg_per_variant
+
+INTEL_PRG_PATH.$(1) = $$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))/scatter_obj)
+INTEL_PRG_FILE.$(1) = $$(INTEL_PRG_PATH.$(1))/modem_sw.prg
+
+$$(INTEL_PRG_FILE.$(1)): prg.$(1)
+
+.PHONY: prg.$(1)
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)),sofia3g)
+prg.$(1): | $$(SOFIA_FIRMWARE_OUT.$(1))
+	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) MAKEDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) INT_STAGE=MEX $$(MODEM_BUILD_ARGUMENTS) makeprg > $$(SOFIA_FIRMWARE_OUT.$(1))/prggen.log
+else
+prg.$(1): | $$(SOFIA_FIRMWARE_OUT.$(1))
+	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) PLATFORM=$$(MODEM_PLATFORM) MAKEDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) INT_STAGE=MODEM makeprg > $$(SOFIA_FIRMWARE_OUT.$(1))/prggen.log
+endif
+
+INTEL_PRG_PATH += $$(INTEL_PRG_PATH.$(1))
+INTEL_PRG_FILE += $$(INTEL_PRG_FILE.$(1))
+
+SOFIA_PROVDATA_FILES.$(1) += $$(INTEL_PRG_FILE.$(1))
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call createprg_per_variant,$(variant))))
+
+INTEL_PRG_FILE := $(strip $(INTEL_PRG_FILE))
 
 .PHONY: prg
-$(INTEL_PRG_FILE): prg
+prg: $(INTEL_PRG_FILE)
 
+.PHONY: prg_clean
 prg_clean:
 	rm -rf $(INTEL_PRG_PATH)
 
-ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
-prg:
-	$(MAKE) -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) MAKEDIR=$(CURDIR)/$(PRODUCT_OUT) INT_STAGE=MEX $(MODEM_BUILD_ARGUMENTS) makeprg > $(PRODUCT_OUT)/prggen.log
-else
-prg:
-	$(MAKE) -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PROJECTNAME=$(MODEM_PROJECTNAME_VAR) PLATFORM=$(MODEM_PLATFORM) MAKEDIR=$(CURDIR)/$(PRODUCT_OUT) INT_STAGE=MODEM makeprg > $(PRODUCT_OUT)/prggen.log
-endif
-
+.PHONY: prg_rebuild
 prg_rebuild: prg_clean prg
 
 prginfo:
@@ -44,5 +65,3 @@ prginfo:
 
 build_info: prginfo
 endif
-
-SOFIA_PROVDATA_FILES += $(INTEL_PRG_FILE)

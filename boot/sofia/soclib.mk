@@ -16,23 +16,26 @@
 
 #Source Paths configured in Base Android.mk
 #Build Output path.
-ifeq ($(DELIVERY_BUTTER), true)
-SOCLIB_BUILD_OUT := $(CURDIR)/../images
-else
-SOCLIB_BUILD_OUT := $(CURDIR)/$(PRODUCT_OUT)
-endif
 
-BUILT_LIBSOC_TARGET := $(SOCLIB_BUILD_OUT)/lib_soc/lib_soc.a
+define soclib_per_variant
 
-TARGET_BOARD_PLATFORM_VAR ?= $(TARGET_BOARD_PLATFORM)
+BUILT_LIBSOC_TARGET.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/lib_soc/lib_soc.a
 
-$(BUILT_LIBSOC_TARGET): build_soclib
+$$(BUILT_LIBSOC_TARGET.$(1)): build_soclib.$(1)
 
-build_soclib:
-	@echo Building ===== lib_soc =====
-	$(if SOCLIB_FEATURES, FEATURE="$(SOCLIB_FEATURES)") \
-	$(MAKE) -C $(SOCLIB_SRC_PATH) PROJECTNAME=$(shell echo $(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$(SOCLIB_BUILD_OUT) DELIVERY_BUTTER=true PLATFORM=$(MODEM_PLATFORM)
+$$(SOFIA_FIRMWARE_OUT.$(1))/lib_soc:
+	mkdir -p $$@
 
-.PHONY: vmm_lib_soc
-vmm_lib_soc: $(BUILT_LIBSOC_TARGET)
+.PHONY: build_soclib.$(1)
+build_soclib.$(1): | $$(SOFIA_FIRMWARE_OUT.$(1))/lib_soc
+	@echo Building ===== lib_soc.$(1) =====
+	$$(if SOCLIB_FEATURES, FEATURE="$$(SOCLIB_FEATURES)") \
+	$$(MAKE) -C $$(SOCLIB_SRC_PATH) PROJECTNAME=$$(shell echo $$(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) DELIVERY_BUTTER=true PLATFORM=$$(MODEM_PLATFORM)
 
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call soclib_per_variant,$(variant))))
+
+.PHONY: build_soclib
+build_soclib: $(addprefix build_soclib.,$(SOFIA_FIRMWARE_VARIANTS))

@@ -13,48 +13,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------
-FASTBOOT_FLS_LIST  :=
-BOOTLOADER_SIGNED_FLS_LIST  :=
-FASTBOOT_FLS_LIST  += $(PSI_FLASH_FLS)
-FASTBOOT_FLS_LIST  += $(SLB_FLS)
-FASTBOOT_FLS_LIST  += $(UCODE_PATCH_FLS)
-FASTBOOT_FLS_LIST  += $(SPLASH_IMG_FLS)
-FASTBOOT_FLS_LIST  += $(MOBILEVISOR_FLS)
-FASTBOOT_FLS_LIST  += $(MV_CONFIG_DEFAULT_FLS)
-FASTBOOT_FLS_LIST  += $(SECVM_FLS)
 
 DATA_EXT_NAME := *.fls_ID0_*_LoadMap*
-
-.PHONY: fastboot_img
-define FB_IMG_GEN
-fastboot_$(basename $(notdir $(1))): force $(1) | createflashfile_dir $(ACP)
-	$(FLSTOOL) -o $(EXTRACT_TEMP)/$(basename $(notdir $(1))) -x $(1)
-	echo $(ACP) $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
-	cat $(EXTRACT_TEMP)/$(basename $(notdir $(1)))/$(DATA_EXT_NAME) > $(FASTBOOT_IMG_DIR)/$(basename $(notdir $(1))).bin
-fastboot_img: fastboot_$(basename $(notdir $(1)))
-endef
-
-$(foreach t,$(FASTBOOT_FLS_LIST),$(eval $(call FB_IMG_GEN,$(t))))
-
-#fastboot_img:  $(FASTBOOT_FLS_LIST) | createflashfile_dir
-#$(foreach f, $(FASTBOOT_FLS_LIST), $(shell $(FLSTOOL) -x $(f) -o $(EXTRACT_TEMP)))
-
-droidcore: fastboot_img
-
 SECP_EXT_NAME := *.fls_ID0_*_SecureBlock.bin
 
-BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
-BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SLB_SIGNED_FLS)))
-BOOTLOADER_SIGNED_FLS_LIST  += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
+define fastboot_per_variant
 
-BOOTLOADER_DEP := $(addprefix $(EXTRACT_TEMP)/,$(BOOTLOADER_SIGNED_FLS_LIST))
+FASTBOOT_FLS_LIST.$(1)  :=
+BOOTLOADER_SIGNED_FLS_LIST.$(1)  :=
+FASTBOOT_FLS_LIST.$(1)  += $$(PSI_FLASH_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(SLB_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(UCODE_PATCH_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(SPLASH_IMG_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(MOBILEVISOR_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(MV_CONFIG_DEFAULT_FLS.$(1))
+FASTBOOT_FLS_LIST.$(1)  += $$(SECVM_FLS.$(1))
 
-BOOTLOADER_IMAGE := $(FASTBOOT_IMG_DIR)/bootloader
+.PHONY: fastboot_img.$(1)
+define FB_IMG_GEN
+fastboot_$$(basename $$(notdir $$(1))).$(1): force $$(1) | createflashfile_dir $$(ACP)
+	$$(FLSTOOL) -o $$(EXTRACT_TEMP.$(1))/$$(basename $$(notdir $$(1))) -x $$(1)
+	echo $$(ACP) $$(EXTRACT_TEMP.$(1))/$$(basename $$(notdir $$(1)))/$$(DATA_EXT_NAME) $$(FASTBOOT_IMG_DIR.$(1))/$$(basename $$(notdir $$(1))).bin
+	cat $$(EXTRACT_TEMP.$(1))/$$(basename $$(notdir $$(1)))/$$(DATA_EXT_NAME) > $$(FASTBOOT_IMG_DIR.$(1))/$$(basename $$(notdir $$(1))).bin
+fastboot_img.$(1): fastboot_$$(basename $$(notdir $$(1))).$(1)
+endef
 
-bootloader_img: fastboot_img $(BOOTLOADER_DEP) | createflashfile_dir ${ACP}
-	$(foreach a, $(BOOTLOADER_DEP), $(shell $(FWU_PACK_GENERATE_TOOL) --input $(BOOTLOADER_IMAGE) --output $(BOOTLOADER_IMAGE)_temp --secpack $(a)/$(SECP_EXT_NAME) --data $(a)/$(DATA_EXT_NAME) ; acp $(BOOTLOADER_IMAGE)_temp $(BOOTLOADER_IMAGE)))
-	rm $(BOOTLOADER_IMAGE)_temp
+$$(foreach t,$$(FASTBOOT_FLS_LIST.$(1)),$$(eval $$(call FB_IMG_GEN,$$(t))))
 
-$(BOOTLOADER_IMAGE) : bootloader_img
+#fastboot_img:  $$(FASTBOOT_FLS_LIST) | createflashfile_dir
+#$$(foreach f, $$(FASTBOOT_FLS_LIST), $$(shell $$(FLSTOOL) -x $$(f) -o $$(EXTRACT_TEMP)))
+
+BOOTLOADER_SIGNED_FLS_LIST.$(1)  += $$(basename $$(notdir $$(PSI_FLASH_SIGNED_FLS.$(1))))
+BOOTLOADER_SIGNED_FLS_LIST.$(1)  += $$(basename $$(notdir $$(SLB_SIGNED_FLS.$(1))))
+BOOTLOADER_SIGNED_FLS_LIST.$(1)  += $$(basename $$(notdir $$(SYSTEM_SIGNED_FLS_LIST.$(1))))
+
+BOOTLOADER_DEP.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(BOOTLOADER_SIGNED_FLS_LIST.$(1)))
+
+BOOTLOADER_IMAGE.$(1) := $$(FASTBOOT_IMG_DIR.$(1))/bootloader
+
+bootloader_img.$(1): fastboot_img.$(1) $$(BOOTLOADER_DEP.$(1)) | createflashfile_dir $${ACP}
+	$$(foreach a, $$(BOOTLOADER_DEP.$(1)), $$(shell $$(FWU_PACK_GENERATE_TOOL) --input $$(BOOTLOADER_IMAGE.$(1)) --output $$(BOOTLOADER_IMAGE.$(1))_temp --secpack $$(a)/$$(SECP_EXT_NAME) --data $$(a)/$$(DATA_EXT_NAME) ; acp $$(BOOTLOADER_IMAGE.$(1))_temp $$(BOOTLOADER_IMAGE.$(1))))
+	rm $$(BOOTLOADER_IMAGE.$(1))_temp
+
+$$(BOOTLOADER_IMAGE.$(1)) : bootloader_img.$(1)
 
 SOFIA_PROVDATA_FILES += $(BOOTLOADER_IMAGE)
+#FIXME : Breaks "make dist" on LTE. Once build fwu_image on LTE is
+#enabled this should be fixed.
+# Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
+ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES.$(1) += $$(BOOTLOADER_IMAGE.$(1))
+endif
+
+endef
+
+$(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),\
+       $(eval $(call fastboot_per_variant,$(variant))))
+
+.PHONY: fastboot_img
+fastboot_img: $(addprefix fastboot_img.,$(SOFIA_FIRMWARE_VARIANTS))
+
+droidcore: fastboot_img
