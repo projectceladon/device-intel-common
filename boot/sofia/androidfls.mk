@@ -20,9 +20,9 @@
 
 OEM_FLS                  := $(FLASHFILES_DIR)/oem.fls
 OEM_SIGNED_FLS           := $(SIGN_FLS_DIR)/oem_signed.fls
-ANDROID_SIGNED_FLS_LIST  += $(OEM_SIGNED_FLS)
 
 ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+ANDROID_SIGNED_FLS_LIST  += $(OEM_SIGNED_FLS)
 SOFIA_PROVDATA_FILES += $(OEM_FLS)
 endif
 
