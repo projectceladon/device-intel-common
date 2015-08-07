@@ -30,19 +30,26 @@ PRODUCT_KEYS_DIR := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR_
 SIGN_SCRIPT_DIR  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(SEC_DIR_PREFIX)_sign_scripts
 ZIP_CERTIFICATE  := $(CURDIR)/device/intel/$(TARGET_PROJECT)/security/$(TARGET_PROJECT)_ini.zip
 
+define ADD_ALL_MV_CONIFG
+SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
+SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
+endef
+
 ifeq ($(TARGET_PROJECT), sofia_lte)
     PSI_RAM_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/psi_flash.fls
     EBL_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/slb.fls
     PSI_FLASH_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/psi_flash.fls
     SLB_FLS = $(CURDIR)/hardware/intel/sofia_lte-fls/$(TARGET_DEVICE)/slb.fls
     FWU_PACK_GENERATE_TOOL = $(CURDIR)/hardware/intel/sofia_lte-fls/tools/fwpgen
+    MV_CONFIG_TYPE += smp
     MV_CONFIG_DEFAULT_TYPE = smp
     SYSTEM_SIGNED_FLS_LIST = $(SIGN_FLS_DIR)/ucode_patch_signed.fls
     SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/splash_img_signed.fls
-    SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE)_signed.fls
     SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mobilevisor_signed.fls
     SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/secvm_signed.fls
 endif
+
+$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
 
 ## FLS sign
 .PHONY: signfls
