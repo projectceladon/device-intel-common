@@ -57,7 +57,7 @@ def IncrementalOTA_VerifyEnd(info):
   src_fwupdate = get_file_data(OPTIONS.source_tmp, "fwu_image.bin")
   tgt_fwupdate = get_file_data(OPTIONS.target_tmp, "fwu_image.bin")
 
-  diffs = [common.Difference(src_fwupdate, tgt_fwupdate)]
+  diffs = [common.Difference(tgt_fwupdate, src_fwupdate)]
   common.ComputeDifferences(diffs)
 
   tf, sf, d = diffs[0].GetPatch()
