@@ -16,7 +16,6 @@ supDomain: Parameter
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Main
-						InputSources Is none
 					ALL
 						SelectedInputDevices Includes Main
 						ANY
@@ -47,6 +46,9 @@ supDomain: Parameter
 							Mode Is Normal
 							Mode Is RingTone
 							Mode Is InVoipCall
+					ALL
+						AlwaysListening Is True
+						LpalDevice Is ScoHeadset
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					ScoHeadset = 1
@@ -71,7 +73,6 @@ supDomain: Parameter
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Headset
-						InputSources Is none
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Headset = 1

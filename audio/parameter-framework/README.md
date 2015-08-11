@@ -164,9 +164,8 @@ Here is a usage example followed by an explanation:
     LOCAL_MODULE_CLASS := ETC
     LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Settings/Audio
 
-    include $(CLEAR_PFW_VARS)
     # Refresh tunning + routing domain file for rt5640-default
-    LOCAL_REQUIRED_MODULES := \
+    LOCAL_ADDITIONAL_DEPENDENCIES := \
         parameter-framework.audio.common \
         parameter-framework.audio.baytrail \
         ParameterFrameworkConfiguration-bytcr-rt5640-default.xml \
@@ -182,7 +181,6 @@ Here is a usage example followed by an explanation:
     PFW_EDD_FILES := \
         $(PLATFORM_PFW_CONFIG_PATH)/Settings/Audio/routing_scalpe_common.pfw \
         $(LOCAL_PATH)/Settings/Audio/bytcr-rt5640-default.pfw
-    PFW_COPYBACK := Settings/Audio/$(LOCAL_MODULE)
     include $(BUILD_PFW_SETTINGS)
 
 The important parts are the `PFW_`-prefixed variables:
@@ -194,13 +192,10 @@ The important parts are the `PFW_`-prefixed variables:
     augmented
 * `PFW_EDD_FILES`: a list of files using the ".pfw" (aka Extended Domain
     Description) language
-* `PFW_COPYBACK` (optional): if set, the generated file will be copied to the
-    given location, relative to `$(LOCAL_PATH)`. This oughts to be a temporary
-    hack.
 
-Before using any `PFW_` variable, you must call `include $(CLEAR_PFW_VARS)` and
-you can call `include $(BUILD_PFW_SETTINGS)` to trigger XML generation. These
-two variables are defined by `AndroidBoard.mk`.
+After using the `PFW_` variables, you must call `include $(BUILD_PFW_SETTINGS)`
+to trigger XML generation.
+This variable is defined by `AndroidBoard.mk`.
 
 ## Replace patterns in configuration files
 
