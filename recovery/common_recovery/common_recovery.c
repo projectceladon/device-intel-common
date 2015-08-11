@@ -254,6 +254,11 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
     }
 
     status = strdup(bcb.status);
+    if (status == NULL) {
+        ErrorAbort(state, "%s: Failed to duplicate status string: %s", name, strerror(errno));
+        return NULL;
+    }
+
     printf("Read status '%s' from Bootloader Control Block\n", status);
 
     return StringValue(status);
