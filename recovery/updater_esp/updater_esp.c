@@ -173,7 +173,8 @@ static char *follow_links(char *dev)
     buf[ret] = '\0';
 
     dest = strdup(buf);
-    printf("%s --> %s\n", dev, dest);
+    if (dest)
+        printf("%s --> %s\n", dev, dest);
     free(dev);
     return dest;
 }
@@ -214,6 +215,10 @@ static Value *SwapEntriesFn(const char *name, State *state,
     /* If the device node is a symlink, follow it to the 'real'
      * device node and then get the node for the entire disk */
     dev = follow_links(dev);
+    if (!dev) {
+        ErrorAbort(state, "%s: Couldn't follow symlink", name);
+        goto done;
+    }
 
     if (make_disk_node(dev)) {
         ErrorAbort(state, "%s: Unable to get disk node for partition %s",

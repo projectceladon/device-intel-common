@@ -75,6 +75,8 @@ PSI_RAM_FLS            := $(CURDIR)/$(PRODUCT_OUT)/flashloader/psi_ram.fls
 EBL_FLS                := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl.fls
 EBL_UPLOAD_FLS         := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl_upload.fls
 
+SOFIA_PROVDATA_FILES += $(PSI_RAM_FLS) $(EBL_FLS)
+
 ifeq ($(BUILD_REL10_BOOTCORE), true)
 FLASHLOADER_FLS        := $(PSI_RAM_FLS) $(EBL_FLS)
 INJECT_FLASHLOADER_FLS := --psi $(PSI_RAM_FLS) --ebl $(EBL_FLS)
@@ -164,7 +166,8 @@ droidcore: bootcore_fls ucode_patch.fls splash_img.fls
 .PHONY: ucode_patch.fls
 
 UCODE_PATCH_FLS := $(FLASHFILES_DIR)/ucode_patch.fls
-SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/ucode_patch_signed.fls
+UCODE_PATCH_SIGNED_FLS := $(SIGN_FLS_DIR)/ucode_patch_signed.fls
+SYSTEM_SIGNED_FLS_LIST += $(UCODE_PATCH_SIGNED_FLS)
 
 ucode_patch.fls: $(UCODE_PATCH_FLS)
 
@@ -199,7 +202,8 @@ SPLASH_IMG_BIN_2       		:= $(SPLASH_IMG_BIN_PATH)/fastboot.bin
 DISPLAY_BIN := $(SPLASH_IMG_BIN_PATH)/display.bin
 SPLASH_IMG_FLS         		:= $(FLASHFILES_DIR)/splash_img.fls
 DTC							:= $(LOCAL_KERNEL_PATH)/dtc
-SYSTEM_SIGNED_FLS_LIST 		+= $(SIGN_FLS_DIR)/splash_img_signed.fls
+SPLASH_IMG_SIGNED_FLS           := $(SIGN_FLS_DIR)/splash_img_signed.fls
+SYSTEM_SIGNED_FLS_LIST          += $(SPLASH_IMG_SIGNED_FLS)
 
 ifneq ("$(wildcard $(SPLASH_IMG_FILE_1))","")
   ifneq ("$(wildcard $(SPLASH_IMG_FILE_2))","")
@@ -244,7 +248,7 @@ $(SPLASH_IMG_FLS): createflashfile_dir $(INTEL_PRG_FILE) $(FLSTOOL) $(DISPLAY_BI
 endif # ifeq ($(BUILD_BOOTCORE_FROM_SRC),true)
 
 .PHONY: bootrom_patch.fls
-BOOTROM_PATCH_BIN := $(CURDIR)/device/intel/$(TARGET_PRODUCT)/bootrom_patch/bootrom_patch.bin
+BOOTROM_PATCH_BIN := $(CURDIR)/device/intel/$(TARGET_DEVICE)/bootrom_patch/bootrom_patch.bin
 BOOTROM_PATCH_FLS := $(FLASHFILES_DIR)/bootrom_patch.fls
 
 $(BOOTROM_PATCH_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BOOTROM_PATCH_BIN) $(FLASHLOADER_FLS)

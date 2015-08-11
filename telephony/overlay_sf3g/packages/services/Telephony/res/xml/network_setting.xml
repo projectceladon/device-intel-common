@@ -30,6 +30,13 @@
         android:summaryOn="@string/roaming_enable"
         android:summaryOff="@string/roaming_disable"/>
 
+    <SwitchPreference
+        android:key="button_dvp_key"
+        android:title="@string/dvp"
+        android:persistent="false"
+        android:summaryOn="@string/dvp_selection_enabled"
+        android:summaryOff="@string/dvp_selection_disabled"/>
+
     <ListPreference
         android:key="preferred_network_mode_key"
         android:title="@string/preferred_network_mode_title"
