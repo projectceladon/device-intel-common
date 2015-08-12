@@ -15,9 +15,9 @@ patchinfo = None
 
 
 def get_file_data(tmpdir, path):
-    p = os.path.join(tmpdir, "RADIO", path)
-    with open(p) as fp:
-        data = fp.read()
+    provdata_name = os.path.join(tmpdir, "RADIO", "provdata.zip")
+    with zipfile.ZipFile(provdata_name) as provdata_zip:
+        data = provdata_zip.read(path)
     return common.File(path, data)
 
 
@@ -30,8 +30,8 @@ def trigger_fwupdate(info):
 def AddBinaryFiles(info):
   provdata_name = os.path.join("RADIO", "provdata.zip")
   if provdata_name in info.input_zip.namelist():
-    provdata_zip = zipfile.ZipFile(StringIO(info.input_zip.read(provdata_name)))
-    fwu_image = provdata_zip.read("fwu_image.bin")
+    with zipfile.ZipFile(StringIO(info.input_zip.read(provdata_name))) as provdata_zip:
+        fwu_image = provdata_zip.read("fwu_image.bin")
     common.ZipWriteStr(info.output_zip, "fwu_image.bin", fwu_image)
   else:
     # fwu_image will get populated by ota_deployment_fixup script
