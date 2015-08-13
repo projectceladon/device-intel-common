@@ -38,7 +38,7 @@ static const char *WHITELIST[] = {
 	"persist.pws_support",
 	"persist.sys.telephony.off",
 	"service.amtl1.cfg",
-	"telephony.tcs.sw_folder",
+	"ro.telephony.tcs.sw_folder",
 	"ro.swconf.info",
 	"ro.swconf.info.telephony",
 	"ro.config.specific",
