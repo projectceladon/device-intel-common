@@ -43,6 +43,7 @@ Value* maybe_install_firmware_update(const char* name, State* state, int argc, E
 {
     struct bootloader_message boot;
     char *device = NULL;
+    Value *ret = NULL;
 
     if (argc != 1) {
         ErrorAbort(state, "%s() expects 1 arg, got %d",
@@ -78,14 +79,11 @@ Value* maybe_install_firmware_update(const char* name, State* state, int argc, E
         goto done;
     }
 
-    /* XXX Unfortunately we lose all the logs by doing this. However, if we got
-     * to this point, so far the update has proceeded without errors */
-    android_reboot(ANDROID_RB_RESTART, 0, 0);
-    ErrorAbort(state, "Failed to reset device");
+    ret = StringValue(strdup(""));
 
 done:
     free(device);
-    return NULL;
+    return ret;
 }
 
 

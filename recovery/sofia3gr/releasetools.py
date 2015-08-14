@@ -7,6 +7,8 @@
 #
 import common
 import os
+import zipfile
+from cStringIO import StringIO
 
 OPTIONS = common.OPTIONS
 patchinfo = None
@@ -26,8 +28,15 @@ def trigger_fwupdate(info):
 
 
 def AddBinaryFiles(info):
-  fwu_image = info.input_zip.read(os.path.join("RADIO", "fwu_image.bin"))
-  common.ZipWriteStr(info.output_zip, "fwu_image.bin", fwu_image)
+  provdata_name = os.path.join("RADIO", "provdata.zip")
+  if provdata_name in info.input_zip.namelist():
+    provdata_zip = zipfile.ZipFile(StringIO(info.input_zip.read(provdata_name)))
+    fwu_image = provdata_zip.read("fwu_image.bin")
+    common.ZipWriteStr(info.output_zip, "fwu_image.bin", fwu_image)
+  else:
+    # fwu_image will get populated by ota_deployment_fixup script
+    pass
+
   info.script.SetProgress(0.6) #Set progress bar to end of FLS extraction
 
   info.script.WriteRawImage("/fwupdate", "fwu_image.bin");
@@ -48,7 +57,7 @@ def IncrementalOTA_VerifyEnd(info):
   src_fwupdate = get_file_data(OPTIONS.source_tmp, "fwu_image.bin")
   tgt_fwupdate = get_file_data(OPTIONS.target_tmp, "fwu_image.bin")
 
-  diffs = [common.Difference(src_fwupdate, tgt_fwupdate)]
+  diffs = [common.Difference(tgt_fwupdate, src_fwupdate)]
   common.ComputeDifferences(diffs)
 
   tf, sf, d = diffs[0].GetPatch()

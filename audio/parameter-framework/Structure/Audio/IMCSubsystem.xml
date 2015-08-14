@@ -162,10 +162,14 @@
             <Component Name="AMR_DECODER" Type="SOURCE_TYPE" Mapping="SrcPort:11,Direction:src"/>
             <Component Name="INJECTOR" Type="INJECTOR_TYPE"/>
             <Component Name="SILENT" Type="SOURCE_TYPE" Mapping="SrcPort:27,Direction:src"/>
+            <Component Name="I2SA" Type="I2S_PORT" Mapping="SrcPort:34,DstPort:29"/>
+            <Component Name="I2SB" Type="I2S_PORT" Mapping="SrcPort:35,DstPort:30"/>
+            <Component Name="I2SC" Type="I2S_PORT" Mapping="SrcPort:36,DstPort:31"/>
+            <Component Name="I2SD" Type="I2S_PORT" Mapping="SrcPort:37,DstPort:32"/>
         </ComponentType>
         <!-- SWITCH MATRIX COMPONENT LIBRARY -->
         <ComponentType Name="DESTINATION_SET">
-            <BitParameterBlock Name="DESTINATIONS" Size="32" Mapping="Route:%1">
+            <BitParameterBlock Name="DESTINATIONS" Size="64" Mapping="Route:%1">
                 <BitParameter Name="SPEECH_TX" Size="1" Pos="0"/>
                 <BitParameter Name="RADIO_ANALOG_OUT" Size="1" Pos="1"/>
                 <BitParameter Name="I2S1_TX" Size="1" Pos="2"/>
@@ -183,6 +187,10 @@
                 <BitParameter Name="EXTRACTOR_B" Size="1" Pos="14"/>
                 <BitParameter Name="EXTRACTOR_C" Size="1" Pos="15"/>
                 <BitParameter Name="EXTRACTOR_D" Size="1" Pos="16"/>
+                <BitParameter Name="I2SA_TX" Size="1" Pos="29"/>
+                <BitParameter Name="I2SB_TX" Size="1" Pos="30"/>
+                <BitParameter Name="I2SC_TX" Size="1" Pos="31"/>
+                <BitParameter Name="I2SD_TX" Size="1" Pos="32"/>
             </BitParameterBlock>
         </ComponentType>
         <ComponentType Name="SWITCH_MATRIX_TYPE">
@@ -198,6 +206,10 @@
             <Component Name="INTERNAL_FM_RADIO" Type="DESTINATION_SET" Mapping="Amend1:9"/>
             <Component Name="PROBE_IN" Type="DESTINATION_SET" Mapping="Amend1:10"/>
             <Component Name="SILENT" Type="DESTINATION_SET" Mapping="Amend1:27"/>
+            <Component Name="I2SA_RX" Type="DESTINATION_SET" Mapping="Amend1:34"/>
+            <Component Name="I2SB_RX" Type="DESTINATION_SET" Mapping="Amend1:35"/>
+            <Component Name="I2SC_RX" Type="DESTINATION_SET" Mapping="Amend1:36"/>
+            <Component Name="I2SD_RX" Type="DESTINATION_SET" Mapping="Amend1:37"/>
         </ComponentType>
         <ComponentType Name="SOUND_CARD">
             <Component Name="PORTS" Type="PORTS_CONFIG"/>

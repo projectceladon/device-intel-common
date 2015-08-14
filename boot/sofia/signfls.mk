@@ -95,6 +95,9 @@ $(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls
 $(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES += $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)  $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)  $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST)
+endif
 
 ## Firmware update
 VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
@@ -109,7 +112,7 @@ VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
 #FIXME : Breaks "make dist" on LTE, needed for 3GR OTA
 # Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
 ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
-INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
+SOFIA_PROVDATA_FILES += $(FWU_IMAGE_BIN)
 endif
 
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
@@ -124,6 +127,10 @@ FWU_PACKAGE_LIST  = $(basename $(notdir $(PSI_FLASH_SIGNED_FLS)))
 FWU_PACKAGE_LIST += $(basename $(notdir $(SLB_SIGNED_FLS)))
 FWU_PACKAGE_LIST += $(basename $(notdir $(SYSTEM_SIGNED_FLS_LIST)))
 
+#remove boot/recovery from the fwu_image
+#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output.
+FWU_PACKAGE_BIN_LIST := $(filter-out boot_signed recovery_signed, $(FWU_PACKAGE_LIST))
+
 FWU_PACKAGE_SECPACK_ONLY_LIST += $(basename $(notdir $(ANDROID_SIGNED_FLS_LIST)))
 
 FWU_DEP_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_LIST))
@@ -132,7 +139,10 @@ $(foreach t,$(FWU_PACKAGE_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t
 FWU_DEP_SECPACK_ONLY_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_SECPACK_ONLY_LIST))
 $(foreach t,$(FWU_PACKAGE_SECPACK_ONLY_LIST),$(eval $(call GEN_FIRMWARE_UPDATE_PACK_RULES,$(t))))
 
-FWU_COMMAND = $(foreach a, $(FWU_DEP_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
+#remove boot/recovery in fwu_image
+FWU_DEP_BIN_LIST := $(addprefix $(EXTRACT_TEMP)/,$(FWU_PACKAGE_BIN_LIST))
+
+FWU_COMMAND = $(foreach a, $(FWU_DEP_BIN_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) --data $(a)/$(DATA_EXT); cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 FWU_ADDI_COMMAND = $(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(FWU_PACK_GENERATE_TOOL) --input $(FWU_IMAGE_BIN) --output $(FWU_IMAGE_BIN)_temp --secpack $(a)/$(SECP_EXT) ; cp $(FWU_IMAGE_BIN)_temp $(FWU_IMAGE_BIN);)
 
 $(FWU_IMAGE_BIN): $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
@@ -149,6 +159,10 @@ fwu_image: $(FWU_IMAGE_BIN)
 
 $(FWU_IMAGE_FLS):  createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(FWU_IMAGE_BIN) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag FW_UPDATE $(INJECT_FLASHLOADER_FLS) $(FWU_IMAGE_BIN) --replace --to-fls2
+
+ifneq ($(TARGET_BOARD_PLATFORM), sofia_lte)
+SOFIA_PROVDATA_FILES += $(FWU_IMAGE_FLS)
+endif
 
 #create_vrl_bin: $(VRL_BIN)
 
