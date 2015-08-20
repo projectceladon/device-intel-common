@@ -26,5 +26,7 @@
         <item>7</item>
     </integer-array>
 
+    <bool name="config_sms_capable">false</bool>
+
 </resources>
 
