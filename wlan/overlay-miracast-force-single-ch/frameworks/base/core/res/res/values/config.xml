@@ -1,0 +1,5 @@
+<resources>
+    <!-- Boolean indicating whether the wifi chipset supports multi-role multi-channel -->
+    <add-resource type="bool" name="config_wifi_multirole_multichannel_support" />
+    <bool translatable="false" name="config_wifi_multirole_multichannel_support">true</bool>
+</resources>
