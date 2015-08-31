@@ -5,7 +5,7 @@
 		<modem_info>
 			<tlvs_info>
 				<tlv_info
-					filename="2048_Smarti5G_band_config_update_CMCC.tlv"
+					filename="2048_Smarti5G_band_config_update_CMCC_PR2.tlv"
 				/>
 			</tlvs_info>
 		</modem_info>
