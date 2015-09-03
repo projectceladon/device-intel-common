@@ -34,7 +34,8 @@ ifneq ($(TARGET_BUILD_VARIANT),user)
 LOCAL_REQUIRED_MODULES += \
     libremote-processor \
     remote-process \
-    parameter
+    parameter-audio \
+    parameter-route
 endif
 
 include $(BUILD_PHONY_PACKAGE)
@@ -46,27 +47,34 @@ LOCAL_REQUIRED_MODULES :=  \
     SysfsVibratorClass.xml \
     MiscConfigurationSubsystem.xml \
     SysfsVibratorSubsystem.xml \
-    VibratorParameterFramework$(TUNING_SUFFIX).xml \
-    vibrator
+    VibratorParameterFramework$(TUNING_SUFFIX).xml
+
+ifneq ($(TARGET_BUILD_VARIANT),user)
+LOCAL_REQUIRED_MODULES += parameter-vibrator
+endif
+
 include $(BUILD_PHONY_PACKAGE)
 
 ##################################################
 
-
 include $(CLEAR_VARS)
-LOCAL_MODULE := parameter
+LOCAL_MODULE := parameter-audio
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := EXECUTABLES
-ifeq ($(TARGET_BUILD_VARIANT),eng)
 LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
-else
-LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE).user_debug
-endif
 include $(BUILD_PREBUILT)
 
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := vibrator
+LOCAL_MODULE := parameter-vibrator
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter-route
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
