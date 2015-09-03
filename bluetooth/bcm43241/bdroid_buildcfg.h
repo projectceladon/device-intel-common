@@ -18,8 +18,9 @@
 #define _BDROID_BUILDCFG_H
 
 #define BTM_DEF_LOCAL_NAME "gmin-bluetooth"
-                            // Bluetooth Low Power Mode is supported on BT4.0
-#define HCILP_INCLUDED                 FALSE
+
+// Bluetooth Low Power Mode is supported on BT4.0
+#define HCILP_INCLUDED                 TRUE
 
 /* Default class of device
 * {SERVICE_CLASS, MAJOR_CLASS, MINOR_CLASS}
