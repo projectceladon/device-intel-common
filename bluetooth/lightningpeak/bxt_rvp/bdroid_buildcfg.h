@@ -17,33 +17,22 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
-#define BTM_DEF_LOCAL_NAME "cht_hr"
+/* default name on 1A */
+#define BTM_DEF_LOCAL_NAME "bxt_rvp"
 
 #define INTEL_CONTROLLER       TRUE
 #define INTEL_LNP_UART         TRUE
-#define HCI_MAX_SIMUL_CMDS     1
-#define PRELOAD_MAX_RETRY_ATTEMPTS 1
-#define PRELOAD_START_TIMEOUT_MS 80000
-#define BLE_VND_INCLUDED TRUE
 
-/* To enable WBS */
-#define BTM_WBS_INCLUDED              TRUE
-#define BTIF_HF_WBS_PREFERRED         TRUE
-#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
+/* To enable WBS: to be reenabled later */
+//#define BTM_WBS_INCLUDED              TRUE
+//#define BTIF_HF_WBS_PREFERRED         TRUE
+//#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
 
-/* To enable offloaded A2DP (SBC + APTX) */
-/* TODO: to be reenabled when supported on M */
-#define A2DP_OFFLOAD_INCLUDED FALSE
-
-/* disable temporary LPM */
+/* disable LPM as not supported by BXT */
 #define LNP_LPM_ENABLED FALSE
 /* skip boot up event */
 #define BOOTUP_EVENT_SUPPORTED FALSE
 
-/* standard scan */
-#define BTM_DEFAULT_SCAN_TYPE BTM_SCAN_TYPE_STANDARD
-
-/* WA for RTS control with HSU - CHT only */
-#define INTEL_RTS_WORKAROUND TRUE
+#define BLE_VND_INCLUDED TRUE
 
 #endif
