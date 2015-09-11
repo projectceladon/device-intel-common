@@ -2,7 +2,7 @@ InclusiveCriterion SelectedOutputDevices    :    Earpiece         Ihf           
 InclusiveCriterion SelectedInputDevices     :    Communication    Ambient       Main          ScoHeadset    Headset    AuxDigital   VoiceCall        Back               RemoteSubmix      AnlgDockHeadset DgtlDockHeadset UsbAccessory    UsbDevice       FmTuner       TvTuner      Line         Spdif        BluetoothA2dp Loopback
 InclusiveCriterion OutputFlags              :    Direct           Primary       Fast          Deep          Offload    NonBlocking  HwAvSync
 InclusiveCriterion InputFlags               :    Fast             HwHotword
-InclusiveCriterion InputSources             :    Default          Mic           VoiceUplink   VoiceDownlink VoiceCall  Camcorder    VoiceRecognition VoiceCommunication RemoteSubmix      Hotword
+InclusiveCriterion InputSources             :    Default          Mic           VoiceUplink   VoiceDownlink VoiceCall  Camcorder    VoiceRecognition VoiceCommunication RemoteSubmix FmTuner Hotword
 InclusiveCriterion TtyDirection             :    Downlink         Uplink
 InclusiveCriterion PreProcEnabled           :    Aec              Agc           Ns            Bmf            Wnr
 InclusiveCriterion StatesChanged            :    Mode      HasModem      ModemState    ModemAudioAvailable    HacSelected    TtyDirection    BtHeadsetBandType      CsvBandType     VoIPBandType    ImsBandType    SelectedInputDevices    SelectedOutputDevices InputSources OutputFlags InputFlags ScreenState ContextAwareness FmEnabled AlwaysListening MicMuted PreProcEnabled LpalDevice BwxActivated HfpClientEnable HfpClientBandType ScreenRotation
