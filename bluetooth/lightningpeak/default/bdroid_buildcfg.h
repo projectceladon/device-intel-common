@@ -33,4 +33,7 @@
 
 #define BLE_VND_INCLUDED TRUE
 
+/* standard scan */
+#define BTM_DEFAULT_SCAN_TYPE         BTM_SCAN_TYPE_STANDARD
+
 #endif
