@@ -4,8 +4,8 @@
 	<modems_info>
 		<modem_info>
 			<core
-				swRevision="2.0"
-				hwRevision="20"
+				swRevision="20"
+				hwRevision="2.0"
 			/>
 		</modem_info>
 	</modems_info>
