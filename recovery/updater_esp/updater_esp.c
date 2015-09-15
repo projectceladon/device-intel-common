@@ -31,6 +31,7 @@
 #include <regex.h>
 #include <dirent.h>
 #include <sys/mount.h>
+#include <libgen.h>
 
 #include <edify/expr.h>
 #include <gpt/gpt.h>
@@ -104,7 +105,6 @@ done:
 }
 
 
-
 static struct gpt_entry *find_android_partition(struct gpt *gpt, const char *name)
 {
     uint32_t i;
@@ -131,52 +131,91 @@ static struct gpt_entry *find_android_partition(struct gpt *gpt, const char *nam
     return NULL;
 }
 
-#define TMP_NODE "/dev/block/__esp_disk__"
 
-static int make_disk_node(char *ptn)
+/* This func assumes that the char *dev that is passed is of size
+ * PATH_MAX.  This is due to the in-place modification of that
+ * char* for the return string. */
+static int follow_links(char *dev)
 {
-    int mj, mn;
-    struct stat sb;
-    dev_t dev;
-    int ret, val;
-
-    if (stat(ptn, &sb))
-        return -1;
-
-    mj = major(sb.st_rdev);
-    mn = minor(sb.st_rdev);
-
-    /* Get the partition index; subtract this from minor */
-    ret = sysfs_read_int(&val, "/sys/dev/block/%d:%d/partition", mj, mn);
-    if (ret)
-        return -1;
-    mn -= val;
-
-    /* Corresponds to the entire block device */
-    printf("Referencing GPT in block device %d:%d\n", mj, mn);
-    dev = makedev(mj, mn);
-    if (mknod(TMP_NODE, S_IFBLK | S_IRUSR | S_IWUSR, dev))
-        return -1;
-    return 0;
-}
-
-
-static char *follow_links(char *dev)
-{
-    char *dest;
     ssize_t ret;
     char buf[PATH_MAX];
 
     ret = readlink(dev, buf, sizeof(buf) - 1);
-    if (ret < 0)
-        return dev;
+    if (ret < 0) {
+        printf("Failed to readlink: %s\n", strerror(errno));
+        return -1;
+    }
+
     buf[ret] = '\0';
 
-    dest = strdup(buf);
-    if (dest)
-        printf("%s --> %s\n", dev, dest);
-    free(dev);
-    return dest;
+    printf("%s --> %s\n", dev, buf);
+
+    strncpy(dev, buf, PATH_MAX);
+
+    return 0;
+}
+
+/* This func assumes that the char *ptn that is passed is of size
+ * PATH_MAX. ptn is modified in-place for the return string with
+ * PATH_MAX as the assumed size. */
+static int get_disk_node(char *ptn)
+{
+    int mj, mn, ret, val;
+    struct stat sb;
+    char link[PATH_MAX];
+
+    if (stat(ptn, &sb)) {
+       printf("Failed to stat ptn: %s\n", strerror(errno));
+       return -1;
+    }
+
+    mj = major(sb.st_rdev);
+    mn = minor(sb.st_rdev);
+
+    /* Get the partition index; subtract this from minor to get to disk */
+    ret = sysfs_read_int(&val, "/sys/dev/block/%d:%d/partition", mj, mn);
+    if (ret) {
+        printf("Error reading sysfs: %s\n", strerror(errno));
+        return -1;
+    }
+    mn -= val;
+
+    /* Corresponds to the entire block device */
+    printf("Referencing GPT in block device %d:%d\n", mj, mn);
+
+    ret = snprintf(link, PATH_MAX, "/sys/dev/block/%d:%d", mj, mn);
+    if (ret < 0 || ret >= PATH_MAX) {
+        printf("Error creating root sysfs node string: %d\n", ret);
+        return -1;
+    }
+
+    printf("Following link: %s\n", link);
+
+    ret = follow_links(link);
+    if (ret < 0) {
+        printf("Couldn't follow symlink: %s\n", link);
+        return -1;
+    }
+
+    ret = snprintf(ptn, PATH_MAX, "/dev/block/%s", basename(link));
+    if (ret < 0 || ret >= PATH_MAX) {
+        printf("Error creating root node string: %d\n", ret);
+        return -1;
+    }
+
+    if (stat(ptn, &sb) == -1) {
+        printf("Failed to stat path (%s): %s\n", ptn, strerror(errno));
+        return -1;
+    }
+
+    if (!S_ISBLK(sb.st_mode)) {
+        printf("Path is not a block device: %s\n", ptn);
+        return -1;
+    }
+
+    printf("Root block device = %s\n", ptn);
+
+    return 0;
 }
 
 
@@ -193,9 +232,12 @@ static void swap64bit(uint64_t *a, uint64_t *b)
 static Value *SwapEntriesFn(const char *name, State *state,
         int argc, Expr *argv[])
 {
+    int rc;
+
     char *dev = NULL;
     char *part1 = NULL;
     char *part2 = NULL;
+    char buf[PATH_MAX];
 
     struct gpt_entry *e1, *e2;
     struct gpt *gpt = NULL;
@@ -212,21 +254,32 @@ static Value *SwapEntriesFn(const char *name, State *state,
         goto done;
     }
 
+    if (strlen(dev) > (PATH_MAX - 1)) {
+        ErrorAbort(state, "%s: dev too large", name);
+        goto done;
+    }
+
     /* If the device node is a symlink, follow it to the 'real'
-     * device node and then get the node for the entire disk */
-    dev = follow_links(dev);
-    if (!dev) {
+     * device node and then get the node for the entire disk.
+     *
+     * dev is copied to buf to ensure that the character array
+     * is of size PATH_MAX; required for follow_links. */
+    strncpy(buf, dev, PATH_MAX);
+    rc = follow_links(buf);
+    if (rc < 0) {
         ErrorAbort(state, "%s: Couldn't follow symlink", name);
         goto done;
     }
 
-    if (make_disk_node(dev)) {
-        ErrorAbort(state, "%s: Unable to get disk node for partition %s",
-                name, dev);
+    /* Since get_disk_node will call follow_links with the arg passed,
+     * it must be of size PATH_MAX for the same reasoning as above. */
+    rc = get_disk_node(buf);
+    if (rc < 0) {
+        ErrorAbort(state, "%s: Couldn't get disk node from %s", name, buf);
         goto done;
     }
 
-    gpt = gpt_init(TMP_NODE);
+    gpt = gpt_init(buf);
     if (!gpt) {
         ErrorAbort(state, "%s: Couldn't init GPT structure", name);
         goto done;
@@ -259,7 +312,6 @@ static Value *SwapEntriesFn(const char *name, State *state,
 done:
     if (gpt)
         gpt_close(gpt);
-    unlink(TMP_NODE);
     free(dev);
     free(part1);
     free(part2);
