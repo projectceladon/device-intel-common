@@ -1,14 +1,10 @@
 <camera>
-	<prop>
+	<prop index="0">
 		<!--- ds4 -->
 		<vendorId value="8086"/>
 		<productId value="0a80"/>
-		<facing value="CAMERA_FACING_BACK"/>
-		<orientation value="90"/>
 		<focal-length value="1860"/>
 		<aperture value="2.4"/>
-		<powerGpio value="342"/>
-		<powerGpioActive value="1"/>
 		<plugin name="ds4"/>
 	</prop>
 </camera>
