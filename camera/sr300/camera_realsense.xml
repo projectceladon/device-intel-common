@@ -1,0 +1,9 @@
+<camera>
+	<prop index="0">
+		<!--- sr300 -->
+		<vendorId value="8086"/>
+		<productId value="0aa5"/>
+		<plugin name="sr300"/>
+	</prop>
+</camera>
+
