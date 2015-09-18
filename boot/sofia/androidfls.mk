@@ -51,3 +51,10 @@ flsinfo:
 
 build_info: flsinfo
 
+.PHONY: boot.fls
+BOOTIMG_FLS := $(FLASHFILES_DIR)/boot.fls
+boot.fls: $(BOOTIMG_FLS)
+#boot.fls: bootimage
+$(BOOTIMG_FLS): createflashfile_dir $(FLSTOOL) $(INTEL_PRG_FILE) $(BUILT_RAMDISK_TARGET) $(INSTALLED_KERNEL_TARGET) bootimage $(INSTALLED_BOOTIMAGE_TARGET) $(FLASHLOADER_FLS)
+	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --tag BOOT_IMG $(INJECT_FLASHLOADER_FLS) $(INSTALLED_BOOTIMAGE_TARGET) --replace --to-fls2
+
