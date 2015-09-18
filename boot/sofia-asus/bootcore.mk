@@ -76,8 +76,14 @@ endif
 PSI_RAM_BEFORE_DDR_INJECT_FLS    := $(BOOTLDR_TMP_DIR)/psi_ram.before.ddrinject.fls
 PSI_FLASH_BEFORE_DDR_INJECT_FLS  := $(BOOTLDR_TMP_DIR)/psi_flash.before.ddrinject.fls
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 PSI_RAM_FLS            := $(CURDIR)/$(PRODUCT_OUT)/flashloader/psi_ram.fls
 EBL_FLS                := $(CURDIR)/$(PRODUCT_OUT)/flashloader/ebl.fls
+else
+PSI_RAM_FLS            := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/flashloader/psi_ram.fls
+EBL_FLS                := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/flashloader/ebl.fls
+endif
+
 
 FLASHLOADER_FLS         = $(PSI_RAM_FLS) $(EBL_FLS)
 INJECT_FLASHLOADER_FLS  = --psi $(PSI_RAM_FLS) --ebl $(EBL_FLS)
@@ -93,6 +99,7 @@ MODEM_PROJECTNAME_VAR ?= $(MODEM_PROJECTNAME)
 
 .PHONY: bootcore bootcore_fls bootcore_clean bootcore_rebuild
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 ifeq ($(BUILD_REL10_BOOTCORE), true)
 bootcore:
 	$(MAKE) -C $(SOFIA_FW_SRC_BASE)/modem/system-build/make PLATFORM=$(MODEM_PLATFORM) PROJECTNAME=$(MODEM_PROJECTNAME_VAR) MAKEDIR=$(BOOTLOADER_BIN_PATH) $(MODEM_BUILD_ARGUMENTS) INT_STAGE=BOOTSYSTEM ADD_FEATURE+=FEAT_BOOTSYSTEM_DRV_DISPLAY ADD_FEATURE+=FEAT_BOOTSYSTEM_PROXY_INFO_TO_MOBILEVISOR bootsystem
@@ -102,7 +109,10 @@ bootcore: $(BUILT_LIBSOC_TARGET)
 endif
 
 $(BOOTLOADER_BINARIES): bootcore
+else
+bootcore:
 
+endif
 
 bootcore_clean:
 	rm -rf $(BOOTLOADER_BIN_PATH) $(BOOTLDR_TMP_DIR)
@@ -115,6 +125,7 @@ createflashloader_dir:
 $(BOOTLDR_TMP_DIR):
 	mkdir -p $@
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 #If DDR parameter file is specified, create intermediate PSI FLS file and then postprocess with FlsSign to inject the denali settings
 ifneq ($(INTEL_DDR_CTL_PARAMS_FILE),)
   ifeq ($(BUILD_REL10_BOOTCORE), true)
@@ -141,8 +152,10 @@ $(EBL_FLS): createflashloader_dir $(INTEL_PRG_FILE) $(FLSTOOL) $(BUILT_EBL_HEX) 
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --meta $(BUILT_EBL_VER) --tag EBL $(BUILT_EBL_HEX) --replace --to-fls2 --psi $(PSI_RAM_FLS)
 endif # REL10_BOOTCORE
 endif
+endif
 
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 #If DDR parameter file is specified, create intermediate PSI FLS file and then postprocess with FlsSign to inject the denali settings
 ifneq ($(INTEL_DDR_CTL_PARAMS_FILE),)
   ifeq ($(BUILD_REL10_BOOTCORE), true)
@@ -171,6 +184,16 @@ $(SLB_FLS): createflashfile_dir $(INTEL_PRG_FILE) $(FLSTOOL) $(BUILT_SLB_HEX) $(
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $@ --meta $(BUILT_SLB_VER) --tag SLB $(BUILT_SLB_HEX) $(INJECT_FLASHLOADER_FLS) --replace --to-fls2
 endif # REL10_BOOTCORE
 endif # DDR_CTRL
+else
+PREBUILT_PSI_FLASH := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/psi_flash.fls
+PREBUILT_SLB_FLASH := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/slb.fls
+
+$(PSI_FLASH_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_PSI_FLASH) $@
+
+$(SLB_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_SLB_FLASH) $@
+endif
 
 bootcore_fls: $(PSI_FLASH_FLS) $(SLB_FLS)
 
@@ -241,6 +264,7 @@ endif
 createsplashimg_dir:
 	@mkdir -p $(SPLASH_IMG_BIN_PATH)
 
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 $(SPLASH_IMG_HEADER)  : $(SPLASH_IMG_DISPLAY_CONFIG) ;
 
 define GENERATE_DISPLAY_CONFIG
@@ -267,7 +291,12 @@ $(SPLASH_IMG_BIN_2): createsplashimg_dir
 
 $(DISPLAY_BIN) : $(SPLASH_IMG_HEADER) $(SPLASH_IMG_DISPLAY_CONFIG) $(SPLASH_IMG_BIN_1) $(SPLASH_IMG_BIN_2) $(BINARY_MERGE_TOOL)
 	$(BINARY_MERGE_TOOL) -o $@ -b 512  -p 0 $(SPLASH_IMG_HEADER) $(SPLASH_IMG_DISPLAY_CONFIG) $(SPLASH_IMG_BIN_1) $(SPLASH_IMG_BIN_2)
+else
+PREBUILT_SPLASH := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/splash_img.fls
 
+$(SPLASH_IMG_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_SPLASH) $@
+endif
 
 endif
 

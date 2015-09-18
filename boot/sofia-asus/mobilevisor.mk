@@ -155,3 +155,18 @@ droidcore: mvconfig_smp.fls
 
 endif
 
+ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+.PHONY : force
+force: ;
+
+MOBILEVISOR_FLS         := $(FLASHFILES_DIR)/mobilevisor.fls
+SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mobilevisor_signed.fls
+
+PREBUILT_MOBILEVISOR := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/mobilevisor.fls
+$(MOBILEVISOR_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_MOBILEVISOR) $@
+
+.PHONY: mobilevisor.fls
+mobilevisor.fls:  $(MOBILEVISOR_FLS)
+droidcore: mobilevisor.fls
+endif

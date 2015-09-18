@@ -76,3 +76,13 @@ droidcore: secvm.fls
 
 endif
 
+ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+SECVM_FLS := $(FLASHFILES_DIR)/secvm.fls
+PREBUILT_SECVM := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/secvm.fls
+
+$(SECVM_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_SECVM) $@
+
+.PHONY: secvm.fls
+secvm.fls: $(SECVM_FLS)
+endif

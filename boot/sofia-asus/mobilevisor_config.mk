@@ -177,3 +177,15 @@ build_info: mvconfig_info
 .PHONY: mvconfig
 mvconfig: $(MV_CONFIG_DEFAULT_FLS)
 endif
+
+ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+MVCONFIG_FLS         := $(FLASHFILES_DIR)/mvconfig_smp.fls
+
+PREBUILT_MVCONFIG := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/mvconfig_smp.fls
+$(MVCONFIG_FLS): createflashfile_dir | $(ACP)
+	$(ACP) $(PREBUILT_MVCONFIG) $@
+
+.PHONY: mvconfig
+mvconfig: $(MVCONFIG_FLS)
+droidcore: mvconfig
+endif

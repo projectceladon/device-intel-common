@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------
+ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 signfls_info:
 	@echo "----------------------------------------------------------"
 	@echo "-make signfls : Will generate all signed fls files"
@@ -153,3 +154,4 @@ $(VRL_FLS) : createflashfile_dir $(VRL_BIN) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASH
 
 $(VRL_SIGNED_FLS) :  $(VRL_FLS) $(VRL_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
 	$(FLSTOOL) --sign $(VRL_FLS) --script $(VRL_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
+endif
