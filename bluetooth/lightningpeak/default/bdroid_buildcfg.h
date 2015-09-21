@@ -22,14 +22,11 @@
 
 #define INTEL_CONTROLLER       TRUE
 #define INTEL_LNP_UART         TRUE
-#define HCI_MAX_SIMUL_CMDS     1
-#define PRELOAD_MAX_RETRY_ATTEMPTS 1
-#define PRELOAD_START_TIMEOUT_MS 8000
 
-/*To enable WBS */
-#define BTM_WBS_INCLUDED              TRUE
-#define BTIF_HF_WBS_PREFERRED         TRUE
-#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
+/* To enable WBS: to be reenabled later */
+//#define BTM_WBS_INCLUDED              TRUE
+//#define BTIF_HF_WBS_PREFERRED         TRUE
+//#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
 
 #define BLE_VND_INCLUDED TRUE
 

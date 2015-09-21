@@ -28,8 +28,10 @@
 //#define BTIF_HF_WBS_PREFERRED         TRUE
 //#define BTM_ESCO_SETUP_CORE_SPEC_4_1  TRUE
 
-/* disable LPM as not supported by BXT */
-#define LNP_LPM_ENABLED FALSE
+/* To enable offloaded A2DP (SBC + APTX) */
+/* TODO: to be reenabled when supported on M */
+#define A2DP_OFFLOAD_INCLUDED FALSE
+
 /* skip boot up event */
 #define BOOTUP_EVENT_SUPPORTED FALSE
 
