@@ -33,6 +33,14 @@
         <BooleanParameter Name="switch" Mapping="Control:'Ext Spk Switch'"/>
     </ComponentType>
 
+    <ComponentType Name="Earpiece">
+        <ParameterBlock Name="analog" Mapping="Amend1:EPOUT">
+            <IntegerParameter Name="volume" Size="8" Min="0" Max="191" Mapping="Control:'%1 Digital Volume'"/>
+            <BooleanParameter Name="switch" Mapping="Control:'%1 Digital Switch'"/>
+        </ParameterBlock>
+        <BooleanParameter Name="switch" Mapping="Control:'EP Switch'"/>
+    </ComponentType>
+
     <ComponentType Name="Ramp">
         <EnumParameter Name="rate" Size="8" Mapping="Control:%2 Ramp %3">
             <ValuePair Literal="0ms" Numerical="0"/>
@@ -53,9 +61,7 @@
         </ParameterBlock>
         <Component Name="headphone" Type="Headphone"/>
         <Component Name="speaker" Type="Speaker"/>
-        <ParameterBlock Name="earpiece">
-            <BooleanParameter Name="switch" Mapping="Control:'EP Switch'"/>
-        </ParameterBlock>
+        <Component Name="earpiece" Type="Earpiece"/>
     </ComponentType>
 
     <!--analog input volume and switch-->
@@ -587,6 +593,7 @@
             <Component Name="spkdat2r" Type="NgSwitch" Mapping="Amend3:SPKDAT2R"/>
             <Component Name="spkoutl" Type="NgSwitch" Mapping="Amend3:SPKOUTL"/>
             <Component Name="spkoutr" Type="NgSwitch" Mapping="Amend3:SPKOUTR"/>
+            <Component Name="epout" Type="NgSwitch" Mapping="Amend3:EPOUT"/>
         </ParameterBlock>
     </ComponentType>
 
@@ -734,6 +741,8 @@
                 </ParameterBlock>
             </ParameterBlock>
         </ParameterBlock>
+        <!-- Earpiece mixer -->
+        <Component Name="earpiece" Type="MixerWithNgElement" Mapping="Amend1:EPOUT"/>
     </ComponentType>
 
 </ComponentLibrary>
