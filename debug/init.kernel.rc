@@ -1,3 +1,0 @@
-on early-init
-    write /proc/sys/kernel/panic_on_stackoverflow 1
-
