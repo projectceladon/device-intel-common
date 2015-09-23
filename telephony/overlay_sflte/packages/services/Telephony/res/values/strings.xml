@@ -24,4 +24,19 @@
 
     <add-resource type="string" name="femtocell_enabled_failed" />
     <string name="femtocell_enabled_failed">Error while searching</string>
+
+    <!-- Service option entries.  -->
+    <string-array name="tty_mode_entries">
+        <item>TTY Off</item>
+        <item>TTY Full</item>
+    </string-array>
+
+    <!-- Do not translate. -->
+    <string-array name="tty_mode_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>0</item>
+        <!-- Do not translate. -->
+        <item>1</item>
+        <!-- Do not translate. -->
+    </string-array>
 </resources>
