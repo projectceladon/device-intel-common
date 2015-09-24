@@ -110,27 +110,27 @@ UCODE_PATCH_FLS ?= $(FLASHFILES_DIR)/ucode_patch.fls
 SOFIA_PROVDATA_FILES += $(PSI_FLASH_FLS) $(SLB_FLS) $(MOBILEVISOR_FLS) $(SECVM_FLS) $(SPLASH_IMG_FLS) $(UCODE_PATCH_FLS)
 
 
-ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
-DSP_IMAGE_FLS := $(FLASHFILES_DIR)/dsp_image.fls
-LTE_FLS := $(FLASHFILES_DIR)/lte.fls
-IMC_FW_BLOCK_1 := $(FLASHFILES_DIR)/imc_fw_block_1.fls
-IMC_FW_BLOCK_2 := $(FLASHFILES_DIR)/imc_fw_block_2.fls
-IMC_BOOTLOADER_A := $(FLASHFILES_DIR)/imc_bootloader_a.fls
-IMC_BOOTLOADER_B := $(FLASHFILES_DIR)/imc_bootloader_b.fls
-SOFIA_PROVDATA_FILES += $(DSP_IMAGE_FLS) $(LTE_FLS) $(IMC_FW_BLOCK_1) $(IMC_FW_BLOCK_2) $(IMC_BOOTLOADER_A) $(IMC_BOOTLOADER_B)
-endif
+#ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
+#DSP_IMAGE_FLS := $(FLASHFILES_DIR)/dsp_image.fls
+#LTE_FLS := $(FLASHFILES_DIR)/lte.fls
+#IMC_FW_BLOCK_1 := $(FLASHFILES_DIR)/imc_fw_block_1.fls
+#IMC_FW_BLOCK_2 := $(FLASHFILES_DIR)/imc_fw_block_2.fls
+#IMC_BOOTLOADER_A := $(FLASHFILES_DIR)/imc_bootloader_a.fls
+#IMC_BOOTLOADER_B := $(FLASHFILES_DIR)/imc_bootloader_b.fls
+#SOFIA_PROVDATA_FILES += $(DSP_IMAGE_FLS) $(LTE_FLS) $(IMC_FW_BLOCK_1) $(IMC_FW_BLOCK_2) $(IMC_BOOTLOADER_A) $(IMC_BOOTLOADER_B)
+#endif
 
 
 
 ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
-ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/lte_signed.fls
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_1_signed.fls
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_2_signed.fls
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_a_signed.fls
-ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_b_signed.fls
-endif
+#ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/lte_signed.fls
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_1_signed.fls
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_fw_block_2_signed.fls
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_a_signed.fls
+#ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/imc_bootloader_b_signed.fls
+#endif
 
 ifeq ($(findstring sofia3g,$(TARGET_BOARD_PLATFORM)),sofia3g)
 .INTERMEDIATE: $(MODEM_FLS)
@@ -183,7 +183,7 @@ $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_a.fls --tag MINI_BL_1 $(INJECT_FLASHLOADER_FLS) $(MINI_BL1_BIN) --replace --to-fls2
 	$(FLSTOOL) --prg $(INTEL_PRG_FILE) --output $(FLASHFILES_DIR)/imc_bootloader_b.fls --tag MINI_BL_2 $(INJECT_FLASHLOADER_FLS) $(MINI_BL2_BIN) --replace --to-fls2
 else
-modem.fls: $(FLASHFILES_DIR)/dsp_image.fls $(FLASHFILES_DIR)/lte.fls $(FLASHFILES_DIR)/imc_fw_block_1.fls \
+#modem.fls: $(FLASHFILES_DIR)/dsp_image.fls $(FLASHFILES_DIR)/lte.fls $(FLASHFILES_DIR)/imc_fw_block_1.fls \
 	            $(FLASHFILES_DIR)/imc_fw_block_2.fls $(FLASHFILES_DIR)/imc_bootloader_a.fls $(FLASHFILES_DIR)/imc_bootloader_b.fls
 .PHONY: force
 force: ;
