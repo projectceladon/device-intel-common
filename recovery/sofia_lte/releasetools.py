@@ -56,8 +56,7 @@ def Add_Recoverysecbin(info,infoinput):
   provdata_zip  = 'provdata_%s.zip' % variant if variant else 'provdata.zip'
   provdata_name = os.path.join(infoinput, "RADIO", provdata_zip)
   provdata, provdata_zip = common.UnzipTemp(provdata_name)
-  target2file = open(os.path.join(infoinput, "RADIO", "fftf_build.opt")).read().strip()
-  #target2file = open(os.path.join(provdata, "fftf_build.opt")).read().strip()
+  target2file = open(os.path.join(provdata, "fftf_build.opt")).read().strip()
   t2f = init_t2f_dict(target2file)
   flstool = t2f["FLSTOOL"]
   cmd = [flstool, "--prg", os.path.join(provdata, os.path.basename(t2f["INTEL_PRG_FILE"])),
@@ -114,8 +113,7 @@ def Add_Bootsecbin(info,infoinput):
   provdata_zip  = 'provdata_%s.zip' % variant if variant else 'provdata.zip'
   provdata_name = os.path.join(infoinput, "RADIO", provdata_zip)
   provdata, provdata_zip = common.UnzipTemp(provdata_name)
-  target2file = open(os.path.join(infoinput, "RADIO", "fftf_build.opt")).read().strip()
-  #target2file = open(os.path.join(provdata, "fftf_build.opt")).read().strip()
+  target2file = open(os.path.join(provdata, "fftf_build.opt")).read().strip()
   t2f = init_t2f_dict(target2file)
   flstool = t2f["FLSTOOL"]
   cmd = [flstool, "--prg", os.path.join(provdata, os.path.basename(t2f["INTEL_PRG_FILE"])),
