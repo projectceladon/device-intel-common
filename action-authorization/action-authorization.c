@@ -205,6 +205,44 @@ void bytes_to_hex_str(unsigned char *bytes, size_t length, char *str)
 	*str = '\0';
 }
 
+#ifdef USE_MINGW
+static inline BOOLEAN is_in_char_set(char c, const char *set)
+{
+        size_t i, len;
+
+        for (i = 0, len = strlen(set); i < len; i++)
+                if (c == set[i])
+                        return true;
+
+        return false;
+}
+
+char *strtok_r(char *str, const char *delim, char **saveptr)
+{
+        char *p, *res;
+
+        if (!delim || !saveptr || (!str && !*saveptr))
+                return NULL;
+
+        if (str)
+                *saveptr = str;
+
+        if (**saveptr == '\0')
+                return NULL;
+
+        res = *saveptr;
+        for (p = *saveptr; *p != '\0' && !is_in_char_set(*p, delim); p++)
+                ;
+
+        for (; *p != '\0' && is_in_char_set(*p, delim); p++)
+                *p = '\0';
+
+        *saveptr = p;
+
+        return res;
+}
+#endif
+
 static bool is_valid_nonce_message(char *message)
 {
 	uint8_t msg_version, msg_action;
