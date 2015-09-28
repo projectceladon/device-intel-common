@@ -353,7 +353,7 @@ static void usage(char *cmd, int status)
   <file> command.\n\
 \n\
    --oak-cert, -O <file>          OAK certificate (PEM)\n\
-   --oak-private-key, -P <file>   private key file (PEM)\n\
+   --oak-private-key, -K <file>   private key file (PEM)\n\
    --message, -M <string>         message received from get-action-nonce\n\
                                   fastboot command\n\
    --output-file, -F <file>       output file for the PKCS7 message\n\
