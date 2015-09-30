@@ -61,6 +61,9 @@
           <BitParameterBlock Name="input_flags" Size="32">
             <BitParameter Name="fast" Size="1" Pos="0"/>
             <BitParameter Name="hw_hotword" Size="1" Pos="1"/>
+            <BitParameter Name="raw" Size="1" Pos="2"/>
+            <BitParameter Name="sync" Size="1" Pos="3"/>
+            <BitParameter Name="primary" Size="1" Pos="4"/>
           </BitParameterBlock>
         </ComponentType>
 
