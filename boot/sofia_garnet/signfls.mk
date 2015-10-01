@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------
-ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 signfls_info:
 	@echo "----------------------------------------------------------"
 	@echo "-make signfls : Will generate all signed fls files"
