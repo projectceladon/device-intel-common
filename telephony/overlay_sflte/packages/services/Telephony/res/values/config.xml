@@ -24,4 +24,8 @@
     <!-- If true, automatic femtocell selection menu will be enabled -->
     <add-resource type="bool" name="config_enable_femtocell_selection" />
     <bool name="config_enable_femtocell_selection">false</bool>
+
+    <!-- Flag indicating if hac is enabled -->
+    <bool name="hac_enabled">true</bool>
+
 </resources>
