@@ -339,6 +339,56 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+######### Audio CAVS Algos #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Gain.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Dcr.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Fir.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Iir.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Mdrc.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Equalizers.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 ##############################
 # Algos_Gen3_5 Phony package
 include $(CLEAR_VARS)
