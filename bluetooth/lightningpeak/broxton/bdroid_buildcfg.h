@@ -23,6 +23,7 @@
 #define INTEL_CONTROLLER       TRUE
 #define INTEL_LNP_UART         TRUE
 
+#define BT_VND_CCE_MASKING_EN  FALSE
 /* To enable WBS: to be reenabled later */
 //#define BTM_WBS_INCLUDED              TRUE
 //#define BTIF_HF_WBS_PREFERRED         TRUE
