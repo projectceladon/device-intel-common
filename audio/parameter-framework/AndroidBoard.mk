@@ -136,15 +136,6 @@ LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := CMESubsystem.xml
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
-LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
-LOCAL_REQUIRED_MODULES := libremoteparameter-subsystem
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE := IMCSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
