@@ -3,7 +3,6 @@
 		<!--- ds4 -->
 		<vendorId value="8086"/>
 		<productId value="0a80"/>
-		<focal-length value="1860"/>
 		<aperture value="2.4"/>
 		<plugin name="ds4"/>
 		<sensorSize value="2.4x1.8"/>
