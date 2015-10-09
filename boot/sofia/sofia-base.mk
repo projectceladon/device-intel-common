@@ -53,7 +53,11 @@ MODEM_PROJECTNAME_VAR           ?= $(MODEM_PROJECTNAME)
 define sofia_base_per_variant
 
 ifeq ($(words $(SOFIA_FIRMWARE_VARIANTS)),1)
+ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)), sofia3g)
+IMAGES_DIR.$(1)                 := $$(PRODUCT_OUT)/fls_$(1)_$(TARGET_BUILD_VARIANT)
+else
 IMAGES_DIR.$(1)                 := $$(PRODUCT_OUT)/fls
+endif
 else
 IMAGES_DIR.$(1)                 := $$(PRODUCT_OUT)/fls_$(1)_$(TARGET_BUILD_VARIANT)
 endif
