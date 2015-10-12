@@ -43,4 +43,7 @@
 #define PORT_TX_BUF_HIGH_WM         20
 #define PORT_TX_BUF_CRITICAL_WM     25
 
+/* Include BLE Advertising */
+#define BLE_VND_INCLUDED TRUE
+
 #endif
