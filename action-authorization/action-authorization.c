@@ -4,30 +4,17 @@
  *
  * Author: Jeremy Compostella <jeremy.compostella@intel.com>
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer
- *      in the documentation and/or other materials provided with the
- *      distribution.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <stdlib.h>
@@ -47,7 +34,6 @@
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
 
 static BIO *err_bio;
-static int nopassword;
 static int verbose;
 
 static uint8_t SUPPORTED_VERSION = 0;
@@ -88,9 +74,11 @@ static EVP_PKEY *load_key_from_DER_file(const char *file, const char *password)
 	if (!key_bio)
 		return NULL;
 
-	if (nopassword) {
+	if (!password) {	/* Try as not encrypted private key */
 		key = d2i_PrivateKey_bio(key_bio, NULL);
-		goto out;
+		if (key)
+			goto out;
+		BIO_seek(key_bio, 0);
 	}
 
 	OpenSSL_add_all_algorithms();
@@ -357,7 +345,6 @@ static void usage(char *cmd, int status)
    --message, -M <string>         message received from get-action-nonce\n\
                                   fastboot command\n\
    --output-file, -F <file>       output file for the PKCS7 message\n\
-   --nopassword                   private key does not need a password\n\
    --password <password>          private key password\n\
    --verbose                      print all debug messages\n\
    --supported-version, -V        print the nonce version supported\n\
@@ -372,7 +359,6 @@ static struct option long_options[] = {
 	{"oak-private-key", required_argument, 0, 'K'},
 	{"message", required_argument, 0, 'M'},
 	{"output-file", required_argument, 0, 'F' },
-	{"nopassword", no_argument, &nopassword, 1 },
 	{"password", required_argument, 0, 'P' },
 	{"supported-version", no_argument, &verbose, 'V' },
 	{"verbose", no_argument, &verbose, 1 },
@@ -442,8 +428,6 @@ int main(int argc, char **argv)
 	}
 
 	if (!key_file || !cert_file || !out_file || !message)
-		usage(cmd, EXIT_FAILURE);
-	if (password && nopassword)
 		usage(cmd, EXIT_FAILURE);
 
 	if (!is_valid_nonce_message(message))
