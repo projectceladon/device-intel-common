@@ -46,4 +46,7 @@
 /* Include BLE Advertising */
 #define BLE_VND_INCLUDED TRUE
 
+/* Improve Scan results */
+#define BTA_HOST_INTERLEAVE_SEARCH   TRUE
+
 #endif
