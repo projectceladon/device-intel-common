@@ -133,11 +133,14 @@
             <BooleanParameter Name="require_preenable"/>
             <BooleanParameter Name="require_postdisable"/>
             <IntegerParameter Name="silence_prolog_ms" Size="32"/>
-            <IntegerParameter Name="channels" Size="32"/>
+            <IntegerParameter Name="channels" Size="32" Description="Note that value 0 is used for
+                                                                     dynamic channels support"/>
             <StringParameter Name="channels_policy" MaxLength="256"
                 Description="CSV list of policy copy, average or ignore are supported"/>
-            <IntegerParameter Name="rate" Size="32"/>
+            <IntegerParameter Name="rate" Size="32" Description="Note that value 0 is used for
+                                                                 dynamic sample rate support"/>
             <EnumParameter Name="format" Size="8">
+                <ValuePair Literal="dynamic" Numerical="0"/>
                 <ValuePair Literal="Pcm16Bit" Numerical="1"/>
                 <ValuePair Literal="Pcm8Bit24Bit" Numerical="3"/>
                 <ValuePair Literal="Pcm32Bit" Numerical="4"/>
