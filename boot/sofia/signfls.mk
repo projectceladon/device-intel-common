@@ -143,9 +143,11 @@ FWU_PACKAGE_LIST.$(1)  = $$(basename $$(notdir $$(PSI_FLASH_SIGNED_FLS.$(1))))
 FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SLB_SIGNED_FLS.$(1))))
 FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SYSTEM_SIGNED_FLS_LIST.$(1))))
 
-#remove boot/recovery from the fwu_image
-#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output.
+#remove boot/recovery and mv configs other than the default one from the fwu_image
+#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output, same as the non default mv configuration files.
 FWU_PACKAGE_BIN_LIST.$(1) := $$(filter-out boot_signed recovery_signed, $$(FWU_PACKAGE_LIST.$(1)))
+MV_CONFIG_NOT_DEFAULT := $$(addprefix mvconfig_,$$(addsuffix _signed,$$(filter-out $$(MV_CONFIG_DEFAULT_TYPE),$$(MV_CONFIG_TYPE))))
+FWU_PACKAGE_BIN_LIST.$(1) := $$(filter-out $$(MV_CONFIG_NOT_DEFAULT), $$(FWU_PACKAGE_BIN_LIST.$(1)))
 
 FWU_PACKAGE_SECPACK_ONLY_LIST.$(1) += $$(basename $$(notdir $$(ANDROID_SIGNED_FLS_LIST.$(1))))
 
@@ -155,7 +157,6 @@ $$(foreach t,$$(FWU_PACKAGE_LIST.$(1)),$$(eval $$(call GEN_FIRMWARE_UPDATE_PACK_
 FWU_DEP_SECPACK_ONLY_LIST.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(FWU_PACKAGE_SECPACK_ONLY_LIST.$(1)))
 $$(foreach t,$$(FWU_PACKAGE_SECPACK_ONLY_LIST.$(1)),$$(eval $$(call GEN_FIRMWARE_UPDATE_PACK_RULES,$$(t))))
 
-#remove boot/recovery in fwu_image
 FWU_DEP_BIN_LIST.$(1) := $$(addprefix $$(EXTRACT_TEMP.$(1))/,$$(FWU_PACKAGE_BIN_LIST.$(1)))
 
 FWU_COMMAND.$(1) = $$(foreach a, $$(FWU_DEP_BIN_LIST.$(1)), $$(FWU_PACK_GENERATE_TOOL) --input $$(FWU_IMAGE_BIN.$(1)) --output $$(FWU_IMAGE_BIN.$(1))_temp --secpack $$(a)/$$(SECP_EXT) --data $$(a)/$$(DATA_EXT); cp $$(FWU_IMAGE_BIN.$(1))_temp $$(FWU_IMAGE_BIN.$(1));)
