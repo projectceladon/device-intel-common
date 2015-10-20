@@ -39,6 +39,10 @@
                 <BitParameter Name="compress_offload" Size="1" Pos="4"/>
                 <BitParameter Name="non_blocking" Size="1" Pos="5"/>
                 <BitParameter Name="hw_av_sync" Size="1" Pos="6"/>
+                <BitParameter Name="tts" Size="1" Pos="7"/>
+                <BitParameter Name="raw" Size="1" Pos="8"/>
+                <BitParameter Name="sync" Size="1" Pos="9"/>
+                <BitParameter Name="iec958_nonaudio" Size="1" Pos="10"/>
             </BitParameterBlock>
         </ComponentType>
 
