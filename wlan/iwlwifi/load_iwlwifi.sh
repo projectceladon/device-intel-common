@@ -1,3 +1,5 @@
+#!/system/bin/sh
+
 modules=`getprop ro.boot.moduleslocation`
 
 insmod $modules/compat.ko
