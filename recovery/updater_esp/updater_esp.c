@@ -32,6 +32,8 @@
 #include <dirent.h>
 #include <sys/mount.h>
 #include <libgen.h>
+#include <stdbool.h>
+#include <wchar.h>
 
 #include <edify/expr.h>
 #include <gpt/gpt.h>
@@ -39,6 +41,7 @@
 #include <cutils/properties.h>
 #include <bootloader.h>
 #include <cutils/android_reboot.h>
+#include <efivar.h>
 
 #define CHUNK 1024*1024
 
@@ -228,6 +231,146 @@ static void swap64bit(uint64_t *a, uint64_t *b)
     *b = tmp;
 }
 
+typedef struct {
+    uint8_t  type;
+    uint8_t  subtype;
+    uint16_t length;
+    uint8_t  data[1];
+} __attribute__((packed)) EFI_DEVICE_PATH;
+
+typedef struct {
+    uint8_t type;
+    uint8_t subtype;
+    uint16_t length;
+    uint32_t part_num;
+    uint64_t start;
+    uint64_t size;
+    uint8_t  signature[16];
+    uint8_t  mbr_type;
+    uint8_t  signature_type;
+} __attribute__((packed)) HARDDRIVE_DEVICE_PATH;
+
+typedef struct {
+    uint32_t attributes;
+    uint16_t file_path_list_length;
+    wchar_t description[1];            /* variable length field */
+    EFI_DEVICE_PATH file_path_list[1]; /* variable length field */
+} __attribute__((packed)) load_option_t;
+
+#define VAR_BOOTORDER         "BootOrder"
+#define VAR_BOOTOPTION        "Boot%04x"
+#define HARDDRIVE_DEVICE_TYPE 0x1
+#define END_DEVICE_PATH_TYPE  0x7F
+#define MEDIA_DEVICE_TYPE     0x4
+#define SIGNATURE_TYPE_GUID   0x02
+
+static HARDDRIVE_DEVICE_PATH *find_harddrive_path(EFI_DEVICE_PATH *path,
+                                                  char *endpath,
+                                                  struct guid *guid)
+{
+    HARDDRIVE_DEVICE_PATH *hd_path;
+
+    while ((char *)&path[1] <= endpath && path->type != END_DEVICE_PATH_TYPE) {
+        if (path->type != MEDIA_DEVICE_TYPE
+            || path->subtype != HARDDRIVE_DEVICE_TYPE) {
+            path = (EFI_DEVICE_PATH *)((char *)path + path->length);
+            continue;
+        }
+
+        if ((char *)path + sizeof(HARDDRIVE_DEVICE_PATH) > endpath) {
+            printf("Invalid device path\n");
+            return NULL;
+        }
+
+        hd_path = (HARDDRIVE_DEVICE_PATH *)path;
+        if (hd_path->signature_type != SIGNATURE_TYPE_GUID)
+            return NULL;
+
+        return !memcmp(hd_path->signature, guid, sizeof(*guid)) ? hd_path : NULL;
+    }
+
+    return NULL;
+}
+
+static int update_load_option_start_offset(struct guid *guid, uint64_t new_start)
+{
+    efi_guid_t global_guid = EFI_GLOBAL_GUID;
+    uint32_t attributes;
+    uint16_t *entries;
+    HARDDRIVE_DEVICE_PATH *hd_path;
+    load_option_t *load_option;
+    char varname[sizeof(VAR_BOOTOPTION)];
+    size_t i, j, size, len, nb_load_option;
+    EFI_DEVICE_PATH *path;
+    char *endpath;
+    int ret;
+    bool updated = false;
+
+    ret = efi_get_variable(global_guid, VAR_BOOTORDER, (uint8_t **)&entries,
+                           &size, &attributes);
+    if (ret) {
+        printf("Failed to read %s EFI variable\n", VAR_BOOTORDER);
+        return ret;
+    }
+
+    if (size % sizeof(*entries) != 0) {
+        printf("Invalid %s EFI variable size\n", VAR_BOOTORDER);
+        goto err;
+    }
+
+    nb_load_option = size / sizeof(*entries);
+    for (i = 0; i < nb_load_option; i++) {
+        ret = snprintf(varname, sizeof(varname), VAR_BOOTOPTION, entries[i]);
+        if (ret != (int)strlen(VAR_BOOTOPTION)) {
+            printf("Failed to format the boot option variable name\n");
+            goto err;
+        }
+
+        ret = efi_get_variable(global_guid, varname,
+                               (uint8_t **)&load_option, &size, &attributes);
+        if (ret) {
+            printf("Failed to read %s EFI variable\n", varname);
+            goto err;
+        }
+
+        len = wcsnlen(load_option->description, size / sizeof(uint16_t));
+        if (len == size / sizeof(uint16_t)) {
+            printf("Invalid load option description\n");
+            free(load_option);
+            goto err;
+        }
+
+        path = (EFI_DEVICE_PATH *)&load_option->description[len + 1];
+        endpath = (char *)load_option + size;
+
+        hd_path = find_harddrive_path(path, endpath, guid);
+        if (!hd_path) {
+            free(load_option);
+            continue;
+        }
+
+        hd_path->start = new_start;
+        ret = efi_set_variable(global_guid, varname, (uint8_t *)load_option,
+                               size, attributes);
+        if (ret) {
+            printf("Failed to write %s EFI variable\n", varname);
+            free(load_option);
+            goto err;
+        }
+
+        printf("%s load option successfully updated\n", varname);
+        free(load_option);
+        updated = true;
+    }
+
+    free(entries);
+    return updated ? 0 : -1;
+
+err:
+    free(entries);
+    return -1;
+}
+
 
 static Value *SwapEntriesFn(const char *name, State *state,
         int argc, Expr *argv[])
@@ -305,8 +448,15 @@ static Value *SwapEntriesFn(const char *name, State *state,
     swap64bit(&e1->first_lba, &e2->first_lba);
     swap64bit(&e1->last_lba, &e2->last_lba);
 
-    if (gpt_write(gpt))
+    if (gpt_write(gpt)) {
         ErrorAbort(state, "%s: failed to write GPT", name);
+        goto done;
+    }
+
+    if (update_load_option_start_offset(&e1->part_guid, e1->first_lba)) {
+        ErrorAbort(state, "%s: unable to update the load options", name);
+        goto done;
+    }
 
     ret = StringValue(strdup(""));
 done:
