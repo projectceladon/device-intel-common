@@ -170,3 +170,5 @@ $(MOBILEVISOR_FLS): createflashfile_dir | $(ACP)
 mobilevisor.fls:  $(MOBILEVISOR_FLS)
 droidcore: mobilevisor.fls
 endif
+
+SOFIA_PROVDATA_FILES += $(MOBILEVISOR_FLS)

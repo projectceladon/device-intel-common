@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------------------
-ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+#ifneq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 signfls_info:
 	@echo "----------------------------------------------------------"
 	@echo "-make signfls : Will generate all signed fls files"
@@ -91,6 +91,7 @@ $(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls
 $(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
+SOFIA_PROVDATA_FILES += $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)  $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)  $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST)
 
 ## Firmware update
 VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
@@ -100,6 +101,8 @@ VRL_FLS             := $(FLASHFILES_DIR)/vrl.fls
 VRL_SIGNED_FLS      := $(SIGN_FLS_DIR)/vrl_signed.fls
 
 .INTERMEDIATE: $(VRL_FLS)
+
+SOFIA_PROVDATA_FILES += $(FWU_IMAGE_BIN)
 
 INSTALLED_RADIOIMAGE_TARGET += $(FWU_IMAGE_BIN)
 
@@ -129,6 +132,7 @@ FWU_ADDI_COMMAND = $(foreach a, $(FWU_DEP_SECPACK_ONLY_LIST), $(FWU_PACK_GENERAT
 
 .PHONY: fwu_image
 fwu_image: $(FWU_DEP_LIST) $(FWU_DEP_SECPACK_ONLY_LIST) fastboot_img | createflashfile_dir
+	rm -rf $(FWU_IMAGE_BIN)
 	@echo "---------- Generate fwu_image --------------------"
 	$(FWU_COMMAND)
 	$(FWU_ADDI_COMMAND)
@@ -154,4 +158,4 @@ $(VRL_FLS) : createflashfile_dir $(VRL_BIN) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASH
 
 $(VRL_SIGNED_FLS) :  $(VRL_FLS) $(VRL_SIGN_SCRIPT) $(FLSTOOL) sign_flashloader
 	$(FLSTOOL) --sign $(VRL_FLS) --script $(VRL_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
-endif
+#endif

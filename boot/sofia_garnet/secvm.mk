@@ -22,7 +22,6 @@ SECVM_BUILD_OUT := $(CURDIR)/$(PRODUCT_OUT)
 SECVM_BUILD_DIR := $(SECVM_BUILD_OUT)/secvm
 BUILT_SECVM := $(SECVM_BUILD_DIR)/secvm.hex
 SECVM_FLS := $(FLASHFILES_DIR)/secvm.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/secvm_signed.fls
 TARGET_BOARD_PLATFORM_VAR ?= $(TARGET_BOARD_PLATFORM)
  
 
@@ -62,7 +61,6 @@ endif
 ifeq ($(USE_PREBUILT_SECVM), true)
 
 SECVM_FLS := $(FLASHFILES_DIR)/secvm.fls
-SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/secvm_signed.fls
 
 BUILT_SECVM := $(SOFIA_FW_SRC_BASE)/images/${MODEM_PLATFORM}/secvm.hex
 
@@ -86,3 +84,6 @@ $(SECVM_FLS): createflashfile_dir | $(ACP)
 .PHONY: secvm.fls
 secvm.fls: $(SECVM_FLS)
 endif
+
+SOFIA_PROVDATA_FILES += $(SECVM_FLS)
+SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/secvm_signed.fls

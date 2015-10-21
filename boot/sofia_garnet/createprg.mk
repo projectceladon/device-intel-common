@@ -44,3 +44,4 @@ prginfo:
 
 build_info: prginfo
 endif
+SOFIA_PROVDATA_FILES += $(INTEL_PRG_FILE)

@@ -144,6 +144,12 @@ endif
 mvconfig_$(1).fls : $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
 endef
 
+define ADD_ALL_MV_CONIFG
+SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
+SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
+endef
+$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
+
 $(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_XML_RULES,$(t))))
 
 $(MV_CONFIG_BUILD_OUT)/%.bin: $(MV_CONFIG_BUILD_OUT)/%.xml | $(MV_CONFIG_BUILD_OUT)
@@ -179,11 +185,24 @@ mvconfig: $(MV_CONFIG_DEFAULT_FLS)
 endif
 
 ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
+
+ifneq '$(MV_CONFIG_TYPE)' ''
+MV_CONFIG_DEFAULT_TYPE = $(MV_CONFIG_TYPE)
+else
+MV_CONFIG_TYPE += up
+MV_CONFIG_TYPE += smp
+MV_CONFIG_TYPE += smp_profiling
+MV_CONFIG_DEFAULT_TYPE = smp
+endif
+SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE)_signed.fls
+
 MVCONFIG_FLS         := $(FLASHFILES_DIR)/mvconfig_smp.fls
 
 PREBUILT_MVCONFIG := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/mvconfig_smp.fls
 $(MVCONFIG_FLS): createflashfile_dir | $(ACP)
 	$(ACP) $(PREBUILT_MVCONFIG) $@
+
+SOFIA_PROVDATA_FILES += $(MVCONFIG_FLS)
 
 .PHONY: mvconfig
 mvconfig: $(MVCONFIG_FLS)

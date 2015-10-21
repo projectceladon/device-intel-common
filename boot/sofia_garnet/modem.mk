@@ -117,6 +117,8 @@ BUILT_MODEM = $(SOFIA_FW_SRC_BASE)/images/$(MODEM_PLATFORM)/SF_3GR.ihex
 endif
 
 MODEM_FLS  := $(FLASHFILES_DIR)/modem.fls
+SOFIA_PROVDATA_FILES += $(MODEM_FLS)
+
 ANDROID_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/modem_signed.fls
 ifeq ($(TARGET_BOARD_PLATFORM),sofia_lte)
 ANDROID_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/dsp_image_signed.fls
@@ -175,5 +177,3 @@ $(MODEM_FLS): $(BUILT_MODEM) $(FLSTOOL) $(INTEL_PRG_FILE) $(FLASHLOADER_FLS)
 modem.fls: $(MODEM_FLS)
 droidcore: modem.fls
 endif #endif $(TARGET_BOARD_PLATFORM) = sofia3g
-
-
