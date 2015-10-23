@@ -155,6 +155,12 @@
             <IntegerParameter Name="stop_threshold" Size="32" Description="in frames"/>
             <IntegerParameter Name="silence_threshold" Size="32" Description="in frames"/>
             <IntegerParameter Name="avail_min" Size="32" Description="in frames"/>
+            <StringParameter Name="dynamic_channel_map_control" MaxLength="256"
+                             Description="control to use to retrieve supported channel maps"/>
+            <StringParameter Name="dynamic_sample_rate_control" MaxLength="256"
+                             Description="control to use to retrieve supported sample rates"/>
+            <StringParameter Name="dynamic_format_control" MaxLength="256"
+                             Description="control to use to retrieve supported formats"/>
         </ComponentType>
 
         <!-- Specialized configuration for playback (effects_supported has to
