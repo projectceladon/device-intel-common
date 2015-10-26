@@ -63,5 +63,7 @@
   <java-symbol type="array" name="plmnIndex" />
   <java-symbol type="bool" name="config_backup_received_message" />
   <java-symbol type="bool" name="config_mms_dual_sim_feature" />
+  <java-symbol type="bool" name="config_sms_cache_allowed" />
+  <java-symbol type="bool" name="config_sms_stored_allowed" />
   <java-symbol type="bool" name="config_sms_validity_period_allowed" />
 </resources>

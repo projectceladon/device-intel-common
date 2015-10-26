@@ -82,6 +82,14 @@
     <add-resource type="bool" name="config_mms_dual_sim_feature" />
     <bool name="config_mms_dual_sim_feature">false</bool>
 
+    <!-- When true, enable sms store -->
+    <add-resource type="bool" name="config_sms_stored_allowed" />
+    <bool name="config_sms_stored_allowed">false</bool>
+
+    <!-- When true, enable sms cache -->
+    <add-resource type="bool" name="config_sms_cache_allowed" />
+    <bool name="config_sms_cache_allowed">false</bool>
+
     <!-- When true, enable sms validity period -->
     <add-resource type="bool" name="config_sms_validity_period_allowed" />
     <bool name="config_sms_validity_period_allowed">false</bool>
