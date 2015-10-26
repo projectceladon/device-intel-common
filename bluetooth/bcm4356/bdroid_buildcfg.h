@@ -49,4 +49,8 @@
 /* Improve Scan results */
 #define BTA_HOST_INTERLEAVE_SEARCH   TRUE
 
+/*To enable WBS */
+#define BTM_WBS_INCLUDED              TRUE
+#define BTIF_HF_WBS_PREFERRED         TRUE
+
 #endif
