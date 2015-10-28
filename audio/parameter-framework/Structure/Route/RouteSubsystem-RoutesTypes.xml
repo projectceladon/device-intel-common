@@ -143,11 +143,13 @@
                 Description="CSV list of policy copy, average or ignore are supported"/>
             <IntegerParameter Name="rate" Size="32" Description="Note that value 0 is used for
                                                                  dynamic sample rate support"/>
+            <!-- Values of format must match the definition within audio.h. -->
             <EnumParameter Name="format" Size="8">
                 <ValuePair Literal="dynamic" Numerical="0"/>
                 <ValuePair Literal="Pcm16Bit" Numerical="1"/>
-                <ValuePair Literal="Pcm8Bit24Bit" Numerical="3"/>
-                <ValuePair Literal="Pcm32Bit" Numerical="4"/>
+                <ValuePair Literal="Pcm8Bit" Numerical="2"/>
+                <ValuePair Literal="Pcm32Bit" Numerical="3"/>
+                <ValuePair Literal="Pcm8Bit24Bit" Numerical="4"/>
             </EnumParameter>
             <IntegerParameter Name="period_size" Size="32" Description="in frames"/>
             <IntegerParameter Name="period_count" Size="32" Description="in frames"/>
