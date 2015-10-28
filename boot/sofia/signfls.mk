@@ -36,6 +36,13 @@ VRL_SIGN_SCRIPT     := $(SIGN_SCRIPT_DIR)/vrl.signing_script.txt
 SECP_EXT := *.fls_ID0_*_SecureBlock.bin
 DATA_EXT := *.fls_ID0_*_LoadMap*
 
+define ADD_ALL_MV_CONIFG
+# $(1) == each SOFIA_FIRMWARE_VARIANT
+# $(2) == each MV_CONFIG_TYPE
+SOFIA_PROVDATA_FILES.$(1) += $$(FLASHFILES_DIR.$(1))/mvconfig_$(2).fls
+MV_CONFIG_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mvconfig_$(2)_signed.fls
+endef
+
 ifeq ($(TARGET_PROJECT), sofia_lte)
 FWU_PACK_GENERATE_TOOL = $(CURDIR)/hardware/intel/sofia_lte-fls/tools/fwpgen
 endif
@@ -47,13 +54,17 @@ ifeq ($$(TARGET_PROJECT), sofia_lte)
     EBL_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/ebl.fls
     PSI_FLASH_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_flash.fls
     SLB_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/slb.fls
-    MV_CONFIG_DEFAULT_TYPE.$(1) = smp
+    MV_CONFIG_TYPE.$(1) += smp
+    MV_CONFIG_TYPE.$(1) += smp_profiling
     SYSTEM_SIGNED_FLS_LIST.$(1) = $$(SIGN_FLS_DIR.$(1))/ucode_patch_signed.fls
     SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/splash_img_signed.fls
     SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1))_signed.fls
     SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mobilevisor_signed.fls
     SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/secvm_signed.fls
 endif
+
+$$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call ADD_ALL_MV_CONIFG,$(1),$$(t))))
+SOFIA_PROVDATA_FILES.$(1) += $$(MV_CONFIG_SIGNED_FLS_LIST.$(1))
 
 ## FLS sign
 .PHONY: signfls.$(1)
@@ -143,11 +154,9 @@ FWU_PACKAGE_LIST.$(1)  = $$(basename $$(notdir $$(PSI_FLASH_SIGNED_FLS.$(1))))
 FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SLB_SIGNED_FLS.$(1))))
 FWU_PACKAGE_LIST.$(1) += $$(basename $$(notdir $$(SYSTEM_SIGNED_FLS_LIST.$(1))))
 
-#remove boot/recovery and mv configs other than the default one from the fwu_image
-#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output, same as the non default mv configuration files.
+#remove boot/recovery from the fwu_image
+#boot_signed and recovery_signed images will remain in the out/../fls/signed_fls build output
 FWU_PACKAGE_BIN_LIST.$(1) := $$(filter-out boot_signed recovery_signed, $$(FWU_PACKAGE_LIST.$(1)))
-MV_CONFIG_NOT_DEFAULT := $$(addprefix mvconfig_,$$(addsuffix _signed,$$(filter-out $$(MV_CONFIG_DEFAULT_TYPE),$$(MV_CONFIG_TYPE))))
-FWU_PACKAGE_BIN_LIST.$(1) := $$(filter-out $$(MV_CONFIG_NOT_DEFAULT), $$(FWU_PACKAGE_BIN_LIST.$(1)))
 
 FWU_PACKAGE_SECPACK_ONLY_LIST.$(1) += $$(basename $$(notdir $$(ANDROID_SIGNED_FLS_LIST.$(1))))
 

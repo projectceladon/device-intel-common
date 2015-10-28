@@ -42,13 +42,6 @@ $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml : force | $$(MV_CONFIG_BUILD_OUT.
 mvconfig_$(2).fls.$(1) : $$(MV_CONFIG_FLS_OUTPUT.$(1))/mvconfig_$(2).fls
 endef
 
-define ADD_ALL_MV_CONIFG
-# $(1) == each SOFIA_FIRMWARE_VARIANT
-# $(2) == each MV_CONFIG_TYPE
-SOFIA_PROVDATA_FILES.$(1) += $$(FLASHFILES_DIR.$(1))/mvconfig_$(2).fls
-MV_CONFIG_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/mvconfig_$(2)_signed.fls
-endef
-
 define mobilevisor_config_per_variant
 
 MV_CONFIG_BUILD_OUT.$(1)     := $$(SOFIA_FIRMWARE_OUT.$(1))/vmm_build/configs
@@ -83,9 +76,6 @@ MV_CONFIG_DEFAULT_FLS.$(1) = $$(FLASHFILES_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAU
 MV_CONFIG_DEFAULT_BIN.$(1) = $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1)).bin
 MV_CONFIG_DEFAULT_SIGNED_FLS.$(1) := $$(SIGN_FLS_DIR.$(1))/mvconfig_$$(MV_CONFIG_DEFAULT_TYPE.$(1))_signed.fls
 SYSTEM_SIGNED_FLS_LIST.$(1) += $$(MV_CONFIG_DEFAULT_SIGNED_FLS.$(1))
-
-$$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call ADD_ALL_MV_CONIFG,$(1),$$(t))))
-SOFIA_PROVDATA_FILES.$(1) += $$(MV_CONFIG_SIGNED_FLS_LIST.$(1))
 
 #############################
 # create fls, bin, xml list #

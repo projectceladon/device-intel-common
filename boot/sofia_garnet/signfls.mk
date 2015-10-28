@@ -83,12 +83,15 @@ sign_bootloader: sign_flashloader $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS) | cr
 
 SYSTEM_FLS_SIGN_SCRIPT := $(SIGN_SCRIPT_DIR)/system.signing_script.txt
 
-sign_system: sign_flashloader $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST) | createflashfile_dir
+sign_system: sign_flashloader $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST) $(MV_CONFIG_SIGNED_FLS_LIST) | createflashfile_dir
 
 $(SYSTEM_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
 $(ANDROID_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
+	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
+
+$(MV_CONFIG_SIGNED_FLS_LIST): $(SIGN_FLS_DIR)/%_signed.fls: $(FLASHFILES_DIR)/%.fls $(FLSTOOL) $(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader
 	$(FLSTOOL) --sign $< --script $(SYSTEM_FLS_SIGN_SCRIPT) $(INJECT_SIGNED_FLASHLOADER_FLS) -o $@ --replace
 
 SOFIA_PROVDATA_FILES += $(PSI_RAM_SIGNED_FLS) $(EBL_SIGNED_FLS)  $(PSI_FLASH_SIGNED_FLS) $(SLB_SIGNED_FLS)  $(SYSTEM_SIGNED_FLS_LIST) $(ANDROID_SIGNED_FLS_LIST) $(SYSTEM_FLS_SIGN_SCRIPT)

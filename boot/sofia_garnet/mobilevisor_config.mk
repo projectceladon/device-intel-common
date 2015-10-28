@@ -31,7 +31,7 @@ endif
 
 #################################
 # supported MVCONFIG_TYPE
-# up, smp, smp_profiling
+# smp, smp_profiling
 # modemonly
 # 512mb
 # smp_64bit
@@ -39,7 +39,6 @@ endif
 ifneq '$(MV_CONFIG_TYPE)' ''
 MV_CONFIG_DEFAULT_TYPE = $(MV_CONFIG_TYPE)
 else
-MV_CONFIG_TYPE += up
 MV_CONFIG_TYPE += smp
 MV_CONFIG_TYPE += smp_profiling
 MV_CONFIG_DEFAULT_TYPE = smp
@@ -189,22 +188,23 @@ ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
 ifneq '$(MV_CONFIG_TYPE)' ''
 MV_CONFIG_DEFAULT_TYPE = $(MV_CONFIG_TYPE)
 else
-MV_CONFIG_TYPE += up
 MV_CONFIG_TYPE += smp
 MV_CONFIG_TYPE += smp_profiling
 MV_CONFIG_DEFAULT_TYPE = smp
 endif
 SYSTEM_SIGNED_FLS_LIST  += $(SIGN_FLS_DIR)/mvconfig_$(MV_CONFIG_DEFAULT_TYPE)_signed.fls
 
-MVCONFIG_FLS         := $(FLASHFILES_DIR)/mvconfig_smp.fls
+define CREATE_MV_CONFIG_RULES
+$(FLASHFILES_DIR)/mvconfig_$(1).fls: createflashfile_dir | $(ACP)
+	$(ACP) $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/mvconfig_$(1).fls $(FLASHFILES_DIR)/mvconfig_$(1).fls
+MV_CONFIG_FLS_LIST += $(FLASHFILES_DIR)/mvconfig_$(1).fls
+MV_CONFIG_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
+endef
 
-PREBUILT_MVCONFIG := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/prebuilt-fls/mvconfig_smp.fls
-$(MVCONFIG_FLS): createflashfile_dir | $(ACP)
-	$(ACP) $(PREBUILT_MVCONFIG) $@
-
-SOFIA_PROVDATA_FILES += $(MVCONFIG_FLS)
+$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_RULES,$(t))))
+SOFIA_PROVDATA_FILES += $(MV_CONFIG_FLS_LIST) $(MV_CONFIG_SIGNED_FLS_LIST)
 
 .PHONY: mvconfig
-mvconfig: $(MVCONFIG_FLS)
+mvconfig: $(MV_CONFIG_FLS_LIST)
 droidcore: mvconfig
 endif

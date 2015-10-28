@@ -60,7 +60,7 @@ endif
 
 SOFIA_PROVDATA_FILES.$(1)       += $$(FLSTOOL)
 INTEL_PRG_FILE.$(1)             := $$(INTEL_PRG_FILE)
-MV_CONFIG_DEFAULT_FLS.$(1)      := $$(MV_CONFIG_DEFAULT_FLS)
+MV_CONFIG_DEFAULT_TYPE.$(1)     := $$(MV_CONFIG_DEFAULT_TYPE)
 FLASHFILES_DIR.$(1)             := $$(IMAGES_DIR.$(1))/fls
 SIGN_FLS_DIR.$(1)               := $$(IMAGES_DIR.$(1))/signed_fls
 FASTBOOT_IMG_DIR.$(1)           := $$(IMAGES_DIR.$(1))/fastboot
