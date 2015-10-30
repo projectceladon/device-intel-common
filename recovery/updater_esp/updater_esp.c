@@ -33,7 +33,6 @@
 #include <sys/mount.h>
 #include <libgen.h>
 #include <stdbool.h>
-#include <wchar.h>
 
 #include <edify/expr.h>
 #include <gpt/gpt.h>
@@ -250,10 +249,12 @@ typedef struct {
     uint8_t  signature_type;
 } __attribute__((packed)) HARDDRIVE_DEVICE_PATH;
 
+typedef uint16_t char16_t;
+
 typedef struct {
     uint32_t attributes;
     uint16_t file_path_list_length;
-    wchar_t description[1];            /* variable length field */
+    char16_t description[1];           /* variable length field */
     EFI_DEVICE_PATH file_path_list[1]; /* variable length field */
 } __attribute__((packed)) load_option_t;
 
@@ -263,6 +264,17 @@ typedef struct {
 #define END_DEVICE_PATH_TYPE  0x7F
 #define MEDIA_DEVICE_TYPE     0x4
 #define SIGNATURE_TYPE_GUID   0x02
+
+static size_t strnlen16(const char16_t *s, size_t maxlen)
+{
+    size_t i;
+
+    for (i = 0; i < maxlen; i++)
+        if (s[i] == 0)
+            return i;
+
+    return maxlen;
+}
 
 static HARDDRIVE_DEVICE_PATH *find_harddrive_path(EFI_DEVICE_PATH *path,
                                                   char *endpath,
@@ -333,9 +345,11 @@ static int update_load_option_start_offset(struct guid *guid, uint64_t new_start
             goto err;
         }
 
-        len = wcsnlen(load_option->description, size / sizeof(uint16_t));
-        if (len == size / sizeof(uint16_t)) {
-            printf("Invalid load option description\n");
+        len = strnlen16(load_option->description,
+                        (size - offsetof(load_option_t, description)) / sizeof(char16_t));
+        if (offsetof(load_option_t, description) + ((len + 1) * sizeof(char16_t)) +
+            load_option->file_path_list_length != size) {
+            printf("Invalid load option %s\n", varname);
             free(load_option);
             goto err;
         }
