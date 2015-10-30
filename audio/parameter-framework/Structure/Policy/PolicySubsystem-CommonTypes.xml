@@ -30,7 +30,7 @@
             <BitParameter Name="usb_accessory" Size="1" Pos="13"/>
             <BitParameter Name="usb_device" Size="1" Pos="14"/>
             <BitParameter Name="remote_submix" Size="1" Pos="15"/>
-            <BitParameter Name="telephony_tx" Size="1" Pos="26"/>
+            <BitParameter Name="telephony_tx" Size="1" Pos="16"/>
             <BitParameter Name="line" Size="1" Pos="17"/>
             <BitParameter Name="hdmi_arc" Size="1" Pos="18"/>
             <BitParameter Name="spdif" Size="1" Pos="19"/>
