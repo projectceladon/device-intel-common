@@ -35,7 +35,8 @@ LOCAL_REQUIRED_MODULES += \
     libremote-processor \
     remote-process \
     parameter-audio \
-    parameter-route
+    parameter-route \
+    parameter-policy
 endif
 
 include $(BUILD_PHONY_PACKAGE)
@@ -75,6 +76,14 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-route
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter-policy
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)

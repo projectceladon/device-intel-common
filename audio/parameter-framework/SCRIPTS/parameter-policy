@@ -1,0 +1,15 @@
+#!/system/bin/sh
+socket_opened=$(netstat -ln | grep 0.0.0.0:5019)
+if [[ ! -z "$socket_opened" ]]
+then
+    if [[ $# -eq 0 ]]
+    then
+        echo "No argument supplied"
+        remote-process localhost 5019 help
+    else
+        remote-process localhost 5019 "$@"
+    fi
+else
+        echo "The configurable audio policy PFW remote-processor is not running"
+fi
+
