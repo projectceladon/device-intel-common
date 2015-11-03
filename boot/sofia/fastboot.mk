@@ -57,13 +57,7 @@ bootloader_img.$(1): fastboot_img.$(1) $$(BOOTLOADER_DEP.$(1)) | createflashfile
 
 $$(BOOTLOADER_IMAGE.$(1)) : bootloader_img.$(1)
 
-SOFIA_PROVDATA_FILES += $(BOOTLOADER_IMAGE)
-#FIXME : Breaks "make dist" on LTE. Once build fwu_image on LTE is
-#enabled this should be fixed.
-# Tracked-on : https://jira01.devtools.intel.com/browse/GMINL-12339
-ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
 SOFIA_PROVDATA_FILES.$(1) += $$(BOOTLOADER_IMAGE.$(1))
-endif
 
 endef
 
