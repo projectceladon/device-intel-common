@@ -119,9 +119,7 @@ $$(ANDROID_SIGNED_FLS_LIST.$(1)): $$(SIGN_FLS_DIR.$(1))/%_signed.fls: $$(FLASHFI
 $$(MV_CONFIG_SIGNED_FLS_LIST.$(1)): $$(SIGN_FLS_DIR.$(1))/%_signed.fls: $$(FLASHFILES_DIR.$(1))/%.fls $$(FLSTOOL) $$(SYSTEM_FLS_SIGN_SCRIPT) sign_flashloader.$(1)
 	$$(FLSTOOL) --sign $$< --script $$(SYSTEM_FLS_SIGN_SCRIPT) $$(INJECT_SIGNED_FLASHLOADER_FLS.$(1)) -o $$@ --replace
 
-ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
 SOFIA_PROVDATA_FILES.$(1) += $$(PSI_RAM_SIGNED_FLS.$(1)) $$(EBL_SIGNED_FLS.$(1))  $$(PSI_FLASH_SIGNED_FLS.$(1)) $$(SLB_SIGNED_FLS.$(1))  $$(SYSTEM_SIGNED_FLS_LIST.$(1)) $$(ANDROID_SIGNED_FLS_LIST.$(1))
-endif
 
 ## Firmware update
 FWU_IMAGE_BIN.$(1)       := $$(FWU_IMG_DIR.$(1))/fwu_image.bin
