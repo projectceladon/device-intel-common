@@ -108,8 +108,10 @@ endif #endif $$(BUILD_MODEM_FROM_SRC) = true
 
 BUILT_MODEM.$(1) ?= $(BUILT_MODEM)
 
+ifneq ($(MODEM_SILENT_RESET_ENABLED),true)
 MODEM_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
 SOFIA_PROVDATA_FILES.$(1) += $$(MODEM_FLS.$(1))
+endif
 
 PSI_FLASH_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/psi_flash.fls
 SLB_FLS.$(1) ?= $$(FLASHFILES_DIR.$(1))/slb.fls
@@ -129,8 +131,10 @@ SOFIA_PROVDATA_FILES.$(1) += $$(PSI_FLASH_FLS.$(1)) $$(SLB_FLS.$(1)) $$(MOBILEVI
 #SOFIA_PROVDATA_FILES.$(1) += $$(DSP_IMAGE_FLS.$(1)) $$(LTE_FLS.$(1)) $$(IMC_FW_BLOCK_1.$(1)) $$(IMC_FW_BLOCK_2.$(1)) $$(IMC_BOOTLOADER_A.$(1)) $$(IMC_BOOTLOADER_B.$(1))
 #endif
 
+ifneq ($(MODEM_SILENT_RESET_ENABLED),true)
 MODEM_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
 ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/modem_signed.fls
+endif
 #ifeq ($$(TARGET_BOARD_PLATFORM),sofia_lte)
 #ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/dsp_image_signed.fls
 #ANDROID_SIGNED_FLS_LIST.$(1) += $$(SIGN_FLS_DIR.$(1))/lte_signed.fls
@@ -181,12 +185,11 @@ endif# BOARD_USE_FLS_PREBUILTS != true
 ifneq (,$$(BOARD_USE_FLS_PREBUILTS)))
 # Generation of txt file containing various convenient information
 # about embedded OS agnostic software
-OS_AGNOSTIC_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
+OS_AGNOSTIC_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/mobilevisor.fls
 OS_AGNOSTIC_INFO.$(1) := $$(FLASHFILES_DIR.$(1))/os_agnostic_info.txt
 SOFIA_PROVDATA_FILES.$(1) += $$(OS_AGNOSTIC_INFO.$(1))
 $$(OS_AGNOSTIC_INFO.$(1)): $$(OS_AGNOSTIC_FLS.$(1))
 	echo -n "OS-agnostic tag: " > $$@
-	@strings $$(OS_AGNOSTIC_FLS.$(1)) | grep ^SOFIA_LTE_ >> $$@
 	@echo "" >> $$@
 	@echo "       1A <-> OC6" >> $$@
 	@echo "sltsvbV12 <-> SfLTE_l_fddcat4_v2 (AOSP_LPOP_SVB_V1_2-USERDEBUG)" >> $$@
@@ -218,14 +221,16 @@ endif
 
 .PHONY: modem
 modem: $(foreach variant,$(SOFIA_FIRMWARE_VARIANTS),$(BUILT_MODEM_DATA_EXT.$(variant)))
-
 droidcore: modem
 
 else
 
 .PHONY: modem.fls
+ifeq ($(MODEM_SILENT_RESET_ENABLED),true)
+droidcore: modem.fls_ID0_CUST_LoadMap0.bin
+else
 modem.fls: $(addprefix modem.fls.,$(SOFIA_FIRMWARE_VARIANTS))
-
 droidcore: modem.fls
+endif
 
 endif
