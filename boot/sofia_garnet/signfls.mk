@@ -150,6 +150,8 @@ $(FWU_IMAGE_BIN) : fwu_image
 
 #create_vrl_fls: $(VRL_FLS) | create_vrl_bin
 
+SOFIA_PROVDATA_FILES += $(VRL_SIGNED_FLS)
+
 sign_vrl: $(VRL_SIGNED_FLS)
 
 $(VRL_BIN): $(FWU_IMAGE_BIN) force | createflashfile_dir
