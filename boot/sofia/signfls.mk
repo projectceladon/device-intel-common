@@ -43,8 +43,8 @@ endif
 define signfls_per_variant
 
 ifeq ($$(TARGET_PROJECT), sofia_lte)
-    PSI_RAM_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_flash.fls
-    EBL_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/slb.fls
+    PSI_RAM_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_ram.fls
+    EBL_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/ebl.fls
     PSI_FLASH_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/psi_flash.fls
     SLB_FLS.$(1) = $$(CURDIR)/hardware/intel/sofia_lte-fls/$$(TARGET_DEVICE)/slb.fls
     MV_CONFIG_DEFAULT_TYPE.$(1) = smp
