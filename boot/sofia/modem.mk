@@ -175,6 +175,23 @@ else
 force: ;
 endif# BOARD_USE_FLS_PREBUILTS != true
 
+ifneq (,$$(BOARD_USE_FLS_PREBUILTS)))
+# Generation of txt file containing various convenient information
+# about embedded OS agnostic software
+OS_AGNOSTIC_FLS.$(1)  := $$(FLASHFILES_DIR.$(1))/modem.fls
+OS_AGNOSTIC_INFO.$(1) := $$(FLASHFILES_DIR.$(1))/os_agnostic_info.txt
+SOFIA_PROVDATA_FILES.$(1) += $$(OS_AGNOSTIC_INFO.$(1))
+$$(OS_AGNOSTIC_INFO.$(1)): $$(OS_AGNOSTIC_FLS.$(1))
+	echo -n "OS-agnostic tag: " > $$@
+	@strings $$(OS_AGNOSTIC_FLS.$(1)) | grep ^SOFIA_LTE_ >> $$@
+	@echo "" >> $$@
+	@echo "       1A <-> OC6" >> $$@
+	@echo "sltsvbV12 <-> SfLTE_l_fddcat4_v2 (AOSP_LPOP_SVB_V1_2-USERDEBUG)" >> $$@
+	@echo "sltsvbV34 <-> SfLTE_l_psvon_v2 (AOSP_LPOP_SVB_V3_4-USERDEBUG)" >> $$@
+	@echo "sltmrdV12 <-> SfLTE_l_mrd6p1v12 (AOSP_LPOP_MRD_V12-USERDEBUG)" >> $$@
+	@echo "sltmrdV34 <-> SfLTE_l_mrd6_p1 (AOSP_LPOP_MRD_GMS-USERDEBUG)" >> $$@
+endif
+
 modem.fls.$(1): $$(MODEM_FLS.$(1))
 
 endif
