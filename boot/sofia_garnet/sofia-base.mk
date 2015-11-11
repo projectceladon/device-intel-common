@@ -39,6 +39,8 @@ BINARY_MERGE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/binary_merge
 VBT_GENERATE_TOOL ?= $(MOBILEVISOR_REL_PATH)/tools/vbtgen
 FWU_PACK_GENERATE_TOOL = $(MOBILEVISOR_REL_PATH)/tools/fwpgen
 
+SOFIA_PROVDATA_FILES += $(FLSTOOL)
+
 createflashfile_dir:
 	mkdir -p $(IMAGES_DIR)
 	mkdir -p $(FLASHFILES_DIR)
