@@ -484,11 +484,14 @@ supDomain: DeviceForInputSource
 				back_mic = 1
 
 		conf: Default
+			#
+			# Fallback on the DefaultInputDevice
+			#
 			component: /Policy/policy/input_sources/voice_communication/applicable_input_device/mask
 				bluetooth_sco_headset = 0
 				wired_headset = 0
 				usb_device = 0
-				builtin_mic = 0
+				builtin_mic = 1
 				back_mic = 0
 
 	domain: RemoteSubmix
