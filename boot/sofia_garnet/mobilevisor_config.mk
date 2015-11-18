@@ -143,11 +143,11 @@ endif
 mvconfig_$(1).fls : $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
 endef
 
-define ADD_ALL_MV_CONIFG
-SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
-SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
-endef
-$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
+#define ADD_ALL_MV_CONIFG
+#SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
+#SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
+#endef
+#$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
 
 $(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_XML_RULES,$(t))))
 
