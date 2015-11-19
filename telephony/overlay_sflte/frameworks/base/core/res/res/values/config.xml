@@ -89,4 +89,8 @@
          here but each carrier may have a specific value set in an overlay config.xml file. -->
     <integer name="config_mobile_mtu">1410</integer>
 
+    <!-- MMS user agent string -->
+    <string name="config_mms_user_agent" translatable="false">Common</string>
+    <!-- MMS user agent prolfile url -->
+    <string name="config_mms_user_agent_profile_url" translatable="false">http://software.intel.com/sites/landingpage/android/default_profile.xml</string>
 </resources>
