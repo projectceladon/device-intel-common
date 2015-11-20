@@ -42,7 +42,29 @@ import android.telephony.TelephonyManager;
 
 public class DialerReflectionUtils {
 
+    public static final Object mHanziTransliterator =
+            Transliterator_Transliterator("Latin-Ascii");
+    public static final Object mPinyinTransliterator =
+            Transliterator_Transliterator("Han-Latin/Names; Latin-Ascii; Any-Upper");
+
+    // IccCardConstants
+    public static final String INTENT_KEY_ICC_STATE = DRU_getConstantString(
+            "com.android.internal.telephony.IccCardConstants", "INTENT_KEY_ICC_STATE");
+    public static final String INTENT_VALUE_ICC_ABSENT = DRU_getConstantString(
+            "com.android.internal.telephony.IccCardConstants", "INTENT_VALUE_ICC_ABSENT");
+    public static final String INTENT_VALUE_ICC_LOADED = DRU_getConstantString(
+            "com.android.internal.telephony.IccCardConstants", "INTENT_VALUE_ICC_LOADED");
+    public static final String INTENT_VALUE_ICC_CARD_IO_ERROR = DRU_getConstantString(
+            "com.android.internal.telephony.IccCardConstants", "INTENT_VALUE_ICC_CARD_IO_ERROR");
+    // TelephonyIntents
+    public static final String ACTION_SIM_STATE_CHANGED = DRU_getConstantString(
+            "com.android.internal.telephony.TelephonyIntents", "ACTION_SIM_STATE_CHANGED");
+
     public DialerReflectionUtils () {
+    }
+
+    private static String DRU_getConstantString(String className, String stringName) {
+        return "";
     }
 
     // [Method]

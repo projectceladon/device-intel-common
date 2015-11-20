@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /* INTEL CONFIDENTIAL
 ** Copyright 2015 Intel Corporation All Rights Reserved.
 ** The source code contained or described herein and all documents
@@ -20,8 +18,7 @@
 ** express and approved by Intel in writing.
 ** limitations under the License.
 */
--->
-<!--
+
 /*
 ** Copyright (C) 2015 Intel Corporation, All rights reserved
 **
@@ -37,14 +34,19 @@
 ** See the License for the specific language governing permissions and
 ** limitations under the License.
 */
--->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-   <add-resource type="bool" name="blacklist_function" />
-   <bool name="blacklist_function">false</bool>
+package com.intel.server.util;
 
+import android.telecom.PhoneAccountHandle;
+import java.util.List;
 
-   <add-resource type="bool" name="two_call_button" />
-   <bool name="two_call_button">false</bool>
+public class PhoneAccountHandleUtils {
 
-</resources>
+    public static void setSubId(String id) {
+    }
+
+    public static PhoneAccountHandle setPhoneAccountHandles(PhoneAccountHandle phoneAccountHandle,
+            List<PhoneAccountHandle> accounts) {
+        return phoneAccountHandle;
+    }
+}
