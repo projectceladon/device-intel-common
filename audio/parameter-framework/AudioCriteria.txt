@@ -27,3 +27,4 @@ ExclusiveCriterion  BwxActivated           :  False             True
 ExclusiveCriterion PersonalEqualization    :  None              Slight          Medium           Strong
 ExclusiveCriterion ModemAudioIsSpeech      :  False             True
 ExclusiveCriterion ScreenRotation          :  0                 90              180         270
+ExclusiveCriterion A2dpSuspended           :  False             True
