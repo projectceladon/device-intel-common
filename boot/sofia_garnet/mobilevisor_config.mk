@@ -108,7 +108,7 @@ MV_CONFIG_OPTION_512mb = -D __MV_SMP__
 
 ifeq ($(GEN_MV_RAM_DEFS_FROM_XML), true)
 	MV_CONFIG_OPTION_common    += -D __MV_RAM_LAYOUT_DEFS_FROM_XML__
-	MV_RAM_DEFS_FILE := $(CURDIR)/$(PRODUCT_OUT)/ram_layout.h
+	MV_RAM_DEFS_FILE := $(CURDIR)/device/intel/sofia3gr/$(TARGET_DEVICE)/ram_layout.h
 	MV_CONFIG_RAM_DEFS_DEST_FILE := $(MV_CONFIG_BUILD_OUT)/ram_layout.h
 endif
 
@@ -119,9 +119,9 @@ endif
 force: ;
 
 ifeq ($(GEN_MV_RAM_DEFS_FROM_XML), true)
-$(MV_CONFIG_RAM_DEFS_DEST_FILE) : force | $(MV_CONFIG_BUILD_OUT) prg
+$(MV_CONFIG_RAM_DEFS_DEST_FILE) : force | $(MV_CONFIG_BUILD_OUT)
 	if [ -a $(MV_RAM_DEFS_FILE) ]; \
-	then diff  $(MV_RAM_DEFS_FILE) $(MV_CONFIG_RAM_DEFS_DEST_FILE) || cp -f $(MV_RAM_DEFS_FILE) $(MV_CONFIG_RAM_DEFS_DEST_FILE); \
+	then cp -f $(MV_RAM_DEFS_FILE) $(MV_CONFIG_RAM_DEFS_DEST_FILE); \
 	else echo "Error: Required ram layout file $(MV_RAM_DEFS_FILE) was not found!"; exit 1; \
 	fi
 endif
@@ -143,11 +143,11 @@ endif
 mvconfig_$(1).fls : $(MV_CONFIG_FLS_OUTPUT)/mvconfig_$(1).fls
 endef
 
-#define ADD_ALL_MV_CONIFG
-#SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
-#SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
-#endef
-#$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
+define ADD_ALL_MV_CONIFG
+SOFIA_PROVDATA_FILES += $(FLASHFILES_DIR)/mvconfig_$(1).fls
+SYSTEM_SIGNED_FLS_LIST += $(SIGN_FLS_DIR)/mvconfig_$(1)_signed.fls
+endef
+$(foreach t,$(MV_CONFIG_TYPE),$(eval $(call ADD_ALL_MV_CONIFG,$(t))))
 
 $(foreach t,$(MV_CONFIG_TYPE),$(eval $(call CREATE_MV_CONFIG_XML_RULES,$(t))))
 
@@ -162,11 +162,8 @@ $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls : $(MV_CONFIG_BUILD_OUT)/mvconfig_%.bin $
 		   $< \
 		   --replace --to-fls2
 
-# Build VMM images as dependency to default android build target "droidcore"
-droidcore: $(MV_CONFIG_DEFAULT_FLS)
-
-$(MV_CONFIG_DEFAULT_FLS): $(MV_CONFIG_FLS_LIST)
-	@cp -f $(MV_CONFIG_FLS_OUTPUT)/$(notdir $@) $@
+$(FLASHFILES_DIR)/mvconfig_%.fls: $(MV_CONFIG_FLS_OUTPUT)/mvconfig_%.fls
+	$(copy-file-to-new-target)
 
 $(MV_CONFIG_BUILD_OUT):
 	@mkdir -p $(MV_CONFIG_BUILD_OUT)
@@ -179,8 +176,6 @@ mvconfig_info:
 
 build_info: mvconfig_info
 
-.PHONY: mvconfig
-mvconfig: $(MV_CONFIG_DEFAULT_FLS)
 endif
 
 ifeq ($(BOARD_USE_FLS_PREBUILTS),$(TARGET_DEVICE))
