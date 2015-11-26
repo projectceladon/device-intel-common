@@ -78,6 +78,10 @@
     <add-resource type="bool" name="config_backup_received_message" />
     <bool name="config_backup_received_message">false</bool>
 
+    <!-- When true, display '3G,4G' after carrier name -->
+    <add-resource type="bool" name="config_display_carrier_name_with_rat" />
+    <bool name="config_display_carrier_name_with_rat">false</bool>
+
     <!--  When true, enable sending and receing MMS on both SIM Card -->
     <add-resource type="bool" name="config_mms_dual_sim_feature" />
     <bool name="config_mms_dual_sim_feature">false</bool>

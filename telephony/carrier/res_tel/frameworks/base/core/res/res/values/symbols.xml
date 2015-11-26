@@ -62,6 +62,13 @@
   <java-symbol type="bool" name="config_capability_show_chinese" />
   <java-symbol type="array" name="plmnIndex" />
   <java-symbol type="bool" name="config_backup_received_message" />
+  <java-symbol type="array" name="china_mobile_plmn" />
+  <java-symbol type="array" name="china_unicom_plmn" />
+  <java-symbol type="string" name="network_unicom" />
+  <java-symbol type="string" name="network_mobile" />
+  <java-symbol type="string" name="network_mobile_3g" />
+  <java-symbol type="string" name="network_mobile_4g" />
+  <java-symbol type="bool" name="config_display_carrier_name_with_rat" />
   <java-symbol type="bool" name="config_mms_dual_sim_feature" />
   <java-symbol type="bool" name="config_sms_cache_allowed" />
   <java-symbol type="bool" name="config_sms_stored_allowed" />

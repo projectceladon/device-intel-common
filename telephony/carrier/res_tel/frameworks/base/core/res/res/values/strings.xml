@@ -19,6 +19,26 @@
     <string name="switch_wcdma_warning">Warning!</string>
     <add-resource type="string" name="switch_wcdma_msg" />
     <string name="switch_wcdma_msg">Only one SIM card can use 3G/4G, the other will be changed to 2G!This action will take up some time.</string>
+
+    <add-resource type="array" name="china_mobile_plmn" />
+    <string-array name="china_mobile_plmn">
+        <item>46000</item>
+        <item>46002</item>
+        <item>46007</item>
+    </string-array>
+    <add-resource type="array" name="china_unicom_plmn" />
+    <string-array name="china_unicom_plmn">
+        <item>46001</item>
+    </string-array>
+    <add-resource type="string" name="network_mobile_3g" />
+    <string name="network_mobile_3g">" 3G"</string>
+    <add-resource type="string" name="network_mobile_4g" />
+    <string name="network_mobile_4g">" 4G"</string>
+    <add-resource type="string" name="network_mobile" />
+    <string name="network_mobile">CHN-MOBILE</string>
+    <add-resource type="string" name="network_unicom" />
+    <string name="network_unicom">CHN-UNICOM</string>
+
     <add-resource type="string" name="network_2g" />
     <string name="network_2g">"2G"</string>
     <add-resource type="string" name="network_3g" />
