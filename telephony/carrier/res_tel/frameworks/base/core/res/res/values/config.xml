@@ -38,4 +38,7 @@
 
     <add-resource type="bool" name="config_set_correct_carrier_name" />
     <bool name="config_set_correct_carrier_name">false</bool>
+    <!-- When true, publish enhancedtelepohny service /-->
+    <add-resource type="bool" name="config_enhancedtelephony_service_enabled" />
+    <bool name="config_enhancedtelephony_service_enabled">false</bool>
 </resources>
