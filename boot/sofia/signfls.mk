@@ -188,6 +188,7 @@ $$(FWU_IMAGE_FLS.$(1)):  createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1))
 
 SOFIA_PROVDATA_FILES.$(1) += $$(FWU_IMAGE_FLS.$(1))
 
+SOFIA_PROVDATA_FILES.$(1) += $$(VRL_SIGNED_FLS.$(1))
 #create_vrl_bin: $$(VRL_BIN)
 
 #create_vrl_fls: $$(VRL_FLS) | create_vrl_bin
