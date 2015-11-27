@@ -50,4 +50,12 @@
     </integer-array>
     <add-resource type="bool" name="config_capability_show_chinese" />
     <bool name="config_capability_show_chinese">false</bool>
+
+    <!--  When true, mms can backup the received message -->
+    <add-resource type="bool" name="config_backup_received_message" />
+    <bool name="config_backup_received_message">false</bool>
+
+    <!--  When true, enable sending and receing MMS on both SIM Card -->
+    <add-resource type="bool" name="config_mms_dual_sim_feature" />
+    <bool name="config_mms_dual_sim_feature">false</bool>
 </resources>

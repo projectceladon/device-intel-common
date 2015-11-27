@@ -30,7 +30,6 @@
   <java-symbol type="array" name="plmn" />
   <java-symbol type="bool" name="config_set_correct_carrier_name" />
   <java-symbol type="bool" name="config_enhancedtelephony_service_enabled" />
-
   <java-symbol type="string" name="network_2g" />
   <java-symbol type="string" name="network_3g" />
   <java-symbol type="string" name="network_4g" />
@@ -40,4 +39,6 @@
   <java-symbol type="string" name="network_forbidden" />
   <java-symbol type="bool" name="config_capability_show_chinese" />
   <java-symbol type="array" name="plmnIndex" />
+  <java-symbol type="bool" name="config_backup_received_message" />
+  <java-symbol type="bool" name="config_mms_dual_sim_feature" />
 </resources>
