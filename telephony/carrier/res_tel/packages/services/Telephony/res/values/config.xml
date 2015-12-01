@@ -22,4 +22,11 @@
     <bool name="config_enable_femtocell_selection">false</bool>
     <add-resource type="bool" name="config_enable_limit_networktype" />
     <bool name="config_enable_limit_networktype">false</bool>
+
+    <add-resource type="bool" name="single_card_airplane" />
+    <bool name="single_card_airplane">false</bool>
+
+    <add-resource type="bool" name="prefered_network_display" />
+    <bool name="prefered_network_display">false</bool>
+
 </resources>
