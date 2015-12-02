@@ -113,7 +113,7 @@ bootcore.$(1):
 else
 bootcore.$(1): $$(BUILT_LIBSOC_TARGET.$(1)) keystore_signer libssl_static2 libcrypto_static2
 	$$(if BOOTCORE_FEATURES.$(1), FEATURE="$$(BOOTCORE_FEATURES.$(1))") BLOBSTORE_DTB_KEY="$$(BLOBSTORE_DTB_KEY.$(1))" BLOBSTORE_FINGERPRINT="$$(BLOBSTORE_FINGERPRINT.$(1))" HAL_AUTODETECT="$$(HAL_AUTODETECT)" HAL_AUTODETECT_PROPERTIES_DISABLED="$$(HAL_AUTODETECT_PROPERTIES_DISABLED)" \
-	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/bootsystems/make PLATFORM=$$(MODEM_PLATFORM) PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) BL_OUTPUT_DIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) SOC_LIB=$$(abspath $$(BUILT_LIBSOC_TARGET.$(1))) KEYSTORE_SIGNER=$$(KEYSTORE_SIGNER) all
+	$$(MAKE) -C $$(SOFIA_FW_SRC_BASE)/bootsystems/make PLATFORM=$$(MODEM_PLATFORM) PROJECTNAME=$$(MODEM_PROJECTNAME_VAR) VARIANT=$(1) BL_OUTPUT_DIR=$$(abspath $$(SOFIA_FIRMWARE_OUT.$(1))) SOC_LIB=$$(abspath $$(BUILT_LIBSOC_TARGET.$(1))) KEYSTORE_SIGNER=$$(KEYSTORE_SIGNER) all
 endif
 
 $$(BOOTLOADER_BINARIES.$(1)): bootcore
@@ -193,10 +193,13 @@ DISPLAY_BIN.$(1)                := $$(SPLASH_IMG_BIN_PATH.$(1))/display.bin
 SPLASH_IMG_FLS.$(1)             := $$(FLASHFILES_DIR.$(1))/splash_img.fls
 SPLASH_IMG_SIGNED_FLS.$(1)      := $$(SIGN_FLS_DIR.$(1))/splash_img_signed.fls
 SYSTEM_SIGNED_FLS_LIST.$(1)     += $$(SPLASH_IMG_SIGNED_FLS.$(1))
-LOCAL_DTB_PATH.$(1)             ?= $$(if $$(wildcard $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb),\
-                                         $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb,\
-                                         $$(LOCAL_KERNEL_PATH)/$$(BOARD_DTB_FILE))
-
+ifdef BOARD_DTB.$(1)
+LOCAL_DTB_PATH.$(1)             ?= $$(BOARD_DTB.$(1))
+else ifneq (,$$(wildcard $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb))
+LOCAL_DTB_PATH.$(1)             ?= $$(TARGET_DEVICE_DIR)/dtbs/$(1)/board.dtb
+else
+LOCAL_DTB_PATH.$(1)             ?= $$(LOCAL_KERNEL_PATH)/$$(BOARD_DTB_FILE)
+endif
 
 ifneq ("$$(wildcard $$(SPLASH_IMG_FILE_1.$(1)))","")
   ifneq ("$$(wildcard $$(SPLASH_IMG_FILE_2.$(1)))","")
