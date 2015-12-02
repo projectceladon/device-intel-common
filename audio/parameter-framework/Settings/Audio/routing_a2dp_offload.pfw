@@ -1,0 +1,17 @@
+supDomain: Routing.Configure
+
+	RoutageState Includes Configure
+
+	domain: A2dpOffload.Playback
+		conf: Enable
+			ALL
+				OpenedPlaybackRoutes Includes A2dpOffloadIA
+				ANY
+					SelectedOutputDevices Includes A2dp
+					SelectedOutputDevices Includes A2dpHeadphones
+					SelectedOutputDevices Includes A2dpSpeaker
+
+			/Audio/bluedroidcomm/bluedroidcomm_inst/control_socket_enable = 1
+
+		conf: Disable
+			/Audio/bluedroidcomm/bluedroidcomm_inst/control_socket_enable = 0
