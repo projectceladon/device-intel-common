@@ -27,5 +27,6 @@
 
     <!-- Flag indicating if hac is enabled -->
     <bool name="hac_enabled">true</bool>
-
+    <add-resource type="bool" name="config_enable_limit_networktype" />
+    <bool name="config_enable_limit_networktype">true</bool>
 </resources>

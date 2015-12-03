@@ -25,4 +25,6 @@
   <java-symbol type="bool" name="config_set_preferred_rat_allowed" />
   <java-symbol type="bool" name="config_customize_operator_name_display" />
   <java-symbol type="bool" name="config_signalStrengthExt" />
+  <java-symbol type="string" name="switch_wcdma_warning" />
+  <java-symbol type="string" name="switch_wcdma_msg" />
 </resources>

@@ -20,4 +20,6 @@
     <!-- If true, automatic femtocell selection menu will be enabled -->
     <add-resource type="bool" name="config_enable_femtocell_selection" />
     <bool name="config_enable_femtocell_selection">false</bool>
+    <add-resource type="bool" name="config_enable_limit_networktype" />
+    <bool name="config_enable_limit_networktype">false</bool>
 </resources>
