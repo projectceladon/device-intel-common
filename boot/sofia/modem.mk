@@ -190,6 +190,7 @@ OS_AGNOSTIC_INFO.$(1) := $$(FLASHFILES_DIR.$(1))/os_agnostic_info.txt
 SOFIA_PROVDATA_FILES.$(1) += $$(OS_AGNOSTIC_INFO.$(1))
 $$(OS_AGNOSTIC_INFO.$(1)): $$(OS_AGNOSTIC_FLS.$(1))
 	echo -n "OS-agnostic tag: " > $$@
+	@strings $$(OS_AGNOSTIC_FLS.$(1)) | grep -m1  ^SWVERSTRING= | grep -o SOFIA.* >> $$@
 	@echo "" >> $$@
 	@echo "       1A <-> OC6" >> $$@
 	@echo "sltsvbV12 <-> SfLTE_l_fddcat4_v2 (AOSP_LPOP_SVB_V1_2-USERDEBUG)" >> $$@
