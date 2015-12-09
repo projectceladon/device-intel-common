@@ -1,10 +1,11 @@
-supDomain: Routing.Configure
+supDomain: Routing.Mute
 
-	RoutageState Includes Configure
+	RoutageState Includes Flow
 
 	domain: A2dpOffload.Playback
 		conf: Enable
 			ALL
+				A2dpSuspended Is False
 				OpenedPlaybackRoutes Includes A2dpOffloadIA
 				ANY
 					SelectedOutputDevices Includes A2dp
