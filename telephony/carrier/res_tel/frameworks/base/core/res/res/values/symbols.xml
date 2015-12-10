@@ -61,6 +61,7 @@
   <java-symbol type="string" name="network_forbidden" />
   <java-symbol type="bool" name="config_capability_show_chinese" />
   <java-symbol type="array" name="plmnIndex" />
+  <java-symbol type="bool" name="config_sim_carrier_name" />
   <java-symbol type="bool" name="config_backup_received_message" />
   <java-symbol type="array" name="china_mobile_plmn" />
   <java-symbol type="array" name="china_unicom_plmn" />

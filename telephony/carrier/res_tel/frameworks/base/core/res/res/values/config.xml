@@ -74,6 +74,10 @@
     <add-resource type="bool" name="config_capability_show_chinese" />
     <bool name="config_capability_show_chinese">false</bool>
 
+    <!--  When true, add slot position behind simcard carrier name -->
+    <add-resource type="bool" name="config_sim_carrier_name" />
+    <bool name="config_sim_carrier_name">false</bool>
+
     <!--  When true, mms can backup the received message -->
     <add-resource type="bool" name="config_backup_received_message" />
     <bool name="config_backup_received_message">false</bool>
