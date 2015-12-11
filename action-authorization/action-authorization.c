@@ -113,12 +113,12 @@ out:
 	return key;
 }
 
-static int gen_pkcs7(const char *key_file, const char *cert_file,
+static int gen_pkcs7(const char *key_file, const char *cert_file, const char *add_cert_file,
 		     char *str, const char *out_file, char *password)
 {
 	const EVP_MD *DIGEST = EVP_sha256();
 	EVP_PKEY *key = NULL;
-	X509 *cert = NULL;
+	X509 *cert = NULL, *add_cert = NULL;
 	BIO *in_bio = NULL, *out_bio = NULL;
 	PKCS7 *p7 = NULL;
 	PKCS7_SIGNER_INFO *signer_info;
@@ -154,6 +154,19 @@ static int gen_pkcs7(const char *key_file, const char *cert_file,
 		goto out;
 	}
 
+	if (add_cert_file != NULL) {
+		add_cert = load_cert_from_PEM_file(add_cert_file);
+		if (!add_cert) {
+			error("Failed to load additional certificate");
+			goto out;
+		}
+		internal_ret = PKCS7_add_certificate(p7, add_cert);
+		if (internal_ret != 1) {
+			error("Failed to add certificate in PKCS7");
+			goto out;
+		}
+	}
+
 	EVP_add_digest(DIGEST);
 	internal_ret = PKCS7_final(p7, in_bio, 0);
 	if (internal_ret != 1) {
@@ -180,6 +193,8 @@ out:
 		EVP_PKEY_free(key);
 	if (cert)
 		X509_free(cert);
+	if (add_cert)
+		X509_free(add_cert);
 	if (in_bio)
 		BIO_free(in_bio);
 	if (out_bio)
@@ -380,6 +395,7 @@ static void usage(char *cmd, int status)
 \n\
    --oak-cert, -O <file>          OAK certificate (PEM)\n\
    --oak-private-key, -K <file>   private key file (PEM)\n\
+   --additional-cert, -A <file>   additional certificate (PEM)\n\
    --message, -M <string>         message received from get-action-nonce\n\
                                   fastboot command\n\
    --output-file, -F <file>       output file for the PKCS7 message\n\
@@ -395,6 +411,7 @@ static struct option long_options[] = {
 	{"help", no_argument, 0, 'h'},
 	{"oak-cert", required_argument, 0, 'O'},
 	{"oak-private-key", required_argument, 0, 'K'},
+	{"additional-cert", required_argument, 0, 'A'},
 	{"message", required_argument, 0, 'M'},
 	{"output-file", required_argument, 0, 'F' },
 	{"password", required_argument, 0, 'P' },
@@ -405,7 +422,7 @@ static struct option long_options[] = {
 
 int main(int argc, char **argv)
 {
-	char *key_file = NULL, *cert_file = NULL, *out_file = NULL, *message = NULL;
+	char *key_file = NULL, *cert_file = NULL, *add_cert_file = NULL, *out_file = NULL, *message = NULL;
 	char *password = NULL;
 	char c, *new_message, *cmd;
 	int option_index = 0, ret = EXIT_FAILURE;
@@ -421,7 +438,7 @@ int main(int argc, char **argv)
 	BIO_set_fp(err_bio, stderr, BIO_NOCLOSE|BIO_FP_TEXT);
 
 	while (1) {
-		c = getopt_long(argc, argv, "hO:K:M:F:P:V",
+		c = getopt_long(argc, argv, "hO:K:A:M:F:P:V",
 				long_options, &option_index);
 		if (c == -1)
 			break;
@@ -439,6 +456,10 @@ int main(int argc, char **argv)
 
 		case 'K':
 			key_file = optarg;
+			break;
+
+		case 'A':
+			add_cert_file = optarg;
 			break;
 
 		case 'M':
@@ -475,7 +496,7 @@ int main(int argc, char **argv)
 	if (!new_message)
 		goto out;
 
-	ret = gen_pkcs7(key_file, cert_file, new_message, out_file, password);
+	ret = gen_pkcs7(key_file, cert_file, add_cert_file, new_message, out_file, password);
 	free(new_message);
 
 out:
