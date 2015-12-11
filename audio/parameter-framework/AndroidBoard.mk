@@ -181,6 +181,15 @@ LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := AFE2.0.Subsystem-common.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := WM8281Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
@@ -244,6 +253,14 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceVolume.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := DbVolume.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
