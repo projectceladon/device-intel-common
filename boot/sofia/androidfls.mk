@@ -24,11 +24,14 @@ OEM_FLS.$(1)         := $$(FLASHFILES_DIR.$(1))/oem.fls
 OEM_SIGNED_FLS.$(1)  += $$(SIGN_FLS_DIR.$(1))/oem_signed.fls
 
 ifneq ($$(TARGET_BOARD_PLATFORM), sofia_lte)
+ifneq ($$(TARGET_BOARD_PLATFORM_VAR), sofia3gr_garnet)
 ANDROID_SIGNED_FLS_LIST.$(1)  += $$(OEM_SIGNED_FLS.$(1))
 SOFIA_PROVDATA_FILES.$(1) += $$(OEM_FLS.$(1))
 endif
+endif
 
 $$(OEM_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(INSTALLED_OEMIMAGE_TARGET) $$(PSI_RAM_FLB.$(1)) $$(FLASHLOADER_FLS.$(1))
+	@echo "-------------------------------------------------------------"
 	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag OEM $$(INJECT_FLASHLOADER_FLS.$(1)) $$(INSTALLED_OEMIMAGE_TARGET) --replace --to-fls2
 
 .PHONY: oem.fls.$(1)
@@ -38,7 +41,12 @@ oem.fls.$(1): $$(OEM_FLS.$(1))
 oem.fls: oem.fls.$(1)
 
 ifeq ($$(findstring sofia3g,$$(TARGET_BOARD_PLATFORM)), sofia3g)
+ifneq ($$(findstring sofia3gr_garnet,$$(TARGET_BOARD_PLATFORM_VAR)), sofia3gr_garnet)
 android_fls.$(1): $$(OEM_FLS.$(1))
+else
+android_fls.$(1):
+	@echo "Android Images: nothing to do"
+endif
 else
 android_fls.$(1):
 	@echo "Android Images: nothing to do"
