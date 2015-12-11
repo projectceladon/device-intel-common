@@ -41,4 +41,13 @@
     <!-- When true, publish enhancedtelepohny service /-->
     <add-resource type="bool" name="config_enhancedtelephony_service_enabled" />
     <bool name="config_enhancedtelephony_service_enabled">false</bool>
+
+    <add-resource type="array" name="plmnIndex" />
+    <integer-array name="plmnIndex">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+    <add-resource type="bool" name="config_capability_show_chinese" />
+    <bool name="config_capability_show_chinese">false</bool>
 </resources>

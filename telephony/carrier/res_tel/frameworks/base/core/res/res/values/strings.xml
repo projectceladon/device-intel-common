@@ -19,4 +19,18 @@
     <string name="switch_wcdma_warning">Warning!</string>
     <add-resource type="string" name="switch_wcdma_msg" />
     <string name="switch_wcdma_msg">Only one SIM card can use 3G/4G, the other will be changed to 2G!This action will take up some time.</string>
+    <add-resource type="string" name="network_2g" />
+    <string name="network_2g">"2G"</string>
+    <add-resource type="string" name="network_3g" />
+    <string name="network_3g">"3G"</string>
+    <add-resource type="string" name="network_4g" />
+    <string name="network_4g">"4G"</string>
+    <add-resource type="string" name="network_unknown" />
+    <string name="network_unknown">"unknown"</string>
+    <add-resource type="string" name="network_available" />
+    <string name="network_available">"available"</string>
+    <add-resource type="string" name="network_current" />
+    <string name="network_current">"current"</string>
+    <add-resource type="string" name="network_forbidden" />
+    <string name="network_forbidden">"forbidden"</string>
 </resources>

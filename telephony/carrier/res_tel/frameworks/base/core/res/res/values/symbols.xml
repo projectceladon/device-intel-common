@@ -30,4 +30,14 @@
   <java-symbol type="array" name="plmn" />
   <java-symbol type="bool" name="config_set_correct_carrier_name" />
   <java-symbol type="bool" name="config_enhancedtelephony_service_enabled" />
+
+  <java-symbol type="string" name="network_2g" />
+  <java-symbol type="string" name="network_3g" />
+  <java-symbol type="string" name="network_4g" />
+  <java-symbol type="string" name="network_unknown" />
+  <java-symbol type="string" name="network_available" />
+  <java-symbol type="string" name="network_current" />
+  <java-symbol type="string" name="network_forbidden" />
+  <java-symbol type="bool" name="config_capability_show_chinese" />
+  <java-symbol type="array" name="plmnIndex" />
 </resources>
