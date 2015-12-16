@@ -239,7 +239,7 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 1
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
-					wired_headset = 1
+					wired_headset = 0
 					usb_device = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 1
