@@ -49,4 +49,8 @@
     <bool name="call_log_multi_delete">false</bool>
     <bool name="callog_filter_function">false</bool>
     <bool name="two_call_button">false</bool>
+    <bool name="account_type_storage">false</bool>
+    <bool name="init_phone_sim_account">false</bool>
+    <bool name="contacts_opration">false</bool>
+    <bool name="search_contact">false</bool>
 </resources>
