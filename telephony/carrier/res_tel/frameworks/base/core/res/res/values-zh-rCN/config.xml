@@ -16,17 +16,10 @@
 ** limitations under the License.
 */
 -->
-<resources>
-
-  <!-- We don't want to publish private symbols in android.R as part of the
-       SDK.  Instead, put them here. -->
-  <private-symbols package="com.android.internal" />
-
-  <java-symbol type="bool" name="config_set_preferred_rat_allowed" />
-  <java-symbol type="bool" name="config_customize_operator_name_display" />
-  <java-symbol type="bool" name="config_signalStrengthExt" />
-  <java-symbol type="string" name="switch_wcdma_warning" />
-  <java-symbol type="string" name="switch_wcdma_msg" />
-  <java-symbol type="array" name="plmn" />
-  <java-symbol type="bool" name="config_set_correct_carrier_name" />
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="plmn">
+        <item>"中国移动"</item>
+        <item>"中国联通"</item>
+        <item>"中国电信"</item>
+    </string-array>
 </resources>

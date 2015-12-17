@@ -28,4 +28,14 @@
     <!-- When true, 5 level signal bar is shown in status bar -->
     <add-resource type="bool" name="config_signalStrengthExt" />
     <bool name="config_signalStrengthExt">false</bool>
+
+    <add-resource type="array" name="plmn" />
+    <string-array name="plmn">
+        <item>CHN-MOBILE</item>
+        <item>CHN-UNICOM</item>
+        <item>CHN-CTNET</item>
+    </string-array>
+
+    <add-resource type="bool" name="config_set_correct_carrier_name" />
+    <bool name="config_set_correct_carrier_name">false</bool>
 </resources>
