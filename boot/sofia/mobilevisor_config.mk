@@ -118,6 +118,13 @@ MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM_VAR__=$$(TARGET_BOARD_PLATFO
 
 MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM__=$$(TARGET_BOARD_PLATFORM)
 
+ifeq '$$(findstring sofia3gr_garnet,${TARGET_BOARD_PLATFORM_VAR})' 'sofia3gr_garnet'
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM_SOFIA3GR_GARNET__
+endif
+ifeq '$$(findstring sofia3gr_mrd,${TARGET_BOARD_PLATFORM_VAR})' 'sofia3gr_mrd'
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_PLATFORM_SOFIA3GR_MRD__
+endif
+
 MV_CONFIG_OPTION_up.$(1)        = 
 MV_CONFIG_OPTION_smp.$(1)       = -D __MV_SMP__
 MV_CONFIG_OPTION_smp_64bit.$(1)     = -D __MV_64BIT_LINUX__ -D __MV_SMP__
