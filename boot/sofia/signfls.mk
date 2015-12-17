@@ -192,6 +192,10 @@ SOFIA_PROVDATA_FILES.$(1) += $$(FWU_IMAGE_FLS.$(1))
 
 #create_vrl_fls: $$(VRL_FLS) | create_vrl_bin
 
+ifeq ($$(findstring garnet,$$(TARGET_PRODUCT)), garnet)
+SOFIA_PROVDATA_FILES.$(1) += $$(VRL_SIGNED_FLS.$(1))
+endif
+
 sign_vrl.$(1): $$(VRL_SIGNED_FLS.$(1))
 
 $$(VRL_BIN.$(1)): $$(FWU_IMAGE_BIN.$(1)) force | createflashfile_dir
