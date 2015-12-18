@@ -35,5 +35,5 @@
          we have no limit on the number of service, visible, foreground, or other such
          processes and the number of those processes does not count against the cached
          process limit. -->
-    <integer name="config_maxCachedApps">12</integer>
+    <integer name="config_maxCachedApps">20</integer>
 </resources>
