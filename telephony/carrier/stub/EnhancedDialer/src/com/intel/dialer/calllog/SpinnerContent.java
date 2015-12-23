@@ -35,37 +35,39 @@
 ** limitations under the License.
 */
 
+package com.intel.dialer.calllog;
 
-package com.intel.dialer;
+import android.content.Context;
+import android.telecom.PhoneAccountHandle;
+import android.widget.Spinner;
 
-import android.telephony.TelephonyManager;
+import java.util.List;
 
-public class DialerReflectionUtils {
+public class SpinnerContent {
 
-    public DialerReflectionUtils () {
+    public static void setSpinnerContentValue(Spinner spinner, int value) {
     }
 
-    // [Method]
-    // TelephonyManager
-    public static TelephonyManager TelephonyManager_getDefault() {
+    public SpinnerContent(int value, String label) {
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
+    /**
+     * @return the spinner contents for the different sims (all, sim0, sim1 etc)
+     */
+    public static List<SpinnerContent> setupSubFilterContent(Context context) {
         return null;
     }
 
-    public static boolean TelephonyManager_isMultiSimEnabled() {
-        return false;
-    }
-
-    // SubcriptionManager
-    public static int[] SubscriptionManager_getSubId(int slotId) {
+    public static PhoneAccountHandle getAccount(int slot) {
         return null;
     }
 
-    // libcore.icu.Transliterator
-    public static Object Transliterator_Transliterator(String id) {
-        return null;
-    }
-
-    public static String Transliterator_transliterate(Object mTransliterator, String s) {
+    public static String getSubscriptionDisplayName(Context context, int slotIndex) {
         return "";
     }
 }

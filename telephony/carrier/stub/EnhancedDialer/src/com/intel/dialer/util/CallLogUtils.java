@@ -35,37 +35,28 @@
 ** limitations under the License.
 */
 
+package com.intel.dialer.util;
 
-package com.intel.dialer;
+import android.app.Activity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import com.android.dialer.calllog.CallLogQueryHandler;
 
-import android.telephony.TelephonyManager;
+public class CallLogUtils implements OnItemSelectedListener {
 
-public class DialerReflectionUtils {
-
-    public DialerReflectionUtils () {
+    public CallLogUtils(Activity activity, CallLogQueryHandler handler, int logLimit, long dateLimit) {
     }
 
-    // [Method]
-    // TelephonyManager
-    public static TelephonyManager TelephonyManager_getDefault() {
-        return null;
+    public void fetchCalls(int callType, long newerThan) {
     }
 
-    public static boolean TelephonyManager_isMultiSimEnabled() {
-        return false;
+    public void initSubSpinnerView(View view, int callTypeFilter) {
     }
 
-    // SubcriptionManager
-    public static int[] SubscriptionManager_getSubId(int slotId) {
-        return null;
+    public void onItemSelected(AdapterView parent, View view, int position, long id) {
     }
 
-    // libcore.icu.Transliterator
-    public static Object Transliterator_Transliterator(String id) {
-        return null;
-    }
-
-    public static String Transliterator_transliterate(Object mTransliterator, String s) {
-        return "";
+    public void onNothingSelected(AdapterView parent) {
     }
 }
