@@ -99,7 +99,7 @@ $$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call CREATE_MV_FILE_LIST,$(1),$$
 ###########################
 # type build option       #
 ########################### 
-MV_CONFIG_OPTION_common.$(1)    = -D __MV_NUM_OF_CPUS__=$$(MV_NUM_OF_CPUS.$(1)) -D __MV_PROD_NAME__=$$(PRODUCT_NAME) -D __MV_CONFIG_START_PADDR__=$$(MV_CONFIG_PADDR.$(1))
+MV_CONFIG_OPTION_common.$(1)    = -D __MV_NUM_OF_CPUS__=$$(MV_NUM_OF_CPUS.$(1)) -D __MV_PROD_NAME__=$$(PRODUCT_NAME) -D __MV_CONFIG_START_PADDR__=$$(MV_CONFIG_PADDR.$(1)) -D __SILENTLAKE_ENABLED__
 
 ifdef TARGET_MVCONFIG_OPTIONS.$(1)
 MV_CONFIG_OPTION_common.$(1)    += $$(TARGET_MVCONFIG_OPTIONS.$(1))
