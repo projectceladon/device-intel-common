@@ -97,4 +97,9 @@
     <!-- When true, enable sms validity period -->
     <add-resource type="bool" name="config_sms_validity_period_allowed" />
     <bool name="config_sms_validity_period_allowed">false</bool>
+
+    <!-- config sim on/off feature -->
+    <add-resource type="bool" name="config_sim_onoff_supported" />
+    <bool name="config_sim_onoff_supported">false</bool>
+
 </resources>

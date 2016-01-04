@@ -53,4 +53,24 @@
     <string name="network_current">"current"</string>
     <add-resource type="string" name="network_forbidden" />
     <string name="network_forbidden">"forbidden"</string>
+    <!-- description of sim on/off -->
+    <add-resource type="string" name="sim_mode" />
+    <string name="sim_mode">SIM mode</string>
+    <add-resource type="string" name="sim_enabled" />
+    <string name="sim_enabled">This SIM is turned on.</string>
+    <add-resource type="string" name="sim_disabled" />
+    <string name="sim_disabled">This SIM is turned off.</string>
+    <add-resource type="string" name="sim_change_mode_title" />
+    <string name="sim_change_mode_title">Change sim mode?</string>
+    <add-resource type="string" name="turn_on_sim_title" />
+    <string name="turn_on_sim_title">Turn on sim mode?</string>
+    <add-resource type="string" name="ok" />
+    <string name="ok">OK</string>
+    <add-resource type="string" name="cancel" />
+    <string name="cancel">Cancel</string>
+    <add-resource type="string" name="turn_off_sim_title" />
+    <string name="turn_off_sim_title">Turn off sim mode?</string>
+    <add-resource type="string" name="sim_mode_change_toast" />
+    <string name="sim_mode_change_toast">Switching sim mode, this may take up to a minute...</string>
+
 </resources>

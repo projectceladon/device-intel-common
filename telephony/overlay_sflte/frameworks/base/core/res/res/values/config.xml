@@ -93,4 +93,9 @@
     <string name="config_mms_user_agent" translatable="false">Common</string>
     <!-- MMS user agent prolfile url -->
     <string name="config_mms_user_agent_profile_url" translatable="false">http://software.intel.com/sites/landingpage/android/default_profile.xml</string>
+
+    <!-- config sim on/off feature -->
+    <add-resource type="bool" name="config_sim_onoff_supported" />
+    <bool name="config_sim_onoff_supported">true</bool>
+
 </resources>

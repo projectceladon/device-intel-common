@@ -73,4 +73,16 @@
   <java-symbol type="bool" name="config_sms_cache_allowed" />
   <java-symbol type="bool" name="config_sms_stored_allowed" />
   <java-symbol type="bool" name="config_sms_validity_period_allowed" />
+  <java-symbol type="string" name="sim_mode" />
+  <java-symbol type="string" name="sim_enabled" />
+  <java-symbol type="string" name="sim_disabled" />
+  <java-symbol type="string" name="sim_change_mode_title" />
+  <java-symbol type="string" name="turn_on_sim_title" />
+  <java-symbol type="string" name="turn_off_sim_title" />
+  <java-symbol type="string" name="ok" />
+  <java-symbol type="string" name="cancel" />
+  <java-symbol type="string" name="sim_mode_change_toast" />
+  <java-symbol type="bool" name="config_sim_onoff_supported" />
+  <java-symbol type="xml" name="sim_option" />
+
 </resources>
