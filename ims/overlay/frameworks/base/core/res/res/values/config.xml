@@ -21,4 +21,8 @@
     <string name="config_oem_phone_creator_jar_file">/system/framework/com.intel.internal.telephony.imsconverged.jar</string>
     <!-- set the oem phone creator class property -->
     <string name="config_oem_phone_creator_class_name">com.intel.internal.telephony.imsconverged.PhoneCreator</string>
+    <!-- Flag specifying whether VoLTE is available on device -->
+    <bool name="config_device_volte_available">true</bool>
+    <!-- Flag specifying whether VT is available on device -->
+    <bool name="config_device_vt_available">true</bool>
 </resources>
