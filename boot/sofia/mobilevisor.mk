@@ -22,6 +22,7 @@ BUILT_MV_CORE_BIN       := $(MOBILEVISOR_REL_PATH)/lib_mobilevisor_core/debug/li
 define mobilevisor_per_variant
 
 VMM_BUILD_OUT.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/vmm_build
+VMM_BUILD_OUT := $$(VMM_BUILD_OUT.$(1))
 
 #Required Intermiediate and final targets.
 BUILT_VMM_TARGET.$(1)           := $$(VMM_BUILD_OUT.$(1))/mobilevisor/mobilevisor.hex

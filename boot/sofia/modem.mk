@@ -17,9 +17,6 @@
 MODEM_BIN_LOAD_PATH := $(TARGET_OUT)/vendor/firmware
 MODEM_INSTALL_PATH := $(MODEM_BIN_LOAD_PATH)/modem.fls_ID0_CUST_LoadMap0.bin
 
-FIRMWARE_SYMBOLS_PATH := $(wildcard hardware/intel/$(TARGET_BOARD_PLATFORM)-fls/$(TARGET_DEVICE)/symbols/*.elf)
-FIRMWARE_SYMBOLS_FILE := $(TARGET_DEVICE)-symbols_firmware-$(BUILD_NUMBER).zip
-
 define modem_per_variant
 
 ifeq ($(BUILD_MODEM_FROM_SRC),true)

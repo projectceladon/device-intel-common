@@ -26,6 +26,7 @@ BUILT_SECVM.$(1) := $$(SECVM_BUILD_DIR.$(1))/secvm.hex
 SECVM_FLS.$(1) := $$(FLASHFILES_DIR.$(1))/secvm.fls
 SECVM_SIGNED_FLS.$(1) := $$(SIGN_FLS_DIR.$(1))/secvm_signed.fls
 SYSTEM_SIGNED_FLS_LIST.$(1) += $$(SECVM_SIGNED_FLS.$(1))
+SECVM_BUILD_DIR := $$(SECVM_BUILD_DIR.$(1))
 
 $$(BUILT_SECVM.$(1)): build_secvm.$(1)
 

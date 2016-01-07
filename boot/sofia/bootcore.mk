@@ -41,6 +41,8 @@ else
   BOOTLOADER_BIN_PATH.$(1) := $${SOFIA_FIRMWARE_OUT.$(1)}/bootloader/$$(MODEM_PROJECTNAME)_$$(MODEM_PLATFORM)
 endif
 
+BOOTLOADER_BIN_PATH := $$(BOOTLOADER_BIN_PATH.$(1))
+
 ifeq ($$(BUILD_REL10_BOOTCORE), true)
   BUILT_PSI_RAM_HEX.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/target_psi_ram/psi_ram.hex
   BUILT_PSI_RAM_XOR.$(1)     := $$(BOOTLOADER_BIN_PATH.$(1))/scripts/psi_ram.xor_script.txt

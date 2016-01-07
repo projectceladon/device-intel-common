@@ -18,8 +18,10 @@ ifeq ($(BUILD_THREADX_FROM_SRC),true)
 
 define threadx_per_variant
 
-BUILT_THREADX.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/threadx/threadx.hex
+THREADX_BUILD_DIR.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/threadx
+BUILT_THREADX.$(1) := $$(THREADX_BUILD_DIR.$(1)/threadx.hex
 THREADX_FLS.$(1)   := $$(FLASHFILES_DIR.$(1))/threadx.fls
+THREADX_BUILD_DIR := $$(THREADX_BUILD_DIR.$(1))
 
 $$(BUILT_THREADX.$(1)): build_threadx_hex.$(1)
 
