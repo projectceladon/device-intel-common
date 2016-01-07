@@ -14,5 +14,5 @@ else
         insmod $modules/mac80211.ko
 fi
 
-insmod $modules/iwlwifi.ko nvm_file=iwl_nvm.bin d0i3_debug=1
+insmod $modules/iwlwifi.ko nvm_file=nvmData d0i3_debug=1
 insmod $modules/iwlmvm.ko always_on=1
