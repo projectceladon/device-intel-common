@@ -23,7 +23,7 @@
 -->
 <!--
 /*
-** Copyright (C) 2015 Intel Corporation, All rights reserved
+** Copyright (C) 2015 The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -38,12 +38,9 @@
 ** limitations under the License.
 */
 -->
-
-<resources>
-    <add-resource type="bool" name="call_log_multi_delete" />
-    <bool name="call_log_multi_delete">false</bool>
-    <add-resource type="bool" name="is_blacklist_enabled" />
-    <bool name="is_blacklist_enabled">false</bool>
-    <add-resource type="bool" name="support_contact_group" />
-    <bool name="support_contact_group">false</bool>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <bool name="account_type_storage">false</bool>
+    <bool name="init_phone_sim_account">false</bool>
+    <bool name="contacts_export">false</bool>
+    <bool name="search_contact">false</bool>
 </resources>
