@@ -30,7 +30,7 @@ define bootcore_per_variant
 
 ifneq (1,$(words $(SOFIA_FIRMWARE_VARIANTS)))
 BOOTCORE_FEATURES.$(1) += FEAT_DTB_FROM_BLOBSTORE
-BLOBSTORE_FINGERPRINT.$(1) := $$(shell python $$(BOARD_DEVICE_MAPPING) $(1))
+BLOBSTORE_FINGERPRINT.$(1) := $$(shell python $$(BOARD_DEVICE_MAPPING) $(1) ${TARGET_PRODUCT_FISHNAME})
 endif
 
 BOOTLDR_TMP_DIR.$(1)       := $$(SOFIA_FIRMWARE_OUT.$(1))/bootloader_tmp
