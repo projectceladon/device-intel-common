@@ -31,16 +31,47 @@ MOBILEVISOR_FLS.$(1)            := $$(FLASHFILES_DIR.$(1))/mobilevisor.fls
 MOBILEVISOR_SIGNED_FLS.$(1)     := $$(SIGN_FLS_DIR.$(1))/mobilevisor_signed.fls
 SYSTEM_SIGNED_FLS_LIST.$(1)     += $$(MOBILEVISOR_SIGNED_FLS.$(1))
 
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+MOBILEVISOR_OPTION_common.$(1) := __MV_RAM_LAYOUT_DEFS_FROM_XML__
+MOBILEVISOR_INCLUDE_common.$(1) := $$(VMM_BUILD_OUT.$(1))/mobilevisor
+MV_RAM_DEFS_FILE.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/ram_layout.h
+MV_RAM_DEFS_DEST_FILE.$(1) := $$(VMM_BUILD_OUT.$(1))/mobilevisor/ram_layout.h
+else
+MOBILEVISOR_OPTION_common.$(1) :=
+MOBILEVISOR_INCLUDE_common.$(1) :=
+endif
+
+###########################
+# create rules
+###########################
+.PHONY : force
+force: ;
+
+
 $$(VMM_BUILD_OUT.$(1)):
 	mkdir -p $$(VMM_BUILD_OUT.$(1))
+
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+$$(MV_RAM_DEFS_DEST_FILE.$(1)): force | $$(VMM_BUILD_OUT.$(1)) prg
+	mkdir -p $$(VMM_BUILD_OUT.$(1))/mobilevisor
+	if [ -a $$(MV_RAM_DEFS_FILE.$(1)) ]; \
+	then diff  $$(MV_RAM_DEFS_FILE.$(1)) $$(MV_RAM_DEFS_DEST_FILE.$(1)) || cp -f $$(MV_RAM_DEFS_FILE.$(1)) $$(MV_RAM_DEFS_DEST_FILE.$(1)); \
+	else echo "Error: Required ram layout file $$(MV_RAM_DEFS_FILE.$(1)) was not found!"; exit 1; \
+	fi
+endif
+
 
 #Override hardcoded LIBSOC path with WHOLE_ARCHIVE_LIB_LIST. Otherwise build fails
 $$(BUILT_VMM_TARGET.$(1)) $$(BUILT_VMM_TARGET_BIN.$(1)): build_vmm_target.$(1)
 
 .PHONY: build_vmm_target.$(1)
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+build_vmm_target.$(1): $$(BUILT_LIBSOC_TARGET.$(1)) $$(BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1)) | $$(MV_RAM_DEFS_DEST_FILE.$(1))
+else
 build_vmm_target.$(1): $$(BUILT_LIBSOC_TARGET.$(1)) $$(BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1))
+endif
 	@echo Building ===== mobilevisor.$(1) ======
-	$$(MAKE) -C $$(MOBILEVISOR_SRC_PATH) PROJECTNAME=$$(shell echo $$(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$$(abspath $$(VMM_BUILD_OUT.$(1))) WHOLE_ARCHIVE_LIB_LIST+="$$(abspath $$(BUILT_LIBSOC_TARGET.$(1))) $$(abspath $$(BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1))) $$(abspath $$(BUILT_MV_CORE_BIN))" PLATFORM=$$(MODEM_PLATFORM)
+	$$(MAKE) -C $$(MOBILEVISOR_SRC_PATH) PROJECTNAME=$$(shell echo $$(TARGET_BOARD_PLATFORM_VAR) | tr a-z A-Z) BASEBUILDDIR=$$(abspath $$(VMM_BUILD_OUT.$(1))) WHOLE_ARCHIVE_LIB_LIST+="$$(abspath $$(BUILT_LIBSOC_TARGET.$(1))) $$(abspath $$(BUILT_LIB_MOBILEVISOR_SVC_TARGET.$(1))) $$(abspath $$(BUILT_MV_CORE_BIN))" PLATFORM=$$(MODEM_PLATFORM) C_DEFINES=$$(MOBILEVISOR_OPTION_common.$(1)) INCLUDEDIR=$$(abspath $$(MOBILEVISOR_INCLUDE_common.$(1)))
 
 $$(MOBILEVISOR_FLS.$(1)): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$(BUILT_VMM_TARGET.$(1)) $$(FLASHLOADER_FLS.$(1))
 	$$(FLSTOOL) --prg $$(INTEL_PRG_FILE.$(1)) --output $$@ --tag MOBILEVISOR $$(INJECT_FLASHLOADER_FLS.$(1)) $$(BUILT_VMM_TARGET.$(1)) --replace --to-fls2

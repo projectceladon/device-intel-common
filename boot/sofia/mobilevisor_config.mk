@@ -30,7 +30,11 @@ endef
 define CREATE_MV_CONFIG_XML_RULES
 # $(1) == each SOFIA_FIRMWARE_VARIANT
 # $(2) == each MV_CONFIG_TYPE
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+$$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml : force | $$(MV_CONFIG_BUILD_OUT.$(1)) $$(MV_CONFIG_RAM_DEFS_DEST_FILE.$(1))
+else
 $$(MV_CONFIG_BUILD_OUT.$(1))/mvconfig_$(2).xml : force | $$(MV_CONFIG_BUILD_OUT.$(1))
+endif
 	icc -E -P \
 		$$(MV_CONFIG_OPTION_common.$(1)) \
 		$$(MV_CONFIG_OPTION_$(2).$(1)) \
@@ -109,8 +113,9 @@ ifeq ($$(SECURE_PLAYBACK_ENABLE),true)
 MV_CONFIG_OPTION_common.$(1) += -D __MV_SECURE_PLAYBACK__
 endif
 
+MV_CONFIG_INC_PATH.$(1) += -I $$(abspath $$(MV_CONFIG_BUILD_OUT.$(1)))
 ifneq '$$(MV_CONFIG_CHIP_VER.$(1))' ''
-MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs/$$(MV_CONFIG_CHIP_VER.$(1))
+MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs/$$(MV_CONFIG_CHIP_VER.$(1)) $$(MV_CONFIG_BUILD_OUT.$(1))
 endif
 MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs/$$(MV_CONFIG_INC_PATH_VARIANT.$(1))
 MV_CONFIG_INC_PATH.$(1)         += -I $$(MV_CONFIG_PRODUCT_PATH)/$$(TARGET_BOARD_PLATFORM_VAR)/configs
@@ -132,11 +137,27 @@ MV_CONFIG_OPTION_smp_profiling.$(1) = -D __MV_PROFILING__ -D __MV_SMP__
 MV_CONFIG_OPTION_modemonly.$(1) = -D __MV_MODEM_ONLY__
 MV_CONFIG_OPTION_512mb.$(1) = -D __MV_SMP__
 
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+MV_CONFIG_OPTION_common.$(1)    += -D __MV_RAM_LAYOUT_DEFS_FROM_XML__
+MV_RAM_DEFS_FILE.$(1) := $$(SOFIA_FIRMWARE_OUT.$(1))/ram_layout.h
+MV_CONFIG_RAM_DEFS_DEST_FILE.$(1) := $$(MV_CONFIG_BUILD_OUT.$(1))/ram_layout.h
+endif
+
+
 ###########################
 # create rules
 ###########################
 .PHONY : force
 force: ;
+
+ifeq ($$(GEN_MV_RAM_DEFS_FROM_XML), true)
+$$(MV_CONFIG_RAM_DEFS_DEST_FILE.$(1)) : force | $$(MV_CONFIG_BUILD_OUT.$(1)) prg
+	if [ -a $$(MV_RAM_DEFS_FILE.$(1)) ]; \
+	then diff  $$(MV_RAM_DEFS_FILE.$(1)) $$(MV_CONFIG_RAM_DEFS_DEST_FILE.$(1)) || cp -f $$(MV_RAM_DEFS_FILE.$(1)) $$(MV_CONFIG_RAM_DEFS_DEST_FILE.$(1)); \
+	else echo "Error: Required ram layout file $$(MV_RAM_DEFS_FILE.$(1)) was not found!"; exit 1; \
+	fi
+endif
+
 
 $$(foreach t,$$(MV_CONFIG_TYPE.$(1)),$$(eval $$(call CREATE_MV_CONFIG_XML_RULES,$(1),$$(t))))
 
