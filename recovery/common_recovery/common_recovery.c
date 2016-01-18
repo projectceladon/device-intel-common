@@ -287,6 +287,9 @@ char *dmi_detect_machine(void)
     dmif = fopen("/sys/devices/virtual/dmi/id/modalias", "r");
     if (!dmif || !fgets(dmi, sizeof(dmi), dmif)) {
         printf("Couldn't open DMI modalias\n");
+        if(dmif){
+            fclose(dmif);
+        }
         return NULL;
     }
     fclose(dmif);
@@ -387,6 +390,7 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
         goto done2;
     }
     success = mzExtractZipEntryToFile(za, entry, tmp_fd);
+    unlink(dest_path_tmp);
     close(tmp_fd);
 
     if (rename(dest_path_tmp, dest_path) < 0) {
