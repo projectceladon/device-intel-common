@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd"
     xmlns:xi="http://www.w3.org/2001/XInclude"
-    Name="Vibrator" Type="FS" Endianness="Little">
+    Name="Vibrator" Type="FS">
 
     <ComponentLibrary>
         <ComponentType Name="SysFsDir">

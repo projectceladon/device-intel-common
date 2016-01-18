@@ -3,7 +3,7 @@ COMMON_PFW_CONFIG_PATH := $(call my-dir)
 
 PFW_CORE := external/parameter-framework/core
 BUILD_PFW_SETTINGS := $(PFW_CORE)/support/android/build_pfw_settings.mk
-PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/Schemas
+PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/upstream/schemas
 PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
 
 # defines:
