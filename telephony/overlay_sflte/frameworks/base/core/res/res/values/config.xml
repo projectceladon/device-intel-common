@@ -98,4 +98,6 @@
     <add-resource type="bool" name="config_sim_onoff_supported" />
     <bool name="config_sim_onoff_supported">true</bool>
 
+    <add-resource type="bool" name="config_set_data_switch" />
+    <bool name="config_set_data_switch">true</bool>
 </resources>
