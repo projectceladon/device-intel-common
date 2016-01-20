@@ -19,9 +19,15 @@
 ** by the device side of adb.
 */
 
+#ifndef AID_TELEMETRY
+#warning AID_TELEMETRY not defined, omitting telemetry entries from filesystem_config. The patch: https://android.intel.com/#/c/319973 may be missing."
+#endif
+
 static const struct fs_path_config android_device_dirs[] = {
     {	00755, AID_ROOT,   AID_SHELL,	0, "system/vendor/gfx/ufo_byt/bin" },
+#ifdef AID_TELEMETRY
     {	00550, AID_ROOT,   AID_TELEMETRY,	0, "system/etc/tm" },
+#endif
 };
 
 /* Rules for files.
@@ -33,7 +39,9 @@ static const struct fs_path_config android_device_dirs[] = {
 static const struct fs_path_config android_device_files[] = {
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/aosp/wpa_*" },
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/gfx/ufo_byt/bin/*" },
+#ifdef AID_TELEMETRY
 	{ 00440, AID_ROOT,      AID_TELEMETRY, 0, "system/etc/tm/*" },
+#endif
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/brcm/wpa_*" },
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/rtk/wpa_*" },
 };
