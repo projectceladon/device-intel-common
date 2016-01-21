@@ -32,6 +32,9 @@
         <item>"7,1"</item>
     </string-array>
 
+    <!-- This variable enables hot swap on framework side. -->
+    <bool name="config_hotswapCapable">true</bool>
+
     <!-- Configure mobile tcp buffer sizes in the form: rat-name:rmem_min,rmem_def,
          rmem_max,wmem_min,wmem_def,wmem_max. If no value is found for the rat-name in use,
          the system default will be applied.  -->
