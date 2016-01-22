@@ -14,5 +14,11 @@ else
         insmod $modules/mac80211.ko
 fi
 
-insmod $modules/iwlwifi.ko nvm_file=nvmData d0i3_debug=1
-insmod $modules/iwlmvm.ko always_on=1
+if [ $1 == "--ptest-boot" ]; then
+        insmod $modules/iwlwifi.ko nvm_file=nvmData xvt_default_mode=1
+        insmod $modules/iwlxvt.ko
+else
+        insmod $modules/iwlwifi.ko nvm_file=nvmData
+fi
+
+insmod $modules/iwlmvm.ko
