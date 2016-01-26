@@ -271,7 +271,7 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
  * until now. */
 char *dmi_detect_machine(void)
 {
-    char dmi[256], buf[256], *hash, *tag, *name, *toksav, allmatched;
+    char dmi[256] = {0}, buf[256] = {0}, *hash, *tag, *name, *toksav, allmatched;
     char dmi_detect[PROPERTY_VALUE_MAX];
     FILE *dmif, *cfg;
     char *ret = NULL;
@@ -368,13 +368,15 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     }
 
     bool success = false;
-    char* zip_path;
-    char* dest_path;
-    char* dest_path_tmp;
+    char* zip_path = NULL;
+    char* dest_path = NULL;
+    char* dest_path_tmp = NULL;
 
-    if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0) return NULL;
+    if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0)
+        goto done2;
 
-    if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0) return NULL;
+    if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0)
+        goto done2;
 
     ZipArchive* za = ((UpdaterInfo*)(state->cookie))->package_zip;
     const ZipEntry* entry = mzFindZipEntry(za, zip_path);
@@ -400,9 +402,12 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     }
 
 done2:
-    free(zip_path);
-    free(dest_path);
-    free(dest_path_tmp);
+    if (zip_path != NULL)
+        free(zip_path);
+    if (dest_path != NULL)
+        free(dest_path);
+    if (dest_path_tmp != NULL)
+        free(dest_path_tmp);
     return StringValue(strdup(success ? "t" : ""));
 }
 
