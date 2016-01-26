@@ -105,10 +105,6 @@ ifdef TARGET_MVCONFIG_OPTIONS.$(1)
 MV_CONFIG_OPTION_common.$(1)    += $$(TARGET_MVCONFIG_OPTIONS.$(1))
 endif
 
-ifeq '$$(findstring 3gr,${TARGET_BOARD_PLATFORM})' '3gr'
-MV_CONFIG_OPTION_common.$(1)    += -D __MV_SECVM_LOW_PRIO__
-endif
-
 ifeq ($$(SECURE_PLAYBACK_ENABLE),true)
 MV_CONFIG_OPTION_common.$(1) += -D __MV_SECURE_PLAYBACK__
 endif
