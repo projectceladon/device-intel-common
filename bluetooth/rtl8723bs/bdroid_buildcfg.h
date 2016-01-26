@@ -55,6 +55,9 @@
 /*page timeout */
 #define BTA_DM_PAGE_TIMEOUT 8192
 
+/* This feature is used to enable interleaved scan*/
+#define BTA_HOST_INTERLEAVE_SEARCH TRUE
+
 #define BT_HCI_DEVICE_NODE_MAX_LEN 512
 
 /* Set a lower bitrate to avoid audio dropouts when WiFi streaming video */
