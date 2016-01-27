@@ -32,5 +32,6 @@
 #define NR_OF_INTEL_IPU4_ISA_CFG 7
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define V4L2_FMT_INTEL_IPU4_ISA_CFG v4l2_fourcc('i', 'p', '4', 'c')
+#define V4L2_FMT_INTEL_IPU4_ISYS_META v4l2_fourcc('i', 'p', '4', 'm')
 #endif
 
