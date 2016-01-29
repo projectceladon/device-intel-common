@@ -31370,4 +31370,18 @@
       apn="cmw500.rohde-schwarz.com.mnc01.mcc001.gprs"
       type="default"
   />
+
+  <apn carrier="amarisoft ims"
+      mcc="001"
+      mnc="010"
+      apn="ims"
+      type="ims"
+  />
+
+  <apn carrier="amarisoft"
+      mcc="001"
+      mnc="010"
+      apn="test123"
+      type="default"
+  />
 </apns>
