@@ -35,5 +35,5 @@ mbimg() {
     mkernel kernel $* || return
 
     echo ===[ Generating Ramdisk and ${ANDROID_PRODUCT_OUT}/boot.img]===
-    (\cd "$T" && make ramdisk-nodeps bootimage-nodeps $* )
+    (\cd "$T" && make ramdisk-nodeps $* && make bootimage-nodeps $*)
 }
