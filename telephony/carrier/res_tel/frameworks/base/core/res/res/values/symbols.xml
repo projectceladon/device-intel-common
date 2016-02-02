@@ -51,7 +51,6 @@
   <java-symbol type="string" name="switch_wcdma_msg" />
   <java-symbol type="array" name="plmn" />
   <java-symbol type="bool" name="config_set_correct_carrier_name" />
-  <java-symbol type="bool" name="config_enhancedtelephony_service_enabled" />
   <java-symbol type="string" name="network_2g" />
   <java-symbol type="string" name="network_3g" />
   <java-symbol type="string" name="network_4g" />
