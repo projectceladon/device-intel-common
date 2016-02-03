@@ -1,5 +1,5 @@
 #!/system/bin/sh
-socket_opened=$(netstat -ln | grep 0.0.0.0:5019)
+socket_opened=$(netstat -lnt | grep -e 0.0.0.0:5019 -e :::5019)
 if [[ ! -z "$socket_opened" ]]
 then
     if [[ $# -eq 0 ]]
