@@ -180,14 +180,28 @@ ucode_patch.fls.$(1): createflashfile_dir $$(FLSTOOL) $$(INTEL_PRG_FILE.$(1)) $$
 .PHONY: splash_img.fls.$(1)
 
 SPLASH_IMG_BIN_PATH.$(1)        := $$(SOFIA_FIRMWARE_OUT.$(1))/splash_image
+
+ifeq ($(words $(SOFIA_FIRMWARE_VARIANTS)),1)
 SPLASH_IMG_FILE_1.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/splash_screen.jpg
 SPLASH_IMG_FILE_2.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/fastboot.png
+else
+SPLASH_IMG_FILE_1.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/$(1)/splash_screen.jpg
+SPLASH_IMG_FILE_2.$(1)          ?= $$(TARGET_DEVICE_DIR)/splash_image/$(1)/fastboot.png
+endif
+
 SPLASH_DISPLAY_DTS.$(1)         := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_display_config.dts
 SPLASH_IMG_DISPLAY_CONFIG.$(1)  := $$(SPLASH_IMG_BIN_PATH.$(1))/vbt.bin
 SPLASH_IMG_HEADER.$(1)          := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_hdr.bin
 SPLASH_IMG_BIN_FONT.$(1)        := $$(SPLASH_IMG_BIN_PATH.$(1))/slbfont.bin
+
+ifeq ($(words $(SOFIA_FIRMWARE_VARIANTS)),1)
 SPLASH_IMG_FONT_CONFIG.$(1)     ?= $$(TARGET_DEVICE_DIR)/splash_image/slbfont.cfg
 SPLASH_IMG_FILE_FONT.$(1)       ?= $$(TARGET_DEVICE_DIR)/splash_image/slbfont.png
+else
+SPLASH_IMG_FONT_CONFIG.$(1)     ?= $$(TARGET_DEVICE_DIR)/splash_image/$(1)/slbfont.cfg
+SPLASH_IMG_FILE_FONT.$(1)       ?= $$(TARGET_DEVICE_DIR)/splash_image/$(1)/slbfont.png
+endif
+
 SPLASH_IMG_BIN_0.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_config.bin
 SPLASH_IMG_BIN_1.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/splash_screen.bin
 SPLASH_IMG_BIN_2.$(1)           := $$(SPLASH_IMG_BIN_PATH.$(1))/fastboot.bin
