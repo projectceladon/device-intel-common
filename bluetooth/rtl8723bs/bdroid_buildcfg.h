@@ -58,6 +58,12 @@
 /* This feature is used to enable interleaved scan*/
 #define BTA_HOST_INTERLEAVE_SEARCH TRUE
 
+/* alternative scan durations, must define all 4 or none. */
+#define BTIF_DM_INTERLEAVE_DURATION_BR_ONE    4
+#define BTIF_DM_INTERLEAVE_DURATION_LE_ONE    4
+#define BTIF_DM_INTERLEAVE_DURATION_BR_TWO    8
+#define BTIF_DM_INTERLEAVE_DURATION_LE_TWO    8
+
 #define BT_HCI_DEVICE_NODE_MAX_LEN 512
 
 /* Set a lower bitrate to avoid audio dropouts when WiFi streaming video */
