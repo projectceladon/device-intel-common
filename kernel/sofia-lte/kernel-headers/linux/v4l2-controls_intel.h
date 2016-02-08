@@ -57,5 +57,4 @@ struct isp_supplemental_sensor_otp_data {
 #define INTEL_VIDIOC_G_SENSOR_OTP  _IOWR('v', BASE_VIDIOC_PRIVATE+1, struct isp_supplemental_sensor_otp_data)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define INTEL_V4L2_CID_AUTO_FPS (V4L2_CID_USER_INTEL_BASE+0)
-#define INTEL_V4L2_CID_VBLANKING (V4L2_CID_USER_INTEL_BASE+1)
 #endif
