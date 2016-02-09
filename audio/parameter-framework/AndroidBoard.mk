@@ -389,6 +389,16 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+######### WOV GHWD Algos #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cavs-Ghwd.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
+LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 ##############################
 # Algos_Gen3_5 Phony package
 include $(CLEAR_VARS)
