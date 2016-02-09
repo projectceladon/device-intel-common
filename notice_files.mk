@@ -11,5 +11,11 @@ endif
 endif
 endif
 
+ifneq (,$(filter hardware/intel/% vendor/intel%,$(LOCAL_MODULE_MAKEFILE)))
+ifneq (,$(filter user debug eng tests,$(LOCAL_MODULE_TAGS)))
+DELINQUANT_TAGS_MODULES := $(DELINQUANT_TAGS_MODULES) $(LOCAL_MODULE):$(LOCAL_MODULE_TAGS):$(LOCAL_MODULE_MAKEFILE)
+endif
+endif
+
 # Call original makefile from Android build system
 include $(BUILD_SYSTEM)/notice_files.mk
