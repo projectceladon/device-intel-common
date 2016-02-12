@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE author [
+	   <!ENTITY channels_default SYSTEM "channels_M27260.xml" >
+	   <!ENTITY libs_default SYSTEM "libs_default.xml" >
+]>
+
+<telephony_config>
+	<modems_info>
+		<modem_info>
+			<core
+				name="7260"
+				flashless="false"
+				secured="false"
+				ipc="usb"
+				ipcLogging="usb"
+				ipcDump="usb"
+				swRevision="1.0"
+				hwRevision="20"
+			/>
+			<modules
+				mmgr_xml="mmgr_7260_conf_8.xml"
+				rril_txt="rril_7260_conf_4.txt"
+			/>
+			<tlvs_info>
+				<tlv_info
+					filename="2048_7260_family.tlv"
+				/>
+				<tlv_info
+					filename="2048_USB_reconfig_3ACM_4NCM.tlv"
+				/>
+				<tlv_info
+					filename="2048_CAT_Auto_Response_disabled.tlv"
+				/>
+				<tlv_info
+					filename="2048_cellular_transmit_power_settings.tlv"
+				/>
+				<tlv_info
+					filename="2048_M2_7262_USB_HS_manual_coredump_setup.tlv"
+				/>
+			</tlvs_info>
+			&channels_default;
+			&libs_default;
+		</modem_info>
+	</modems_info>
+</telephony_config>

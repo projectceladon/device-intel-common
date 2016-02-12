@@ -1,0 +1,3 @@
+# Activate 3G-TDSCDMA
+nvm:dyn_cps.umts_duplexing_mode.duplexing_mode=1
+nvm:store_nvm_sync(dyn_cps)

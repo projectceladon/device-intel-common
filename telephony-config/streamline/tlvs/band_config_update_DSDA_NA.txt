@@ -1,0 +1,24 @@
+#LTE FDD: band 7
+#LTE TDD: band 38
+nvm:fix_s45_lut.txlte.txlte_config_table[0,19].4g_active_bands={7,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.txlte.txlte_config_table[0,19].4g_subband={255,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.txlte.txlte_config_table[0,19].4g_tx_max_pwr={368,368,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:dyn_cps.lte_band_config.active_lte_band_config.is_initialized=0
+nvm:store_nvm_sync(dyn_cps)
+#WCDMA: band 2, 5
+nvm:fix_s45_lut.tx.tx_config_table[0,19].active_bands={2,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].subband={255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].enable_diversity={1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].tx_max_pwr={376,376,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].tx_max_pwr_prox_sensor={336,336,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].level_cust_power_back_off={24,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:fix_s45_lut.tx.tx_config_table[0,19].add_cust_power_back_off={16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+nvm:store_nvm_sync(fix_s45_lut)
+#TD-SCDMA: band 34
+nvm:fix_cps.umts_tdd_band_config.umts_tdd_band_config_list[0,3]={0,255,255,255}
+nvm:fix_cps.umts_tdd_band_config.umts_tdd_config_band_pwr_class[0,3]={0,0,0,0}
+#2G: band 2, 5
+nvm:fix_cps.gsm_band_config.nvr_nbr_band_config=2
+nvm:fix_cps.gsm_band_config.nvr_band_config_list[0,9]={5,6,255,255,255,255,255,255,255,255}
+nvm:fix_cps.gsm_band_config.nvr_RxDiv[0,9]={1,1,0,0,0,0,0,0,0,0}
+nvm:store_nvm_sync(fix_cps)

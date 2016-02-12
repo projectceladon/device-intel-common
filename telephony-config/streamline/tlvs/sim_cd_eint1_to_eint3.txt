@@ -1,0 +1,3 @@
+# Should be used when SIM_CD is connected on EINT3 instead of EINT1 for SIM detection
+nvm:fix_uicc.sim_cd_pin_alternative=1
+nvm:store_nvm_sync(fix_uicc)

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<telephony_config>
+	<modems_info>
+		<modem_info>
+			<tlvs_info>
+				<tlv_info
+					filename="docomo_volte_cfg.tlv"
+				/>
+				<tlv_info
+					filename="docomo_ps_features.tlv"
+				/>
+<!-- To be added back when modem supports the 'docomo' specific TLV command
+				<tlv_info
+					filename="docomo_epc_support.tlv"
+				/>
+-->
+				<tlv_info
+					filename="docomo_tel_disable_duration.tlv"
+				/>
+				<tlv_info
+					filename="docomo_cust_parms.tlv"
+				/>
+			</tlvs_info>
+		</modem_info>
+	</modems_info>
+</telephony_config>
