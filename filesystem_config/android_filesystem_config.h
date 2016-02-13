@@ -44,5 +44,5 @@ static const struct fs_path_config android_device_files[] = {
 #endif
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/brcm/wpa_*" },
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/rtk/wpa_*" },
-	{ 00755, AID_SYSTEM,    AID_SYSTEM,     (1ULL << CAP_NET_RAW), "vendor/bin/esif_ufd" },
+	{ 00755, AID_SYSTEM,    AID_SYSTEM,     (1ULL << CAP_NET_RAW | 1ULL << CAP_SYS_BOOT), "vendor/bin/esif_ufd" },
 };
