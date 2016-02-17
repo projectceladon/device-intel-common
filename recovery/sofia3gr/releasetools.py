@@ -25,7 +25,7 @@ def trigger_fwupdate(info):
 # These steps are called in the end of an OTA update
 def FullOTA_InstallEnd(info):
   print "Intel: vendor specific OTA end hook for full OTA update"
-  intel_common.AddFWImageFile(info.input_zip, info.output_zip)
+  intel_common.AddFWImageFile(OPTIONS.target_tmp, info.output_zip)
 
   # Set progress bar to end of FLS extraction
   info.script.SetProgress(0.6)
@@ -53,7 +53,7 @@ def IncrementalOTA_VerifyEnd(info):
 def IncrementalOTA_InstallEnd(info):
   print "Intel: vendor specific OTA end hook for incremental OTA update"
   if verbatim:
-    intel_common.AddFWImageFile(info.target_zip, info.output_zip)
+    intel_common.AddFWImageFile(OPTIONS.target_tmp, info.output_zip)
 
     # Set progress bar to end of FLS extraction
     info.script.SetProgress(0.6)
