@@ -232,6 +232,7 @@ supDomain: DeviceForStrategy
 				# Fallback BT Sco devices in case of FORCE_BT_SCO
 				# or FORCE_NONE
 				#
+				AvailableInputDevices Includes UsbDevice
 				AvailableOutputDevices Includes UsbDevice
 				ANY
 					ForceUseForCommunication Is ForceBtSco
