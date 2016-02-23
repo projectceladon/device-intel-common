@@ -348,7 +348,7 @@ static int update_load_option_start_offset(struct guid *guid, uint64_t new_start
         len = strnlen16(load_option->description,
                         (size - offsetof(load_option_t, description)) / sizeof(char16_t));
         if (offsetof(load_option_t, description) + ((len + 1) * sizeof(char16_t)) +
-            load_option->file_path_list_length != size) {
+            load_option->file_path_list_length > size) {
             printf("Invalid load option %s\n", varname);
             free(load_option);
             goto err;
