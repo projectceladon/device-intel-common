@@ -47,5 +47,8 @@
     <string name="turn_off_sim_title">关闭SIM卡?</string>
     <add-resource type="string" name="sim_mode_change_toast" />
     <string name="sim_mode_change_toast">切换SIM卡模式,可能要花费一分钟...</string>
-
+    <add-resource type="string" name="prefer_ims_service_for_voice_title" />
+    <string name="prefer_ims_service_for_voice_title">IMS通话优先（需运营商支持）</string>
+    <add-resource type="string" name="prefer_ims_service_for_voice_summary" />
+    <string name="prefer_ims_service_for_voice_summary">IMS业务能够提供高质量的增强语音通话和其他通信服务（推荐）</string>
 </resources>

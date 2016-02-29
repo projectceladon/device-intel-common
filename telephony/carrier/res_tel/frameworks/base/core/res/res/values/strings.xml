@@ -72,5 +72,8 @@
     <string name="turn_off_sim_title">Turn off sim mode?</string>
     <add-resource type="string" name="sim_mode_change_toast" />
     <string name="sim_mode_change_toast">Switching sim mode, this may take up to a minute...</string>
-
+    <add-resource type="string" name="prefer_ims_service_for_voice_title" />
+    <string name="prefer_ims_service_for_voice_title">Prefer IMS service for voice calls when possible</string>
+    <add-resource type="string" name="prefer_ims_service_for_voice_summary" />
+    <string name="prefer_ims_service_for_voice_summary">IMS service offers an enhanced voice and communication service (recommended)</string>
 </resources>
