@@ -70,4 +70,9 @@ public class ContextUtil {
     public boolean isSupport(String name, String type) {
         return false;
     }
+
+    public void requestContactPermissionForSim() {
+
+    }
+
 }
