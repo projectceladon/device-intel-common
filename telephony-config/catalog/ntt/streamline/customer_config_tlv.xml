@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<group name="streamline1">
+	<list name="tlvs">
+		<string>docomo_volte_cfg.tlv</string>
+		<string>docomo_ps_features.tlv</string>
+		<string>docomo_tel_disable_duration.tlv</string>
+		<string>docomo_cust_parms.tlv</string>
+	</list>
+</group>
