@@ -19,8 +19,8 @@
 				hwRevision="2.1"
 			/>
 			<modules
-				mmgr_xml="mmgr_7360_conf_1.xml"
-				rril_txt="rril_7360_conf_1.txt"
+				mmgr_xml="mmgr_7360_conf_3.xml"
+				rril_txt="rril_7360_conf_2.txt"
 			/>
 			<tlvs_info>
 				<tlv_info
