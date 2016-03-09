@@ -44,7 +44,7 @@ LOCAL_GENERATED_SOURCES := $(GEN)
 
 # The build system requires at least one sourcefile
 LOCAL_SRC_FILES := Comments.java
-LOCAL_JAVA_LIBRARIES := core-libart
+LOCAL_JAVA_LIBRARIES := core-oj core-libart
 LOCAL_NO_STANDARD_LIBRARIES := true
 
 include $(BUILD_JAVA_LIBRARY)
