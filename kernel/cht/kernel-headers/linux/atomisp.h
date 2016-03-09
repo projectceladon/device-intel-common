@@ -553,6 +553,39 @@ struct atomisp_xnr3_0_11_config {
  int32_t weight_v0;
  int32_t weight_v1;
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct atomisp_bnlm_config  {
+ bool rad_enable;
+ int32_t rad_x_origin;
+ int32_t rad_y_origin;
+ int32_t mu_root_lut_thr[15];
+ int32_t mu_root_lut_val[16];
+ int32_t sad_norm_lut_thr[15];
+ int32_t sad_norm_lut_val[16];
+ int32_t sig_rad_lut_thr[15];
+ int32_t sig_rad_lut_val[16];
+ int32_t sig_detail_lut_thr[15];
+ int32_t sig_detail_lut_val[16];
+ int32_t rad_pow_lut_thr[15];
+ int32_t rad_pow_lut_val[16];
+ int32_t exp_coeff_a;
+ uint32_t exp_coeff_b;
+ int32_t exp_coeff_c;
+ uint32_t exp_exponent;
+ int32_t nl_0_lut_thr[15];
+ int32_t nl_0_lut_val[16];
+ int32_t nl_1_lut_thr[15];
+ int32_t nl_1_lut_val[16];
+ int32_t nl_2_lut_thr[15];
+ int32_t nl_2_lut_val[16];
+ int32_t nl_3_lut_thr[15];
+ int32_t nl_3_lut_val[16];
+ int32_t nl_th[3];
+ int32_t match_quality_max_idx[4];
+ int32_t avg_min_th;
+ int32_t max_min_th;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct atomisp_parameters {
  struct atomisp_wb_config *wb_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -613,6 +646,7 @@ struct atomisp_parameters {
  struct atomisp_macc1_5_config *macc1_5_config;
  struct atomisp_macc1_5_table *macc1_5_table;
  struct atomisp_xnr3_0_11_config *xnr3_0_11_config;
+ struct atomisp_bnlm_config  *bnlm_config;
  void *lin_2500_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  void *obgrid_2500_config;
