@@ -312,7 +312,7 @@ static int update_load_option_start_offset(struct guid *guid, uint64_t new_start
     HARDDRIVE_DEVICE_PATH *hd_path;
     load_option_t *load_option;
     char varname[sizeof(VAR_BOOTOPTION)];
-    size_t i, j, size, len, nb_load_option;
+    size_t i, size, len, nb_load_option;
     EFI_DEVICE_PATH *path;
     char *endpath;
     int ret;
@@ -365,7 +365,7 @@ static int update_load_option_start_offset(struct guid *guid, uint64_t new_start
 
         hd_path->start = new_start;
         ret = efi_set_variable(global_guid, varname, (uint8_t *)load_option,
-                               size, attributes);
+                               size, attributes, 0600);
         if (ret) {
             printf("Failed to write %s EFI variable\n", varname);
             free(load_option);

@@ -35,12 +35,10 @@ static const char *link_device = LINK_PATH;
 static const char *diskbus_format = "dd.f"; /* Device.Function */
 static const char *persistent_partition = LINK_PATH "/android_persistent";
 
-int main(int argc, char **argv)
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 {
 	int ret;
 	char pci_id[PROPERTY_VALUE_MAX];
-	uint8_t *data;
-	size_t size;
 	unsigned i;
 	char *path;
 	struct passwd *passwd;
