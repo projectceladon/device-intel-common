@@ -15,8 +15,8 @@
 				ipc="usb"
 				ipcLogging="usb"
 				ipcDump="usb"
-				swRevision="10"
-				hwRevision="1.1"
+				swRevision="20"
+				hwRevision="2.1"
 			/>
 			<modules
 				mmgr_xml="mmgr_7360_conf_1.xml"
