@@ -37,6 +37,9 @@ $(foreach xml, $(TCS2_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), hw_
 STREAMLINE_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/streamline/xmls/*.xml))
 $(foreach xml, $(STREAMLINE_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), streamline/xmls, $(TARGET_OUT_VENDOR)/etc/telephony/tcs/streamline)))
 
+NVM_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/nvm/*.xml))
+$(foreach xml, $(NVM_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), nvm, $(TARGET_OUT_VENDOR)/etc/telephony/tcs/nvm)))
+
 # TLV files
 STREAMLINE_TLVS := $(notdir $(wildcard $(LOCAL_PATH)/streamline/tlvs/*.tlv))
 $(foreach tlv, $(STREAMLINE_TLVS), $(eval $(call copy_file, $(tlv), $(LOCAL_PATH), streamline/tlvs, $(TARGET_OUT_VENDOR)/firmware/telephony)))
@@ -67,5 +70,5 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := tcs2_hw_xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_OWNER := intel
-LOCAL_REQUIRED_MODULES := $(TCS2_XMLS) $(STREAMLINE_XMLS)
+LOCAL_REQUIRED_MODULES := $(TCS2_XMLS) $(STREAMLINE_XMLS) $(NVM_XMLS)
 include $(BUILD_PHONY_PACKAGE)
