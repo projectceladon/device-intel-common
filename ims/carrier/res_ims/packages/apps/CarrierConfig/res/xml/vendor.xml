@@ -46,5 +46,6 @@
     </carrier_config>
     <carrier_config mcc="311" mnc="480">
         <int name="volte_replacement_rat_int" value="3" />
+        <boolean name="editable_enhanced_4g_lte_bool" value="false" />
     </carrier_config>
 </carrier_config_list>
