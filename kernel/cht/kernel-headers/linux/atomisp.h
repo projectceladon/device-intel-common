@@ -586,6 +586,28 @@ struct atomisp_bnlm_config  {
  int32_t max_min_th;
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct atomisp_tdf_config {
+ int32_t thres_flat_table[64];
+ int32_t thres_detail_table[64];
+ int32_t epsilon_0;
+ int32_t epsilon_1;
+ int32_t eps_scale_text;
+ int32_t eps_scale_edge;
+ int32_t sepa_flat;
+ int32_t sepa_edge;
+ int32_t blend_flat;
+ int32_t blend_text;
+ int32_t blend_edge;
+ int32_t shading_gain;
+ int32_t shading_base_gain;
+ int32_t local_y_gain;
+ int32_t local_y_base_gain;
+ int32_t rad_x_origin;
+ int32_t rad_y_origin;
+ int32_t blend_ratio;
+ int32_t min_edge_thres;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct atomisp_parameters {
  struct atomisp_wb_config *wb_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -647,6 +669,7 @@ struct atomisp_parameters {
  struct atomisp_macc1_5_table *macc1_5_table;
  struct atomisp_xnr3_0_11_config *xnr3_0_11_config;
  struct atomisp_bnlm_config  *bnlm_config;
+ struct atomisp_tdf_config *tdf_config;
  void *lin_2500_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  void *obgrid_2500_config;
