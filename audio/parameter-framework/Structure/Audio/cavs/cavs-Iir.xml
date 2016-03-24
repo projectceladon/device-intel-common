@@ -2,10 +2,7 @@
 <ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
     <ComponentType Name="Iir" >
-        <IntegerParameter Name="ch1" Size="8" />
-        <IntegerParameter Name="ch2" Size="8" />
-        <IntegerParameter Name="ch3" Size="8" />
-        <IntegerParameter Name="ch4" Size="8" />
+        <IntegerParameter Name="channelMap" Size="32"/>
         <ParameterBlock Name="channel" ArrayLength="2"
                             Description="[0] is mono or left channel, [1] is right channel">
             <IntegerParameter Name="nbr_sections" Size="32" Min="1" Max="6"
