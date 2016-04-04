@@ -103,4 +103,8 @@
 
     <add-resource type="bool" name="config_set_data_switch" />
     <bool name="config_set_data_switch">true</bool>
+
+    <!-- When true, AP shall send data profile information of default APN to modem. -->
+    <add-resource type="bool" name="config_always_send_default_apn_data_profile" />
+    <bool name="config_always_send_default_apn_data_profile">false</bool>
 </resources>

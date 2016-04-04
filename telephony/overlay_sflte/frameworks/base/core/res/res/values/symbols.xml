@@ -26,4 +26,5 @@
   <java-symbol type="bool" name="config_customize_operator_name_display" />
   <java-symbol type="bool" name="config_signalStrengthExt" />
   <java-symbol type="bool" name="config_set_data_switch" />
+  <java-symbol type="bool" name="config_always_send_default_apn_data_profile" />
 </resources>
