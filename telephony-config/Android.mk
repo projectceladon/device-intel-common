@@ -20,7 +20,7 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/firmware/telephony
 include $(BUILD_SYSTEM)/base_rules.mk
-$(LOCAL_BUILT_MODULE) : $(STREAMLINE_TLVS $(MDM_FW_FILES))
+$(LOCAL_BUILT_MODULE) : $(STREAMLINE_TLVS) $(MDM_FW_FILES)
 	@echo "Building telephony hash file"
 	$(hide) rm -fr $(dir $@)
 	$(hide) mkdir -p $(dir $@)
@@ -30,9 +30,15 @@ $(LOCAL_BUILT_MODULE) : $(STREAMLINE_TLVS $(MDM_FW_FILES))
 TCS_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/hw_config/tcs/*.xml))
 $(foreach xml, $(TCS_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), hw_config/tcs, $(TARGET_OUT_VENDOR)/etc/telephony)))
 
-# TCS2. @TODO: add TCS2 xml files
+# TCS2
+TCS2_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/hw_config/tcs2/*.xml))
+$(foreach xml, $(TCS2_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), hw_config/tcs2, $(TARGET_OUT_VENDOR)/etc/telephony/tcs/config)))
+
 STREAMLINE_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/streamline/xmls/*.xml))
 $(foreach xml, $(STREAMLINE_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), streamline/xmls, $(TARGET_OUT_VENDOR)/etc/telephony/tcs/streamline)))
+
+NVM_XMLS := $(notdir $(wildcard $(LOCAL_PATH)/nvm/*.xml))
+$(foreach xml, $(NVM_XMLS), $(eval $(call copy_file, $(xml), $(LOCAL_PATH), nvm, $(TARGET_OUT_VENDOR)/etc/telephony/tcs/nvm)))
 
 # TLV files
 STREAMLINE_TLVS := $(notdir $(wildcard $(LOCAL_PATH)/streamline/tlvs/*.tlv))
@@ -50,7 +56,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := mdm_fw_pkg
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_OWNER := intel
-LOCAL_REQUIRED_MODULES := $(STREAMLINE_XMLS) $(STREAMLINE_TLVS) $(XML_GEO_FILE) $(notdir $(MDM_FW_FILES)) hash
+LOCAL_REQUIRED_MODULES := $(STREAMLINE_TLVS) $(XML_GEO_FILE) $(notdir $(MDM_FW_FILES)) hash
 include $(BUILD_PHONY_PACKAGE)
 
 include $(CLEAR_VARS)
@@ -58,4 +64,11 @@ LOCAL_MODULE := tcs_hw_xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_OWNER := intel
 LOCAL_REQUIRED_MODULES := $(TCS_XMLS)
+include $(BUILD_PHONY_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := tcs2_hw_xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_OWNER := intel
+LOCAL_REQUIRED_MODULES := $(TCS2_XMLS) $(STREAMLINE_XMLS) $(NVM_XMLS)
 include $(BUILD_PHONY_PACKAGE)

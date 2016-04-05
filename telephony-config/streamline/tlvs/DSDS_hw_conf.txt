@@ -1,0 +1,2 @@
+nvm:cal_prodparm.cust_parms.param_1=2
+nvm:store_nvm_sync(cal_prodparm)

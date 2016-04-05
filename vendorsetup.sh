@@ -6,15 +6,6 @@ if [ -f device/intel/mixins/mixin-update ]; then
         echo '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
     fi
 fi
-if [ -f device/intel/binarydownloader/binarydownloader ]; then
-function binarydownloader(){
-    (
-    cd $(gettop)
-    device/intel/binarydownloader/binarydownloader $*
-    )
-}
-binarydownloader --check-creds
-fi
 
 mkernel() {
     local T=$(gettop)

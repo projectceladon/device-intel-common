@@ -38,5 +38,8 @@
     <string name="cancel">取消</string>
     <add-resource type="string" name="sim_mode_change_toast" />
     <string name="sim_mode_change_toast">切換SIM卡模式,可能要花費一分鐘...</string>
-
+    <add-resource type="string" name="prefer_ims_service_for_voice_title" />
+    <string name="prefer_ims_service_for_voice_title">通話優先（需運營商支持）</string>
+    <add-resource type="string" name="prefer_ims_service_for_voice_summary" />
+    <string name="prefer_ims_service_for_voice_summary">IMS業務能夠提供高質量的增強語音通話和其他通信服務（推薦）</string>
 </resources>

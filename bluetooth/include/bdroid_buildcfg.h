@@ -30,6 +30,9 @@
  */
 #define BTA_DM_COD {0x1A, 0x01, 0x14}
 
+/* Enable Interleave scan on Intel Controller */
+#define BTA_HOST_INTERLEAVE_SEARCH    TRUE
+
 /* Framework BT ON timeout is about 8s.
  * We can retry one time if internal bluedroid timeout is 3500ms.
  */

@@ -2,10 +2,11 @@
 	<prop index="0">
 		<!--- ds4 -->
 		<vendorId value="8086"/>
-		<productId value="0a80"/>
+		<productId value="0a80,0abf"/>
+		<variant value="ds4,ds4.1"/>
 		<aperture value="2.4"/>
 		<plugin name="ds4"/>
-		<sensorSize value="2.4x1.8"/>
+		<sensorSize value="2.4x1.8,2.688x1.512"/>
 	</prop>
 </camera>
 

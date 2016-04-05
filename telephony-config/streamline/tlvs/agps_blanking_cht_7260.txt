@@ -1,0 +1,4 @@
+#set peak power enable and threshold values for only 7260
+nvm:fix_2g_drv.mixed_fix.agps_settings.peak_power.enable[0,3]={0,1,1,0}
+nvm:fix_2g_drv.mixed_fix.agps_settings.peak_power.threshold[0,3]={19,15,13,19}
+nvm:store_nvm_sync(fix_2g_drv)

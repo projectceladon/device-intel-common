@@ -181,6 +181,15 @@ LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := Realtek5645Subsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := AFE2.0.Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
