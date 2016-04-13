@@ -103,7 +103,7 @@ def main():
         guid_type = uuid.UUID(type_2_guid[guid_type])
         out.write(guid_type.bytes_le)
 
-        guid = uuid.UUID(cfg.get('partition.' + p, 'guid'))
+        guid = uuid.uuid4()
         out.write(guid.bytes_le)
 
 if __name__ == "__main__":
