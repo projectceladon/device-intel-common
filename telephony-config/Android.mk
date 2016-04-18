@@ -46,7 +46,7 @@ $(foreach tlv, $(STREAMLINE_TLVS), $(eval $(call copy_file, $(tlv), $(LOCAL_PATH
 
 # modem firmwares
 MDM_FW_FILES := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard vendor/intel/fw/modem/IMC/*/$(mdm)/*.fls))
-$(foreach fw, $(MDM_FW_FILES), $(eval $(call copy_file, $(fw), ., , $(TARGET_OUT_VENDOR)/firmware/telephony)))
+$(foreach fw, $(MDM_FW_FILES), $(eval $(call copy_file, $(fw), ., ., $(TARGET_OUT_VENDOR)/firmware/telephony)))
 
 # Geo file used by M2 module
 XML_GEO_FILE := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard vendor/intel/fw/modem/IMC/*/$(mdm)/*.xml))
