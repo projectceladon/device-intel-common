@@ -57,6 +57,10 @@
             <Component Name="DIGITAL"   Type="DIGITAL_TYPE"/>
         </ComponentType>
 
+         <ComponentType Name="LINEIN_ANALOG_BOOST">
+            <IntegerParameter Name="BOOST_GAIN" Size="8" Min="0" Max="8" Mapping="Control:'%1 Boost'"/><!-- IN1 is single ended input-->
+        </ComponentType>
+
          <ComponentType Name="LINEIN_ANALOG_VALUE">
             <IntegerParameter Name="BOOST_GAIN" Size="8" Min="0" Max="8" Mapping="Control:'%1 Boost'"/>
             <EnumParameter Name="BALANCE" Size="8" Mapping="Control:'%1 Mode Control'">
@@ -66,7 +70,7 @@
         </ComponentType>
 
         <ComponentType Name="LINEIN_ANALOG_TYPE">
-            <Component Name="1" Type="LINEIN_ANALOG_VALUE" Mapping="Amend1:IN1"/>
+            <Component Name="1" Type="LINEIN_ANALOG_BOOST" Mapping="Amend1:IN1"/>
             <Component Name="2" Type="LINEIN_ANALOG_VALUE" Mapping="Amend1:IN2"/>
         </ComponentType>
 
@@ -197,26 +201,29 @@
             <Component Name="LEFT"   Type="SPEAKER_MIXER_LEFT_CHANNEL" Mapping="Amend2:MIXL"/>
         </ComponentType>
 
-        <ComponentType Name="SPOUT_MIXER_RIGHT_CHANNEL">
-            <Component Name="BST1" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:BST1"/>
-            <Component Name="DAC" Type="ANALOG_MIXER_CHANNEL_SWITCH_TYPE" Mapping="Amend3:DAC,Amend4:R1"/>
-            <Component Name="VOL" Type="ANALOG_MIXER_CHANNEL_SWITCH_TYPE" Mapping="Amend3:SPKVOL,Amend4:R"/>
+        <ComponentType Name="SPO_MIXER_RIGHT_CHANNEL">
+            <Component Name="DAC" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend2:DAC,Amend3:R1"/>
+            <Component Name="SPKVOL" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend2:SPKVOL,Amend3:R"/>
         </ComponentType>
 
-        <ComponentType Name="SPOUT_MIXER_DAC_CHANNEL_TYPE">
-            <Component Name="LEFT" Type="ANALOG_MIXER_CHANNEL_SWITCH_TYPE" Mapping="Amend4:L1"/>
-            <Component Name="RIGHT" Type="ANALOG_MIXER_CHANNEL_SWITCH_TYPE" Mapping="Amend4:R1"/>
+        <ComponentType Name="SPO_MIXER_DAC_CHANNEL_TYPE">
+            <Component Name="LEFT" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:L1"/>
+            <Component Name="RIGHT" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:R1"/>
         </ComponentType>
 
-        <ComponentType Name="SPOUT_MIXER_LEFT_CHANNEL">
-            <Component Name="BST1" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:BST1"/>
-            <Component Name="DAC" Type="SPOUT_MIXER_DAC_CHANNEL_TYPE" Mapping="Amend3:DAC"/>
-            <Component Name="SPKVOL" Type="ANALOG_MIXER_VOL_CHANNEL_TYPE" Mapping="Amend3:SPKVOL"/>
+        <ComponentType Name="SPO_MIXER_VOL_CHANNEL_TYPE">
+            <Component Name="LEFT" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:L"/>
+            <Component Name="RIGHT" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:R"/>
         </ComponentType>
 
-        <ComponentType Name="SPOUT_MIXER_TYPE">
-            <Component Name="RIGHT"  Type="SPOUT_MIXER_RIGHT_CHANNEL" Mapping="Amend1:SPOR"/>
-            <Component Name="LEFT"   Type="SPOUT_MIXER_LEFT_CHANNEL" Mapping="Amend1:SPOL"/>
+        <ComponentType Name="SPO_MIXER_LEFT_CHANNEL">
+            <Component Name="DAC" Type="SPO_MIXER_DAC_CHANNEL_TYPE" Mapping="Amend2:DAC"/>
+            <Component Name="SPKVOL" Type="SPO_MIXER_VOL_CHANNEL_TYPE" Mapping="Amend2:SPKVOL"/>
+        </ComponentType>
+
+        <ComponentType Name="SPO_MIXER_TYPE">
+            <Component Name="RIGHT"  Type="SPO_MIXER_RIGHT_CHANNEL" Mapping="Amend1:SPOR MIX"/>
+            <Component Name="LEFT"   Type="SPO_MIXER_LEFT_CHANNEL" Mapping="Amend1:SPOL MIX"/>
         </ComponentType>
 
         <ComponentType Name="HPOUT_MIXER_TYPE">
@@ -225,8 +232,8 @@
         </ComponentType>
 
         <ComponentType Name="HPOUT_VOL_MIXER_RIGHT_CHANNEL">
-            <Component Name="DACL1" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:DAC1"/>
-            <Component Name="DACL2" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:DAC2"/>
+            <Component Name="DACR1" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:DAC1"/>
+            <Component Name="DACR2" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:DAC2"/>
             <Component Name="INR1" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:INR"/>
             <Component Name="BTS2" Type="ANALOG_MIXER_SWITCH_TYPE" Mapping="Amend3:BST2"/>
         </ComponentType>
@@ -260,6 +267,7 @@
             <Component Name="HPOUT_VOL_MIXER" Type="HPOUT_VOL_MIXER_TYPE" Mapping="Amend1:HPOVOL"/>
             <Component Name="LINEOUT_MIXER" Type="LINEOUT_MIXER_TYPE" Mapping="Amend1:LOUT,Amend2:MIX"/>
             <Component Name="SPEAKER_MIXER" Type="SPEAKER_MIXER_TYPE" Mapping="Amend1:SPK"/>
+            <Component Name="SPO_MIXER" Type="SPO_MIXER_TYPE"/>
         </ComponentType>
 
         <ComponentType Name="ADC_MIXER_SWITCH_VALUE">
@@ -300,14 +308,12 @@
             <EnumParameter Name="SOURCE" Size="8" Mapping="Control:'%1 DMIC Mux'">
                 <ValuePair Literal="DMIC1" Numerical="0"/>
                 <ValuePair Literal="DMIC2" Numerical="1"/>
-                <ValuePair Literal="DMIC3" Numerical="2"/>
             </EnumParameter>
         </ComponentType>
         <ComponentType Name="ADC_MIXER_DMIC_STEREO_VALUE">
             <EnumParameter Name="SOURCE" Size="8" Mapping="Control:'%1 DMIC %3 Mux'">
                 <ValuePair Literal="DMIC1" Numerical="0"/>
                 <ValuePair Literal="DMIC2" Numerical="1"/>
-                <ValuePair Literal="DMIC3" Numerical="2"/>
             </EnumParameter>
         </ComponentType>
 

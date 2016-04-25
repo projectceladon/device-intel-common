@@ -6,5 +6,6 @@
 		<string>docomo_ps_features.tlv</string>
 		<string>docomo_tel_disable_duration.tlv</string>
 		<string>docomo_cust_parms.tlv</string>
+                <string>docomo_epc_support.tlv</string>
 	</list>
 </group>
