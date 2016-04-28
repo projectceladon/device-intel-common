@@ -1,4 +1,19 @@
 <group name="nvm1">
 	<string key="data_folder">/oem_config/telephony/1/</string>
+	<string key="nvm_server_ipc">/dev/gsmtty18</string>
+	<group name="calib">
+		<string key="work_file">calib.nvm</string>
+		<string key="backup_file">/dev/block/by-name/modem1_cal</string>
+		<bool key="backup_is_raw">true</bool>
+	</group>
+	<group name="static">
+		<string key="work_file">static.nvm</string>
+		<string key="backup_file">static.nvm.bkup</string>
+		<bool key="backup_is_raw">false</bool>
+	</group>
+	<group name="dynamic">
+		<string key="work_file">dynamic.nvm</string>
+		<string key="backup_file">dynamic.nvm.bkup</string>
+		<bool key="backup_is_raw">false</bool>
+	</group>
 </group>
-
