@@ -25,6 +25,34 @@ def zero_pad(s, size):
     s += '\0' * (size - len(s))
     return s
 
+def copy_section(cfg, a, b):
+    cfg.add_section(b)
+    for option in cfg.options(a):
+        cfg.set(b, option, cfg.get(a, option))
+
+def preparse_slots(cfg, partitions):
+    if not cfg.has_option('base', 'nb_slot'):
+        return partitions
+
+    nb_slot = cfg.getint('base', 'nb_slot')
+
+    parts_with_slot = []
+    for p in partitions:
+        section = "partition." + p
+        if cfg.has_option(section, 'has_slot'):
+            for i in range(ord('a'), ord('a') + nb_slot):
+                suffix = "_%c" % i
+                new_part = p + suffix
+                new_section = "partition." + new_part
+
+                copy_section(cfg, section, new_section)
+                cfg.set(new_section, 'label', cfg.get(section, 'label') + suffix)
+                parts_with_slot.append(new_part);
+        else:
+            parts_with_slot.append(p);
+
+    return parts_with_slot
+
 def preparse_partitions(gpt_in, cfg):
     with open(gpt_in, 'r') as f:
         data = f.read()
@@ -52,6 +80,7 @@ def main():
     cfg.read(gpt_in)
 
     part = preparse_partitions(gpt_in, cfg)
+    part = preparse_slots(cfg, part)
 
     magic = 0x6a8b0da1
     start_lba = 0
