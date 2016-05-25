@@ -457,7 +457,7 @@ supDomain: DeviceForStrategy
 
 			conf: Default
 				#
-				# Fallback on the DefaultOutputDevice
+				# Fallback on default output device which can be speaker for example
 				#
 				component: /Policy/policy/strategies/phone/selected_output_devices/mask
 					earpiece = 0
