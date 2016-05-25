@@ -35,7 +35,7 @@
 
 ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)
 {
-    unsigned char *pos = buf;
+    unsigned char *pos = (unsigned char *)buf;
     ssize_t ret;
     ssize_t total = 0;
     do {
@@ -57,7 +57,7 @@ ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)
 
 ssize_t robust_write(int fd, const void *buf, size_t count)
 {
-    const char *pos = buf;
+    const char *pos = (char *)buf;
     ssize_t total_written = 0;
     ssize_t written;
 
@@ -87,7 +87,7 @@ int read_write(int srcfd, int destfd) {
     ssize_t written;
     int ret = -1;
 
-    buf = malloc(CHUNK);
+    buf = (char *)malloc(CHUNK);
     if (!buf) {
         printf("%s: memory allocation error\n", __FUNCTION__);
         return -1;
@@ -371,6 +371,9 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     char* zip_path = NULL;
     char* dest_path = NULL;
     char* dest_path_tmp = NULL;
+    int tmp_fd;
+    ZipArchive* za;
+    const ZipEntry* entry;
 
     if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0)
         goto done2;
@@ -378,14 +381,14 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0)
         goto done2;
 
-    ZipArchive* za = ((UpdaterInfo*)(state->cookie))->package_zip;
-    const ZipEntry* entry = mzFindZipEntry(za, zip_path);
+    za = ((UpdaterInfo*)(state->cookie))->package_zip;
+    entry = mzFindZipEntry(za, zip_path);
     if (entry == NULL) {
         fprintf(stderr, "%s: no %s in package\n", name, zip_path);
         goto done2;
     }
 
-    int tmp_fd = mkstemp(dest_path_tmp);
+    tmp_fd = mkstemp(dest_path_tmp);
     if (tmp_fd < 0) {
         fprintf(stderr, "%s: can't open %s for write: %s\n",
                 name, dest_path, strerror(errno));

@@ -33,14 +33,20 @@
 #include <sys/mount.h>
 #include <libgen.h>
 #include <stdbool.h>
+#include <string>
 
 #include <edify/expr.h>
+extern "C" {
 #include <gpt/gpt.h>
+}
 #include <common_recovery.h>
 #include <cutils/properties.h>
 #include <bootloader.h>
 #include <cutils/android_reboot.h>
+
+extern "C" {
 #include <efivar.h>
+}
 
 #define CHUNK 1024*1024
 
@@ -175,7 +181,7 @@ static int get_disk_node(char *ptn)
     mn = minor(sb.st_rdev);
 
     /* Get the partition index; subtract this from minor to get to disk */
-    ret = sysfs_read_int(&val, "/sys/dev/block/%d:%d/partition", mj, mn);
+    ret = sysfs_read_int(&val, (char *)"/sys/dev/block/%d:%d/partition", mj, mn);
     if (ret) {
         printf("Error reading sysfs: %s\n", strerror(errno));
         return -1;
@@ -248,8 +254,6 @@ typedef struct {
     uint8_t  mbr_type;
     uint8_t  signature_type;
 } __attribute__((packed)) HARDDRIVE_DEVICE_PATH;
-
-typedef uint16_t char16_t;
 
 typedef struct {
     uint32_t attributes;

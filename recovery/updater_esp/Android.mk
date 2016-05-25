@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_SRC_FILES := updater_esp.c
+LOCAL_SRC_FILES := updater_esp.cpp
 LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := bootable/recovery \
 		    external/efivar/src \
