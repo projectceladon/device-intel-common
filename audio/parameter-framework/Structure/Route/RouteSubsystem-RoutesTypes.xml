@@ -57,7 +57,9 @@
                 <BitParameter Name="voice_recognition" Size="1" Pos="6"/>
                 <BitParameter Name="voice_communication" Size="1" Pos="7"/>
                 <BitParameter Name="remote_submix" Size="1" Pos="8"/>
-                <BitParameter Name="hotword" Size="1" Pos="9"/>
+                <BitParameter Name="unprocessed" Size="1" Pos="9"/>
+                <BitParameter Name="fm_tuner" Size="1" Pos="10"/>
+                <BitParameter Name="hotword" Size="1" Pos="11"/>
             </BitParameterBlock>
         </ComponentType>
 
