@@ -16,6 +16,8 @@ supDomain: DeviceForStrategy
 					fm = 0
 					speaker_safe = 0
 					telephony_tx = 0
+					ip = 0
+					bus = 0
 
 		domain: Device
 			conf: RemoteSubmix
