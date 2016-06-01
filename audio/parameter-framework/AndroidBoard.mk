@@ -261,6 +261,14 @@ LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := GSD_Gain.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceVolume.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
