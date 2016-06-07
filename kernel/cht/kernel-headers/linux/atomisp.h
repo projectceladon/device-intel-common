@@ -1140,6 +1140,13 @@ struct atomisp_sensor_ae_bracketing_lut {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int lut_size;
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct atomisp_isp_frame_params{
+ __u16 isp_horizontal_crop_offset;
+ __u16 isp_vertical_crop_offset;
+ __u16 isp_crop_image_width;
+ __u16 isp_crop_image_height;
+};
 #define ATOMISP_IOC_G_XNR   _IOR('v', BASE_VIDIOC_PRIVATE + 0, int)
 #define ATOMISP_IOC_S_XNR   _IOW('v', BASE_VIDIOC_PRIVATE + 0, int)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -1243,6 +1250,7 @@ struct atomisp_sensor_ae_bracketing_lut {
 #define ATOMISP_IOC_S_SENSOR_EE_CONFIG   _IOW('v', BASE_VIDIOC_PRIVATE + 47, unsigned int)
 #define ATOMISP_IOC_S_SENSOR_RUNMODE   _IOW('v', BASE_VIDIOC_PRIVATE + 48, struct atomisp_s_runmode)
 #define ATOMISP_IOC_G_UPDATE_EXPOSURE  _IOWR('v', BASE_VIDIOC_PRIVATE + 49, struct atomisp_update_exposure)
+#define ATOMISP_IOC_G_ISP_FRAME_PARAMS _IOWR('v', BASE_VIDIOC_PRIVATE + 50, struct atomisp_isp_frame_params)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define V4L2_CID_ATOMISP_BAD_PIXEL_DETECTION   (V4L2_CID_PRIVATE_BASE + 0)
 #define V4L2_CID_ATOMISP_POSTPROCESS_GDC_CAC   (V4L2_CID_PRIVATE_BASE + 1)
