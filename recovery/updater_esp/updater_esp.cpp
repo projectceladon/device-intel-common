@@ -476,6 +476,12 @@ static Value *SwapEntriesFn(const char *name, State *state,
         goto done;
     }
 
+    //flush gpt to keep it algin with load option
+    if (gpt_flush_ptable(gpt->device)){
+        ErrorAbort(state, kVendorFailure, "%s: Couldn't flush GPT, please reboot!", name);
+        goto done;
+    }
+
     ret = StringValue(strdup(""));
 done:
     if (gpt)
