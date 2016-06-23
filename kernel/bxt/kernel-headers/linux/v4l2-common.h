@@ -54,4 +54,3 @@ struct v4l2_edid {
   __u8 * edid;
 };
 #endif
-

@@ -136,4 +136,3 @@ enum v4l2_mbus_pixelcode {
 };
 #endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-
