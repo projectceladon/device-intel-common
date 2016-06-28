@@ -246,18 +246,18 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
         return NULL;
 
     if (strlen(device) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         return NULL;
     }
 
     if (read_bcb(device, &bcb)) {
-        ErrorAbort(state, "%s: Failed to read Bootloader Control Block", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Failed to read Bootloader Control Block", name);
         return NULL;
     }
 
     status = strdup(bcb.status);
     if (status == NULL) {
-        ErrorAbort(state, "%s: Failed to duplicate status string: %s", name, strerror(errno));
+        ErrorAbort(state, kArgsParsingFailure, "%s: Failed to duplicate status string: %s", name, strerror(errno));
         return NULL;
     }
 
@@ -339,12 +339,12 @@ static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     }
 
     if (strlen(pathname) == 0) {
-        ErrorAbort(state, "pathname argument to %s can't be empty", name);
+        ErrorAbort(state, kArgsParsingFailure, "pathname argument to %s can't be empty", name);
         goto done;
     }
 
     if (mkdir(pathname, 0755) < 0) {
-        ErrorAbort(state, "%s: cannot create %s", name, pathname);
+        ErrorAbort(state, kStashCreationFailure, "%s: cannot create %s", name, pathname);
     }
 
     ret = StringValue(strdup(""));
@@ -363,7 +363,7 @@ done:
 static Value* PackageExtractFileSafeFn(const char* name, State* state,
                                int argc, Expr* argv[]) {
     if (argc != 2) {
-        return ErrorAbort(state, "%s() expects args, got %d",
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects args, got %d",
                           name, argc);
     }
 

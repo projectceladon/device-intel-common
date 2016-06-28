@@ -10,6 +10,6 @@ LOCAL_C_INCLUDES := bootable/recovery \
 
 LOCAL_STATIC_LIBRARIES := libefivar
 LOCAL_MODULE := libupdater_esp
-LOCAL_CFLAGS := -Wall -Werror -DUEFI_ARCH=\"$(TARGET_UEFI_ARCH)\" -Wno-deprecated-declarations
+LOCAL_CFLAGS := -Wall -Werror -DUEFI_ARCH=\"$(TARGET_UEFI_ARCH)\"
 include $(BUILD_STATIC_LIBRARY)
 

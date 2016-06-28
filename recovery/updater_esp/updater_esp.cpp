@@ -68,31 +68,31 @@ static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
     int result = -1;
 
     if (argc != 2)
-        return ErrorAbort(state, "%s() expects 2 arguments, got %d", name, argc);
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argc);
 
     if (ReadArgs(state, argv, 2, &src, &dest))
         return NULL;
 
     if (strlen(src) == 0 || strlen(dest) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         goto done;
     }
 
     srcfd = open(src, O_RDONLY);
     if (srcfd < 0) {
-        ErrorAbort(state, "%s: Unable to open %s for reading: %s",
+        ErrorAbort(state, kFileOpenFailure, "%s: Unable to open %s for reading: %s",
                 name, src, strerror(errno));
         goto done;
     }
     destfd = open(dest, O_WRONLY);
     if (destfd < 0) {
-        ErrorAbort(state, "%s: Unable to open %s for writing: %s",
+        ErrorAbort(state, kFileOpenFailure, "%s: Unable to open %s for writing: %s",
                 name, dest, strerror(errno));
         goto done;
     }
 
     if (read_write(srcfd, destfd)) {
-        ErrorAbort(state, "%s: failed to write to: %s",
+        ErrorAbort(state, kFwriteFailure, "%s: failed to write to: %s",
                 name, dest);
         goto done;
     }
@@ -103,7 +103,7 @@ done:
     if (srcfd >= 0)
         close(srcfd);
     if (destfd >= 0 && close(destfd) < 0) {
-        ErrorAbort(state, "%s: failed to close destination device: %s",
+        ErrorAbort(state, kVendorFailure, "%s: failed to close destination device: %s",
                 name, strerror(errno));
         result = -1;
     }
@@ -405,18 +405,18 @@ static Value *SwapEntriesFn(const char *name, State *state,
     Value *ret = NULL;
 
     if (argc != 3)
-        return ErrorAbort(state, "%s() expects 3 arguments, got %d", name, argc);
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argc);
 
     if (ReadArgs(state, argv, 3, &dev, &part1, &part2))
         return NULL;
 
     if (strlen(dev) == 0 || strlen(part1) == 0 || strlen(part2) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         goto done;
     }
 
     if (strlen(dev) > (PATH_MAX - 1)) {
-        ErrorAbort(state, "%s: dev too large", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: dev too large", name);
         goto done;
     }
 
@@ -428,7 +428,7 @@ static Value *SwapEntriesFn(const char *name, State *state,
     strncpy(buf, dev, PATH_MAX);
     rc = follow_links(buf);
     if (rc < 0) {
-        ErrorAbort(state, "%s: Couldn't follow symlink", name);
+        ErrorAbort(state, kSymlinkFailure, "%s: Couldn't follow symlink", name);
         goto done;
     }
 
@@ -436,30 +436,30 @@ static Value *SwapEntriesFn(const char *name, State *state,
      * it must be of size PATH_MAX for the same reasoning as above. */
     rc = get_disk_node(buf);
     if (rc < 0) {
-        ErrorAbort(state, "%s: Couldn't get disk node from %s", name, buf);
+        ErrorAbort(state, kVendorFailure, "%s: Couldn't get disk node from %s", name, buf);
         goto done;
     }
 
     gpt = gpt_init(buf);
     if (!gpt) {
-        ErrorAbort(state, "%s: Couldn't init GPT structure", name);
+        ErrorAbort(state, kVendorFailure, "%s: Couldn't init GPT structure", name);
         goto done;
     }
 
     if (gpt_read(gpt)) {
-        ErrorAbort(state, "%s: Failed to read GPT", name);
+        ErrorAbort(state, kVendorFailure, "%s: Failed to read GPT", name);
         goto done;
     }
 
     e1 = find_android_partition(gpt, part1);
     if (!e1) {
-        ErrorAbort(state, "%s: unable to find partition '%s'", name, part1);
+        ErrorAbort(state, kVendorFailure, "%s: unable to find partition '%s'", name, part1);
         goto done;
     }
 
     e2 = find_android_partition(gpt, part2);
     if (!e2) {
-        ErrorAbort(state, "%s: unable to find partition '%s'", name, part1);
+        ErrorAbort(state, kVendorFailure, "%s: unable to find partition '%s'", name, part1);
         goto done;
     }
 
@@ -467,12 +467,12 @@ static Value *SwapEntriesFn(const char *name, State *state,
     swap64bit(&e1->last_lba, &e2->last_lba);
 
     if (gpt_write(gpt)) {
-        ErrorAbort(state, "%s: failed to write GPT", name);
+        ErrorAbort(state, kFwriteFailure, "%s: failed to write GPT", name);
         goto done;
     }
 
     if (update_load_option_start_offset(&e1->part_guid, e1->first_lba)) {
-        ErrorAbort(state, "%s: unable to update the load options", name);
+        ErrorAbort(state, kVendorFailure, "%s: unable to update the load options", name);
         goto done;
     }
 
@@ -496,19 +496,19 @@ static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
     char *sfu_src = NULL;
 
     if (argc != 1)
-        return ErrorAbort(state, "%s() expects 1 argument, got %d", name, argc);
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argc);
 
     if (ReadArgs(state, argv, 1, &sfu_src))
         return NULL;
 
     if (strlen(sfu_src) == 0) {
-        ErrorAbort(state, "sfu_src argyment to %s can't be empty", name);
+        ErrorAbort(state, kArgsParsingFailure, "sfu_src argyment to %s can't be empty", name);
         goto done;
     }
 
     if (!stat(sfu_src, &sb)) {
         if (copy_file(sfu_src, SFU_DST)) {
-            ErrorAbort(state, "Couldn't copy SFU capsule to ESP");
+            ErrorAbort(state, kVendorFailure, "Couldn't copy SFU capsule to ESP");
             goto done;
         }
         printf("Copied SFU capsule from %s to %s\n", sfu_src, SFU_DST);

@@ -46,7 +46,7 @@ Value* maybe_install_firmware_update(const char* name, State* state, int argc, E
     Value *ret = NULL;
 
     if (argc != 1) {
-        ErrorAbort(state, "%s() expects 1 arg, got %d",
+        ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 arg, got %d",
                           name, argc);
         goto done;
     }
@@ -56,14 +56,14 @@ Value* maybe_install_firmware_update(const char* name, State* state, int argc, E
 
 
     if (strlen(device) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         goto done;
     }
 
     memset(&boot, 0, sizeof(boot));
 
     if (read_bcb(device, &boot)) {
-        ErrorAbort(state, "Couldn't read BCB from %s", device);
+        ErrorAbort(state, kFreadFailure, "Couldn't read BCB from %s", device);
         goto done;
     }
 
@@ -75,7 +75,7 @@ Value* maybe_install_firmware_update(const char* name, State* state, int argc, E
     strncpy(boot.recovery, "recovery\n", sizeof(boot.recovery));
 
     if (write_bcb(device, &boot)) {
-        ErrorAbort(state, "Couldn't write BCB to %s", device);
+        ErrorAbort(state, kFwriteFailure, "Couldn't write BCB to %s", device);
         goto done;
     }
 

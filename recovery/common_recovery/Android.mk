@@ -10,5 +10,5 @@ LOCAL_SRC_FILES := common_recovery.cpp
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := STATIC_LIBRARIES
 LOCAL_C_INCLUDES := bootable/recovery system/core/mkbootimg external/selinux/libselinux/include
-LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter -Wno-deprecated-declarations
+LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter
 include $(BUILD_STATIC_LIBRARY)
