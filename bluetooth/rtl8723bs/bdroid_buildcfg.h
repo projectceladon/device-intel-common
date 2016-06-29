@@ -67,6 +67,6 @@
 #define BT_HCI_DEVICE_NODE_MAX_LEN 512
 
 /* Set a lower bitrate to avoid audio dropouts when WiFi streaming video */
-#define DEFAULT_SBC_BITRATE 229
+#define BTIF_A2DP_DEFAULT_BITRATE 229
 
 #endif /* _BDROID_BUILDCFG_H*/
