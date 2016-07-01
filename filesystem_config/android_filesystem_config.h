@@ -51,6 +51,8 @@ static const struct fs_path_config android_device_dirs[] = {
 ** and will allow partial matches.
 */
 static const struct fs_path_config android_device_files[] = {
+	{ 00755, AID_SYSTEM,	AID_SYSTEM,	CAP_MASK_LONG(CAP_SYS_RAWIO), "system/vendor/bin/intelstorageproxyd" },
+	{ 00755, AID_SYSTEM,    AID_SYSTEM,     CAP_MASK_LONG(CAP_SYS_RAWIO), "vendor/bin/intelstorageproxyd" },
 	{ 00755, AID_KEYSTORE,  AID_KEYSTORE,   CAP_MASK_LONG(CAP_BLOCK_SUSPEND), "system/bin/keymaster_meid" },
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/wifi/aosp/wpa_*" },
 	{ 00755, AID_ROOT,      AID_SHELL,     0, "system/vendor/gfx/ufo_byt/bin/*" },
