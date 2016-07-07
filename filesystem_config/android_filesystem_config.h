@@ -25,6 +25,7 @@
 
 static const struct fs_path_config android_device_dirs[] = {
     {	00755, AID_ROOT,   AID_SHELL,	0, "system/vendor/gfx/ufo_byt/bin" },
+    {	00770, AID_RADIO,   AID_RADIO,	0, "oem_config" },
 #ifdef AID_TELEMETRY
     {	00550, AID_ROOT,   AID_TELEMETRY,	0, "system/etc/tm" },
 #endif
