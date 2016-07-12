@@ -52,6 +52,7 @@ extern "C" {
 
 #define CAP_LOADING     "/sys/firmware/efi/capsule/loading"
 #define CAP_DATA        "/sys/firmware/efi/capsule/data"
+#define BLK_DEV_PREFIX  "/dev/block/"
 
 struct Capsule {
     char *path;
@@ -205,7 +206,7 @@ static int get_disk_node(char *ptn)
         return -1;
     }
 
-    ret = snprintf(ptn, PATH_MAX, "/dev/block/%s", basename(link));
+    ret = snprintf(ptn, PATH_MAX, "%s%s", BLK_DEV_PREFIX, basename(link));
     if (ret < 0 || ret >= PATH_MAX) {
         printf("Error creating root node string: %d\n", ret);
         return -1;
@@ -426,6 +427,19 @@ static Value *SwapEntriesFn(const char *name, State *state,
      * dev is copied to buf to ensure that the character array
      * is of size PATH_MAX; required for follow_links. */
     strncpy(buf, dev, PATH_MAX);
+
+    /* Unvalidated string 'buf' can be used for path traversal
+     * through call to 'get_disk_node'can lead to access to undesired
+     * resource outside of restricted directory.
+     * block devices should always start with /dev/block,
+     * for security concern we should check content of the paths
+     * used for access to files and directories. One check
+     * we could do is ensure we are still pointing to /dev/block/.... */
+    if (strstr(buf, BLK_DEV_PREFIX) != buf) {
+        ErrorAbort(state, kArgsParsingFailure, "%s: buf Invalid", name);
+        goto done;
+    }
+
     rc = follow_links(buf);
     if (rc < 0) {
         ErrorAbort(state, kSymlinkFailure, "%s: Couldn't follow symlink", name);
