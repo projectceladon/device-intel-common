@@ -350,8 +350,7 @@ static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     ret = StringValue(strdup(""));
 
 done:
-    if (pathname)
-        free(pathname);
+    free(pathname);
 
     return ret;
 }
