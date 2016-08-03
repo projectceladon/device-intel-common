@@ -172,6 +172,7 @@ static int get_disk_node(char *ptn)
     int mj, mn, ret, val;
     struct stat sb;
     char link[PATH_MAX];
+    char *buf = NULL;
 
     if (stat(ptn, &sb)) {
        printf("Failed to stat ptn: %s\n", strerror(errno));
@@ -206,7 +207,13 @@ static int get_disk_node(char *ptn)
         return -1;
     }
 
-    ret = snprintf(ptn, PATH_MAX, "%s%s", BLK_DEV_PREFIX, basename(link));
+    buf = basename(link);
+    if (!buf) {
+        printf("Failed to base name link: %s\n", link);
+        return -1;
+    }
+
+    ret = snprintf(ptn, PATH_MAX, "%s%s", BLK_DEV_PREFIX, buf);
     if (ret < 0 || ret >= PATH_MAX) {
         printf("Error creating root node string: %d\n", ret);
         return -1;
