@@ -19,6 +19,19 @@
 ** by the device side of adb.
 */
 
+/*
+ * Reserve OEM AIDs here, but note that you cannot use a friendly name
+ * like "foobar" because their is no mapping support like built in
+ * AIDs. However, work in progress attempts to resolve the mess that
+ * is android_filesystem_config.h:
+ *   * https://android-review.googlesource.com/#/q/topic:fsconfig-2
+ *
+ * YOU MUST SELECT AIDs THAT ARE WITHIN THE RESERVED SLOTS FOR OEMS
+ * defined in system/core/include/private/android_filesystem_config.h
+ */
+#define AID_PSTORE 5001
+#define AID_INTEL_PROP 5002
+
 #ifndef AID_TELEMETRY
 #warning AID_TELEMETRY not defined, omitting telemetry entries from filesystem_config. The patch: https://android.intel.com/#/c/319973 may be missing."
 #endif
