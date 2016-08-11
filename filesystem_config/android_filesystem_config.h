@@ -31,6 +31,7 @@
  */
 #define AID_PSTORE 5001
 #define AID_INTEL_PROP 5002
+#define AID_WLAN_PROV 5003
 
 #ifndef AID_TELEMETRY
 #warning AID_TELEMETRY not defined, omitting telemetry entries from filesystem_config. The patch: https://android.intel.com/#/c/319973 may be missing."
