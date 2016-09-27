@@ -4,9 +4,180 @@ import os
 import sys
 import tempfile
 import subprocess
+import zipfile
+import json
+import hashlib
+import os, errno
+import shlex
+import shutil
+import imp
+import time
+import collections
+import time
+import re
+import random
+
+from cStringIO import StringIO
 
 sys.path.append("device/intel/build/releasetools")
 import intel_common
+
+_SIMG2IMG = "out/host/linux-x86/bin/simg2img"
+_FASTBOOT = "out/host/linux-x86/bin/fastboot"
+_VERIFYTOOL = "device/intel/common/recovery/verify_from_ota"
+
+def hash_sparse_ext4_image(image_name):
+
+  print "TFP: ", image_name
+  t = tempfile.NamedTemporaryFile(delete=False)
+  OPTIONS.tempfiles.append(t.name)
+  t.close()
+
+  subprocess.check_call([_SIMG2IMG, image_name, t.name])
+  remain = os.path.getsize(t.name)
+  fd = open(t.name)
+  hc = hashlib.sha1()
+
+  while (remain):
+      data = fd.read(1024 * 1024)
+      hc.update(data)
+      remain = remain - len(data)
+
+  print "system hash", hc.hexdigest()
+  fd.close()
+  return hc.hexdigest()
+
+
+def GetBootloaderImagesfromFls(unpack_dir, variant=None):
+  """ EFI bootloaders, comprise of
+  various partitions. The partitions are fixed """
+
+  bootloader_zip_path = os.path.join(unpack_dir, "RADIO", "bootloader" + ".zip")
+  bootloader_unzip_path,bootloader_unzip = common.UnzipTemp(bootloader_zip_path)
+  additional_data_hash = collections.OrderedDict()
+
+  print "bootloader unzip in ", bootloader_unzip_path
+  curr_loader = "loader.efi"
+  loader_filepath = os.path.join(bootloader_unzip_path, curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['bootloader/loader.efi'] = loader_data
+  loader_file.close()
+
+  curr_loader = "bootx64.efi"
+  loader_filepath = os.path.join(bootloader_unzip_path, "EFI/BOOT", curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['bootloader/EFI/BOOT/bootx64.efi'] = loader_data
+  loader_file.close()
+
+  curr_loader = "manifest.txt"
+  loader_filepath = os.path.join(bootloader_unzip_path, curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['bootloader/manifest.txt'] = loader_data
+  loader_file.close()
+
+  curr_loader = "current.fv"
+  loader_filepath = os.path.join(bootloader_unzip_path, "capsules",curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['bootloader/capsules/current.fv'] = loader_data
+  loader_file.close()
+
+  #need get boot/recovery/system data first
+  curr_loader = "boot.img"
+  loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['boot'] = loader_data
+  loader_file.close()
+
+  curr_loader = "recovery.img"
+  loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  loader_file = open(loader_filepath)
+  loader_data = loader_file.read()
+  additional_data_hash['recovery'] = loader_data
+  loader_file.close()
+
+  curr_loader = "system.img"
+  loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
+  if not os.path.exists(loader_filepath):
+      print "Can't find ", loader_filepath
+      print "GetBootloaderImagesfromFls failed"
+      return
+  additional_data_hash['system'] = str(hash_sparse_ext4_image(loader_filepath))
+  loader_file.close()
+  return additional_data_hash
+
+def Get_verifydata(info,infoinput):
+  print "Trying to get verify data..."
+  variant = None
+
+  for app in [_SIMG2IMG, _FASTBOOT, _VERIFYTOOL]:
+      if not os.path.exists(app):
+          print "Can't find", app
+          print "Get_verifydata failed"
+          return
+
+  print "Extracting bootloader archive..."
+  additional_data = GetBootloaderImagesfromFls(infoinput,None)
+  if not additional_data:
+    print "additional_data is None"
+    return
+  bootloader_sizes = ""
+  imghash_value = "..."
+  imghash_bootloader = ""
+
+  for imgname, imgdata in additional_data.iteritems():
+      if imgname != 'bootloader' and imgname != 'system' and imgname != 'boot' and imgname != 'recovery':
+          bootloader_sizes += ":" + str(len(imgdata))
+      if imgname != 'system':
+          imghash_value += "\n(bootloader) target: /" + str(imgname)
+          imghash_value += "\n(bootloader) hash: " + str(hashlib.sha1(imgdata).hexdigest())
+      if imgname == 'system':
+          imghash_value += "\n(bootloader) target: /" + str(imgname)
+          imghash_value += "\n(bootloader) hash: " + str(imgdata)
+  imghash_value += imghash_bootloader + "\n"
+
+  common.ZipWriteStr(info.output_zip, "verify/fastbootcmd.txt", bootloader_sizes)
+  common.ZipWriteStr(info.output_zip, "verify/hashesfromtgt.txt", imghash_value)
+  #write fastboot tool
+  f = open(_FASTBOOT, "rb")
+  fbbin = f.read()
+  common.ZipWriteStr(info.output_zip, "verify/fastboot", fbbin, perms=0o755)
+  f.close()
+  #Save verify_from_ota script to OTA package
+  f = open(_VERIFYTOOL, "r")
+  data = f.read()
+  common.ZipWriteStr(info.output_zip, "verify/verify_from_ota", data, perms=0o755)
+  f.close()
+
+
 
 # releasetools extensions for updating UserFastBoot boot image and the
 # EFI system partition.
@@ -75,6 +246,7 @@ def IncrementalOTA_InstallEnd(info):
     info.script.script.append('copy_sfu("/bootloader/capsules/current.fv");')
     info.script.script.append('unmount("/bootloader");')
     swap_entries(info)
+    Get_verifydata(info,info.input_tmp)
 
 
 def FullOTA_InstallEnd(info):
@@ -83,5 +255,5 @@ def FullOTA_InstallEnd(info):
     info.script.Print("Writing updated bootloader image...")
     info.script.WriteRawImage("/bootloader2", "bootloader.img")
     swap_entries(info)
-
+    Get_verifydata(info,info.input_tmp)
 
