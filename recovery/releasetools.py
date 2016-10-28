@@ -246,7 +246,7 @@ def IncrementalOTA_InstallEnd(info):
     info.script.script.append('copy_sfu("/bootloader/capsules/current.fv");')
     info.script.script.append('unmount("/bootloader");')
     swap_entries(info)
-    Get_verifydata(info,info.input_tmp)
+    Get_verifydata(info,OPTIONS.target_tmp)
 
 
 def FullOTA_InstallEnd(info):
