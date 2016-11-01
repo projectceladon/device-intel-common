@@ -3,7 +3,7 @@ import common
 def WriteBldr(info, bootloader_img):
   common.ZipWriteStr(info.output_zip, "bootloader.img", bootloader_img)
   info.script.WriteRawImage("/bootloader", "bootloader.img")
-  info.script.script.append('capsule_abl("m1:ifwi_update_gr_mrb.bin");')
+  info.script.script.append('capsule_abl("m1:ifwi_update.bin");')
 
 def FullOTA_InstallEnd(info):
   try:
