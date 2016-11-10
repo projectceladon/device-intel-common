@@ -13,7 +13,7 @@ class TestExternalPrebuiltFramework(unittest.TestCase):
         self.androidTop = self.env.get("ANDROID_BUILD_TOP", None)
         if self.androidTop is None:
             self.fail("Please first source build/envsetup.sh and lunch command")
-        self.productOut = self.env.get("ANDROID_PRODUCT_OUT")
+        self.productOut = self.env.get("PRODUCT_OUT")
         self.targetProduct = self.env.get("TARGET_PRODUCT")
 
     def getExpectedMakefiles(self, testPath):
