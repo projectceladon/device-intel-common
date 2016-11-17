@@ -93,6 +93,8 @@
                 <BitParameter Name="fm" Size="1" Pos="20"/>
                 <BitParameter Name="aux_line" Size="1" Pos="21"/>
                 <BitParameter Name="speaker_safe" Size="1" Pos="22"/>
+                <BitParameter Name="ip" Size="1" Pos="23"/>
+                <BitParameter Name="bus" Size="1" Pos="24"/>
             </BitParameterBlock>
         </ComponentType>
 
