@@ -137,6 +137,15 @@ include $(BUILD_PREBUILT)
 ######### Audio Structures #########
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := SmartXSubsystem-Definitions.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := ConfigurationSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
