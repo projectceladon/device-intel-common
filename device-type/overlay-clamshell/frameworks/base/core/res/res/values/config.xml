@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Indicate whether the lid state impacts the accessibility of
+         the physical keyboard.  0 means it doesn't, 1 means it is accessible
+         when the lid is open, 2 means it is accessible when the lid is
+         closed.  The default is 0. -->
+    <integer name="config_lidKeyboardAccessibility">1</integer>
+
+    <!-- Indicate whether the lid state impacts the accessibility of
+         the navigation buttons.  0 means it doesn't, 1 means it is accessible
+         when the lid is open, 2 means it is accessible when the lid is
+         closed.  The default is 0. -->
+    <integer name="config_lidNavigationAccessibility">1</integer>
+
+    <!-- Indicate whether closing the lid causes the device to go to sleep and opening
+         it causes the device to wake up.
+         The default is false. -->
+    <bool name="config_lidControlsSleep">true</bool>
+
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
+    <!--  Whether UI for multi user should be shown -->
+    <bool name="config_enableMultiUserUI">true</bool>
+
+</resources>
