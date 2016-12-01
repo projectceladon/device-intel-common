@@ -26,3 +26,4 @@ ExclusiveCriterion HfpClientEnable          :    False            True
 ExclusiveCriterion HfpClientBandType        :    Unknown          NB            WB            SuperWB
 ExclusiveCriterion ScreenRotation           :    0                90            180           270
 ExclusiveCriterion A2dpSuspended            :    False            True
+ExclusiveCriterion IsEAVBStream             :    False            True
