@@ -49,13 +49,13 @@
 static Value *CapsuleABL(const char *name, State *state, int argc, Expr *argv[]) {
     FILE *f_capsule;
     Value *ret = NULL;
-    char *string;
+    std::vector<std::string> args;
     int i;
 
-    if (ReadArgs(state, argv, 1, &string))
+    if (ReadArgs(state, 1, argv, &args))
         return NULL;
 
-    if (strlen(string) == 0) {
+    if (args.size() == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         return NULL;
     }
@@ -66,7 +66,7 @@ static Value *CapsuleABL(const char *name, State *state, int argc, Expr *argv[])
         goto done;
     }
 
-    i = fprintf(f_capsule, "%s", string);
+    i = fprintf(f_capsule, "%s", args[0].c_str());
 
     if (i < 0) {
         ErrorAbort(state, kFwriteFailure, "%s: could not write in %s. errno=%d str=%s",
@@ -74,7 +74,7 @@ static Value *CapsuleABL(const char *name, State *state, int argc, Expr *argv[])
         goto done;
     }
     else
-        printf("writing %d bytes : %s in %s\n", i, string, CAPSULE_SYSFS_ENTRY);
+        printf("writing %d bytes : %s in %s\n", i, args[0].c_str(), CAPSULE_SYSFS_ENTRY);
 
     fclose(f_capsule);
     ret = StringValue(strdup(""));
