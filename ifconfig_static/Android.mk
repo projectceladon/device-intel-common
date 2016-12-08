@@ -188,7 +188,7 @@ LOCAL_CXX_STL := none
 
 LOCAL_MODULE := ifconfig_static
 
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)/sbin
+LOCAL_MODULE_PATH  := $(TARGET_RECOVERY_ROOT_OUT)/sbin
 LOCAL_MODULE_STEM := ifconfig
 
 # dupes: dd df du ls mount renice
