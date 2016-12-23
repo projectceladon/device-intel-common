@@ -258,7 +258,7 @@ def IncrementalOTA_InstallEnd(info):
       except (IOError, KeyError):
         print "No multiboot partition"
 
-      Get_verifydata(info, OPTIONS.target_tmp)
+    Get_verifydata(info, OPTIONS.target_tmp)
   except KeyError:
     print "no bootloader.img in target target_files; skipping install"
 
