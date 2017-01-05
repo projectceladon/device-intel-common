@@ -81,12 +81,11 @@
         </ComponentType>
 
         <ComponentType Name="RoutingZone" Mapping="RoutingZone">
-            <!--StringParameter Name="name" Description="The name of the audio routing zone"/-->
             <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
         </ComponentType>
 
-        <ComponentType Name="DerivedRoutingZone" Mapping="DerivedRoutingZone"
-                                                 Extends="RoutingZone">
+        <ComponentType Name="DerivedRoutingZone" Mapping="DerivedRoutingZone">
+            <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
         </ComponentType>
 
     </ComponentTypeSet>
