@@ -85,5 +85,9 @@
             <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
         </ComponentType>
 
+        <ComponentType Name="DerivedRoutingZone" Mapping="DerivedRoutingZone"
+                                                 Extends="RoutingZone">
+        </ComponentType>
+
     </ComponentTypeSet>
 </ComponentLibrary>
