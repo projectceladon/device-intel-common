@@ -88,5 +88,37 @@
             <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
         </ComponentType>
 
+        <ComponentType Name="AudioPin" Mapping="AudioPin">
+            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
+        </ComponentType>
+
+        <ComponentType Name="AudioOutputPin" Mapping="Direction:Output"
+                                             Extends="AudioPin">
+        </ComponentType>
+
+        <ComponentType Name="AudioInputPin" Mapping="Direction:Input"
+                                            Extends="AudioPin">
+        </ComponentType>
+
+        <ComponentType Name="AudioInOutPin" Mapping="Direction:InOut"
+                                            Extends="AudioPin">
+        </ComponentType>
+
+        <ComponentType Name="AudioProcessingModule" Mapping="AudioProcessingModule">
+            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
+        </ComponentType>
+
+        <ComponentType Name="AudioProcessingInPlaceModule" Mapping="AudioProcessingInPlaceModule">
+            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
+        </ComponentType>
+
+        <ComponentType Name="Pipeline" Mapping="Pipeline">
+            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
+        </ComponentType>
+
+        <ComponentType Name="InnerPipelineLink" Mapping="InnerPipelineLink">
+            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
+        </ComponentType>
+
     </ComponentTypeSet>
 </ComponentLibrary>
