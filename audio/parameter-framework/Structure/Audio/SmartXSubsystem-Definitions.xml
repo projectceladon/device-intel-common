@@ -61,7 +61,7 @@
         </ComponentType>
 
         <ComponentType Name="AudioPort">
-            <IntegerParameter Name="connected_to" Size="32" Description="Id of the port name connected to this port" />
+            <StringParameter Name="connected_to" MaxLength="256" Description="Name of the port name connected to this port" />
         </ComponentType>
 
         <ComponentType Name="AudioSourcePort" Mapping="AudioPort,Direction:eIasPortDirectionOutput"
