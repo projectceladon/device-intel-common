@@ -64,4 +64,5 @@ static const struct fs_path_config android_device_files[] = {
 	{ 00755, AID_SYSTEM,    AID_SYSTEM,     (1ULL << CAP_NET_RAW | 1ULL << CAP_SYS_BOOT), "vendor/bin/esif_ufd" },
 	{ 00755, AID_ROOT,     AID_SHELL,     CAP_MASK_LONG(CAP_SYS_NICE), "system/vendor/bin/coreu" },
 	{ 00755, AID_ROOT,     AID_SHELL,     CAP_MASK_LONG(CAP_SYS_NICE), "vendor/bin/coreu" },
+        { 00755, AID_ROOT,     AID_SHELL,     CAP_MASK_LONG(CAP_SYS_NICE), "system/bin/audioserver" },
 };
