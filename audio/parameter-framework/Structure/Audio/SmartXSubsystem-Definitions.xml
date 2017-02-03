@@ -60,25 +60,19 @@
             <IntegerParameter Name="index" Size="32" Description="The zero based channel index of the first channel of this audio port in the audio device"/>
         </ComponentType>
 
-        <ComponentType Name="AudioPort">
+        <ComponentType Name="AudioRzInputPort" Mapping="AudioPort,Direction:eIasPortDirectionInput">
             <StringParameter Name="connected_to" MaxLength="256" Description="Name of the port name connected to this port" />
         </ComponentType>
 
-        <ComponentType Name="AudioSourcePort" Mapping="AudioPort,Direction:eIasPortDirectionOutput"
-                                              Extends="AudioPort">
-        </ComponentType>
+        <ComponentType Name="AudioSourcePort" Mapping="AudioPort,Direction:eIasPortDirectionOutput"/>
 
-        <ComponentType Name="AudioSinkPort" Mapping="AudioPort,Direction:eIasPortDirectionInput"
-                                            Extends="AudioPort">
-        </ComponentType>
+        <ComponentType Name="AudioSinkInputPort" Mapping="AudioPort,Direction:eIasPortDirectionInput"/>
 
         <ComponentType Name="AudioSourceDevice" Mapping="AudioSourceDevice">
             <BooleanParameter Name="started" Description="Starts a concrete ALSA Source device"/>
         </ComponentType>
 
-        <ComponentType Name="AudioSinkDevice" Mapping="AudioSinkDevice"
-                                              Extends="AudioPort">
-        </ComponentType>
+        <ComponentType Name="AudioSinkDevice" Mapping="AudioSinkDevice"/>
 
         <ComponentType Name="RoutingZone" Mapping="RoutingZone">
             <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
@@ -88,37 +82,21 @@
             <BooleanParameter Name="started" Description="Starts the RZ working thread"/>
         </ComponentType>
 
-        <ComponentType Name="AudioPin" Mapping="AudioPin">
-            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
-        </ComponentType>
+        <ComponentType Name="AudioPin" Mapping="AudioPin"/>
 
-        <ComponentType Name="AudioOutputPin" Mapping="Direction:Output"
-                                             Extends="AudioPin">
-        </ComponentType>
+        <ComponentType Name="AudioOutputPin" Mapping="Direction:Output" Extends="AudioPin"/>
 
-        <ComponentType Name="AudioInputPin" Mapping="Direction:Input"
-                                            Extends="AudioPin">
-        </ComponentType>
+        <ComponentType Name="AudioInputPin" Mapping="Direction:Input" Extends="AudioPin"/>
 
-        <ComponentType Name="AudioInOutPin" Mapping="Direction:InOut"
-                                            Extends="AudioPin">
-        </ComponentType>
+        <ComponentType Name="AudioInOutPin" Mapping="Direction:InOut" Extends="AudioPin"/>
 
-        <ComponentType Name="AudioProcessingModule" Mapping="AudioProcessingModule">
-            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
-        </ComponentType>
+        <ComponentType Name="AudioProcessingModule" Mapping="AudioProcessingModule"/>
 
-        <ComponentType Name="AudioProcessingInPlaceModule" Mapping="AudioProcessingInPlaceModule">
-            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
-        </ComponentType>
+        <ComponentType Name="AudioProcessingInPlaceModule" Mapping="AudioProcessingInPlaceModule"/>
 
-        <ComponentType Name="Pipeline" Mapping="Pipeline">
-            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
-        </ComponentType>
+        <ComponentType Name="Pipeline" Mapping="Pipeline"/>
 
-        <ComponentType Name="InnerPipelineLink" Mapping="InnerPipelineLink">
-            <BooleanParameter Name="dummy" Description="Dummy parameter not used"/>
-        </ComponentType>
+        <ComponentType Name="InnerPipelineLink" Mapping="InnerPipelineLink"/>
 
     </ComponentTypeSet>
 </ComponentLibrary>
