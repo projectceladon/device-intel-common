@@ -1,6 +1,6 @@
 ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone           InImsCall
 InclusiveCriterion  TtyDirection           :  Downlink          Uplink
-InclusiveCriterion  RoutageState           :  Configure         Flow             Path             StreamPath
+InclusiveCriterion  RoutageState           :  Configure         Flow             Path             StreamPath        PostPath
 InclusiveCriterion  ClosingCaptureRoutes   :  EavbStream        AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp       DMicIA         AuxStream         EavbMicPair1         EavbMicPair2
 InclusiveCriterion  ClosingPlaybackRoutes  :  AlwaysListening   A2dpOffloadIA    BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia     HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp        iDisp        A2dpOffloadSink  EavbMedia  EavbNavigation  EavbHmi
 InclusiveCriterion  OpenedCaptureRoutes    :  EavbStream        AlwaysListening   BtIA             LowLatency       CompressedMedia  ContextAwareness  DeepMedia  FMIA                HwCodec0IA     HwCodec1IA        Media        ModemIA     Voice        BtHfp       DMicIA         AuxStream         EavbMicPair1         EavbMicPair2
