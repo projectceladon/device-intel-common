@@ -251,6 +251,17 @@ LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libbluedroidcomm-subsystem
 include $(BUILD_PREBUILT)
 
+
+######### SmartXbar Processing module #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ModulesLibrary.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/SmartX
+LOCAL_SRC_FILES := Structure/Audio/SmartX/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 ######### Audio Algos #########
 
 include $(CLEAR_VARS)
