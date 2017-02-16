@@ -28,3 +28,4 @@ ExclusiveCriterion ScreenRotation           :    0                90            
 ExclusiveCriterion A2dpSuspended            :    False            True
 ExclusiveCriterion IsEAVBStream             :    False            True
 ExclusiveCriterion AuxInSelected            :  False            True
+InclusiveCriterion OutputDeviceAddresses       :    Media            Navigation   Hmi
