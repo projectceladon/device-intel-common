@@ -25,7 +25,7 @@
 
 #include <common_recovery.h>
 #include <edify/expr.h>
-#include <minzip/DirUtil.h>
+#include <otautil/DirUtil.h>
 #include <updater/updater.h>
 #include <cutils/properties.h>
 
@@ -242,9 +242,10 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
     char *status;
     struct bootloader_message bcb;
 
-    if (ReadArgs(state, argv, 1, &device))
+#if 0
+    if (ReadArgs(state, 1, argv, &device))
         return NULL;
-
+#endif
     if (strlen(device) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         return NULL;
@@ -334,9 +335,11 @@ static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     Value *ret = NULL;
     char *pathname = NULL;
 
-    if (ReadArgs(state, argv, 1, &pathname) < 0) {
+#if 0
+    if (ReadArgs(state, 1, argv, &pathname) < 0) {
         return NULL;
     }
+#endif
 
     if (strlen(pathname) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "pathname argument to %s can't be empty", name);
@@ -371,12 +374,12 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     char* dest_path = NULL;
     char* dest_path_tmp = NULL;
     int tmp_fd;
+#if 0
     ZipArchive* za;
     const ZipEntry* entry;
 
-    if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0)
+    if (ReadArgs(state, 2, argv, &zip_path, &dest_path) < 0)
         goto done2;
-
     if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0)
         goto done2;
 
@@ -410,6 +413,7 @@ done2:
         free(dest_path);
     if (dest_path_tmp != NULL)
         free(dest_path_tmp);
+#endif
     return StringValue(strdup(success ? "t" : ""));
 }
 

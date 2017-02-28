@@ -71,9 +71,10 @@ static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
     if (argc != 2)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argc);
 
-    if (ReadArgs(state, argv, 2, &src, &dest))
+#if 0
+    if (ReadArgs(state, 2, argv, &src, &dest))
         return NULL;
-
+#endif
     if (strlen(src) == 0 || strlen(dest) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         goto done;
@@ -415,9 +416,10 @@ static Value *SwapEntriesFn(const char *name, State *state,
     if (argc != 3)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argc);
 
-    if (ReadArgs(state, argv, 3, &dev, &part1, &part2))
+#if 0
+    if (ReadArgs(state, 3, argv, &dev, &part1, &part2))
         return NULL;
-
+#endif
     if (strlen(dev) == 0 || strlen(part1) == 0 || strlen(part2) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         goto done;
@@ -524,10 +526,10 @@ static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
 
     if (argc != 1)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argc);
-
-    if (ReadArgs(state, argv, 1, &sfu_src))
+#if 0
+    if (ReadArgs(state, 1, argv, &sfu_src))
         return NULL;
-
+#endif
     if (strlen(sfu_src) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "sfu_src argyment to %s can't be empty", name);
         goto done;
