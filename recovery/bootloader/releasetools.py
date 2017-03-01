@@ -24,6 +24,7 @@ import intel_common
 
 _SIMG2IMG = "out/host/linux-x86/bin/simg2img"
 _FASTBOOT = "out/host/linux-x86/bin/fastboot"
+_STRINGS = "out/host/linux-x86/poky-abl/sysroots/x86_64-pokysdk-linux/usr/bin/i586-poky-linux/i586-poky-linux-strings"
 _VERIFYTOOL = "device/intel/common/recovery/verify_from_ota"
 OPTIONS = common.OPTIONS
 verify_multiboot = None
@@ -68,6 +69,11 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   loader_data = loader_file.read()
   additional_data_hash['bootloader'] = loader_data
   loader_file.close()
+  strings_out = subprocess.check_output([_STRINGS, loader_filepath], stderr=subprocess.STDOUT);
+  for firmware in strings_out.split('\n'):
+      if "rel." in firmware:
+          additional_data_hash['firmware'] = firmware
+          break;
 
   #need get boot/recovery/system data first
   curr_loader = "boot.img"
@@ -123,7 +129,7 @@ def Get_verifydata(info,infoinput):
   print "Trying to get verify data..."
   variant = None
 
-  for app in [_SIMG2IMG, _FASTBOOT, _VERIFYTOOL]:
+  for app in [_SIMG2IMG, _FASTBOOT, _VERIFYTOOL, _STRINGS]:
       if not os.path.exists(app):
           print "Can't find", app
           print "Get_verifydata failed"
@@ -140,14 +146,17 @@ def Get_verifydata(info,infoinput):
 
   for imgname, imgdata in additional_data.iteritems():
       if imgname != 'system' and imgname != 'boot' and imgname != 'recovery' \
-          and imgname != 'vendor' and imgname != 'multiboot':
+          and imgname != 'vendor' and imgname != 'multiboot' and imgname != 'firmware':
           bootloader_sizes += ":" + str(len(imgdata))
-      if imgname != 'system' and imgname != 'vendor':
+      if imgname != 'system' and imgname != 'vendor' and imgname != 'firmware':
           imghash_value += "\n(bootloader) target: /" + str(imgname)
           imghash_value += "\n(bootloader) hash: " + str(hashlib.sha1(imgdata).hexdigest())
       if imgname == 'system' or imgname == 'vendor':
           imghash_value += "\n(bootloader) target: /" + str(imgname)
           imghash_value += "\n(bootloader) hash: " + str(imgdata)
+      if imgname == 'firmware':
+          imghash_value += "\n(bootloader) target: /" + str(imgname)
+          imghash_value += "\n(bootloader) version: " + imgdata
   imghash_value += imghash_bootloader + "\n"
 
   common.ZipWriteStr(info.output_zip, "verify/fastbootcmd.txt", bootloader_sizes)

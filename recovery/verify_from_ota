@@ -51,6 +51,7 @@ _FASTBOOT = "./fastboot"
 
 _TARGET_LINE_PREFIX = "(bootloader) target: "
 _HASH_LINE_PREFIX = "(bootloader) hash: "
+_IFWI_PREFIX = "(bootloader) version: "
 
 def process_hashdata(data):
     hashes = {}
@@ -64,12 +65,17 @@ def process_hashdata(data):
         target = line[len(_TARGET_LINE_PREFIX):]
         i = i + 1
         line = lines[i]
-        if not line.startswith(_HASH_LINE_PREFIX):
-            raise Exception("unexpected Fastboot output")
+        if line.startswith(_IFWI_PREFIX):
+            hashdata = line[len(_IFWI_PREFIX):]
+            print "OTA reported", target, hashdata
+            hashes[target] = hashdata
+        else:
+            if not line.startswith(_HASH_LINE_PREFIX):
+                raise Exception("unexpected Fastboot output")
 
-        hashdata = line[len(_HASH_LINE_PREFIX):]
-        print "OTA reported", target, hashdata
-        hashes[target] = hashdata
+            hashdata = line[len(_HASH_LINE_PREFIX):]
+            print "OTA reported", target, hashdata
+            hashes[target] = hashdata
     return hashes
 
 def process_check_fastbootdata(data, hashtgt):
@@ -99,6 +105,23 @@ def process_check_fastbootdata(data, hashtgt):
             continue
     return rt
 
+def process_check_ifwi(data, hashtgt):
+    lines = data.split("\n")
+    index = 0
+
+    for i in range(len(lines)):
+        line = lines[i]
+        if "rel." not in line:
+            continue
+        target = "/firmware"
+        if line.split(".",)[1] != hashtgt[target].split(".")[1]:
+            print "OTA reported", target, hashtgt[target].split(".")[1]," not equal to", line.split(".",)[1],"Failed"
+            continue
+        else:
+            print target, "OK"
+            return True
+    return False
+
 def main(argv):
     print "Running..."
     hashdicttgt = {}
@@ -111,7 +134,11 @@ def main(argv):
     fastboot_data = subprocess.check_output([_FASTBOOT, "oem", "get-hashes"], stderr=subprocess.STDOUT)
     success = process_check_fastbootdata(fastboot_data,hashdicttgt)
 
-    if success:
+    print "Running fastboot getvar firmware" + " " + "'..."
+    fastboot_firmware_data = subprocess.check_output([_FASTBOOT, "getvar", "firmware"], stderr=subprocess.STDOUT)
+    ifwi_success = process_check_ifwi(fastboot_firmware_data,hashdicttgt)
+
+    if success and ifwi_success:
         print "All tests completed successfully"
     else:
         print "OTA Tests FAILED!"
