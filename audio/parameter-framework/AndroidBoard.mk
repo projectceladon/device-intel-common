@@ -140,7 +140,15 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SmartXSubsystem-Definitions.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/SmartX
+LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := AvbControlSubsystem-Definitions.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/AVB
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -258,7 +266,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ModulesLibrary.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/SmartX
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/SmartX
 LOCAL_SRC_FILES := Structure/Audio/SmartX/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 

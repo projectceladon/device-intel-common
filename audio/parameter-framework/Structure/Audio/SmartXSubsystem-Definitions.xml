@@ -68,6 +68,11 @@
 
         <ComponentType Name="AudioSinkInputPort" Mapping="AudioPort,Direction:eIasPortDirectionInput"/>
 
+        <ComponentType Name="LocalAudioStreamFromNetwork" Mapping="AudioSourceDevice,Plugin:avb">
+            <BooleanParameter Name="started" Description="Starts a concrete ALSA Source device"/>
+        </ComponentType>
+        <ComponentType Name="LocalAudioStreamToNetwork" Mapping="AudioSinkDevice,Plugin:avb"/>
+
         <ComponentType Name="AudioSourceDevice" Mapping="AudioSourceDevice">
             <BooleanParameter Name="started" Description="Starts a concrete ALSA Source device"/>
         </ComponentType>
