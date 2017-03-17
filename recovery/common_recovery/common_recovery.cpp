@@ -30,8 +30,11 @@
 #include <cutils/properties.h>
 
 #include <string.h>
+#include <zip_archive_private.h>
+#include <otautil/ZipUtil.h>
 
 #define CHUNK 1024*1024
+extern struct selabel_handle *sehandle;
 
 ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)
 {
@@ -238,14 +241,16 @@ int write_bcb(const char *device, const struct bootloader_message *bcb)
 
 static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Expr *argv[])
 {
-    char *device;
+    const char *device;
     char *status;
     struct bootloader_message bcb;
+    std::vector<std::string> args;
 
-#if 0
-    if (ReadArgs(state, 1, argv, &device))
+    if (ReadArgs(state, 1, argv, &args))
         return NULL;
-#endif
+
+    device = args[0].c_str();
+
     if (strlen(device) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         return NULL;
@@ -333,13 +338,14 @@ char *dmi_detect_machine(void)
 // mkdir(pathname)
 static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     Value *ret = NULL;
-    char *pathname = NULL;
+    const char *pathname = NULL;
+    std::vector<std::string> args;
 
-#if 0
-    if (ReadArgs(state, 1, argv, &pathname) < 0) {
+    if (ReadArgs(state, 1, argv, &args) < 0) {
         return NULL;
     }
-#endif
+
+    pathname = args[0].c_str();
 
     if (strlen(pathname) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "pathname argument to %s can't be empty", name);
@@ -353,7 +359,6 @@ static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     ret = StringValue(strdup(""));
 
 done:
-    free(pathname);
 
     return ret;
 }
@@ -370,50 +375,22 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     }
 
     bool success = false;
-    char* zip_path = NULL;
-    char* dest_path = NULL;
-    char* dest_path_tmp = NULL;
-    int tmp_fd;
-#if 0
-    ZipArchive* za;
-    const ZipEntry* entry;
+    const char* zip_path = NULL;
+    const char* dest_path = NULL;
+    ZipArchiveHandle za;
+    std::vector<std::string> args;
+    constexpr struct utimbuf timestamp = { 1217592000, 1217592000 };  // 8/1/2008 default
 
-    if (ReadArgs(state, 2, argv, &zip_path, &dest_path) < 0)
-        goto done2;
-    if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0)
+    if (ReadArgs(state, 2, argv, &args) < 0)
         goto done2;
 
-    za = ((UpdaterInfo*)(state->cookie))->package_zip;
-    entry = mzFindZipEntry(za, zip_path);
-    if (entry == NULL) {
-        fprintf(stderr, "%s: no %s in package\n", name, zip_path);
-        goto done2;
-    }
+    zip_path = args[0].c_str();
+    dest_path = args[1].c_str();
 
-    tmp_fd = mkstemp(dest_path_tmp);
-    if (tmp_fd < 0) {
-        fprintf(stderr, "%s: can't open %s for write: %s\n",
-                name, dest_path, strerror(errno));
-        goto done2;
-    }
-    success = mzExtractZipEntryToFile(za, entry, tmp_fd);
-    unlink(dest_path_tmp);
-    close(tmp_fd);
-
-    if (rename(dest_path_tmp, dest_path) < 0) {
-        fprintf(stderr, "%s: can't rename %s to %s: %s\n",
-                name, dest_path_tmp, dest_path, strerror(errno));
-        goto done2;
-    }
+    za = static_cast<UpdaterInfo*>(state->cookie)->package_zip;
+    success = ExtractPackageRecursive(za, zip_path, dest_path, &timestamp, sehandle);
 
 done2:
-    if (zip_path != NULL)
-        free(zip_path);
-    if (dest_path != NULL)
-        free(dest_path);
-    if (dest_path_tmp != NULL)
-        free(dest_path_tmp);
-#endif
     return StringValue(strdup(success ? "t" : ""));
 }
 
