@@ -27,6 +27,5 @@
     </integer-array>
 
     <bool name="config_sms_capable">false</bool>
-    <bool name="config_voice_capable">false</bool>
 </resources>
 
