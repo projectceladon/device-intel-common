@@ -46,13 +46,14 @@
 
 #define CAPSULE_SYSFS_ENTRY "/sys/kernel/capsule/capsule_name"
 
-static Value *CapsuleABL(const char *name, State *state, int argc, Expr *argv[]) {
+static Value *CapsuleABL(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv) {
     FILE *f_capsule;
     Value *ret = NULL;
     std::vector<std::string> args;
     int i;
 
-    if (ReadArgs(state, 1, argv, &args))
+    if (ReadArgs(state, argv, &args))
         return NULL;
 
     if (args.size() == 0) {

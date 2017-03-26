@@ -239,14 +239,15 @@ int write_bcb(const char *device, const struct bootloader_message *bcb)
 }
 
 
-static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Expr *argv[])
+static Value *GetBCBStatus(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     const char *device;
     char *status;
     struct bootloader_message bcb;
     std::vector<std::string> args;
 
-    if (ReadArgs(state, 1, argv, &args))
+    if (ReadArgs(state, argv, &args))
         return NULL;
 
     device = args[0].c_str();
@@ -336,12 +337,14 @@ char *dmi_detect_machine(void)
 
 
 // mkdir(pathname)
-static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
+static Value *MkdirFn(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
+{
     Value *ret = NULL;
     const char *pathname = NULL;
     std::vector<std::string> args;
 
-    if (ReadArgs(state, 1, argv, &args) < 0) {
+    if (ReadArgs(state, argv, &args) < 0) {
         return NULL;
     }
 
@@ -368,10 +371,11 @@ done:
 // this extracts the file with a temporary name first, and
 // then renames to overwrite the original file.
 static Value* PackageExtractFileSafeFn(const char* name, State* state,
-                               int argc, Expr* argv[]) {
-    if (argc != 2) {
+        const std::vector<std::unique_ptr<Expr>>& argv)
+{
+    if (argv.size() != 2) {
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects args, got %d",
-                          name, argc);
+                          name, argv.size());
     }
 
     bool success = false;
@@ -381,7 +385,7 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     std::vector<std::string> args;
     constexpr struct utimbuf timestamp = { 1217592000, 1217592000 };  // 8/1/2008 default
 
-    if (ReadArgs(state, 2, argv, &args) < 0)
+    if (ReadArgs(state, argv, &args) < 0)
         goto done2;
 
     zip_path = args[0].c_str();

@@ -60,7 +60,8 @@ struct Capsule {
     int existence;
 };
 
-static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
+static Value *CopyPartFn(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     const char *src = NULL;
     const char *dest = NULL;
@@ -69,10 +70,10 @@ static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
     int result = -1;
     std::vector<std::string> args;
 
-    if (argc != 2)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argc);
+    if (argv.size() != 2)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argv.size());
 
-    if (ReadArgs(state, 2, argv, &args))
+    if (ReadArgs(state, argv, &args))
         return NULL;
 
     src = args[0].c_str();
@@ -401,7 +402,7 @@ err:
 
 
 static Value *SwapEntriesFn(const char *name, State *state,
-        int argc, Expr *argv[])
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     int rc;
 
@@ -415,10 +416,10 @@ static Value *SwapEntriesFn(const char *name, State *state,
     Value *ret = NULL;
     std::vector<std::string> args;
 
-    if (argc != 3)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argc);
+    if (argv.size() != 3)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argv.size());
 
-    if (ReadArgs(state, 3, argv, &args))
+    if (ReadArgs(state, argv, &args))
         return NULL;
 
     dev = args[0].c_str();
@@ -521,17 +522,18 @@ done:
 
 static const char *SFU_DST = "/bootloader/BIOSUPDATE.fv";
 
-static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
+static Value *CopySFUFn(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     struct stat sb;
     char *result = NULL;
     const char *sfu_src = NULL;
     std::vector<std::string> args;
 
-    if (argc != 1)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argc);
+    if (argv.size() != 1)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argv.size());
 
-    if (ReadArgs(state, 1, argv, &args))
+    if (ReadArgs(state, argv, &args))
         return NULL;
 
     sfu_src = args[0].c_str();
