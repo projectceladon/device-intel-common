@@ -46,11 +46,11 @@
 
     <string name="roaming_preference_title">When Roaming</string>
 
-    <string name="roaming_preference_explanation">Choose the connection you prefer when outside the Home Network \n(Wi-fi or Cellular)</string>
+    <string name="roaming_preference_explanation">Choose the connection you prefer when outside the Home Network \n(Wi-fi or Mobile)</string>
 
     <string name="roaming_wifi">Wi-Fi</string>
 
-    <string name="roaming_network">Cellular Network</string>
+    <string name="roaming_network">Mobile Network</string>
 
     <string name="roaming_save">Save</string>
     <string name="roaming_cancel">Cancel</string>
@@ -63,7 +63,7 @@
         networks are available.
     </string>
 
-    <string name="roaming_cellpref">Prefer Other Cellular Networks \n(Roaming charges may apply) </string>
+    <string name="roaming_cellpref">Prefer Other Mobile Networks \n(Roaming charges may apply) </string>
     <string name="roaming_wifpref">Prefer Wi-Fi</string>
 
     <string name="turn_on_wfc_msg">Wi-Fi Calling is ON</string>
