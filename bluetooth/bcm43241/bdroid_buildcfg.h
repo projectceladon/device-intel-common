@@ -35,4 +35,6 @@
 
 #define PRELOAD_START_TIMEOUT_MS 3500
 
+#define BLE_VND_INCLUDED TRUE
+
 #endif
