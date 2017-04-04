@@ -28,3 +28,4 @@ ExclusiveCriterion PersonalEqualization    :  None              Slight          
 ExclusiveCriterion ModemAudioIsSpeech      :  False             True
 ExclusiveCriterion ScreenRotation          :  0                 90              180         270
 ExclusiveCriterion A2dpSuspended           :  False             True
+ExclusiveCriterion HfpClientBandType        :    Unknown          NB            WB            SuperWB
