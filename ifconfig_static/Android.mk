@@ -38,7 +38,9 @@ LOCAL_SRC_FILES := \
     toys/android/runcon.c \
     toys/android/setenforce.c \
     toys/android/setprop.c \
-    toys/lsb/dmesg.c \
+    toys/android/log.c \
+    toys/android/sendevent.c \
+    toys/android/start.c \
     toys/lsb/hostname.c \
     toys/lsb/killall.c \
     toys/lsb/md5sum.c \
@@ -65,7 +67,6 @@ LOCAL_SRC_FILES := \
     toys/other/fsfreeze.c \
     toys/other/help.c \
     toys/other/hwclock.c \
-    toys/other/ifconfig.c \
     toys/other/inotifyd.c \
     toys/other/insmod.c \
     toys/other/ionice.c \
@@ -78,7 +79,6 @@ LOCAL_SRC_FILES := \
     toys/other/modinfo.c \
     toys/other/mountpoint.c \
     toys/other/nbd_client.c \
-    toys/other/netcat.c \
     toys/other/partprobe.c \
     toys/other/pivot_root.c \
     toys/other/pmap.c \
@@ -87,7 +87,6 @@ LOCAL_SRC_FILES := \
     toys/other/readlink.c \
     toys/other/realpath.c \
     toys/other/rev.c \
-    toys/other/rfkill.c \
     toys/other/rmmod.c \
     toys/other/setsid.c \
     toys/other/stat.c \
@@ -110,11 +109,15 @@ LOCAL_SRC_FILES := \
     toys/pending/expr.c \
     toys/pending/lsof.c \
     toys/pending/more.c \
-    toys/pending/netstat.c \
     toys/pending/route.c \
     toys/pending/tar.c \
     toys/pending/tr.c \
     toys/pending/traceroute.c \
+    toys/pending/chrt.c \
+    toys/pending/dmesg.c \
+    toys/pending/getfattr.c \
+    toys/pending/modprobe.c \
+    toys/pending/setfattr.c \
     toys/posix/basename.c \
     toys/posix/cal.c \
     toys/posix/cat.c \
@@ -171,6 +174,15 @@ LOCAL_SRC_FILES := \
     toys/posix/uniq.c \
     toys/posix/wc.c \
     toys/posix/xargs.c \
+    toys/posix/file.c \
+    toys/posix/uudecode.c \
+    toys/posix/uuencode.c \
+    toys/net/ifconfig.c \
+    toys/net/netcat.c \
+    toys/net/netstat.c \
+    toys/net/rfkill.c \
+    toys/net/microcom.c \
+    toys/net/tunctl.c \
 
 toybox_upstream_version := $(shell awk 'match($$0, /TOYBOX_VERSION.*"(.*)"/, ary) {print ary[1]}' $(LOCAL_PATH)/main.c)
 toybox_sha := $(shell git -C $(LOCAL_PATH) rev-parse --short=12 HEAD 2>/dev/null)
@@ -184,7 +196,7 @@ LOCAL_STATIC_LIBRARIES := libcutils libselinux libc libcrypto_static liblog
 
 # This doesn't actually prevent us from dragging in libc++ at runtime
 # because libnetd_client.so is C++.
-LOCAL_CXX_STL := none
+LOCAL_CXX_STL := libc++_static
 
 LOCAL_MODULE := ifconfig_static
 
