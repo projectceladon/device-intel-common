@@ -51,6 +51,7 @@ static char *stack_ready[] = {"cansend", "slcan0", "0000FFFF#0A005555555555", NU
 #define CANID_IOC	0x0000FFFF
 #define CANID_DELIM	'#'
 #define DATA_SEPERATOR	'.'
+#define FW_VERSION_SIZE         16
 
 #define POWER_STATE "/sys/power/state"
 #define BOARD_TEMP 	"/sys/class/thermal/thermal_zone1/temp"
@@ -112,6 +113,15 @@ typedef enum
 	e_ias_wakeup_reason_alive_reason_number     = 30U,
 }
 ias_wakeup_reasons;
+
+typedef enum
+{
+        e_ias_hardware_revision_gr_fab_ab = 11,
+        e_ias_hardware_revision_gr_fab_c =  12,
+        e_ias_hardware_revision_gr_fab_d =  13,
+        e_ias_hardware_revision_gr_fab_e =  14,
+}
+ias_hardware_revision;
 
 static __inline__ int  slcan_thread_create( slcan_thread_t  *pthread, slcan_thread_func_t  start, void*  arg )
 {
@@ -273,6 +283,62 @@ int parse_canframe(char *cs, struct canfd_frame *cf) {
 	cf->len = dlen;
 
 	return ret;
+}
+
+/*
+*
+*  4.1.1.14. Request version information
+*  This command requests the IOC version, Selector: 16 (0x10) No parameters.
+*  The IOC will answer with a response message. The message layout follows #IOC to CM Basic Message.
+*  Selector: 7
+*  Payload Byte 0: bootloader version major
+*  Payload Byte 1: bootloader version minor
+*  Payload Byte 2: firmware version major
+*  Payload Byte 3: firmware version minor
+*  Payload Byte 4: firmware version revision / build id
+*      Firmware revision / build id value 0 defines internal development builds;
+*      release builds do have a value different to 0.
+*
+*  Payload Byte 5: mainboard revision
+*  11 = GR MRB Fab A / B
+*  12 = GR MRB Fab C
+*  13 = GR MRB Fab D
+*  14 = GR MRB Fab E
+*/
+static int update_ioc_version(struct canfd_frame *frame)
+{
+       char ioc_buff[FW_VERSION_SIZE];
+
+       snprintf(ioc_buff, FW_VERSION_SIZE, "%.2d.%.2d",
+                       frame->data[0], frame->data[1]);
+       property_set("ioc.bootloader.version", ioc_buff);
+
+       snprintf(ioc_buff, FW_VERSION_SIZE, "%.2d.%.2d.%.2d",
+                       frame->data[2], frame->data[3], frame->data[4]);
+       property_set("ioc.firmware.version", ioc_buff);
+       ALOGI("ioc.firmware.version = %s\n", ioc_buff);
+
+       switch(frame->data[5]) {
+               case e_ias_hardware_revision_gr_fab_ab:
+                       snprintf(ioc_buff, FW_VERSION_SIZE, "GR_FAB_AB");
+                       break;
+               case e_ias_hardware_revision_gr_fab_c:
+                      snprintf(ioc_buff, FW_VERSION_SIZE, "GR_FAB_C");
+                       break;
+               case e_ias_hardware_revision_gr_fab_d:
+                       snprintf(ioc_buff, FW_VERSION_SIZE, "GR_FAB_D");
+                       break;
+               case e_ias_hardware_revision_gr_fab_e:
+                       snprintf(ioc_buff, FW_VERSION_SIZE, "GR_FAB_E");
+                       break;
+               default:
+                       snprintf(ioc_buff, FW_VERSION_SIZE, "unknown");
+                       break;
+       }
+       property_set("ioc.hardware.version", ioc_buff);
+       ALOGI("ioc.hardware.version = %s\n", ioc_buff);
+
+       return 0;
 }
 
 static int store_data2node(const char *path, char buf[], size_t len)
@@ -447,6 +513,11 @@ int main(void)
 						update_temp_data(&r_frame);
 					}
 					break;
+                                case e_ias_slcan_dummy_ctrl_version_resp:
+                                        {
+                                                 ALOGE("ioc firmware version r_frame.data = %x\n",r_frame.data[7]);
+                                                 update_ioc_version(&r_frame);
+                                        }
 				default:
 					break;
 			}
