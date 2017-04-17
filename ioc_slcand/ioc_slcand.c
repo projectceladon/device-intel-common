@@ -57,6 +57,7 @@ static char *stack_ready[] = {"cansend", "slcan0", "0000FFFF#0A005555555555", NU
 #define BOARD_TEMP 	"/sys/class/thermal/thermal_zone1/temp"
 #define AMBIENT_TEMP "/sys/class/thermal/thermal_zone2/temp"
 #define FAN_STATE 	"/sys/class/thermal/cooling_device5/cur_state"
+#define FAN_DUTY_CYCLE         "/sys/class/thermal/cooling_device5/cur_state_info"
 
 static char *slcan_link_name = "slcan0";
 static int slcan_socket_fd;
@@ -375,7 +376,7 @@ static int update_fan_data(struct canfd_frame *frame, fan_data_t *fan_data)
 
 	if(fan_data->percentage <= 100){
 		if(sprintf(buf, "%u", fan_data->percentage) > 0)
-		  ret = store_data2node(FAN_STATE, buf, 3);
+		  ret = store_data2node(FAN_DUTY_CYCLE, buf, 3);
                   if (ret < 0) {
                       ALOGE("failed to update fan");
                       return ret;
@@ -386,6 +387,46 @@ static int update_fan_data(struct canfd_frame *frame, fan_data_t *fan_data)
 }
 
 static fan_data_t fan_data;
+
+static void control_fan_speed(void)
+{
+       struct canfd_frame t_frame;
+       int fd, ret, desired_fan_speed = -1;
+       char *end_p, canframe[30];
+       char buf[4] = "";
+
+       fd = open(FAN_STATE, O_RDONLY);
+       if (fd < 0) {
+               ALOGE("failed to open file:%s\n", FAN_STATE);
+               goto err;
+       }
+
+       ret = read(fd, buf, (sizeof(buf) - 1));
+       if (ret < 0)
+               goto err;
+       buf[ret] = '\0';
+
+       errno = 0;
+       desired_fan_speed = strtol(buf, &end_p, 0);
+       if ((errno != 0) || (end_p == buf)) {
+               errno = 0;
+               goto err;
+       }
+
+       if (desired_fan_speed <= 100 && desired_fan_speed >= 0) {
+               /* make a frame and send it to ioc to change fan duty cycle */
+               ret = snprintf(canframe, 25, "0000FFFF#0E%02x5555555555", desired_fan_speed);
+               if (ret < 0)
+                       goto err;
+
+               ALOGD("ready to send canframe %s\n", canframe);
+               parse_canframe(canframe, &t_frame);
+               slcan_send_data(slcan_socket_fd, t_frame);
+       }
+
+err:
+       close(fd);
+}
 
 /*
 *
@@ -452,6 +493,8 @@ void *slcan_heatbeat_thread()
 	while (1) {
 		parse_canframe("0000FFFF#00015555555555", &t_frame);
 		slcan_send_data(slcan_socket_fd, t_frame);
+                control_fan_speed();  /* update fan duty cycle */
+
 		/* delay 2 secs to send next heart beat */
 		sleep(2);
 	}
