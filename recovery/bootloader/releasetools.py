@@ -139,7 +139,7 @@ def Get_verifydata(info,infoinput):
   imghash_bootloader = ""
 
   for imgname, imgdata in additional_data.iteritems():
-      if imgname != 'bootloader' and imgname != 'system' and imgname != 'boot' and imgname != 'recovery' \
+      if imgname != 'system' and imgname != 'boot' and imgname != 'recovery' \
           and imgname != 'vendor' and imgname != 'multiboot':
           bootloader_sizes += ":" + str(len(imgdata))
       if imgname != 'system' and imgname != 'vendor':
@@ -173,7 +173,7 @@ def WriteMultiboot(info, multiboot_img):
 def WriteBldr(info, bootloader_img):
   common.ZipWriteStr(info.output_zip, "bootloader.img", bootloader_img)
   info.script.WriteRawImage("/bootloader", "bootloader.img")
-  info.script.script.append('capsule_abl("m1:ifwi_update.bin");')
+  info.script.script.append('capsule_abl("m1:@0");')
 
 def IncrementalOTA_VerifyEnd(info):
   global multiboot_patchinfo
