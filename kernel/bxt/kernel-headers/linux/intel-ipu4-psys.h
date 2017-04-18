@@ -31,7 +31,7 @@ struct intel_ipu4_psys_capability {
 struct intel_ipu4_psys_event {
   uint32_t type;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  uint32_t id;
+  uint64_t user_token;
   uint64_t issue_id;
   uint32_t buffer_idx;
   uint32_t error;
@@ -41,28 +41,28 @@ struct intel_ipu4_psys_event {
 #define INTEL_IPU4_PSYS_EVENT_TYPE_CMD_COMPLETE 1
 #define INTEL_IPU4_PSYS_EVENT_TYPE_BUFFER_COMPLETE 2
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-struct intel_ipu4_psys_dma_buf {
-  int fd;
-  uint32_t data_offset;
-  uint32_t bytes_used;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  uint32_t flags;
-  uint32_t reserved;
-} __attribute__((packed));
 struct intel_ipu4_psys_buffer {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
   uint64_t len;
-  void __user * userptr;
-  int fd;
-  uint32_t flags;
+  union {
+    int fd;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+    void __user * userptr;
+    uint64_t reserved;
+  } base;
+  uint32_t data_offset;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+  uint32_t bytes_used;
+  uint32_t flags;
   uint32_t reserved[2];
 } __attribute__((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define INTEL_IPU4_BUFFER_FLAG_INPUT (1 << 0)
 #define INTEL_IPU4_BUFFER_FLAG_OUTPUT (1 << 1)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define INTEL_IPU4_BUFFER_FLAG_MAPPED (1 << 2)
 #define INTEL_IPU4_BUFFER_FLAG_NO_FLUSH (1 << 3)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define INTEL_IPU4_BUFFER_FLAG_DMA_HANDLE (1 << 4)
+#define INTEL_IPU4_BUFFER_FLAG_USERPTR (1 << 5)
 #define INTEL_IPU4_PSYS_CMD_PRIORITY_HIGH 0
 #define INTEL_IPU4_PSYS_CMD_PRIORITY_MED 1
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -71,35 +71,36 @@ struct intel_ipu4_psys_buffer {
 struct intel_ipu4_psys_command {
   uint64_t issue_id;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  uint32_t id;
+  uint64_t user_token;
   uint32_t priority;
   void __user * pg_manifest;
-  struct intel_ipu4_psys_dma_buf __user * buffers;
+  struct intel_ipu4_psys_buffer __user * buffers;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
   int pg;
   uint32_t pg_manifest_size;
   uint32_t bufcount;
   uint32_t min_psys_freq;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+  uint32_t frame_counter;
   uint32_t reserved[2];
 } __attribute__((packed));
 struct intel_ipu4_psys_manifest {
-  uint32_t index;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+  uint32_t index;
   uint32_t size;
   void __user * manifest;
   uint32_t reserved[5];
-} __attribute__((packed));
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+} __attribute__((packed));
 #define INTEL_IPU4_IOC_QUERYCAP _IOR('A', 1, struct intel_ipu4_psys_capability)
 #define INTEL_IPU4_IOC_MAPBUF _IOWR('A', 2, int)
 #define INTEL_IPU4_IOC_UNMAPBUF _IOWR('A', 3, int)
-#define INTEL_IPU4_IOC_GETBUF _IOWR('A', 4, struct intel_ipu4_psys_buffer)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define INTEL_IPU4_IOC_GETBUF _IOWR('A', 4, struct intel_ipu4_psys_buffer)
 #define INTEL_IPU4_IOC_PUTBUF _IOWR('A', 5, struct intel_ipu4_psys_buffer)
 #define INTEL_IPU4_IOC_QCMD _IOWR('A', 6, struct intel_ipu4_psys_command)
 #define INTEL_IPU4_IOC_DQEVENT _IOWR('A', 7, struct intel_ipu4_psys_event)
-#define INTEL_IPU4_IOC_CMD_CANCEL _IOWR('A', 8, struct intel_ipu4_psys_command)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define INTEL_IPU4_IOC_CMD_CANCEL _IOWR('A', 8, struct intel_ipu4_psys_command)
 #define INTEL_IPU4_IOC_GET_MANIFEST _IOWR('A', 9, struct intel_ipu4_psys_manifest)
 #endif
