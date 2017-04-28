@@ -29,11 +29,13 @@
 #include <updater/updater.h>
 #include <cutils/properties.h>
 
+#include <string.h>
+
 #define CHUNK 1024*1024
 
 ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)
 {
-    unsigned char *pos = buf;
+    unsigned char *pos = (unsigned char *)buf;
     ssize_t ret;
     ssize_t total = 0;
     do {
@@ -55,7 +57,7 @@ ssize_t robust_read(int fd, void *buf, size_t count, int short_ok)
 
 ssize_t robust_write(int fd, const void *buf, size_t count)
 {
-    const char *pos = buf;
+    const char *pos = (char *)buf;
     ssize_t total_written = 0;
     ssize_t written;
 
@@ -85,7 +87,7 @@ int read_write(int srcfd, int destfd) {
     ssize_t written;
     int ret = -1;
 
-    buf = malloc(CHUNK);
+    buf = (char *)malloc(CHUNK);
     if (!buf) {
         printf("%s: memory allocation error\n", __FUNCTION__);
         return -1;
@@ -244,16 +246,21 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
         return NULL;
 
     if (strlen(device) == 0) {
-        ErrorAbort(state, "%s: Missing required argument", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
         return NULL;
     }
 
     if (read_bcb(device, &bcb)) {
-        ErrorAbort(state, "%s: Failed to read Bootloader Control Block", name);
+        ErrorAbort(state, kArgsParsingFailure, "%s: Failed to read Bootloader Control Block", name);
         return NULL;
     }
 
     status = strdup(bcb.status);
+    if (status == NULL) {
+        ErrorAbort(state, kArgsParsingFailure, "%s: Failed to duplicate status string: %s", name, strerror(errno));
+        return NULL;
+    }
+
     printf("Read status '%s' from Bootloader Control Block\n", status);
 
     return StringValue(status);
@@ -264,7 +271,7 @@ static Value *GetBCBStatus(const char *name, State *state, int __unused argc, Ex
  * until now. */
 char *dmi_detect_machine(void)
 {
-    char dmi[256], buf[256], *hash, *tag, *name, *toksav, allmatched;
+    char dmi[256] = {0}, buf[256] = {0}, *hash, *tag, *name, *toksav, allmatched;
     char dmi_detect[PROPERTY_VALUE_MAX];
     FILE *dmif, *cfg;
     char *ret = NULL;
@@ -280,6 +287,9 @@ char *dmi_detect_machine(void)
     dmif = fopen("/sys/devices/virtual/dmi/id/modalias", "r");
     if (!dmif || !fgets(dmi, sizeof(dmi), dmif)) {
         printf("Couldn't open DMI modalias\n");
+        if(dmif){
+            fclose(dmif);
+        }
         return NULL;
     }
     fclose(dmif);
@@ -329,19 +339,18 @@ static Value *MkdirFn(const char *name, State *state, int argc, Expr *argv[]) {
     }
 
     if (strlen(pathname) == 0) {
-        ErrorAbort(state, "pathname argument to %s can't be empty", name);
+        ErrorAbort(state, kArgsParsingFailure, "pathname argument to %s can't be empty", name);
         goto done;
     }
 
     if (mkdir(pathname, 0755) < 0) {
-        ErrorAbort(state, "%s: cannot create %s", name, pathname);
+        ErrorAbort(state, kStashCreationFailure, "%s: cannot create %s", name, pathname);
     }
 
     ret = StringValue(strdup(""));
 
 done:
-    if (pathname)
-        free(pathname);
+    free(pathname);
 
     return ret;
 }
@@ -353,33 +362,39 @@ done:
 static Value* PackageExtractFileSafeFn(const char* name, State* state,
                                int argc, Expr* argv[]) {
     if (argc != 2) {
-        return ErrorAbort(state, "%s() expects args, got %d",
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects args, got %d",
                           name, argc);
     }
 
     bool success = false;
-    char* zip_path;
-    char* dest_path;
-    char* dest_path_tmp;
+    char* zip_path = NULL;
+    char* dest_path = NULL;
+    char* dest_path_tmp = NULL;
+    int tmp_fd;
+    ZipArchive* za;
+    const ZipEntry* entry;
 
-    if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0) return NULL;
+    if (ReadArgs(state, argv, 2, &zip_path, &dest_path) < 0)
+        goto done2;
 
-    if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0) return NULL;
+    if (asprintf(&dest_path_tmp, "%sXXXXXX", dest_path) < 0)
+        goto done2;
 
-    ZipArchive* za = ((UpdaterInfo*)(state->cookie))->package_zip;
-    const ZipEntry* entry = mzFindZipEntry(za, zip_path);
+    za = ((UpdaterInfo*)(state->cookie))->package_zip;
+    entry = mzFindZipEntry(za, zip_path);
     if (entry == NULL) {
         fprintf(stderr, "%s: no %s in package\n", name, zip_path);
         goto done2;
     }
 
-    int tmp_fd = mkstemp(dest_path_tmp);
+    tmp_fd = mkstemp(dest_path_tmp);
     if (tmp_fd < 0) {
         fprintf(stderr, "%s: can't open %s for write: %s\n",
                 name, dest_path, strerror(errno));
         goto done2;
     }
     success = mzExtractZipEntryToFile(za, entry, tmp_fd);
+    unlink(dest_path_tmp);
     close(tmp_fd);
 
     if (rename(dest_path_tmp, dest_path) < 0) {
@@ -389,9 +404,12 @@ static Value* PackageExtractFileSafeFn(const char* name, State* state,
     }
 
 done2:
-    free(zip_path);
-    free(dest_path);
-    free(dest_path_tmp);
+    if (zip_path != NULL)
+        free(zip_path);
+    if (dest_path != NULL)
+        free(dest_path);
+    if (dest_path_tmp != NULL)
+        free(dest_path_tmp);
     return StringValue(strdup(success ? "t" : ""));
 }
 
