@@ -3,7 +3,7 @@
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
     <ComponentType Name="SlowVoice_V1_0" Mapping="ByteControlWithLength:%1 %2 %3 params slv">
         <Component Name="switch" Type="SwitchParam"/>
-        <IntegerParameter Name="sw_flag" Size="16" Min="0" Max="65536"
+        <IntegerParameter Name="sw_flag" Size="16" Min="0" Max="65535"
                              Description="Module version. Default=0"/>
         <IntegerParameter Name="stretch_factor" Size="16" Min="50" Max="100"
                              Description="The percentage for frame stretch. Class 1 parameter. Default=66"/>
