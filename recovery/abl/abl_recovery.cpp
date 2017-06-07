@@ -42,7 +42,6 @@
 #include <bootloader.h>
 #include <cutils/android_reboot.h>
 
-#define CHUNK 1024*1024
 
 #define CAPSULE_SYSFS_ENTRY "/sys/kernel/capsule/capsule_name"
 
@@ -53,7 +52,7 @@ static Value *CapsuleABL(const char *name, State *state,
     std::vector<std::string> args;
     int i;
 
-    if (ReadArgs(state, argv, &args))
+    if (!ReadArgs(state, argv, &args))
         return NULL;
 
     if (args.size() == 0) {
