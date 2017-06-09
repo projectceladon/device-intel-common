@@ -18,14 +18,13 @@
 -->
 <resources>
 
-    <!-- Array of ConnectivityManager.TYPE_xxxx values allowable for tethering -->
-    <!-- Common options are [1, 4] for TYPE_WIFI and TYPE_MOBILE_DUN or
-    <!== [0,1,5,7] for TYPE_MOBILE, TYPE_WIFI, TYPE_MOBILE_HIPRI and TYPE_BLUETOOTH -->
-    <integer-array translatable="false" name="config_tether_upstream_types">
-        <item>1</item>
-        <item>7</item>
-    </integer-array>
-
+      <!-- Array of ConnectivityManager.TYPE_xxxx values allowable for tethering -->
+      <!-- Common options are [1, 4] for TYPE_WIFI and TYPE_MOBILE_DUN or
+      <!== [1,9] for TYPE_WIFI, and TYPE_ETHERNET -->
+       <integer-array translatable="false" name="config_tether_upstream_types">
+         <item>1</item>
+         <item>9</item>
+      </integer-array>
     <bool name="config_sms_capable">false</bool>
     <bool name="config_voice_capable">false</bool>
 </resources>
