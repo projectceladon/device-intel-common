@@ -29,6 +29,7 @@ _VERIFYTOOL = "device/intel/common/recovery/verify_from_ota"
 OPTIONS = common.OPTIONS
 verify_multiboot = None
 multiboot_patchinfo = None
+tos_patchinfo = None
 
 def hash_sparse_ext4_image(image_name):
 
@@ -114,6 +115,13 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
         loader_data = loader_file.read()
         additional_data_hash['multiboot'] = loader_data
         loader_file.close()
+    curr_loader = "tos.img"
+    loader_filepath = os.path.join(unpack_dir, "RADIO", curr_loader)
+    if os.path.exists(loader_filepath):
+        loader_file = open(loader_filepath)
+        loader_data = loader_file.read()
+        additional_data_hash['tos'] = loader_data
+        loader_file.close()
 
   curr_loader = "vendor.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
@@ -146,7 +154,7 @@ def Get_verifydata(info,infoinput):
 
   for imgname, imgdata in additional_data.iteritems():
       if imgname != 'system' and imgname != 'boot' and imgname != 'recovery' \
-          and imgname != 'vendor' and imgname != 'multiboot' and imgname != 'firmware':
+          and imgname != 'vendor' and imgname != 'multiboot' and imgname != 'tos' and imgname != 'firmware':
           bootloader_sizes += ":" + str(len(imgdata))
       if imgname != 'system' and imgname != 'vendor' and imgname != 'firmware':
           imghash_value += "\n(bootloader) target: /" + str(imgname)
@@ -179,6 +187,13 @@ def WriteMultiboot(info, multiboot_img):
   except (IOError, KeyError):
     print "no /multiboot partition in target_files; skipping install"
 
+def WriteTos(info, tos_img):
+  common.ZipWriteStr(info.output_zip, "tos.img", tos_img)
+  try:
+    info.script.WriteRawImage("/tos", "tos.img")
+  except (IOError, KeyError):
+    print "no /tos partition in target_files; skipping install"
+
 def WriteBldr(info, bootloader_img):
   common.ZipWriteStr(info.output_zip, "bootloader.img", bootloader_img)
   info.script.WriteRawImage("/bootloader", "bootloader.img")
@@ -186,6 +201,7 @@ def WriteBldr(info, bootloader_img):
 
 def IncrementalOTA_VerifyEnd(info):
   global multiboot_patchinfo
+  global tos_patchinfo
 
   fstab = info.script.info.get("fstab", None)
   try:
@@ -205,8 +221,24 @@ def IncrementalOTA_VerifyEnd(info):
                                   sf.sha1, tf.size, tf.sha1))
           multiboot_patchinfo = (multibootimg_type, multibootimg_device, sf, tf)
           common.ZipWriteStr(info.output_zip, "patch/multiboot.img.p", output_files)
+    if fstab['/tos'].device:
+      tosimg_type, tosimg_device = common.GetTypeAndDevice("/tos", OPTIONS.info_dict)
+      verbatim_targets, m_patch_list, output_files = \
+              intel_common.ComputeBinOrImgPatches(OPTIONS.source_tmp,
+                                                  OPTIONS.target_tmp, "tos.img")
+      if output_files is None:
+        print "tos.img is none, skipping install"
+      else:
+        print "tos.img is exist. Add the patch."
+        if not verbatim_targets and m_patch_list:
+          (tf,sf) = m_patch_list
+          info.script.PatchCheck("%s:%s:%d:%s:%d:%s" %
+                                 (tosimg_type, tosimg_device, sf.size,
+                                  sf.sha1, tf.size, tf.sha1))
+          tos_patchinfo = (tosimg_type, tosimg_device, sf, tf)
+          common.ZipWriteStr(info.output_zip, "patch/tos.img.p", output_files)
   except (IOError, KeyError):
-    print "No multiboot partition in iOTA Verify"
+    print "No multiboot/tos partition in iOTA Verify"
 
 def FullOTA_InstallEnd(info):
   global verify_multiboot
@@ -231,6 +263,20 @@ def FullOTA_InstallEnd(info):
           verify_multiboot = 1
       except (IOError, KeyError):
         print "No multiboot partition"
+
+    try:
+      tos_img = info.input_zip.read("RADIO/tos.img")
+    except (IOError, KeyError):
+      print "no tos.img in target target_files; skipping install"
+    else:
+      fstab = info.script.info.get("fstab", None)
+      try:
+        if fstab['/tos'].device:
+          print "tos partition exist and tos.img changed; adding it"
+          WriteTos(info, tos_img)
+          verify_multiboot = 1
+      except (IOError, KeyError):
+        print "No tos partition"
 
     Get_verifydata(info, info.input_tmp)
 
