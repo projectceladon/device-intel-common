@@ -76,37 +76,6 @@ def IncrementalOTA_InstallEnd(info):
     info.script.script.append('unmount("/bootloader");')
     #swap_entries(info)
 
-def SaveTgtImgToOut():
-    curr_loader = "system.img"
-    loader_filepath = os.path.join(OPTIONS.input_tmp, "IMAGES", curr_loader)
-    if not os.path.exists(loader_filepath):
-        print "Can't find ", loader_filepath
-        return
-    if not os.path.exists("out/dist/"):
-        print "out/dist is not ready, skip "
-        return
-    cmd = ["cp","-r",loader_filepath,"out/dist/system.img"]
-    try:
-        p = common.Run(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        p.communicate()
-        p.wait()
-        assert p.returncode == 0, "copy system.img failed"
-    except KeyError:
-        print "copy system.img error"
-
-    curr_loader = "vendor.img"
-    loader_filepath = os.path.join(OPTIONS.input_tmp, "IMAGES", curr_loader)
-    if not os.path.exists(loader_filepath):
-        print "Can't find ", loader_filepath
-        return
-    cmd = ["cp","-r",loader_filepath,"out/dist/vendor.img"]
-    try:
-        p = common.Run(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        p.communicate()
-        p.wait()
-        assert p.returncode == 0, "copy vendor.img failed"
-    except KeyError:
-        print "copy vendor.img error"
 
 def FullOTA_InstallEnd(info):
     data = intel_common.GetBootloaderImageFromTFP(OPTIONS.input_tmp)
@@ -114,7 +83,5 @@ def FullOTA_InstallEnd(info):
     info.script.Print("Writing updated bootloader image...")
     info.script.WriteRawImage("/bootloader2", "bootloader.img")
     #swap_entries(info)
-    print "Running SaveTgtimgToOut..."
-    SaveTgtImgToOut()
 
 
