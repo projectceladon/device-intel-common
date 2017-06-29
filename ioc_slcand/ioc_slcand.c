@@ -183,13 +183,17 @@ unsigned char asc2nibble(char c) {
 	return 16; /* error */
 }
 
-void slcan_send_data(int socket_fd, struct canfd_frame frame)
+int slcan_send_data(int socket_fd, struct canfd_frame frame)
 {
+	int ret = 0;
+
 	/* write frame */
 	if (write(socket_fd, &frame, CAN_MTU) != CAN_MTU) {
 		ALOGE("%s Write issue : %d", __func__, errno);
-		return;
+		ret = -1;
 	}
+
+	return ret;
 }
 
 int slcan_read_data(int socket_fd, struct canfd_frame* frame)
@@ -492,7 +496,11 @@ void *slcan_heatbeat_thread()
 
 	while (1) {
 		parse_canframe("0000FFFF#00015555555555", &t_frame);
-		slcan_send_data(slcan_socket_fd, t_frame);
+		/* if send heatbeat fail, exit and restart ioc_slcand */
+		if(slcan_send_data(slcan_socket_fd, t_frame)) {
+			ALOGE("send heatbeat fail!!!\n");
+			exit(-1);
+		}
                 control_fan_speed();  /* update fan duty cycle */
 
 		/* delay 2 secs to send next heart beat */
@@ -537,7 +545,7 @@ int main(void)
 
 		if(ret == 0) {
 			ALOGE("ioc_slcand timeout!!!\n");
-			exit(-1);
+			continue;
 		}
 
 		if (slcan_read_data(slcan_socket_fd, &r_frame) < 0)
