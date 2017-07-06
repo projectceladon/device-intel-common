@@ -574,7 +574,6 @@ int main(void)
 			}
 		} else {
 			ALOGE("Unsupported can msg! CAN_ID = %x; LEN = %x;\n", r_frame.can_id, r_frame.len);
-			break;
 		}
 	}
 
