@@ -221,7 +221,7 @@ def IncrementalOTA_VerifyEnd(info):
 
 def swap_entries(info):
     fstab = info.script.info.get("fstab", None)
-    info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
+    info.script.script.append('swap_entries("%s", "bootloader", "bootloader2");' %
             (fstab['/bootloader'].device,))
     # Microsoft allows to use the FAT32 filesystem for the ESP
     # partition only and in the context of a UEFI device.  We have to
