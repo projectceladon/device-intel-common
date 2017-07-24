@@ -501,7 +501,7 @@ void *slcan_heatbeat_thread()
 			ALOGE("send heatbeat fail!!!\n");
 			exit(-1);
 		}
-                control_fan_speed();  /* update fan duty cycle */
+               /*  control_fan_speed(); */  /* update fan duty cycle */
 
 		/* delay 2 secs to send next heart beat */
 		sleep(2);
@@ -556,12 +556,12 @@ int main(void)
 			{
 				case e_ias_slcan_dummy_ctrl_bat_fan:
 					{
-						update_fan_data(&r_frame, &fan_data);
+					/*	update_fan_data(&r_frame, &fan_data); */
 					}
 					break;
 				case e_ias_slcan_dummy_ctrl_temp:
 					{
-						update_temp_data(&r_frame);
+					/*	update_temp_data(&r_frame); */
 					}
 					break;
                                 case e_ias_slcan_dummy_ctrl_version_resp:
