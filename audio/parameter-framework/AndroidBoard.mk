@@ -165,6 +165,7 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+ifeq ($(BOARD_HAVE_MODE),true)
 include $(CLEAR_VARS)
 LOCAL_MODULE := IMCSubsystem.xml
 LOCAL_MODULE_TAGS := optional
@@ -173,6 +174,7 @@ LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libimc-subsystem
 include $(BUILD_PREBUILT)
+endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := PowerSubsystem.xml
