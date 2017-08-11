@@ -30,3 +30,5 @@ ExclusiveCriterion IsEAVBStream             :    False            True
 ExclusiveCriterion AuxInSelected            :    False            True
 InclusiveCriterion OutputDeviceAddresses    :    Media            Navigation   Hmi
 InclusiveCriterion InputDeviceAddresses     :    Mic1             Mic2
+InclusiveCriterion VehicleAudioFocus       : Music         Navigation         Voice         Call         Alarm         Notification         Unknown         SafetyAlert         CDRom         AuxAudio         SystemSound         Radio         ExternalSource
+InclusiveCriterion VehicleAudioMute       : Music         Navigation         Voice         Call         Alarm         Notification         Unknown         SafetyAlert         CDRom         AuxAudio         SystemSound         Radio         ExternalSource

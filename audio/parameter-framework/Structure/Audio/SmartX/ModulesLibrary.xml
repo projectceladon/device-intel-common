@@ -42,6 +42,12 @@
             </IntegerParameter>
         </ComponentType>
 
+
+        <ComponentType Name="VolumeMuteControlProperty">
+            <IntegerParameter Name="params" Size="32" Signed="true" ArrayLength="3"
+                              Mapping="VectInt32RuntimeModuleProperty:'cmd(Int32)=2|pin(String)=%1'"/>
+        </ComponentType>
+
         <ComponentType Name="VolumeControlProperty">
             <IntegerParameter Name="volume" Size="32" Signed="true"
                               Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=1|pin(String)=%1|ramp(Int32Vector)=[100;0]'"
@@ -49,7 +55,7 @@
                               Description="Pin volume in 1/10th dB. Values less or equal than -1440 will be treated as mute.">
                 <LogarithmicAdaptation LogarithmBase="2" FloorValue="-1440" SlopeNumerator="60" SlopeDenominator="1" Offset="-400"/>
             </IntegerParameter>
+            <Component Name="mute" Type="VolumeMuteControlProperty"/>
         </ComponentType>
-
     </ComponentTypeSet>
 </ComponentLibrary>
