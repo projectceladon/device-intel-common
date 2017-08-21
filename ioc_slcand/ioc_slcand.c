@@ -187,11 +187,28 @@ int slcan_send_data(int socket_fd, struct canfd_frame frame)
 {
 	int ret = 0;
 
-	/* write frame */
-	if (write(socket_fd, &frame, CAN_MTU) != CAN_MTU) {
-		ALOGE("%s Write issue : %d", __func__, errno);
-		ret = -1;
-	}
+	do {
+		ret = write(socket_fd, &frame, CAN_MTU);
+		if (ret == CAN_MTU) {
+			ret = 0;
+			break;
+		}
+		else if (ret == EDQUOT) {
+			/*
+			 * To prevent flood of message from user space, there is inhibit time
+			 * in the kernel when TX rate exceed limit. During this time, it will
+			 * return EDQUOT. For this case, we just need to sleep for a while and
+			 * retry it later.
+			 */
+			ALOGE("%s sleep for a while during inhibit time", __func__);
+			sleep(1);
+		}
+		else {
+			ALOGE("%s Write issue : %d", __func__, errno);
+			ret = -1;
+			break;
+		}
+	} while (ret == EDQUOT);
 
 	return ret;
 }
