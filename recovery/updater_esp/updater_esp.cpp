@@ -60,19 +60,24 @@ struct Capsule {
     int existence;
 };
 
-static Value *CopyPartFn(const char *name, State *state, int argc, Expr *argv[])
+static Value *CopyPartFn(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
-    char *src = NULL;
-    char *dest = NULL;
+    const char *src = NULL;
+    const char *dest = NULL;
     int srcfd = -1;
     int destfd = -1;
     int result = -1;
+    std::vector<std::string> args;
 
-    if (argc != 2)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argc);
+    if (argv.size() != 2)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argv.size());
 
-    if (ReadArgs(state, argv, 2, &src, &dest))
+    if (ReadArgs(state, argv, &args))
         return NULL;
+
+    src = args[0].c_str();
+    dest = args[1].c_str();
 
     if (strlen(src) == 0 || strlen(dest) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
@@ -108,8 +113,6 @@ done:
                 name, strerror(errno));
         result = -1;
     }
-    free(src);
-    free(dest);
     return (result ? NULL : StringValue(strdup("")));
 }
 
@@ -399,24 +402,30 @@ err:
 
 
 static Value *SwapEntriesFn(const char *name, State *state,
-        int argc, Expr *argv[])
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     int rc;
 
-    char *dev = NULL;
-    char *part1 = NULL;
-    char *part2 = NULL;
+    const char *dev = NULL;
+    const char *part1 = NULL;
+    const char *part2 = NULL;
     char buf[PATH_MAX];
 
     struct gpt_entry *e1, *e2;
     struct gpt *gpt = NULL;
     Value *ret = NULL;
+    std::vector<std::string> args;
 
-    if (argc != 3)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argc);
+    if (argv.size() != 3)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argv.size());
 
-    if (ReadArgs(state, argv, 3, &dev, &part1, &part2))
+    if (ReadArgs(state, argv, &args))
         return NULL;
+
+    dev = args[0].c_str();
+    part1 = args[1].c_str();
+    part2 = args[2].c_str();
+
 
     if (strlen(dev) == 0 || strlen(part1) == 0 || strlen(part2) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "%s: Missing required argument", name);
@@ -507,26 +516,27 @@ static Value *SwapEntriesFn(const char *name, State *state,
 done:
     if (gpt)
         gpt_close(gpt);
-    free(dev);
-    free(part1);
-    free(part2);
 
     return ret;
 }
 
 static const char *SFU_DST = "/bootloader/BIOSUPDATE.fv";
 
-static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
+static Value *CopySFUFn(const char *name, State *state,
+        const std::vector<std::unique_ptr<Expr>>& argv)
 {
     struct stat sb;
     char *result = NULL;
-    char *sfu_src = NULL;
+    const char *sfu_src = NULL;
+    std::vector<std::string> args;
 
-    if (argc != 1)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argc);
+    if (argv.size() != 1)
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argv.size());
 
-    if (ReadArgs(state, argv, 1, &sfu_src))
+    if (ReadArgs(state, argv, &args))
         return NULL;
+
+    sfu_src = args[0].c_str();
 
     if (strlen(sfu_src) == 0) {
         ErrorAbort(state, kArgsParsingFailure, "sfu_src argyment to %s can't be empty", name);
@@ -545,7 +555,6 @@ static Value *CopySFUFn(const char *name, State *state, int argc, Expr *argv[])
     result = strdup("");
 
 done:
-    free(sfu_src);
     return StringValue(result);
 }
 
