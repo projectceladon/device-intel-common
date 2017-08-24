@@ -45,7 +45,7 @@
 
 static char *slcand_init[] = {"slcand", "-S", "4000000", "-t", "hw", "ttyS1", "slcan0", NULL};
 static char *slcan_attach_init[] = {"slcan_attach", "-o", "-f", "/dev/ttyS1", NULL};
-static char *ifconfig_init[] = {"ifconfig", "slcan0", "up", NULL};
+static char *ifconfig_init[] = {"/vendor/bin/ifconfig", "slcan0", "up", NULL};
 static char *stack_ready[] = {"cansend", "slcan0", "0000FFFF#0A005555555555", NULL};
 
 #define CANID_IOC	0x0000FFFF
