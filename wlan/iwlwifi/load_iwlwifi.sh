@@ -18,7 +18,7 @@ if [ $1 == "--ptest-boot" ]; then
         insmod $modules/iwlwifi.ko nvm_file=nvmData xvt_default_mode=1
         insmod $modules/iwlxvt.ko
 else
-        insmod $modules/iwlwifi.ko nvm_file=nvmData
+        insmod $modules/iwlwifi.ko
 fi
 
 insmod $modules/iwlmvm.ko
