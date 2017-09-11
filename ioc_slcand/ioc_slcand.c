@@ -54,18 +54,14 @@ static char *stack_ready[] = {"cansend", "slcan0", "0000FFFF#0A005555555555", NU
 #define FW_VERSION_SIZE         16
 
 #define POWER_STATE "/sys/power/state"
-#define BOARD_TEMP 	"/sys/class/thermal/thermal_zone1/temp"
-#define AMBIENT_TEMP "/sys/class/thermal/thermal_zone2/temp"
-#define FAN_STATE 	"/sys/class/thermal/cooling_device5/cur_state"
-#define FAN_DUTY_CYCLE         "/sys/class/thermal/cooling_device5/cur_state_info"
 
 static char *slcan_link_name = "slcan0";
 static int slcan_socket_fd;
 static unsigned char old_amplifier_temp;
 static unsigned char old_enviroment_temp;
 
-typedef  pthread_t                 slcan_thread_t;
-typedef void*  (*slcan_thread_func_t)( void*  arg );
+typedef  pthread_t	slcan_thread_t;
+typedef void*	(*slcan_thread_func_t)(void*  arg);
 
 typedef enum
 {
@@ -363,127 +359,6 @@ static int update_ioc_version(struct canfd_frame *frame)
        return 0;
 }
 
-static int store_data2node(const char *path, char buf[], size_t len)
-{
-	int fd, ret = 0;
-
-	fd = open(path, O_RDWR);
-	if(fd < 0){
-		ALOGE("failed to open file:%s\n", path);
-		return fd;
-	}
-
-	if(write(fd, buf, len) < 0)
-	  ret = -1;
-
-	close(fd);
-	return ret;
-}
-
-typedef struct fan {
-    unsigned short voltage;
-    unsigned short percentage;
-    unsigned short rate;
-}fan_data_t;
-
-static int update_fan_data(struct canfd_frame *frame, fan_data_t *fan_data)
-{
-	char buf[4];
-	int ret = -1;
-
-	fan_data->rate = frame->data[2];
-	fan_data->voltage = frame->data[0];
-	fan_data->percentage = frame->data[4];
-
-	if(fan_data->percentage <= 100){
-		if(sprintf(buf, "%u", fan_data->percentage) > 0)
-		  ret = store_data2node(FAN_DUTY_CYCLE, buf, 3);
-                  if (ret < 0) {
-                      ALOGE("failed to update fan");
-                      return ret;
-                 }
-	}
-
-    return ret;
-}
-
-static fan_data_t fan_data;
-
-static void control_fan_speed(void)
-{
-       struct canfd_frame t_frame;
-       int fd, ret, desired_fan_speed = -1;
-       char *end_p, canframe[30];
-       char buf[4] = "";
-
-       fd = open(FAN_STATE, O_RDONLY);
-       if (fd < 0) {
-               ALOGE("failed to open file:%s\n", FAN_STATE);
-               goto err;
-       }
-
-       ret = read(fd, buf, (sizeof(buf) - 1));
-       if (ret < 0)
-               goto err;
-       buf[ret] = '\0';
-
-       errno = 0;
-       desired_fan_speed = strtol(buf, &end_p, 0);
-       if ((errno != 0) || (end_p == buf)) {
-               errno = 0;
-               goto err;
-       }
-
-       if (desired_fan_speed <= 100 && desired_fan_speed >= 0) {
-               /* make a frame and send it to ioc to change fan duty cycle */
-               ret = snprintf(canframe, 25, "0000FFFF#0E%02x5555555555", desired_fan_speed);
-               if (ret < 0)
-                       goto err;
-
-               ALOGD("ready to send canframe %s\n", canframe);
-               parse_canframe(canframe, &t_frame);
-               slcan_send_data(slcan_socket_fd, t_frame);
-       }
-
-err:
-       close(fd);
-}
-
-/*
-*
-*  4.1.2.6. Temperature message
-*  This message is sent cyclic and contains the value of up to three temperature sensors
-*  Selector: 6
-*  Payload Byte 0: temp sensor 0 (lower byte, int16)
-*  Payload Byte 1: temp sensor 0 (lower byte, int16), resolution 1°C, offset 0
-*  Payload Byte 2: temp sensor 1 (lower byte, int16)
-*  Payload Byte 3: temp sensor 1 (lower byte, int16), resolution 1°C, offset 0
-*/
-static int update_temp_data(struct canfd_frame *frame)
-{
-	char buf[7];
-        int ret;
-	if(sprintf(buf, "%u", frame->data[0] * 1000) > 0 && frame->data[0]!=old_amplifier_temp){
-		ret = store_data2node(BOARD_TEMP, buf, 6);
-                if (ret < 0) {
-                    ALOGE("failed to update board temp");
-                    return ret;
-                 }
-        }
-	if(sprintf(buf, "%u", frame->data[2] * 1000) > 0 && frame->data[2]!=old_enviroment_temp){
-		ret = store_data2node(AMBIENT_TEMP, buf, 6);
-                 if (ret < 0) {
-                    ALOGE("failed to update amnient temp");
-                    return ret;
-                 }
-        }
-
-        old_amplifier_temp = (frame->data[1] <<16)|frame->data[0];
-        old_enviroment_temp = (frame->data[3] <<16)|frame->data[2];
-
-	return 0;
-}
-
 void execute(char **argv)
 {
 	pid_t  pid;
@@ -518,7 +393,6 @@ void *slcan_heatbeat_thread()
 			ALOGE("send heatbeat fail!!!\n");
 			exit(-1);
 		}
-               /*  control_fan_speed(); */  /* update fan duty cycle */
 
 		/* delay 2 secs to send next heart beat */
 		sleep(2);
@@ -529,16 +403,15 @@ void *slcan_heatbeat_thread()
 int main(void)
 {
 	struct canfd_frame r_frame, t_frame;
-	int r_sel;
+	int r_sel, ret;
 	slcan_thread_t heatbeat_thread_ptr;
 	fd_set rfds;
-        int ret;
 	struct timeval tv;
 
 	execute(slcand_init);
 	execute(slcan_attach_init);
 	execute(ifconfig_init);
-        execute(stack_ready);
+	execute(stack_ready);
 
 	slcan_socket_fd = create_slcan_socket();
 	/* send stack ready */
@@ -571,21 +444,11 @@ int main(void)
 			r_sel = r_frame.data[7];
 			switch (r_sel)
 			{
-				case e_ias_slcan_dummy_ctrl_bat_fan:
+				case e_ias_slcan_dummy_ctrl_version_resp:
 					{
-					/*	update_fan_data(&r_frame, &fan_data); */
+						ALOGE("ioc firmware version r_frame.data = %x\n",r_frame.data[7]);
+						update_ioc_version(&r_frame);
 					}
-					break;
-				case e_ias_slcan_dummy_ctrl_temp:
-					{
-					/*	update_temp_data(&r_frame); */
-					}
-					break;
-                                case e_ias_slcan_dummy_ctrl_version_resp:
-                                        {
-                                                 ALOGE("ioc firmware version r_frame.data = %x\n",r_frame.data[7]);
-                                                 update_ioc_version(&r_frame);
-                                        }
 				default:
 					break;
 			}
