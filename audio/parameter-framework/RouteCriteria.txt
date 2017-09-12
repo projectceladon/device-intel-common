@@ -28,6 +28,7 @@ ExclusiveCriterion ScreenRotation           :    0                90            
 ExclusiveCriterion A2dpSuspended            :    False            True
 ExclusiveCriterion IsEAVBStream             :    False            True
 ExclusiveCriterion AuxInSelected            :    False            True
+ExclusiveCriterion AvbServiceState          :    Stopped          Starting     Ready
 InclusiveCriterion OutputDeviceAddresses    :    Media            Navigation   Hmi
 InclusiveCriterion InputDeviceAddresses     :    Mic1             Mic2
 InclusiveCriterion VehicleAudioFocus       : Music         Navigation         Voice         Call         Alarm         Notification         Unknown         SafetyAlert         CDRom         AuxAudio         SystemSound         Radio         ExternalSource
