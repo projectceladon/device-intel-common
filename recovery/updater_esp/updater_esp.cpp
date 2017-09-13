@@ -34,6 +34,7 @@
 #include <libgen.h>
 #include <stdbool.h>
 #include <string>
+#include <sys/sysmacros.h>
 
 #include <edify/expr.h>
 extern "C" {
@@ -71,7 +72,7 @@ static Value *CopyPartFn(const char *name, State *state,
     std::vector<std::string> args;
 
     if (argv.size() != 2)
-        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %d", name, argv.size());
+        return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %lu", name, argv.size());
 
     if (ReadArgs(state, argv, &args))
         return NULL;
