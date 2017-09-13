@@ -31,7 +31,7 @@
 
 #include <string.h>
 #include <zip_archive_private.h>
-#include <otautil/ZipUtil.h>
+#include "ZipUtil.h"
 
 #define CHUNK 1024*1024
 extern struct selabel_handle *sehandle;
