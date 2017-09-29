@@ -30,6 +30,7 @@ OPTIONS = common.OPTIONS
 verify_multiboot = None
 multiboot_patchinfo = None
 tos_patchinfo = None
+vbmeta_patchinfo = None
 
 def hash_sparse_ext4_image(image_name):
 
@@ -194,6 +195,13 @@ def WriteTos(info, tos_img):
   except (IOError, KeyError):
     print "no /tos partition in target_files; skipping install"
 
+def WriteVbmeta(info, vbmeta_img):
+  common.ZipWriteStr(info.output_zip, "vbmeta.img", vbmeta_img)
+  try:
+    info.script.WriteRawImage("/vbmeta", "vbmeta.img")
+  except (IOError, KeyError):
+    print "no /vbmeta partition in target_files; skipping install"
+
 def WriteBldr(info, bootloader_img):
   common.ZipWriteStr(info.output_zip, "bootloader.img", bootloader_img)
   info.script.WriteRawImage("/bootloader", "bootloader.img")
@@ -237,8 +245,24 @@ def IncrementalOTA_VerifyEnd(info):
                                   sf.sha1, tf.size, tf.sha1))
           tos_patchinfo = (tosimg_type, tosimg_device, sf, tf)
           common.ZipWriteStr(info.output_zip, "patch/tos.img.p", output_files)
+    if fstab['/vbemta'].device:
+      vbmetaimg_type, vbmetaimg_device = common.GetTypeAndDevice("/vbmeta", OPTIONS.info_dict)
+      verbatim_targets, m_patch_list, output_files = \
+               intel_common.ComputeBinOrImgPatches(OPTIONS.source_tmp,
+                                                   OPTIONS.target_tmp, "vbmeta.img")
+      if output_files is None:
+        print "vbmeta.img is none, skipping install"
+      else:
+        print "vbmeta.img is exist. Add the patch."
+        if not verbatim_targets and m_patch_list:
+          (tf,sf) = m_patch_list
+          info.script.PatchCheck("%s:%s:%d:%s:%d:%s" %
+                                 (vbmetaimg_type, vbmetaimg_device, sf.size,
+                                  sf.sha1, tf.size, tf.sha1))
+          vbmeta_patchinfo = (vbmetaimg_type, vbmetaimg_device, sf, tf)
+          common.ZipWriteStr(info.output_zip, "patch/vbmeta.img.p", output_files)
   except (IOError, KeyError):
-    print "No multiboot/tos partition in iOTA Verify"
+    print "No multiboot/tos/vbmeta partition in iOTA Verify"
 
 def FullOTA_InstallEnd(info):
   global verify_multiboot
@@ -278,6 +302,19 @@ def FullOTA_InstallEnd(info):
       except (IOError, KeyError):
         print "No tos partition"
 
+    try:
+      vbmeta_img = info.input_zip.read("IMAGES/vbmeta.img")
+    except (IOError, KeyError):
+      print "no vbmeta.img in target target_files; skipping install"
+    else:
+      fstab = info.script.info.get("fstab", None)
+      try:
+        if fstab['/vbmeta'].device:
+          print "vbmeta partition exist and vbmeta.img changed; adding it"
+          WriteVbmeta(info, vbmeta_img)
+      except (IOError, KeyError):
+        print "No vbmeta partition"
+
     Get_verifydata(info, info.input_tmp)
 
 def IncrementalOTA_InstallEnd(info):
@@ -312,6 +349,41 @@ def IncrementalOTA_InstallEnd(info):
           verify_multiboot = 1
       except (IOError, KeyError):
         print "No multiboot partition"
+
+    try:
+      tos_img = info.target_zip.read("RADIO/tos.img")
+    except (IOError, KeyError):
+      print "no tos.img in target target_files; skipping install"
+    else:
+      fstab = info.script.info.get("fstab", None)
+      try:
+        if fstab['/tos'].device:
+          print "tos partition exist and tos.img changed; adding it"
+          tosimg_type, tosimg_device, sf, tf = tos_patchinfo
+          info.script.ApplyPatch("%s:%s:%d:%s:%d:%s" % (tosimg_type, tosimg_device, sf.size,
+                                                        sf.sha1, tf.size, tf.sha1),
+                                 "-", tf.size, tf.sha1, sf.sha1,
+                                 "patch/tos.img.p")
+          verify_multiboot = 1
+      except (IOError, KeyError):
+        print "No tos partition"
+
+    try:
+      vbmeta_img = info.input_zip.read("IMAGES/vbmeta.img")
+    except (IOError, KeyError):
+      print "no vbmeta.img in target target_files; skipping install"
+    else:
+      fstab = info.script.info.get("fstab", None)
+      try:
+        if fstab['/vbmeta'].device:
+          print "vbmeta partition exist and vbmeta.img changed; adding it"
+          vbmetaimg_type, vbmetaimg_device, sf, tf = vbmeta_patchinfo
+          info.script.ApplyPatch("%s:%s:%d:%s:%d:%s" % (vbmetaimg_type, vbmetaimg_device, sf.size,
+                                                        sf.sha1, tf.size, tf.sha1),
+                                 "-", tf.size, tf.sha1, sf.sha1,
+                                 "patch/tos.img.p")
+      except (IOError, KeyError):
+        print "No vbmeta partition"
 
     Get_verifydata(info, OPTIONS.target_tmp)
   except KeyError:
