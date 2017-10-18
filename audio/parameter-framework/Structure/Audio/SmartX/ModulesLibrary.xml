@@ -53,7 +53,7 @@
                               Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=1|pin(String)=%1|ramp(Int32Vector)=[100;0]'"
                               Min="-1440" Max="0"
                               Description="Pin volume in 1/10th dB. Values less or equal than -1440 will be treated as mute.">
-                <LogarithmicAdaptation LogarithmBase="2" FloorValue="-1440" SlopeNumerator="60" SlopeDenominator="1" Offset="-400"/>
+                <LogarithmicAdaptation LogarithmBase="2" FloorValue="-1440" SlopeNumerator="60" SlopeDenominator="1" Offset="-530"/>
             </IntegerParameter>
             <Component Name="mute" Type="VolumeMuteControlProperty"/>
         </ComponentType>
