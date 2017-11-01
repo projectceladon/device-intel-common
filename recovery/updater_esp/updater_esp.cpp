@@ -74,7 +74,7 @@ static Value *CopyPartFn(const char *name, State *state,
     if (argv.size() != 2)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 2 arguments, got %lu", name, argv.size());
 
-    if (ReadArgs(state, argv, &args))
+    if (!ReadArgs(state, argv, &args))
         return NULL;
 
     src = args[0].c_str();
@@ -420,7 +420,7 @@ static Value *SwapEntriesFn(const char *name, State *state,
     if (argv.size() != 3)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 3 arguments, got %d", name, argv.size());
 
-    if (ReadArgs(state, argv, &args))
+    if (!ReadArgs(state, argv, &args))
         return NULL;
 
     dev = args[0].c_str();
@@ -534,7 +534,7 @@ static Value *CopySFUFn(const char *name, State *state,
     if (argv.size() != 1)
         return ErrorAbort(state, kArgsParsingFailure, "%s() expects 1 argument, got %d", name, argv.size());
 
-    if (ReadArgs(state, argv, &args))
+    if (!ReadArgs(state, argv, &args))
         return NULL;
 
     sfu_src = args[0].c_str();

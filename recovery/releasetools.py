@@ -92,14 +92,13 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
 
   curr_loader = "current.fv"
   loader_filepath = os.path.join(bootloader_unzip_path, "capsules",curr_loader)
-  if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
-      return
-  loader_file = open(loader_filepath)
-  loader_data = loader_file.read()
-  additional_data_hash['bootloader/capsules/current.fv'] = loader_data
-  loader_file.close()
+  if os.path.exists(loader_filepath):
+      loader_file = open(loader_filepath)
+      loader_data = loader_file.read()
+      additional_data_hash['bootloader/capsules/current.fv'] = loader_data
+      loader_file.close()
+  else:
+      print "GetBootloaderImagesfromFls: Warning, can't find ", loader_filepath
 
   #need get boot/recovery/system data first
   curr_loader = "boot.img"
@@ -233,17 +232,17 @@ def IncrementalOTA_InstallEnd(info):
         info.script.Print("Removing unnecessary bootloader files...")
         info.script.DeleteFiles(delete_files)
 
-    if patch_list:
-        info.script.Print("Patching bootloader files...")
-        for tf, sf in patch_list:
-            info.script.ApplyPatch("/"+tf.name, "-", tf.size, tf.sha1,
-                                   sf.sha1, "patch/"+tf.name+".p")
+    #if patch_list:
+    #    info.script.Print("Patching bootloader files...")
+    #    for tf, sf in patch_list:
+    #        info.script.ApplyPatch("/"+tf.name, "-", tf.size, tf.sha1,
+    #                               sf.sha1, "patch/"+tf.name+".p")
 
-    if verbatim_targets:
-        info.script.Print("Adding new bootloader files...")
-        info.script.UnpackPackageDir("bootloader", "/bootloader")
+    #if verbatim_targets:
+    #    info.script.Print("Adding new bootloader files...")
+    #    info.script.UnpackPackageDir("bootloader", "/bootloader")
 
-    info.script.script.append('copy_sfu("/bootloader/capsules/current.fv");')
+    #info.script.script.append('copy_sfu("/bootloader/capsules/current.fv");')
     info.script.script.append('unmount("/bootloader");')
     #swap_entries(info)
     Get_verifydata(info,OPTIONS.target_tmp)
