@@ -245,7 +245,7 @@ def IncrementalOTA_VerifyEnd(info):
                                   sf.sha1, tf.size, tf.sha1))
           tos_patchinfo = (tosimg_type, tosimg_device, sf, tf)
           common.ZipWriteStr(info.output_zip, "patch/tos.img.p", output_files)
-    if fstab['/vbemta'].device:
+    if fstab['/vbmeta'].device:
       vbmetaimg_type, vbmetaimg_device = common.GetTypeAndDevice("/vbmeta", OPTIONS.info_dict)
       verbatim_targets, m_patch_list, output_files = \
                intel_common.ComputeBinOrImgPatches(OPTIONS.source_tmp,
@@ -369,7 +369,7 @@ def IncrementalOTA_InstallEnd(info):
         print "No tos partition"
 
     try:
-      vbmeta_img = info.input_zip.read("IMAGES/vbmeta.img")
+      vbmeta_img = info.target_zip.read("IMAGES/vbmeta.img")
     except (IOError, KeyError):
       print "no vbmeta.img in target target_files; skipping install"
     else:
