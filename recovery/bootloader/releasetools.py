@@ -74,7 +74,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   strings_out = subprocess.check_output([_STRINGS, loader_filepath], stderr=subprocess.STDOUT);
   for firmware in strings_out.split('\n'):
       if "rel." in firmware:
-          additional_data_hash['firmware'] = firmware
+          firmware_pattern=re.compile(r'(rel.\d+-Android)(-HF\d+)?')
+          additional_data_hash['firmware'] = re.search(firmware_pattern,firmware).group()
           break;
 
   #need get boot/recovery/system data first
