@@ -97,6 +97,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphones
 				#
@@ -124,6 +125,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -151,6 +153,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoCarkit
 				#
@@ -178,6 +181,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				#
@@ -205,6 +209,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothSco
 				#
@@ -232,6 +237,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				ANY
@@ -269,6 +275,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Line
 				ANY
@@ -310,6 +317,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				ANY
@@ -347,6 +355,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				ANY
@@ -385,6 +394,46 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ANY
+					ALL
+						#
+						# SonificationRespectful Follows Phone strategy if in call
+						#
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+					ALL
+						#
+						# SonificationRespectful Follows Sonification that falls through Media strategy if not in call
+						# SonificationRespectful follows media if music stream is active
+						#
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						ForceUseForMedia IsNot ForceSpeaker
+						AvailableOutputDevices Excludes UsbAccessory
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
+					earpiece = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					bluetooth_a2dp = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					hdmi = 0
+					usb_headset = 1
 
 			conf: UsbAccessory
 				#
@@ -415,6 +464,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 1
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: DgtlDockHeadset
 				#
@@ -445,6 +495,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: AuxDigital
 				#
@@ -475,6 +526,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 1
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -506,6 +558,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -533,3 +586,4 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0

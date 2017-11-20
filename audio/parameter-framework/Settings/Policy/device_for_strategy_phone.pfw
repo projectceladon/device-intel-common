@@ -39,6 +39,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				AvailableOutputDevices Includes BluetoothScoHeadset
@@ -62,6 +63,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothSco
 				AvailableOutputDevices Includes BluetoothSco
@@ -85,6 +87,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dp
 				#
@@ -115,6 +118,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphones
 				#
@@ -145,6 +149,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -175,6 +180,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				#
@@ -202,6 +208,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				#
@@ -229,6 +236,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Line
 				AvailableOutputDevices Includes Line
@@ -252,6 +260,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 1
 					speaker = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				#
@@ -291,6 +300,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: UsbAccessory
 				#
@@ -319,6 +329,47 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				#
+				# Fallback BT Sco devices in case of FORCE_BT_SCO
+				# or FORCE_NONE
+				#
+				AvailableInputDevices Includes UsbHeadset
+				AvailableOutputDevices Includes UsbHeadset
+				ANY
+					ForceUseForCommunication Is ForceBtSco
+					ForceUseForCommunication Is ForceNone
+					ALL
+						ForceUseForCommunication Is ForceSpeaker
+						#
+						# In case of Force Speaker, priority between device and accessory are
+						# inverted compared to Force None or Bt Sco
+						#
+						AvailableOutputDevices Excludes UsbAccessory
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+
+				component: /Policy/policy/strategies/phone/selected_output_devices/mask
+					earpiece = 0
+					wired_headset = 0
+					wired_headphone = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					hdmi = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					telephony_tx = 0
+					line = 0
+					speaker = 0
+					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				#
@@ -347,6 +398,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Hdmi
 				#
@@ -375,6 +427,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -403,6 +456,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -430,6 +484,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Speaker
 				#
@@ -457,6 +512,7 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 1
+					usb_headset = 0
 
 			conf: Default
 				#
@@ -480,5 +536,4 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					line = 0
 					speaker = 1
-
-
+					usb_headset = 0

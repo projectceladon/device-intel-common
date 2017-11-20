@@ -39,6 +39,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dp
 				ForceUseForMedia IsNot ForceNoBtA2dp
@@ -58,6 +59,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphone
 				ForceUseForMedia IsNot ForceNoBtA2dp
@@ -77,6 +79,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				ForceUseForMedia IsNot ForceNoBtA2dp
@@ -96,6 +99,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: ForceSpeaker
 				ForceUseForMedia Is ForceSpeaker
@@ -115,6 +119,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				AvailableOutputDevices Includes WiredHeadphone
@@ -133,6 +138,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Line
 				AvailableOutputDevices Includes Line
@@ -151,6 +157,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				AvailableOutputDevices Includes WiredHeadset
@@ -169,6 +176,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbAccessory
 				AvailableOutputDevices Includes UsbAccessory
@@ -187,6 +195,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 1
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				AvailableOutputDevices Includes UsbDevice
@@ -205,6 +214,26 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/rerouting/selected_output_devices/mask
+					remote_submix = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					speaker = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					hdmi = 0
+					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				AvailableOutputDevices Includes DgtlDockHeadset
@@ -223,6 +252,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: AuxDigital
 				#
@@ -244,6 +274,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 1
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				AvailableOutputDevices Includes AnlgDockHeadset
@@ -263,6 +294,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Speaker
 				AvailableOutputDevices Includes Speaker
@@ -281,6 +313,7 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Default
 				component: /Policy/policy/strategies/rerouting/selected_output_devices/mask
@@ -297,4 +330,4 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-
+					usb_headset = 0

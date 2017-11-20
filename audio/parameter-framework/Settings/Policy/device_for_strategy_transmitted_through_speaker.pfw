@@ -29,6 +29,7 @@ supDomain: DeviceForStrategy
 					ip = 0
 					bus = 0
 					stub = 0
+					usb_headset = 0
 
 		domain: Speaker
 			conf: Selected
@@ -40,4 +41,3 @@ supDomain: DeviceForStrategy
 			conf: NotSelected
 				component: /Policy/policy/strategies/transmitted_through_speaker/selected_output_devices/mask
 					speaker = 0
-

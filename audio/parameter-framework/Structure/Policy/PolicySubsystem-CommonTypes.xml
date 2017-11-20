@@ -38,6 +38,7 @@
             <BitParameter Name="ip" Size="1" Pos="23"/>
             <BitParameter Name="bus" Size="1" Pos="24"/>
             <BitParameter Name="stub" Size="1" Pos="30"/>
+            <BitParameter Name="usb_headset" Size="1" Pos="26"/>
         </BitParameterBlock>
     </ComponentType>
 
@@ -68,6 +69,7 @@
             <BitParameter Name="ip" Size="1" Pos="19"/>
             <BitParameter Name="bus" Size="1" Pos="20"/>
             <BitParameter Name="stub" Size="1" Pos="30"/>
+            <BitParameter Name="usb_headset" Size="1" Pos="25"/>
         </BitParameterBlock>
     </ComponentType>
 

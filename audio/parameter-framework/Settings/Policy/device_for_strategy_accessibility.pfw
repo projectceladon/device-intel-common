@@ -47,6 +47,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dp
 				#
@@ -75,6 +76,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphone
 				#
@@ -103,6 +105,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -131,6 +134,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: ForceSpeakerWhenNotInCall
 				#
@@ -159,6 +163,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoCarkit
 				#
@@ -188,6 +193,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				#
@@ -217,6 +223,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothSco
 				#
@@ -246,6 +253,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				ANY
@@ -283,6 +291,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Line
 				ANY
@@ -319,6 +328,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				ANY
@@ -356,6 +366,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				ANY
@@ -396,6 +407,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbAccessory
 				#
@@ -427,6 +439,48 @@ supDomain: DeviceForStrategy
 					usb_accessory = 1
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ANY
+					#
+					# accessibility falls through Phone strategy if in call (widely speaking)
+					#
+					ALL
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+					#
+					# accessibility follows Media strategy if not in call
+					# Media strategy inverts the priority of USB device vs accessory
+					#
+					ALL
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						AvailableOutputDevices Excludes UsbAccessory
+						ForceUseForMedia IsNot ForceSpeaker
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+					remote_submix = 0
+					earpiece = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_sco = 0
+					speaker = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					hdmi = 0
+					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				#
@@ -457,6 +511,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: AuxDigital
 				#
@@ -487,6 +542,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 1
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -519,6 +575,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -548,6 +605,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Speaker
 				AvailableOutputDevices Includes Speaker
@@ -570,6 +628,7 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Default
 				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
@@ -590,4 +649,4 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-
+					usb_headset = 0
