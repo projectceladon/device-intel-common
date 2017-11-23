@@ -162,6 +162,7 @@ Here is a usage example followed by an explanation:
     LOCAL_MODULE := AudioConfigurableDomains-bytcr-rt5640-default.xml
     LOCAL_MODULE_TAGS := optional
     LOCAL_MODULE_CLASS := ETC
+LOCAL_PROPRIETARY_MODULE := true
     LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Settings/Audio
 
     # Refresh tunning + routing domain file for rt5640-default
@@ -175,7 +176,7 @@ Here is a usage example followed by an explanation:
         SstSubsystem-bytcr-rt5640-default.xml \
         SstSubsystem-bytcr-rt56xx-common.xml \
 
-    PFW_TOPLEVEL_FILE := $(TARGET_OUT_ETC)/parameter-framework/ParameterFrameworkConfiguration-bytcr-rt5640-default.xml
+    PFW_TOPLEVEL_FILE := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/ParameterFrameworkConfiguration-bytcr-rt5640-default.xml
     PFW_CRITERIA_FILE := $(COMMON_PFW_CONFIG_PATH)/AudioCriteria.txt
     PFW_TUNING_FILE := $(LOCAL_PATH)/Settings/Audio/AudioConfigurableDomains-bytcr-rt5640-default.Tuning.xml
     PFW_EDD_FILES := \
@@ -209,6 +210,7 @@ Here is a usage example:
     LOCAL_SRC_FILES := $(LOCAL_MODULE).in
     LOCAL_MODULE_TAGS := optional
     LOCAL_MODULE_CLASS := ETC
+LOCAL_PROPRIETARY_MODULE := true
     LOCAL_MODULE_RELATIVE_PATH := parameter-framework
     LOCAL_REQUIRED_MODULES := \
         WM8281Subsystem.xml \
