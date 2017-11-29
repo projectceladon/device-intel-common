@@ -22,3 +22,9 @@ mode: 0550
 user: AID_SLCAND
 group: AID_SLCAND
 caps: 0
+
+[vendor/bin/ioc_slcand]
+mode: 0550
+user: AID_SLCAND
+group: AID_SLCAND
+caps: 0
