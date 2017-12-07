@@ -12,6 +12,7 @@ type_2_guid = {
     'linux' : '0fc63daf-8483-4772-8e79-3d69d8477de4',
     'linux-swap' : '0657fd6d-a4ab-43c4-84e5-0933c84b4f4f',
 # generated guid for android
+    'bootloader': '2568845D-2332-4675-BC39-8FA5A4748D15',
     'boot' : '49a4d17f-93a3-45c1-a0de-f50b2ebe2599',
     'recovery' : '4177c722-9e92-4aab-8644-43502bfd5506',
     'misc' : 'ef32a33b-a409-486c-9141-9ffb711f6266',
