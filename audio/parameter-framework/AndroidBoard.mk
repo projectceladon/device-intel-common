@@ -103,7 +103,6 @@ LOCAL_MODULE := RouteClass-common.xml
 LOCAL_MODULE_STEM := RouteClass.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := DebugFsSubsystem.xml
@@ -116,7 +115,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := DebugFsSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libfs-subsystem
@@ -127,7 +125,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := RouteSubsystem-CommonCriteria.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -137,7 +134,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := RouteSubsystem-RoutesTypes.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Route
 LOCAL_SRC_FILES := Structure/Route/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -148,7 +144,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SmartXSubsystem-Definitions.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/SmartX
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -157,7 +152,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AvbControlSubsystem-Definitions.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/AVB
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -167,7 +161,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ConfigurationSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -177,7 +170,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := IMCSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libimc-subsystem
@@ -188,7 +180,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PowerSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libpower-subsystem
@@ -198,7 +189,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PropertySubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libproperty-subsystem
@@ -208,7 +198,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Realtek5672Subsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -218,7 +207,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Realtek5645Subsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -228,7 +216,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AFE2.0.Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -238,7 +225,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := WM8281Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -248,7 +234,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := WM8998Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -258,7 +243,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ALC286Subsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libtinyalsa-subsystem
@@ -268,7 +252,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := TI_TLV320AIC3100Subsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -277,7 +260,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Realtek564xSubsystem-common.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libproperty-subsystem
@@ -287,7 +269,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := BluedroidCommSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := Structure/Audio/$(LOCAL_MODULE)
 LOCAL_REQUIRED_MODULES := libbluedroidcomm-subsystem
@@ -300,7 +281,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ModulesLibrary.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/eAVB/SmartX
 LOCAL_SRC_FILES := Structure/Audio/SmartX/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -311,7 +291,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := CommonAlgoTypes.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -320,7 +299,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Gain.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -329,7 +307,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := GSD_Gain.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -338,7 +315,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceVolume.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -347,7 +323,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := DbVolume.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -356,7 +331,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SampleSpecDomain.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -365,7 +339,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Dcr.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -374,7 +347,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SbaFir.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -383,7 +355,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SbaIir.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -392,7 +363,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Lpro.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -401,7 +371,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Mdrc.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -410,7 +379,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SbaEqualizers.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -419,7 +387,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := HfSns2.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -428,7 +395,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ToneGenerator_V2_4.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -439,7 +405,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Gain.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -448,7 +413,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Dcr.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -457,7 +421,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Fir.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -466,7 +429,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Iir.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -475,7 +437,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Mdrc.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -484,7 +445,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Lpro.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -493,7 +453,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Equalizers.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -504,7 +463,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cavs-Ghwd.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/cavs
 LOCAL_SRC_FILES := Structure/Audio/cavs/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -555,7 +513,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := MediaAlgos_Gen3_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -564,7 +521,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := VoiceAlgos_Gen3_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -573,7 +529,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AmbientNoiseAdapter_V2_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -582,7 +537,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := NoiseReduction_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -591,7 +545,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ComfortNoiseInjector_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -600,7 +553,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := FbaFir_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -609,7 +561,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := FbaIir_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -618,7 +569,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ComfortNoiseInjector_V1_2.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -627,7 +577,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AutomaticGainControl_V1_3.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -636,7 +585,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AutomaticGainControlAudio_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -645,7 +593,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := DualMicrophoneNoiseReduction_V1_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -654,7 +601,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SpectralEchoReduction_V2_5.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -663,7 +609,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := BeamForming_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -672,7 +617,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := BeamForming_V1_2.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -681,7 +625,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := EchoDelayLine_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -690,7 +633,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := GainLossControl_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -699,7 +641,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := AcousticEchoCanceler_V1_6.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -708,7 +649,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := EchoReferenceLine_V1_1.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -717,7 +657,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := NonLinearFilter_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -726,7 +665,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := TrafficNoiseReduction_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -735,7 +673,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := DynamicRangeProcessor_V1_4.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -744,7 +681,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := BandWidthExtender_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -753,7 +689,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := WindNoiseReduction_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -762,7 +697,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := WindNoiseReductionAudio_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -771,7 +705,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SlowVoice_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -780,7 +713,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := MultibandDynamicRangeProcessor_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -789,7 +721,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ModuleVoiceProcessingLock_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Audio/intel
 LOCAL_SRC_FILES := Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -802,7 +733,6 @@ LOCAL_MODULE_STEM := VibratorParameterFramework.xml
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_SRC_FILES := $(LOCAL_MODULE_STEM).in
 REPLACE_PATTERNS := $(AUDIO_PATTERNS)
 include $(BUILD_REPLACE_PATTERNS_IN_FILE)
@@ -811,7 +741,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SysfsVibratorClass.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
 LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -820,7 +749,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := MiscConfigurationSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
 LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
@@ -829,7 +757,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SysfsVibratorSubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Vibrator
 LOCAL_SRC_FILES := Structure/Vibrator/$(LOCAL_MODULE).in
 LOCAL_REQUIRED_MODULES := libfs-subsystem
@@ -845,8 +772,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PolicyClass.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Policy
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -854,12 +780,11 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PolicySubsystem.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_REQUIRED_MODULES := \
     PolicySubsystem-CommonTypes.xml \
     libpolicy-subsystem
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Policy
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -867,8 +792,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PolicySubsystem-CommonTypes.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Policy
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -877,14 +801,13 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.policy
 LOCAL_MODULE_STEM := PolicyConfigurableDomains.xml
 LOCAL_MODULE_CLASS := ETC
-LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Settings/Policy
 LOCAL_ADDITIONAL_DEPENDENCIES := \
         PolicyClass.xml \
         PolicySubsystem.xml \
         ParameterFrameworkConfigurationPolicy$(TUNING_SUFFIX).xml
 
-PFW_TOPLEVEL_FILE := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/ParameterFrameworkConfigurationPolicy.xml
+PFW_TOPLEVEL_FILE := $(TARGET_OUT_ETC)/parameter-framework/ParameterFrameworkConfigurationPolicy.xml
 PFW_CRITERIA_FILE := $(LOCAL_PATH)/policy_criteria.txt
 PFW_EDD_FILES := \
         $(LOCAL_PATH)/Settings/Policy/device_for_strategy_media.pfw \
@@ -902,3 +825,4 @@ PFW_EDD_FILES := \
         $(LOCAL_PATH)/Settings/Policy/volumes.pfw
 
 include $(BUILD_PFW_SETTINGS)
+
