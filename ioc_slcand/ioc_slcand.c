@@ -400,6 +400,19 @@ void *slcan_heatbeat_thread()
 	return 0;
 }
 
+void wait_for_device(const char *dev_name) {
+    if (dev_name == NULL) {
+        return ;
+    }
+    while (true) {
+        if (access(dev_name, F_OK)) {
+            usleep(5000);
+            continue;
+        }
+        break;
+    }
+}
+
 int main(void)
 {
 	struct canfd_frame r_frame, t_frame;
@@ -407,7 +420,7 @@ int main(void)
 	slcan_thread_t heatbeat_thread_ptr;
 	fd_set rfds;
 	struct timeval tv;
-
+	wait_for_device("/dev/ttyS1");
 	execute(slcand_init);
 	execute(slcan_attach_init);
 	execute(ifconfig_init);
