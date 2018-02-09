@@ -34,6 +34,7 @@
 #include <libgen.h>
 #include <stdbool.h>
 #include <string>
+#include <sys/sysmacros.h>
 
 #include <edify/expr.h>
 extern "C" {
