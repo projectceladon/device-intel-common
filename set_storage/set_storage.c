@@ -33,7 +33,7 @@ static const char *diskbus_prop = "ro.boot.diskbus";
 static const char *storage_path = "/dev/block/pci/pci0000:00/0000:00:%s/by-name";
 static const char *link_device = LINK_PATH;
 static const char *diskbus_format = "dd.f"; /* Device.Function */
-static const char *persistent_partition = LINK_PATH "/android_persistent";
+static const char *persistent_partition = LINK_PATH "/persistent";
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 {
