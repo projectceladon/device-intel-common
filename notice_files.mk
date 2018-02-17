@@ -11,7 +11,7 @@ endif
 endif
 endif
 
-ifneq (,$(filter hardware/intel/% vendor/intel%,$(LOCAL_MODULE_MAKEFILE)))
+ifneq (,$(filter $(INTEL_PATH_HARDWARE)/% vendor/intel%,$(LOCAL_MODULE_MAKEFILE)))
 ifneq (,$(filter user debug eng tests,$(LOCAL_MODULE_TAGS)))
 DELINQUANT_TAGS_MODULES := $(DELINQUANT_TAGS_MODULES) $(LOCAL_MODULE):$(LOCAL_MODULE_TAGS):$(LOCAL_MODULE_MAKEFILE)
 endif

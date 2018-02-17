@@ -208,7 +208,7 @@ $(foreach f, $(1), $(strip \
     $(_cmf_src)))
 endef
 
-EXTERNAL_BUILD_SYSTEM=device/intel/common/external
+EXTERNAL_BUILD_SYSTEM=$(INTEL_PATH_COMMON)/external
 
 # hook all the build makefiles with our own version
 # most of them are only symlinks to "unsupported.mk", which will generate an

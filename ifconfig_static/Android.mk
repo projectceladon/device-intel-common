@@ -32,7 +32,7 @@ LOCAL_SRC_FILES := \
     lib/xwrap.c \
     main.c \
     toys/android/getenforce.c \
-    ../../device/intel/common/ifconfig_static/getprop.c \
+    ../../$(INTEL_PATH_COMMON)/ifconfig_static/getprop.c \
     toys/android/load_policy.c \
     toys/android/restorecon.c \
     toys/android/runcon.c \

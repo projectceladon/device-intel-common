@@ -48,11 +48,11 @@ STREAMLINE_TLVS := $(notdir $(wildcard $(LOCAL_PATH)/streamline/tlvs/*.tlv))
 $(foreach tlv, $(STREAMLINE_TLVS), $(eval $(call copy_file, $(tlv), $(LOCAL_PATH), streamline/tlvs, $(TARGET_OUT_VENDOR)/firmware/telephony)))
 
 # modem firmwares
-MDM_FW_FILES := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard vendor/intel/fw/modem/IMC/*/$(mdm)/*.fls))
+MDM_FW_FILES := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard $(INTEL_PATH_VENDOR)/fw/modem/IMC/*/$(mdm)/*.fls))
 $(foreach fw, $(MDM_FW_FILES), $(eval $(call copy_file, $(fw), ., ., $(TARGET_OUT_VENDOR)/firmware/telephony)))
 
 # Geo file used by M2 module
-XML_GEO_FILE := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard vendor/intel/fw/modem/IMC/*/$(mdm)/*.xml))
+XML_GEO_FILE := $(foreach mdm, $(BOARD_MODEM_LIST), $(wildcard $(INTEL_PATH_VENDOR)/fw/modem/IMC/*/$(mdm)/*.xml))
 $(if $(strip $(XML_GEO_FILE)), $(eval $(call copy_file, $(XML_GEO_FILE), ., , $(TARGET_OUT_VENDOR)/firmware/telephony)))
 
 include $(CLEAR_VARS)
