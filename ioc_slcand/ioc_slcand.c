@@ -57,8 +57,6 @@ static char *stack_ready[] = {"cansend", "slcan0", "0000FFFF#0A005555555555", NU
 
 static char *slcan_link_name = "slcan0";
 static int slcan_socket_fd;
-static unsigned char old_amplifier_temp;
-static unsigned char old_enviroment_temp;
 
 typedef  pthread_t	slcan_thread_t;
 typedef void*	(*slcan_thread_func_t)(void*  arg);
@@ -135,7 +133,6 @@ static int create_slcan_socket(void)
 	struct ifreq ifr;
 	int s;
 	struct sockaddr_can addr;
-	int nbytes;
 
 	strncpy(ifr.ifr_name, slcan_link_name, IFNAMSIZ);
 	ifr.ifr_ifindex = if_nametoindex(ifr.ifr_name);
