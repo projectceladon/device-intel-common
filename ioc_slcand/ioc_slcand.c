@@ -424,6 +424,10 @@ int main(void)
 	execute(stack_ready);
 
 	slcan_socket_fd = create_slcan_socket();
+	if(slcan_socket_fd < 0) {
+		ALOGE("ioc_slcand failed to create socket!!!\n");
+		return -1;
+	}
 	/* send stack ready */
 	parse_canframe("0000FFFF#0A005555555555", &t_frame);
 	slcan_send_data(slcan_socket_fd, t_frame);
@@ -436,7 +440,7 @@ int main(void)
 
 	while(1) {
 		FD_ZERO(&rfds);
-		FD_SET(slcan_socket_fd, &rfds);
+		FD_SET((slcan_socket_fd%FD_SETSIZE), &rfds);
 		/*timeout up to 1s */
 		tv.tv_sec = 1;
 		tv.tv_usec = 0;
