@@ -1,6 +1,6 @@
 <resources>
     <string-array translatable="false" name="audioRoutingPolicy">
         <!--  Support of BUS00_MEDIA, BUS01_NAVIGATION and BUS02_HMI physical streams -->
-        <item>"0:media#1:nav_guidance#2:notification,alarm,radio,voice_command,call,system,safety,ringtone,unknown"</item>
+        <item>"0:media,radio,unknown#1:nav_guidance#2:notification,alarm,voice_command,call,system,safety,ringtone"</item>
     </string-array>
 </resources>
