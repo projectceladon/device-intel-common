@@ -61,6 +61,7 @@
         </ComponentType>
 
         <ComponentType Name="AudioRzInputPort" Mapping="AudioPort,Direction:eIasPortDirectionInput">
+            <BooleanParameter Name="data_probing" Description="Starts data probing from given port"/>
             <StringParameter Name="connected_to" MaxLength="256" Description="Name of the port name connected to this port" />
         </ComponentType>
 

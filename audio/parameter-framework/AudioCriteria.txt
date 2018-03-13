@@ -32,3 +32,4 @@ ExclusiveCriterion HfpClientBandType        :    Unknown          NB            
 ExclusiveCriterion AvbServiceState          :    Stopped          Starting     Ready
 InclusiveCriterion VehicleAudioFocus       : Music         Navigation         Voice         Call         Alarm         Notification         Unknown         SafetyAlert         CDRom         AuxAudio         SystemSound         Radio         ExternalSource
 InclusiveCriterion VehicleAudioMute       : Music         Navigation         Voice         Call         Alarm         Notification         Unknown         SafetyAlert         CDRom         AuxAudio         SystemSound         Radio         ExternalSource
+ExclusiveCriterion SmartXDataProbing      :  False             True
