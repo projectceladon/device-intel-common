@@ -45,9 +45,11 @@ extern "C" {
 #include <bootloader.h>
 #include <cutils/android_reboot.h>
 
+#ifdef SUPPORT_BOOT_OPTION
 extern "C" {
 #include <efivar.h>
 }
+#endif
 
 #define CHUNK 1024*1024
 
@@ -320,6 +322,7 @@ static HARDDRIVE_DEVICE_PATH *find_harddrive_path(EFI_DEVICE_PATH *path,
     return NULL;
 }
 
+#ifdef SUPPORT_BOOT_OPTION
 static int update_load_option_start_offset(struct guid *guid, uint64_t new_start)
 {
     efi_guid_t global_guid = EFI_GLOBAL_GUID;
@@ -400,7 +403,7 @@ err:
     free(entries);
     return -1;
 }
-
+#endif
 
 static Value *SwapEntriesFn(const char *name, State *state,
         const std::vector<std::unique_ptr<Expr>>& argv)
@@ -502,10 +505,12 @@ static Value *SwapEntriesFn(const char *name, State *state,
         goto done;
     }
 
+#ifdef SUPPORT_BOOT_OPTION
     if (update_load_option_start_offset(&e1->part_guid, e1->first_lba)) {
         ErrorAbort(state, kVendorFailure, "%s: unable to update the load options", name);
         goto done;
     }
+#endif
 
     //flush gpt to keep it algin with load option
     if (gpt_flush_ptable(gpt->device)){
