@@ -24,13 +24,13 @@
 # This file should not be modified, mixins should add a TARGET_FS_CONFIG_GEN to
 # there BoardConfig.mk
 
-[AID_PSTORE]
+[AID_VENDOR_PSTORE]
 value: 5001
 
-[AID_INTEL_PROP]
+[AID_VENDOR_INTEL_PROP]
 value: 5002
 
-[AID_WLAN_PROV]
+[AID_VENDOR_WLAN_PROV]
 value: 5003
 
 #
