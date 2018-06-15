@@ -24,7 +24,7 @@
 #include <pwd.h>
 #include <sys/stat.h>
 #include <string.h>
-
+#include <errno.h>
 #define LOG_TAG "set_storage"
 #include <log/log.h>
 
