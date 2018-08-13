@@ -20,4 +20,4 @@
 mode: 0755
 user: root
 group: shell
-caps: sys_nice
+caps: sys_nice block_suspend
