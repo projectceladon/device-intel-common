@@ -44,6 +44,7 @@ extern "C" {
 #include <cutils/properties.h>
 #include <bootloader.h>
 #include <cutils/android_reboot.h>
+#include <otautil/error_code.h>
 
 #ifdef SUPPORT_BOOT_OPTION
 extern "C" {
