@@ -44,6 +44,7 @@
 extern int errno;
 #endif
 
+#define POS_INSTALL_PREFIX             "/postinstall/"
 #define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
 #define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv" 
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
@@ -98,14 +99,14 @@ int main(int argc, char** argv)
 
 	// Check whether ../firmware/kernelflinger.efi exist.
 	// If not exist, exit.
-	char cwdbuf[PATH_MAX];
+	char cwdbuf[PATH_MAX] = {0};
 	if (getcwd(cwdbuf, sizeof(cwdbuf)) != NULL)
 		printf("Current directory: %s \n", cwdbuf);
 	else
 		printf("Get current directory failed: %s \n", strerror(errno));
 
-	char file_path[PATH_MAX];
-	char file_path_bios[PATH_MAX];
+	char file_path[PATH_MAX] = {0};
+	char file_path_bios[PATH_MAX] = {0};
 	int is_exist_kernelflinger = 0;
 	int is_exist_bios = 0;
 	char *selfdir = strrchr(argv[0], '/');
@@ -118,6 +119,19 @@ int main(int argc, char** argv)
 		}
 	}
 	snprintf(file_path + selfdir_len, sizeof(file_path) - selfdir_len, "%s", KERNELFLINGER_RELATIVE_PATH);
+
+	/* Unvalidated string 'file_path' can be used for path traversal
+	 * through call to 'is_file_exist' can lead to access to undesired
+	 * resource outside of restricted directory.
+	 * file path should always start with /postinstall/,
+	 * for security concern we should check content of the paths
+	 * used for access to files and directories. One check
+	 * we could do is ensure we are still pointing to /postinstall/.... */
+	if (strstr(file_path, POS_INSTALL_PREFIX) != file_path) {
+		printf("File path %s: Invalid", file_path);
+		return -1;
+	}
+
 	if (!is_file_exist(file_path)) {
 		is_exist_kernelflinger = 0;
 		printf("File %s does not exist!\n", file_path);
