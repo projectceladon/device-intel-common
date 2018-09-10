@@ -59,11 +59,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 	}
 
 	ret = symlink(path, link_device);
-	free(path);
 	if (ret) {
 		ALOGE("Failed to symlink storage device %s\n", path);
+		free(path);
 		return EXIT_FAILURE;
 	}
+	free(path);
 
 	passwd = getpwnam("system");
 	if (!passwd) {
