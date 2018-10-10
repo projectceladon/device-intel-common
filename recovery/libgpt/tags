@@ -1,0 +1,156 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ANDROID_GPT_H	include/gpt/gpt.h	19;"	d
+GPT_FLAG_BOOTABLE	include/gpt/gpt.h	66;"	d
+GPT_FLAG_HIDDEN	include/gpt/gpt.h	68;"	d
+GPT_FLAG_NO_AUTOMOUNT	include/gpt/gpt.h	69;"	d
+GPT_FLAG_READONLY	include/gpt/gpt.h	67;"	d
+GPT_FLAG_SYSTEM	include/gpt/gpt.h	65;"	d
+GPT_GUID	include/gpt/gpt.h	34;"	d
+LOCAL_CFLAGS	Android.mk	/^LOCAL_CFLAGS := -Wall  -DDEBUG_STDOUT=1$/;"	m
+LOCAL_CFLAGS	Android.mk	/^LOCAL_CFLAGS := -Wall$/;"	m
+LOCAL_C_INCLUDES	Android.mk	/^LOCAL_C_INCLUDES := bootable\/userfastboot\/libgpt\/include \\$/;"	m
+LOCAL_C_INCLUDES	Android.mk	/^LOCAL_C_INCLUDES := bootable\/userfastboot\/libgpt\/include$/;"	m
+LOCAL_MODULE	Android.mk	/^LOCAL_MODULE := gptdump$/;"	m
+LOCAL_MODULE	Android.mk	/^LOCAL_MODULE := libgpt$/;"	m
+LOCAL_MODULE	Android.mk	/^LOCAL_MODULE := libgpt_static$/;"	m
+LOCAL_MODULE_TAGS	Android.mk	/^LOCAL_MODULE_TAGS := optional$/;"	m
+LOCAL_PATH	Android.mk	/^LOCAL_PATH := $(call my-dir)$/;"	m
+LOCAL_SHARED_LIBRARIES	Android.mk	/^LOCAL_SHARED_LIBRARIES := libgpt$/;"	m
+LOCAL_SHARED_LIBRARIES	Android.mk	/^LOCAL_SHARED_LIBRARIES := libz libcutils liblog$/;"	m
+LOCAL_SRC_FILES	Android.mk	/^LOCAL_SRC_FILES := gpt.c$/;"	m
+LOCAL_SRC_FILES	Android.mk	/^LOCAL_SRC_FILES := gptdump.c$/;"	m
+LOCAL_STATIC_LIBRARIES	Android.mk	/^LOCAL_STATIC_LIBRARIES := libz libcutils$/;"	m
+LOG_TAG	gpt.c	41;"	d	file:
+PART_ANDROID_BOOT	include/gpt/gpt.h	/^	PART_ANDROID_BOOT,$/;"	e	enum:part_type
+PART_ANDROID_METADATA	include/gpt/gpt.h	/^	PART_ANDROID_METADATA,$/;"	e	enum:part_type
+PART_ANDROID_MISC	include/gpt/gpt.h	/^	PART_ANDROID_MISC,$/;"	e	enum:part_type
+PART_ANDROID_RECOVERY	include/gpt/gpt.h	/^	PART_ANDROID_RECOVERY,$/;"	e	enum:part_type
+PART_ANDROID_TERTIARY	include/gpt/gpt.h	/^	PART_ANDROID_TERTIARY,$/;"	e	enum:part_type
+PART_ESP	include/gpt/gpt.h	/^	PART_ESP,$/;"	e	enum:part_type
+PART_LINUX	include/gpt/gpt.h	/^	PART_LINUX,$/;"	e	enum:part_type
+PART_LINUX_SWAP	include/gpt/gpt.h	/^	PART_LINUX_SWAP$/;"	e	enum:part_type
+PART_MS_DATA	include/gpt/gpt.h	/^	PART_MS_DATA,$/;"	e	enum:part_type
+PART_MS_RESERVED	include/gpt/gpt.h	/^	PART_MS_RESERVED,$/;"	e	enum:part_type
+android_boot	gpt.c	/^static const struct guid android_boot = GPT_GUID(0x49a4d17f, 0x93a3, 0x45c1,$/;"	v	typeref:struct:guid	file:
+android_metadata	gpt.c	/^static const struct guid android_metadata = GPT_GUID(0x20ac26be, 0x20b7, 0x11e3,$/;"	v	typeref:struct:guid	file:
+android_misc	gpt.c	/^static const struct guid android_misc = GPT_GUID(0xef32a33b, 0xa409, 0x486c,$/;"	v	typeref:struct:guid	file:
+android_recovery	gpt.c	/^static const struct guid android_recovery = GPT_GUID(0x4177c722, 0x9e92, 0x4aab,$/;"	v	typeref:struct:guid	file:
+android_tertiary	gpt.c	/^static const struct guid android_tertiary = GPT_GUID(0x767941d0, 0x2085, 0x11e3,$/;"	v	typeref:struct:guid	file:
+backup_lba	include/gpt/gpt.h	/^	uint64_t backup_lba;$/;"	m	struct:gpt_header
+crc32	include/gpt/gpt.h	/^	uint32_t crc32;$/;"	m	struct:gpt_header
+current_lba	include/gpt/gpt.h	/^	uint64_t current_lba;$/;"	m	struct:gpt_header
+cylinder	gpt.c	/^	uint8_t cylinder;$/;"	m	struct:mbr_chs	file:
+data1	include/gpt/gpt.h	/^	uint32_t data1;$/;"	m	struct:guid
+data2	include/gpt/gpt.h	/^	uint16_t data2;$/;"	m	struct:guid
+data3	include/gpt/gpt.h	/^	uint16_t data3;$/;"	m	struct:guid
+data4	include/gpt/gpt.h	/^	uint8_t data4[8]; \/* Does not get byte-swapped *\/$/;"	m	struct:guid
+device	include/gpt/gpt.h	/^	char *device;$/;"	m	struct:gpt
+disk_guid	include/gpt/gpt.h	/^	struct guid disk_guid;$/;"	m	struct:gpt_header	typeref:struct:gpt_header::guid
+disk_sig	gpt.c	/^	uint32_t disk_sig;$/;"	m	struct:mbr	file:
+efi_sys_ptn	gpt.c	/^static const struct guid efi_sys_ptn = GPT_GUID(0xC12A7328, 0xF81F, 0x11D2,$/;"	v	typeref:struct:guid	file:
+end	gpt.c	/^	uint64_t end;$/;"	m	struct:ptn_region	file:
+entries	gpt.c	/^	struct mbr_entry entries[4];$/;"	m	struct:mbr	typeref:struct:mbr::mbr_entry	file:
+entries	include/gpt/gpt.h	/^	unsigned char *entries;$/;"	m	struct:gpt
+first_chs	gpt.c	/^	struct mbr_chs first_chs;$/;"	m	struct:mbr_entry	typeref:struct:mbr_entry::mbr_chs	file:
+first_lba	gpt.c	/^	uint32_t first_lba;$/;"	m	struct:mbr_entry	file:
+first_lba	include/gpt/gpt.h	/^	uint64_t first_lba;$/;"	m	struct:gpt_entry
+first_usable_lba	include/gpt/gpt.h	/^	uint64_t first_usable_lba;$/;"	m	struct:gpt_header
+flags	include/gpt/gpt.h	/^	uint64_t flags;$/;"	m	struct:gpt_entry
+generate_uuid	gpt.c	/^static int generate_uuid(struct guid *uuid)$/;"	f	file:
+get_entries_crc32	gpt.c	/^static uint32_t get_entries_crc32(struct gpt *gpt)$/;"	f	file:
+get_guid_type	gpt.c	/^const struct guid *get_guid_type(enum part_type t)$/;"	f
+get_header_crc32	gpt.c	/^static uint32_t get_header_crc32(struct gpt *gpt)$/;"	f	file:
+get_sizes	gpt.c	/^static int get_sizes(const char *device, uint32_t *lba_size, uint64_t *num_sectors)$/;"	f	file:
+getbyte	include/gpt/gpt.h	30;"	d
+gpt	include/gpt/gpt.h	/^struct gpt {$/;"	s
+gpt_close	gpt.c	/^void gpt_close(struct gpt *gpt)$/;"	f
+gpt_copy	gpt.c	/^struct gpt *gpt_copy(struct gpt *src)$/;"	f
+gpt_dump_header	gpt.c	/^char *gpt_dump_header(struct gpt *gpt)$/;"	f
+gpt_dump_pentries	gpt.c	/^char *gpt_dump_pentries(struct gpt *gpt)$/;"	f
+gpt_dump_pentry	gpt.c	/^char *gpt_dump_pentry(uint32_t index, struct gpt_entry *ent)$/;"	f
+gpt_entries_bytes_to_host	gpt.c	/^static void gpt_entries_bytes_to_host(struct gpt *gpt)$/;"	f	file:
+gpt_entries_bytes_to_le	gpt.c	/^static void gpt_entries_bytes_to_le(struct gpt *gpt)$/;"	f	file:
+gpt_entry	include/gpt/gpt.h	/^struct gpt_entry {$/;"	s
+gpt_entry_create	gpt.c	/^uint32_t gpt_entry_create(struct gpt *gpt, char *name, enum part_type type,$/;"	f
+gpt_entry_delete	gpt.c	/^int gpt_entry_delete(struct gpt *gpt, uint32_t index)$/;"	f
+gpt_entry_get	gpt.c	/^struct gpt_entry *gpt_entry_get(uint32_t entry_index, struct gpt *gpt)$/;"	f
+gpt_entry_get_name	gpt.c	/^char *gpt_entry_get_name(struct gpt_entry *e)$/;"	f
+gpt_entry_get_size	gpt.c	/^uint64_t gpt_entry_get_size(struct gpt *gpt, struct gpt_entry *e)$/;"	f
+gpt_entry_offset	gpt.c	/^struct gpt_entry *gpt_entry_offset(uint32_t entry_index, struct gpt *gpt)$/;"	f
+gpt_entry_set_name	gpt.c	/^int gpt_entry_set_name(struct gpt_entry *e, char *name)$/;"	f
+gpt_entry_set_type	gpt.c	/^void gpt_entry_set_type(struct gpt_entry *e, enum part_type type)$/;"	f
+gpt_find_contiguous_free_space	gpt.c	/^int gpt_find_contiguous_free_space(struct gpt *gpt, uint64_t *start_lba,$/;"	f
+gpt_flush_ptable	gpt.c	/^int gpt_flush_ptable(const char *device)$/;"	f
+gpt_get_device_node	gpt.c	/^char *gpt_get_device_node(unsigned int gpt_index, struct gpt *gpt)$/;"	f
+gpt_guid_bytes_to_host	gpt.c	/^static void gpt_guid_bytes_to_host(struct guid *g)$/;"	f	file:
+gpt_guid_bytes_to_le	gpt.c	/^static void gpt_guid_bytes_to_le(struct guid *g)$/;"	f	file:
+gpt_guid_to_string	gpt.c	/^char *gpt_guid_to_string(struct guid *g)$/;"	f
+gpt_header	include/gpt/gpt.h	/^struct gpt_header {$/;"	s
+gpt_header_bytes_to_host	gpt.c	/^static void gpt_header_bytes_to_host(struct gpt *gpt)$/;"	f	file:
+gpt_header_bytes_to_le	gpt.c	/^static void gpt_header_bytes_to_le(struct gpt *gpt)$/;"	f	file:
+gpt_init	gpt.c	/^struct gpt *gpt_init(const char *device)$/;"	f
+gpt_new	gpt.c	/^int gpt_new(struct gpt *gpt)$/;"	f
+gpt_next_index	gpt.c	/^uint32_t gpt_next_index(struct gpt *gpt)$/;"	f
+gpt_read	gpt.c	/^int gpt_read(struct gpt *gpt)$/;"	f
+gpt_string_to_guid	gpt.c	/^int gpt_string_to_guid(struct guid *g, const char *s)$/;"	f
+gpt_sync_ptable	gpt.c	/^int gpt_sync_ptable(const char *device)$/;"	f
+gpt_write	gpt.c	/^int gpt_write(struct gpt *gpt)$/;"	f
+guid	include/gpt/gpt.h	/^struct guid {$/;"	s
+guidcmp	gpt.c	/^int guidcmp(const struct guid *a, const struct guid *b)$/;"	f
+head	gpt.c	/^	uint8_t head;$/;"	m	struct:mbr_chs	file:
+header	include/gpt/gpt.h	/^	struct gpt_header header;$/;"	m	struct:gpt	typeref:struct:gpt::gpt_header
+header_size	include/gpt/gpt.h	/^	uint32_t header_size;$/;"	m	struct:gpt_header
+largest_update	gpt.c	/^static void largest_update(struct ptn_region *largest, uint64_t base,$/;"	f	file:
+last_chs	gpt.c	/^	struct mbr_chs last_chs;$/;"	m	struct:mbr_entry	typeref:struct:mbr_entry::mbr_chs	file:
+last_lba	include/gpt/gpt.h	/^	uint64_t last_lba;$/;"	m	struct:gpt_entry
+last_usable_lba	include/gpt/gpt.h	/^	uint64_t last_usable_lba;$/;"	m	struct:gpt_header
+lba_count	gpt.c	/^	uint32_t lba_count;$/;"	m	struct:mbr_entry	file:
+lba_size	include/gpt/gpt.h	/^	uint32_t lba_size;$/;"	m	struct:gpt
+lechar16_to_ascii	gpt.c	/^static char *lechar16_to_ascii(uint16_t *str16)$/;"	f	file:
+linux_ptn	gpt.c	/^static const struct guid linux_ptn = GPT_GUID(0x0FC63DAF, 0x8483, 0x4772,$/;"	v	typeref:struct:guid	file:
+linux_swap	gpt.c	/^static const struct guid linux_swap = GPT_GUID(0x0657FD6D, 0xA4AB, 0x43C4,$/;"	v	typeref:struct:guid	file:
+main	gptdump.c	/^int main(int argc, char **argv)$/;"	f
+mbr	gpt.c	/^struct mbr {$/;"	s	file:
+mbr_chs	gpt.c	/^struct mbr_chs {$/;"	s	file:
+mbr_entry	gpt.c	/^struct mbr_entry {$/;"	s	file:
+min	gpt.c	50;"	d	file:
+ms_data_ptn	gpt.c	/^static const struct guid ms_data_ptn = GPT_GUID(0xEBD0A0A2, 0xB9E5, 0x4433,$/;"	v	typeref:struct:guid	file:
+ms_reserved_ptn	gpt.c	/^static const struct guid ms_reserved_ptn = GPT_GUID(0xE3C9E316, 0x0B5C, 0x4DB8,$/;"	v	typeref:struct:guid	file:
+name	include/gpt/gpt.h	/^	uint16_t name[36]; \/* UTF-16LE, not converted.$/;"	m	struct:gpt_entry
+num_pentries	include/gpt/gpt.h	/^	uint32_t num_pentries;$/;"	m	struct:gpt_header
+part_guid	include/gpt/gpt.h	/^	struct guid part_guid;$/;"	m	struct:gpt_entry	typeref:struct:gpt_entry::guid
+part_type	include/gpt/gpt.h	/^enum part_type {$/;"	g
+partition_for_each	include/gpt/gpt.h	40;"	d
+pentry_crc32	include/gpt/gpt.h	/^	uint32_t pentry_crc32;$/;"	m	struct:gpt_header
+pentry_size	include/gpt/gpt.h	/^	uint32_t pentry_size;$/;"	m	struct:gpt_header
+pentry_start_lba	include/gpt/gpt.h	/^	uint64_t pentry_start_lba;$/;"	m	struct:gpt_header
+pr_debug	gpt.c	36;"	d	file:
+pr_debug	gpt.c	39;"	d	file:
+pr_error	gpt.c	37;"	d	file:
+pr_error	gpt.c	40;"	d	file:
+pr_perror	gpt.c	48;"	d	file:
+ptn_region	gpt.c	/^struct ptn_region {$/;"	s	file:
+read_gpt_data	gpt.c	/^static int read_gpt_data(int fd, bool primary, struct gpt *gpt)$/;"	f	file:
+regioncmp	gpt.c	/^static int regioncmp(const void *a, const void *b)$/;"	f	file:
+reserved	gpt.c	/^	uint16_t reserved;$/;"	m	struct:mbr	file:
+reserved_zero	include/gpt/gpt.h	/^	uint32_t reserved_zero;$/;"	m	struct:gpt_header
+revision	include/gpt/gpt.h	/^	uint32_t revision;$/;"	m	struct:gpt_header
+robust_read	gpt.c	/^static ssize_t robust_read(int fd, void *buf, size_t count, bool short_ok)$/;"	f	file:
+robust_write	gpt.c	/^static ssize_t robust_write(int fd, void *buf, size_t count)$/;"	f	file:
+sector	gpt.c	/^	uint8_t sector; \/* sector in bits 5-0, 7-6 hi bits of cyl *\/$/;"	m	struct:mbr_chs	file:
+sectors	include/gpt/gpt.h	/^	uint64_t sectors;$/;"	m	struct:gpt
+sig	gpt.c	/^	uint16_t sig;$/;"	m	struct:mbr	file:
+sig	include/gpt/gpt.h	/^	char sig[8];$/;"	m	struct:gpt_header
+size	gpt.c	/^	uint64_t size;$/;"	m	struct:ptn_region	file:
+start	gpt.c	/^	uint64_t start;$/;"	m	struct:ptn_region	file:
+status	gpt.c	/^	uint8_t status;$/;"	m	struct:mbr_entry	file:
+type	gpt.c	/^	uint8_t type;$/;"	m	struct:mbr_entry	file:
+type_guid	include/gpt/gpt.h	/^	struct guid type_guid;$/;"	m	struct:gpt_entry	typeref:struct:gpt_entry::guid
+usage	gptdump.c	/^void usage(void)$/;"	f
+write_gpt_to_disk	gpt.c	/^static int write_gpt_to_disk(struct gpt *gpt)$/;"	f	file:
+write_mbr	gpt.c	/^static int write_mbr(const char *device, struct mbr *mbr)$/;"	f	file:
