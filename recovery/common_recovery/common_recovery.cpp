@@ -28,6 +28,7 @@
 #include <otautil/DirUtil.h>
 #include <updater/updater.h>
 #include <cutils/properties.h>
+#include <otautil/error_code.h>
 
 #include <string.h>
 #include <zip_archive_private.h>
