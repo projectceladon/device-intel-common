@@ -14,5 +14,5 @@ LOCAL_C_INCLUDES := bootable/recovery bootable/recovery/updater/include system/c
                     system/core/base/include
 
 LOCAL_CFLAGS := -Wall -Wno-unused-parameter
-LOCAL_STATIC_LIBRARIES += libedify libziparchive
+LOCAL_STATIC_LIBRARIES += libedify libziparchive libotautil
 include $(BUILD_STATIC_LIBRARY)
