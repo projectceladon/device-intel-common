@@ -45,9 +45,11 @@ extern int errno;
 #endif
 
 #define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
+#define BIOS_RELATIVE_PATH             "/../firmware/BIOSUPDATE.fv"
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
 #define MOUNT_POINT                    "/bootloader"
 #define DESTINATION_FILE               "/bootloader/EFI/BOOT/kernelflinger_new.efi"
+#define BIOS_DESTINATION_FILE          "/bootloader/BIOSUPDATE.fv"
 
 bool is_file_exist(const char *file_path)
 {
@@ -102,21 +104,21 @@ int main(int argc, char** argv)
 	else
 		printf("Get current directory failed: %s \n", strerror(errno));
 
+	int is_exist = 0;	//Judge:is kernelflinger.efi or BIOSUPDATE.fv exist
 	char file_path[PATH_MAX];
+	char bios_file_path[PATH_MAX];
 	char *selfdir = strrchr(argv[0], '/');
 	size_t selfdir_len = 0;
 	if (selfdir != NULL) {
 		selfdir_len = selfdir - argv[0];
 		if (selfdir_len < sizeof(file_path)) {
 			bcopy(argv[0], file_path, selfdir_len);
+			bcopy(argv[0], bios_file_path, selfdir_len);
 		}
 	}
 	snprintf(file_path + selfdir_len, sizeof(file_path) - selfdir_len, "%s", KERNELFLINGER_RELATIVE_PATH);
-	if (!is_file_exist(file_path)) {
-		printf("File %s does not exist!\n", file_path);
-		return -1;
-	} else
-		printf("File %s exists!\n", file_path);
+
+	snprintf(bios_file_path + selfdir_len, sizeof(bios_file_path) - selfdir_len, "%s", BIOS_RELATIVE_PATH);
 
 	// Mount /dev/block/by-name/bootloader to /bootloader
 	if (mkdir(MOUNT_POINT, 0755) != 0)
@@ -129,19 +131,49 @@ int main(int argc, char** argv)
 		return -1;
 	} else
 		printf("Mount %s to %s succeeds!\n", DEV_PATH, MOUNT_POINT);
-
-	// Copy ../firmware/kernelflinger.efi to /bootloader/EFI/BOOT/kernelflinger_new.efi
+	
 	//check whether des file exists
 	if (!is_file_exist(DESTINATION_FILE))
 		printf("File %s does not exist! Create it!\n", DESTINATION_FILE);
 	else
 		printf("File %s exists! Overwrite it!\n", DESTINATION_FILE);
 
-	if (file_copy(file_path, DESTINATION_FILE) != 0) {
-		printf("File %s copy to %s fails!\n", file_path, DESTINATION_FILE);
-		return -1;
-	} else
-		printf("File %s copy to %s succeeds!\n", file_path, DESTINATION_FILE);
+	if (!is_file_exist(BIOS_DESTINATION_FILE))
+		printf("File %s does not exist! Create it!\n",BIOS_DESTINATION_FILE);
+	else
+		printf("File %s exists! Overwrite it!\n", BIOS_DESTINATION_FILE);
+
+	//check whether file_path or bios_file_path exists
+	if (!is_file_exist(file_path)) {
+		printf("File %s does not exist!\n", file_path);
+	} else{
+		printf("File %s exists!\n", file_path);
+		is_exist |= 1 << 0;
+	}
+
+	if (!is_file_exist(bios_file_path)) {
+		printf("File %s does not exist!\n", bios_file_path);
+	} else{
+		printf("File %s exists!\n", bios_file_path);
+		is_exist |= 1 << 1;
+	}
+
+	// Copy ../firmware/kernelflinger.efi to /bootloader/EFI/BOOT/kernelflinger_new.efi
+	// Copy ../firmware/BIOSUPDATE.fv to /bootloader/BIOSUPDARE.fv
+	if(is_exist & (1 << 0))
+	{
+		if (file_copy(file_path, DESTINATION_FILE) != 0) {
+			printf("File %s copy to %s fails!\n", file_path, DESTINATION_FILE);
+		} else
+			printf("File %s copy to %s succeeds!\n", file_path, DESTINATION_FILE);
+	}
+	if(is_exist & (1 << 1))
+	{
+		if (file_copy(bios_file_path, BIOS_DESTINATION_FILE) != 0) {
+			printf("File %s copy to %s fails!\n", bios_file_path, BIOS_DESTINATION_FILE);
+		} else
+			printf("File %s copy to %s succeeds!\n", bios_file_path, BIOS_DESTINATION_FILE);
+	}
 
 	// Umount /bootloader
 	if (umount(MOUNT_POINT) != 0) {
