@@ -53,7 +53,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   various partitions. The partitions are fixed """
 
   bootloader_zip_path = os.path.join(unpack_dir, "RADIO", "bootloader" + ".zip")
-  bootloader_unzip_path,bootloader_unzip = common.UnzipTemp(bootloader_zip_path)
+  bootloader_unzip_path = common.UnzipTemp(bootloader_zip_path)
+  bootloader_unzip = zipfile.ZipFile(bootloader_zip_path,"r")
   additional_data_hash = collections.OrderedDict()
 
   print "bootloader unzip in ", bootloader_unzip_path
