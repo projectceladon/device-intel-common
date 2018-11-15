@@ -8,4 +8,6 @@
     <!-- Flag indicating that the media framework should not allow changes or mute on any
          stream or master volumes. -->
     <bool name="config_useFixedVolume">true</bool>
+    <!-- Enable AppWidgetService even the FEATURE_APP_WIDGETS is disable -->
+    <bool name="config_enableAppWidgetService">true</bool>
 </resources>
