@@ -45,7 +45,7 @@ extern int errno;
 #endif
 
 #define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
-#define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv" 
+#define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv"
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
 #define MOUNT_POINT                    "/bootloader"
 #define DESTINATION_FILE               "/bootloader/EFI/BOOT/kernelflinger_new.efi"
