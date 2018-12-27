@@ -16,3 +16,19 @@ LOCAL_STATIC_LIBRARIES := \
 	liblog
 
 include $(BUILD_EXECUTABLE)
+
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := set_storage.vendor
+LOCAL_SRC_FILES := set_storage.c
+LOCAL_CFLAGS := -Wall -Wextra -Werror
+
+LOCAL_PROPRIETARY_MODULE := true
+
+LOCAL_SHARED_LIBRARIES := \
+	libcutils \
+	libc \
+	liblog
+
+include $(BUILD_EXECUTABLE)
