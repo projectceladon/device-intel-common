@@ -3,5 +3,6 @@
     <bool name="config_supportsMultiWindow">true</bool>
     <!-- Don't support split screen multiwindow -->
     <bool name="config_supportsSplitScreenMultiWindow">false</bool>
-
+    <!-- Enable AppWidgetService even the FEATURE_APP_WIDGETS is disable -->
+    <bool name="config_enableAppWidgetService">true</bool>
 </resources>
