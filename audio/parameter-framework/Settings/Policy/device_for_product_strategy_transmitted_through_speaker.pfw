@@ -1,9 +1,8 @@
-supDomain: DeviceForStrategy
-
+supDomain: DeviceForProductStrategy
 	supDomain: TransmittedThroughSpeaker
 		domain: UnreacheableDevices
 			conf: Calibration
-				component: /Policy/policy/strategies/transmitted_through_speaker/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/transmitted_through_speaker/selected_output_devices/mask
 					remote_submix = 0
 					hdmi_arc = 0
 					spdif = 0
@@ -11,7 +10,7 @@ supDomain: DeviceForStrategy
 					fm = 0
 					speaker_safe = 0
 					earpiece = 0
-					wired_headset = 1
+					wired_headset = 0
 					wired_headphone = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -29,15 +28,16 @@ supDomain: DeviceForStrategy
 					ip = 0
 					bus = 0
 					stub = 0
-					usb_headset = 0
+				/Policy/policy/product_strategies/transmitted_through_speaker/device_address =
 
 		domain: Speaker
 			conf: Selected
 				AvailableOutputDevices Includes Speaker
 
-				component: /Policy/policy/strategies/transmitted_through_speaker/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/transmitted_through_speaker/selected_output_devices/mask
 					speaker = 1
 
 			conf: NotSelected
-				component: /Policy/policy/strategies/transmitted_through_speaker/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/transmitted_through_speaker/selected_output_devices/mask
 					speaker = 0
+

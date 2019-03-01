@@ -1,4 +1,4 @@
-supDomain: DeviceForStrategy
+supDomain: DeviceForProductStrategy
 
 	supDomain: Accessibility
 		#
@@ -9,7 +9,7 @@ supDomain: DeviceForStrategy
 		#
 		domain: UnreachableDevices
 			conf: Calibration
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					hdmi_arc = 0
 					spdif = 0
 					aux_line = 0
@@ -18,6 +18,8 @@ supDomain: DeviceForStrategy
 					telephony_tx = 0
 					ip = 0
 					bus = 0
+					proxy = 0
+					usb_headset = 0
 					stub = 0
 
 		domain: Device
@@ -28,8 +30,9 @@ supDomain: DeviceForStrategy
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes RemoteSubmix
+				#AvailableOutputDevicesAddresses Includes 0
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 1
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -47,7 +50,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dp
 				#
@@ -58,7 +60,7 @@ supDomain: DeviceForStrategy
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dp
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 1
@@ -76,7 +78,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphone
 				#
@@ -87,7 +88,7 @@ supDomain: DeviceForStrategy
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -105,7 +106,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -116,7 +116,7 @@ supDomain: DeviceForStrategy
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -134,7 +134,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: ForceSpeakerWhenNotInCall
 				#
@@ -145,7 +144,7 @@ supDomain: DeviceForStrategy
 				ForceUseForMedia Is ForceSpeaker
 				AvailableOutputDevices Includes Speaker
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -163,7 +162,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothScoCarkit
 				#
@@ -175,7 +173,7 @@ supDomain: DeviceForStrategy
 				AvailableOutputDevices Includes BluetoothScoCarkit
 				ForceUseForCommunication Is ForceBtSco
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -193,7 +191,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				#
@@ -205,7 +202,7 @@ supDomain: DeviceForStrategy
 				AvailableOutputDevices Includes BluetoothScoHeadset
 				ForceUseForCommunication Is ForceBtSco
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -223,7 +220,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: BluetoothSco
 				#
@@ -235,7 +231,7 @@ supDomain: DeviceForStrategy
 				AvailableOutputDevices Includes BluetoothSco
 				ForceUseForCommunication Is ForceBtSco
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -253,7 +249,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: WiredHeadphone
 				ANY
@@ -273,7 +268,7 @@ supDomain: DeviceForStrategy
 						TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes WiredHeadphone
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -291,7 +286,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: Line
 				ANY
@@ -310,7 +304,7 @@ supDomain: DeviceForStrategy
 					#
 				AvailableOutputDevices Includes Line
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -328,7 +322,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: WiredHeadset
 				ANY
@@ -348,7 +341,7 @@ supDomain: DeviceForStrategy
 						TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes WiredHeadset
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -366,7 +359,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: UsbDevice
 				ANY
@@ -389,7 +381,7 @@ supDomain: DeviceForStrategy
 						ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes UsbDevice
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -407,7 +399,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
-					usb_headset = 0
 
 			conf: UsbAccessory
 				#
@@ -421,7 +412,7 @@ supDomain: DeviceForStrategy
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes UsbAccessory
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -439,48 +430,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 1
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
-
-			conf: UsbHeadset
-				ANY
-					#
-					# accessibility falls through Phone strategy if in call (widely speaking)
-					#
-					ALL
-						ANY
-							TelephonyMode Is InCall
-							TelephonyMode Is InCommunication
-						ForceUseForCommunication IsNot ForceSpeaker
-					#
-					# accessibility follows Media strategy if not in call
-					# Media strategy inverts the priority of USB device vs accessory
-					#
-					ALL
-						TelephonyMode IsNot InCall
-						TelephonyMode IsNot InCommunication
-						AvailableOutputDevices Excludes UsbAccessory
-						ForceUseForMedia IsNot ForceSpeaker
-				AvailableOutputDevices Includes UsbHeadset
-
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
-					remote_submix = 0
-					earpiece = 0
-					bluetooth_a2dp = 0
-					bluetooth_a2dp_headphones = 0
-					bluetooth_a2dp_speaker = 0
-					bluetooth_sco_headset = 0
-					bluetooth_sco_carkit = 0
-					bluetooth_sco = 0
-					speaker = 0
-					wired_headset = 0
-					wired_headphone = 0
-					line = 0
-					angl_dock_headset = 0
-					dgtl_dock_headset = 0
-					usb_accessory = 0
-					usb_device = 0
-					hdmi = 0
-					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				#
@@ -493,7 +442,7 @@ supDomain: DeviceForStrategy
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes DgtlDockHeadset
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -511,7 +460,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: AuxDigital
 				#
@@ -524,7 +472,7 @@ supDomain: DeviceForStrategy
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes Hdmi
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -542,7 +490,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 1
-					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -557,7 +504,7 @@ supDomain: DeviceForStrategy
 				AvailableOutputDevices Includes AnlgDockHeadset
 				ForceUseForDock Is ForceAnalogDock
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -575,7 +522,6 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -587,7 +533,7 @@ supDomain: DeviceForStrategy
 				AvailableOutputDevices Includes Earpiece
 				ForceUseForCommunication IsNot ForceSpeaker
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 1
 					bluetooth_a2dp = 0
@@ -605,12 +551,11 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: Speaker
 				AvailableOutputDevices Includes Speaker
 
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -628,10 +573,9 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
 
 			conf: Default
-				component: /Policy/policy/strategies/accessibility/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/accessibility/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					bluetooth_a2dp = 0
@@ -649,4 +593,4 @@ supDomain: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-					usb_headset = 0
+

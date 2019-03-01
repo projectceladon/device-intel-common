@@ -1,10 +1,8 @@
-domainGroup: DeviceForStrategy
-
-	domainGroup: Media
-
+supDomain: DeviceForProductStrategy
+	supDomain: Media
 		domain: UnreachableDevices
-			conf: Calibration
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+			conf: calibration
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					fm = 0
 					speaker_safe = 0
 					earpiece = 0
@@ -13,15 +11,18 @@ domainGroup: DeviceForStrategy
 					bluetooth_sco_carkit = 0
 					telephony_tx = 0
 					ip = 0
+					proxy = 0
+					usb_headset = 0
 					bus = 0
 					stub = 0
+				/Policy/policy/product_strategies/media/device_address =
 
 		domain: Device2
-
 			conf: RemoteSubmix
 				AvailableOutputDevices Includes RemoteSubmix
+				#AvailableOutputDevicesAddresses Includes 0
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -35,14 +36,13 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 1
 					line = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dp
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				ForceUseForCommunication IsNot ForceBtSco
 				AvailableOutputDevices Includes BluetoothA2dp
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -56,14 +56,13 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 1
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphone
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				ForceUseForCommunication IsNot ForceBtSco
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -77,14 +76,13 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				ForceUseForCommunication IsNot ForceBtSco
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -98,7 +96,6 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: ForceSpeaker
 				ForceUseForMedia Is ForceSpeaker
@@ -108,7 +105,7 @@ domainGroup: DeviceForStrategy
 				#
 				ForceUseForHdmiSystemAudio IsNot ForceHdmiSystemEnforced
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 1
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -122,12 +119,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: WiredHeadphone
 				AvailableOutputDevices Includes WiredHeadphone
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -141,12 +137,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: Line
 				AvailableOutputDevices Includes Line
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -160,12 +155,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 1
-					usb_headset = 0
 
 			conf: WiredHeadset
 				AvailableOutputDevices Includes WiredHeadset
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -179,12 +173,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: UsbAccessory
 				AvailableOutputDevices Includes UsbAccessory
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -198,12 +191,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: UsbDevice
 				AvailableOutputDevices Includes UsbDevice
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -217,31 +209,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
-
-			conf: UsbHeadset
-				AvailableOutputDevices Includes UsbHeadset
-
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
-					speaker = 0
-					hdmi = 0
-					dgtl_dock_headset = 0
-					angl_dock_headset = 0
-					usb_device = 0
-					usb_accessory = 0
-					wired_headset = 0
-					wired_headphone = 0
-					bluetooth_a2dp_speaker = 0
-					bluetooth_a2dp_headphones = 0
-					bluetooth_a2dp = 0
-					remote_submix = 0
-					line = 0
-					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				AvailableOutputDevices Includes DgtlDockHeadset
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 1
@@ -255,12 +227,11 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: AuxDigital
 				AvailableOutputDevices Includes Hdmi
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 1
 					dgtl_dock_headset = 0
@@ -274,13 +245,12 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				AvailableOutputDevices Includes AnlgDockHeadset
 				ForceUseForDock Is ForceAnalogDock
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -294,7 +264,6 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: Speaker
 				AvailableOutputDevices Includes Speaker
@@ -304,7 +273,7 @@ domainGroup: DeviceForStrategy
 				ForceUseForHdmiSystemAudio IsNot ForceHdmiSystemEnforced
 				ForceUseForCommunication IsNot ForceBtSco
 
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 1
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -318,10 +287,9 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 			conf: Default
-				component: /Policy/policy/strategies/media/selected_output_devices/mask
+				component: /Policy/policy/product_strategies/media/selected_output_devices/mask
 					speaker = 0
 					hdmi = 0
 					dgtl_dock_headset = 0
@@ -335,7 +303,6 @@ domainGroup: DeviceForStrategy
 					bluetooth_a2dp = 0
 					remote_submix = 0
 					line = 0
-					usb_headset = 0
 
 		domain: Arc
 			#
@@ -345,10 +312,10 @@ domainGroup: DeviceForStrategy
 			conf: Selected
 				AvailableOutputDevices Includes HdmiArc
 
-				/Policy/policy/strategies/media/selected_output_devices/mask/hdmi_arc = 1
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/hdmi_arc = 1
 
 			conf: NotSelected
-				/Policy/policy/strategies/media/selected_output_devices/mask/hdmi_arc = 0
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/hdmi_arc = 0
 
 		domain: Spdif
 			#
@@ -358,16 +325,16 @@ domainGroup: DeviceForStrategy
 			conf: Selected
 				AvailableOutputDevices Includes Spdif
 
-				/Policy/policy/strategies/media/selected_output_devices/mask/spdif = 1
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/spdif = 1
 
 			conf: NotSelected
-				/Policy/policy/strategies/media/selected_output_devices/mask/spdif = 0
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/spdif = 0
 
 		domain: AuxLine
 			conf: Selected
 				AvailableOutputDevices Includes AuxLine
 
-				/Policy/policy/strategies/media/selected_output_devices/mask/aux_line = 1
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/aux_line = 1
 
 			conf: NotSelected
-				/Policy/policy/strategies/media/selected_output_devices/mask/aux_line = 0
+				/Policy/policy/product_strategies/media/selected_output_devices/mask/aux_line = 0

@@ -37,8 +37,11 @@
             <BitParameter Name="speaker_safe" Size="1" Pos="22"/>
             <BitParameter Name="ip" Size="1" Pos="23"/>
             <BitParameter Name="bus" Size="1" Pos="24"/>
-            <BitParameter Name="stub" Size="1" Pos="30"/>
+            <BitParameter Name="proxy" Size="1" Pos="25"/>
             <BitParameter Name="usb_headset" Size="1" Pos="26"/>
+            <BitParameter Name="hearing_aid" Size="1" Pos="27"/>
+            <BitParameter Name="echo_canceller" Size="1" Pos="28"/>
+            <BitParameter Name="stub" Size="1" Pos="30"/>
         </BitParameterBlock>
     </ComponentType>
 
@@ -68,8 +71,10 @@
             <BitParameter Name="loopback" Size="1" Pos="18"/>
             <BitParameter Name="ip" Size="1" Pos="19"/>
             <BitParameter Name="bus" Size="1" Pos="20"/>
+            <BitParameter Name="proxy" Size="1" Pos="21"/>
+            <BitParameter Name="usb_headset" Size="1" Pos="22"/>
+            <BitParameter Name="bluetooth_ble" Size="1" Pos="23"/>
             <BitParameter Name="stub" Size="1" Pos="30"/>
-            <BitParameter Name="usb_headset" Size="1" Pos="25"/>
         </BitParameterBlock>
     </ComponentType>
 
@@ -128,30 +133,6 @@
         </BitParameterBlock>
     </ComponentType>
 
-    <!-- Routing Strategy definition as an enumeration. Numerical value must match the value
-         of the routing strategy in policy header file. -->
-    <ComponentType Name="Strategy">
-        <EnumParameter Name="strategy" Size="32">
-            <ValuePair Literal="media" Numerical="0"/>
-            <ValuePair Literal="phone" Numerical="1"/>
-            <ValuePair Literal="sonification" Numerical="2"/>
-            <ValuePair Literal="sonification_respectful" Numerical="3"/>
-            <ValuePair Literal="dtmf" Numerical="4"/>
-            <ValuePair Literal="enforced_audible" Numerical="5"/>
-            <ValuePair Literal="transmitted_through_speaker" Numerical="6"/>
-            <ValuePair Literal="accessibility" Numerical="7"/>
-            <ValuePair Literal="rerouting" Numerical="8"/>
-        </EnumParameter>
-    </ComponentType>
-
-    <!--#################### STRATEGY COMMON TYPES BEGIN ####################-->
-
-    <ComponentType Name="StrategyConfig" Mapping="Strategy:'%1'">
-        <Component Name="selected_output_devices" Type="OutputDevicesMask"/>
-    </ComponentType>
-
-    <!--#################### STRATEGY COMMON TYPES END ####################-->
-
     <!--#################### STREAM COMMON TYPES BEGIN ####################-->
 
     <ComponentType Name="VolumeProfileType">
@@ -172,29 +153,30 @@
         </EnumParameter>
     </ComponentType>
 
-    <ComponentType Name="Stream">
-        <Component Name="applicable_strategy" Type="Strategy"/>
+    <ComponentType Name="Stream"  Mapping="Stream">
         <Component Name="applicable_volume_profile" Type="VolumeProfileType"
                    Description="Volume profile followed by a given stream type."/>
     </ComponentType>
 
     <!--#################### STREAM COMMON TYPES END ####################-->
 
-    <!--#################### USAGE COMMON TYPES BEGIN ####################-->
-
-    <ComponentType Name="Usage">
-        <Component Name="applicable_strategy" Type="Strategy" Mapping="Usage:'%1'"/>
-    </ComponentType>
-
-    <!--#################### USAGE COMMON TYPES END ####################-->
-
     <!--#################### INPUT SOURCE COMMON TYPES BEGIN ####################-->
 
     <ComponentType Name="InputSource">
         <Component Name="applicable_input_device" Type="InputDevicesMask"
-                   Mapping="InputSource:'%1'" Description="Selected Input device"/>
+                   Mapping="InputSource" Description="Selected Input device"/>
     </ComponentType>
 
     <!--#################### INPUT SOURCE COMMON TYPES END ####################-->
+
+    <!--#################### PRODUCT STRATEGY COMMON TYPES BEGIN ####################-->
+
+    <ComponentType Name="ProductStrategy" Mapping="ProductStrategy">
+        <Component Name="selected_output_devices" Type="OutputDevicesMask"/>
+        <StringParameter Name="device_address" MaxLength="256"
+                         Description="if any, device address associated"/>
+    </ComponentType>
+
+    <!--#################### PRODUCT STRATEGY COMMON TYPES END ####################-->
 
 </ComponentTypeSet>

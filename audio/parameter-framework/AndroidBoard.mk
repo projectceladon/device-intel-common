@@ -2,9 +2,13 @@ LOCAL_PATH := $(call my-dir)
 COMMON_PFW_CONFIG_PATH := $(call my-dir)
 
 PFW_CORE := $(INTEL_PATH_VENDOR)/audio/parameter-framework
-BUILD_PFW_SETTINGS := $(PFW_CORE)/support/android/build_pfw_settings.mk
+#BUILD_PFW_SETTINGS := $(PFW_CORE)/support/android/build_pfw_settings.mk
 PFW_DEFAULT_SCHEMAS_DIR := $(PFW_CORE)/upstream/schemas
 PFW_SCHEMAS_DIR := $(PFW_DEFAULT_SCHEMAS_DIR)
+
+TOOLS := frameworks/av/services/audiopolicy/engineconfigurable/tools
+BUILD_PFW_SETTINGS := $(TOOLS)/build_audio_pfw_settings.mk
+PROVISION_CRITERION_TYPES := $(TOOLS)/provision_criterion_types_from_android_headers.mk
 
 # defines:
 # - $(TUNING_SUFFIX)
@@ -848,7 +852,44 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
+
 include $(BUILD_PREBUILT)
+include $(CLEAR_VARS)
+LOCAL_MODULE := ProductStrategies.xml
+LOCAL_MODULE_STEM := ProductStrategies.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := parameter-framework/Structure/Policy
+LOCAL_SRC_FILES :=  Structure/Policy/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_engine_criteria.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
+LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_engine_criterion_types.xml
+LOCAL_MODULE_CLASS := ETC
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+    $(TARGET_OUT_VENDOR_ETC)/audio_policy_configuration.xml \
+    $(TARGET_OUT_VENDOR_ETC)/usb_audio_policy_configuration.xml \
+    $(TARGET_OUT_VENDOR_ETC)/r_submix_audio_policy_configuration.xml \
+    $(TARGET_OUT_VENDOR_ETC)/a2dp_audio_policy_configuration.xml \
+    $(TARGET_OUT_VENDOR_ETC)/default_volume_tables.xml \
+    $(TARGET_OUT_VENDOR_ETC)/audio_policy_volumes.xml
+
+ANDROID_AUDIO_BASE_HEADER_FILE := system/media/audio/include/system/audio-base.h
+AUDIO_POLICY_CONFIGURATION_FILE := $(TARGET_OUT_VENDOR_ETC)/audio_policy_configuration.xml
+CRITERION_TYPES_FILE := $(LOCAL_PATH)/Structure/Policy/$(LOCAL_MODULE).in
+include $(PROVISION_CRITERION_TYPES) 
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := PolicySubsystem.xml
@@ -857,6 +898,8 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_PROPRIETARY_MODULE := true
 LOCAL_REQUIRED_MODULES := \
     PolicySubsystem-CommonTypes.xml \
+	ProductStrategies.xml \
+	PolicySubsystem-Volume.xml \
     libpolicy-subsystem
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy
@@ -872,6 +915,32 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Poli
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_engine_configuration.xml
+LOCAL_MODULE_STEM := audio_policy_engine_configuration.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := .
+LOCAL_SRC_FILES :=  audio_policy_engine_configuration.xml
+LOCAL_REQUIRED_MODULES := \
+    audio_policy_engine_product_strategies.xml  \
+    audio_policy_engine_criteria.xml \
+    audio_policy_engine_criterion_types.xml
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_engine_product_strategies.xml
+LOCAL_MODULE_STEM := audio_policy_engine_product_strategies.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := .
+LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
+
 ######### Policy PFW Settings #########
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.policy
@@ -884,21 +953,29 @@ LOCAL_ADDITIONAL_DEPENDENCIES := \
         $(TARGET_OUT_VENDOR_ETC)/parameter-framework/Structure/Policy/PolicySubsystem.xml \
         $(TARGET_OUT_VENDOR_ETC)/parameter-framework/ParameterFrameworkConfigurationPolicy$(TUNING_SUFFIX).xml
 
+LOCAL_REQUIRED_MODULES := \
+    PolicySubsystem.xml \
+    PolicyClass.xml \
+    audio_policy_engine_criteria.xml \
+    audio_policy_engine_criterion_types.xml \
+    ParameterFrameworkConfigurationPolicy.xml \
+    PolicySubsystem-CommonTypes.xml \
+    audio_policy_engine_configuration.xml
+
+
+PFW_CRITERION_TYPES_FILE := $(TARGET_OUT_VENDOR_ETC)/audio_policy_engine_criterion_types.xml
+PFW_CRITERIA_FILE := $(TARGET_OUT_VENDOR_ETC)/audio_policy_engine_criteria.xml
 PFW_TOPLEVEL_FILE := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/ParameterFrameworkConfigurationPolicy.xml
-PFW_CRITERIA_FILE := $(LOCAL_PATH)/policy_criteria.txt
+
 PFW_EDD_FILES := \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_media.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_phone.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_sonification.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_sonification_respectful.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_dtmf.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_enforced_audible.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_transmitted_through_speaker.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_accessibility.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_strategy_rerouting.pfw \
-        $(LOCAL_PATH)/Settings/Policy/strategy_for_stream.pfw \
-        $(LOCAL_PATH)/Settings/Policy/strategy_for_usage.pfw \
-        $(LOCAL_PATH)/Settings/Policy/device_for_input_source.pfw \
-        $(LOCAL_PATH)/Settings/Policy/volumes.pfw
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_media.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_phone.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_sonification.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_sonification_respectful.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_dtmf.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_enforced_audible.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_transmitted_through_speaker.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_accessibility.pfw \
+        $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_rerouting.pfw
 
 include $(BUILD_PFW_SETTINGS)
