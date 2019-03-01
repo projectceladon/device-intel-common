@@ -1,16 +1,18 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE:= updater_ab_esp
+LOCAL_MODULE:= updater_ab_esp_vendor
+LOCAL_VENDOR_MODULE := true
 LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := updater_ab_esp.cpp
 LOCAL_MODULE_OWNER := intel
+include $(BUILD_EXECUTABLE)
 
-ifeq ($(BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED),true)
-    LOCAL_PROPRIETARY_MODULE := true
-else
-    LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/bin
-    LOCAL_FORCE_STATIC_EXECUTABLE := true
-endif
-
+include $(CLEAR_VARS)
+LOCAL_MODULE    := updater_ab_esp_static
+LOCAL_SRC_FILES := updater_ab_esp.cpp
+LOCAL_CXX_STL := libc++_static
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/vendor/bin
+LOCAL_FORCE_STATIC_EXECUTABLE := true
 include $(BUILD_EXECUTABLE)
