@@ -45,8 +45,8 @@ extern int errno;
 #endif
 
 #define POS_INSTALL_PREFIX             "/postinstall/"
-#define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
-#define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv"
+#define KERNELFLINGER_RELATIVE_PATH    "../firmware/kernelflinger.efi"
+#define BIOSUPDATE_RELATIVE_PATH       "../firmware/BIOSUPDATE.fv"
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
 #define MOUNT_POINT                    "/bootloader"
 #define DESTINATION_FILE               "/bootloader/EFI/BOOT/kernelflinger_new.efi"
@@ -80,7 +80,7 @@ int file_copy(const char *src, const char *des)
 		printf("Open des file fails: %s \n", strerror(errno));
 		fclose(input);
 		free(buffer);
-		return -2;
+		return -1;
 	}
 
 	while (len = fread(buffer, 1, buffer_size, input))
@@ -97,28 +97,26 @@ int main(int argc, char** argv)
 {
 	printf("This tool is used for update the kernelflinger.efi\n");
 
-	// Check whether ../firmware/kernelflinger.efi exist.
-	// If not exist, exit.
-	char cwdbuf[PATH_MAX] = {0};
-	if (getcwd(cwdbuf, sizeof(cwdbuf)) != NULL)
-		printf("Current directory: %s \n", cwdbuf);
-	else
-		printf("Get current directory failed: %s \n", strerror(errno));
-
 	char file_path[PATH_MAX] = {0};
 	char file_path_bios[PATH_MAX] = {0};
 	int is_exist_kernelflinger = 0;
 	int is_exist_bios = 0;
-	char *selfdir = strrchr(argv[0], '/');
-	size_t selfdir_len = 0;
-	if (selfdir != NULL) {
-		selfdir_len = selfdir - argv[0];
-		if (selfdir_len < sizeof(file_path)) {
-			bcopy(argv[0], file_path, selfdir_len);
-			bcopy(argv[0], file_path_bios, selfdir_len);
+	char *update_dir = strrchr(argv[0], '/');
+	int update_dir_len = 0;
+	if (update_dir == NULL) {
+		printf("Path %s has no proper format!\n", argv[0]);
+		return -1;
+	} else {
+		update_dir_len = update_dir - argv[0];
+		if (update_dir_len + strlen(KERNELFLINGER_RELATIVE_PATH) < sizeof(file_path)) {
+			snprintf(file_path, sizeof(file_path), "%.*s%s",
+				update_dir_len + 1, argv[0], KERNELFLINGER_RELATIVE_PATH);
+		}
+		if (update_dir_len + strlen(BIOSUPDATE_RELATIVE_PATH) < sizeof(file_path_bios)) {
+			snprintf(file_path_bios, sizeof(file_path_bios), "%.*s%s",
+				update_dir_len + 1, argv[0], BIOSUPDATE_RELATIVE_PATH);
 		}
 	}
-	snprintf(file_path + selfdir_len, sizeof(file_path) - selfdir_len, "%s", KERNELFLINGER_RELATIVE_PATH);
 
 	/* Unvalidated string 'file_path' can be used for path traversal
 	 * through call to 'is_file_exist' can lead to access to undesired
@@ -132,6 +130,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
+	// Check whether kernelflinger.efi exists in /postinstall/bin/../firmware.
 	if (!is_file_exist(file_path)) {
 		is_exist_kernelflinger = 0;
 		printf("File %s does not exist!\n", file_path);
@@ -140,7 +139,7 @@ int main(int argc, char** argv)
 		printf("File %s exists!\n", file_path);
 	}
 
-	snprintf(file_path_bios + selfdir_len, sizeof(file_path_bios) - selfdir_len, "%s", BIOSUPDATE_RELATIVE_PATH);
+	// Check whether BIOS file exists in /postinstall/bin/../firmware.
 	if (!is_file_exist(file_path_bios)) {
 		is_exist_bios = 0;
 		printf("File %s does not exist!\n", file_path_bios);
@@ -154,7 +153,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 	// Mount /dev/block/by-name/bootloader to /bootloader
-	if (mkdir(MOUNT_POINT, 0755) != 0)
+	if (mkdir(MOUNT_POINT, S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH) != 0)
 		printf("mkdir %s fails: %s \n", MOUNT_POINT, strerror(errno));
 	else
 		printf("mkdir %s succeeds!\n", MOUNT_POINT);
@@ -197,8 +196,8 @@ int main(int argc, char** argv)
 
 	// Umount /bootloader
 	if (umount(MOUNT_POINT) != 0) {
-		printf("Unmount %s fails: %s \n", MOUNT_POINT, strerror(errno));
-		return -1;
+		printf("Unmount %s fails, but proceed since file copy succeeds: %s \n",
+			MOUNT_POINT, strerror(errno));
 	} else
 		printf("Unmount %s succeeds!\n", MOUNT_POINT);
 
