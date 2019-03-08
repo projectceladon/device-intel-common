@@ -44,13 +44,17 @@
 extern int errno;
 #endif
 
-#define POS_INSTALL_PREFIX             "/postinstall/"
-#define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
-#define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv"
+#define KERNELFLINGER_ABSOLUTE_PATH    "/mnt/firmware/kernelflinger.efi"
+#define BIOSUPDATE_ABSOLUTE_PATH       "/mnt/firmware/BIOSUPDATE.fv"
+#define KFLD_ABSOLUTE_PATH             "/mnt/firmware/kfld.efi"
+#define ESP_DEV_PATH                   "/dev/block/by-name/esp"
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
 #define MOUNT_POINT                    "/bootloader"
-#define DESTINATION_FILE               "/bootloader/EFI/BOOT/kernelflinger_new.efi"
+#define ESP_MOUNT_POINT                "/esp"
+#define KFLD_DESTINATION_FILE          "/esp/EFI/INTEL/KFLD_NEW.EFI"
+#define KERNELFLINGER_DESTINATION_FILE "/bootloader/EFI/BOOT/kernelflinger_new.efi"
 #define BIOSUPDATE_DESTINATION_FILE    "/bootloader/BIOSUPDATE.fv"
+#define ESP_BIOSUPDATE_DEST_FILE       "/esp/BIOSUPDATE.fv"
 
 bool is_file_exist(const char *file_path)
 {
@@ -83,7 +87,7 @@ int file_copy(const char *src, const char *des)
 		return -2;
 	}
 
-	while (len = fread(buffer, 1, buffer_size, input))
+	while ((len = fread(buffer, 1, buffer_size, input)))
 		fwrite(buffer, 1, len, output);
 
 	free(buffer);
@@ -93,54 +97,45 @@ int file_copy(const char *src, const char *des)
 	return 0;
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** /* argv */)
 {
-	printf("This tool is used for update the kernelflinger.efi\n");
+	printf("This tool is used to update kernelflinger.efi, kfld.efi and bios\n");
 
 	// Check whether ../firmware/kernelflinger.efi exist.
 	// If not exist, exit.
-	char cwdbuf[PATH_MAX] = {0};
-	if (getcwd(cwdbuf, sizeof(cwdbuf)) != NULL)
-		printf("Current directory: %s \n", cwdbuf);
-	else
-		printf("Get current directory failed: %s \n", strerror(errno));
-
 	char file_path[PATH_MAX] = {0};
 	char file_path_bios[PATH_MAX] = {0};
-	int is_exist_kernelflinger = 0;
+	int is_exist_efi = 0;
 	int is_exist_bios = 0;
-	char *selfdir = strrchr(argv[0], '/');
-	size_t selfdir_len = 0;
-	if (selfdir != NULL) {
-		selfdir_len = selfdir - argv[0];
-		if (selfdir_len < sizeof(file_path)) {
-			bcopy(argv[0], file_path, selfdir_len);
-			bcopy(argv[0], file_path_bios, selfdir_len);
-		}
-	}
-	snprintf(file_path + selfdir_len, sizeof(file_path) - selfdir_len, "%s", KERNELFLINGER_RELATIVE_PATH);
 
-	/* Unvalidated string 'file_path' can be used for path traversal
-	 * through call to 'is_file_exist' can lead to access to undesired
-	 * resource outside of restricted directory.
-	 * file path should always start with /postinstall/,
-	 * for security concern we should check content of the paths
-	 * used for access to files and directories. One check
-	 * we could do is ensure we are still pointing to /postinstall/.... */
-	if (strstr(file_path, POS_INSTALL_PREFIX) != file_path) {
-		printf("File path %s: Invalid", file_path);
-		return -1;
+	const char *dest_path = NULL;
+	const char *biosupdate_dest_path = NULL;
+	const char *dev_path = NULL;
+	const char *mount_point = NULL;
+
+	if (is_file_exist(ESP_DEV_PATH)) {
+		dev_path = ESP_DEV_PATH;
+		dest_path = KFLD_DESTINATION_FILE;
+		biosupdate_dest_path = ESP_BIOSUPDATE_DEST_FILE;
+		mount_point = ESP_MOUNT_POINT;
+		snprintf(file_path, sizeof(file_path), "%s", KFLD_ABSOLUTE_PATH);
+	} else {
+		dev_path = DEV_PATH;
+		dest_path = KERNELFLINGER_DESTINATION_FILE;
+		biosupdate_dest_path = BIOSUPDATE_DESTINATION_FILE;
+		mount_point = MOUNT_POINT;
+		snprintf(file_path, sizeof(file_path), "%s", KERNELFLINGER_ABSOLUTE_PATH);
 	}
 
 	if (!is_file_exist(file_path)) {
-		is_exist_kernelflinger = 0;
+		is_exist_efi = 0;
 		printf("File %s does not exist!\n", file_path);
 	} else {
-		is_exist_kernelflinger = 1;
+		is_exist_efi = 1;
 		printf("File %s exists!\n", file_path);
 	}
 
-	snprintf(file_path_bios + selfdir_len, sizeof(file_path_bios) - selfdir_len, "%s", BIOSUPDATE_RELATIVE_PATH);
+	snprintf(file_path_bios, sizeof(file_path_bios), "%s", BIOSUPDATE_ABSOLUTE_PATH);
 	if (!is_file_exist(file_path_bios)) {
 		is_exist_bios = 0;
 		printf("File %s does not exist!\n", file_path_bios);
@@ -149,58 +144,58 @@ int main(int argc, char** argv)
 		printf("File %s exists!\n", file_path_bios);
 	}
 
-	if (is_exist_kernelflinger == 0 && is_exist_bios == 0) {
+	if (is_exist_efi == 0 && is_exist_bios == 0) {
 		printf("File %s and %s all not exist!\n", file_path, file_path_bios);
 		return -1;
 	}
-	// Mount /dev/block/by-name/bootloader to /bootloader
-	if (mkdir(MOUNT_POINT, 0755) != 0)
-		printf("mkdir %s fails: %s \n", MOUNT_POINT, strerror(errno));
+	// Mount partition to mount_point
+	if (mkdir(mount_point, S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH) != 0)
+		printf("mkdir %s fails: %s \n", mount_point, strerror(errno));
 	else
-		printf("mkdir %s succeeds!\n", MOUNT_POINT);
+		printf("mkdir %s succeeds!\n", mount_point);
 
-	if (mount(DEV_PATH, MOUNT_POINT, "vfat", 0, NULL) != 0) {
-		printf("Mount %s to %s fails: %s \n", DEV_PATH, MOUNT_POINT, strerror(errno));
+	if (mount(dev_path, mount_point, "vfat", 0, NULL) != 0) {
+		printf("Mount %s to %s fails: %s \n", dev_path, mount_point, strerror(errno));
 		return -1;
 	} else
-		printf("Mount %s to %s succeeds!\n", DEV_PATH, MOUNT_POINT);
+		printf("Mount %s to %s succeeds!\n", dev_path, mount_point);
 
 	// Copy ../firmware/kernelflinger.efi to /bootloader/EFI/BOOT/kernelflinger_new.efi
-	//check whether des file exists
-	if (is_exist_kernelflinger == 1) {
-		if (!is_file_exist(DESTINATION_FILE))
-			printf("File %s does not exist! Create it!\n", DESTINATION_FILE);
+	// or copy "kfld.efi" to "/bootloader/EFI/BOOT/kfld_new.efi"
+	if (is_exist_efi == 1) {
+		if (!is_file_exist(dest_path))
+			printf("File %s does not exist! Create it!\n", dest_path);
 		else
-			printf("File %s exists! Overwrite it!\n", DESTINATION_FILE);
+			printf("File %s exists! Overwrite it!\n", dest_path);
 
-		if (file_copy(file_path, DESTINATION_FILE) != 0) {
-			printf("File %s copy to %s fails!\n", file_path, DESTINATION_FILE);
+		if (file_copy(file_path, dest_path) != 0) {
+			printf("File %s copy to %s fails!\n", file_path, dest_path);
 			return -1;
 		}
-		printf("File %s copy to %s succeeds!\n", file_path, DESTINATION_FILE);
+		printf("File %s copy to %s succeeds!\n", file_path, dest_path);
 	}
 
 	// Copy ../firmware/BIOSUPDATE.fv to /bootloader/BIOSUPDATE.fv
-	//check whether des file exists
+	// or copy BIOSUPDATE.fv to /esp/BIOSUPDATE.fv
 	if (is_exist_bios == 1) {
-		if (!is_file_exist(BIOSUPDATE_DESTINATION_FILE))
-			printf("File %s does not exist! Create it!\n", BIOSUPDATE_DESTINATION_FILE);
+		if (!is_file_exist(biosupdate_dest_path))
+			printf("File %s does not exist! Create it!\n", biosupdate_dest_path);
 		else
-			printf("File %s exists! Overwrite it!\n", BIOSUPDATE_DESTINATION_FILE);
+			printf("File %s exists! Overwrite it!\n", biosupdate_dest_path);
 
-		if (file_copy(file_path_bios, BIOSUPDATE_DESTINATION_FILE) != 0) {
-			printf("File %s copy to %s fails!\n", file_path_bios, BIOSUPDATE_DESTINATION_FILE);
+		if (file_copy(file_path_bios, biosupdate_dest_path) != 0) {
+			printf("File %s copy to %s fails!\n", file_path_bios, biosupdate_dest_path);
 			return -1;
 		}
-		printf("File %s copy to %s succeeds!\n", file_path_bios, BIOSUPDATE_DESTINATION_FILE);
+		printf("File %s copy to %s succeeds!\n", file_path_bios, biosupdate_dest_path);
 	}
 
-	// Umount /bootloader
-	if (umount(MOUNT_POINT) != 0) {
-		printf("Unmount %s fails: %s \n", MOUNT_POINT, strerror(errno));
-		return -1;
+	// Umount bootloader or esp
+	if (umount(mount_point) != 0) {
+		printf("Unmount %s fails, but proceed since file copy succeeds: %s \n",
+			mount_point, strerror(errno));
 	} else
-		printf("Unmount %s succeeds!\n", MOUNT_POINT);
+		printf("Unmount %s succeeds!\n", mount_point);
 
 	return 0;
 }
