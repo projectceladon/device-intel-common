@@ -44,9 +44,8 @@
 extern int errno;
 #endif
 
-#define POS_INSTALL_PREFIX             "/postinstall/"
-#define KERNELFLINGER_RELATIVE_PATH    "/../firmware/kernelflinger.efi"
-#define BIOSUPDATE_RELATIVE_PATH       "/../firmware/BIOSUPDATE.fv"
+#define KERNELFLINGER_ABSOLUTE_PATH    "/mnt/firmware/kernelflinger.efi"
+#define BIOSUPDATE_ABSOLUTE_PATH       "/mnt/firmware/BIOSUPDATE.fv"
 #define DEV_PATH                       "/dev/block/by-name/bootloader"
 #define MOUNT_POINT                    "/bootloader"
 #define DESTINATION_FILE               "/bootloader/EFI/BOOT/kernelflinger_new.efi"
@@ -95,42 +94,16 @@ int file_copy(const char *src, const char *des)
 
 int main(int argc, char** argv)
 {
-	printf("This tool is used for update the kernelflinger.efi\n");
+	printf("This tool is used to update kernelflinger.efi and bios\n");
 
 	// Check whether ../firmware/kernelflinger.efi exist.
 	// If not exist, exit.
-	char cwdbuf[PATH_MAX] = {0};
-	if (getcwd(cwdbuf, sizeof(cwdbuf)) != NULL)
-		printf("Current directory: %s \n", cwdbuf);
-	else
-		printf("Get current directory failed: %s \n", strerror(errno));
-
 	char file_path[PATH_MAX] = {0};
 	char file_path_bios[PATH_MAX] = {0};
 	int is_exist_kernelflinger = 0;
 	int is_exist_bios = 0;
-	char *selfdir = strrchr(argv[0], '/');
-	size_t selfdir_len = 0;
-	if (selfdir != NULL) {
-		selfdir_len = selfdir - argv[0];
-		if (selfdir_len < sizeof(file_path)) {
-			bcopy(argv[0], file_path, selfdir_len);
-			bcopy(argv[0], file_path_bios, selfdir_len);
-		}
-	}
-	snprintf(file_path + selfdir_len, sizeof(file_path) - selfdir_len, "%s", KERNELFLINGER_RELATIVE_PATH);
 
-	/* Unvalidated string 'file_path' can be used for path traversal
-	 * through call to 'is_file_exist' can lead to access to undesired
-	 * resource outside of restricted directory.
-	 * file path should always start with /postinstall/,
-	 * for security concern we should check content of the paths
-	 * used for access to files and directories. One check
-	 * we could do is ensure we are still pointing to /postinstall/.... */
-	if (strstr(file_path, POS_INSTALL_PREFIX) != file_path) {
-		printf("File path %s: Invalid", file_path);
-		return -1;
-	}
+	snprintf(file_path, sizeof(file_path), "%s", KERNELFLINGER_ABSOLUTE_PATH);
 
 	if (!is_file_exist(file_path)) {
 		is_exist_kernelflinger = 0;
@@ -140,7 +113,7 @@ int main(int argc, char** argv)
 		printf("File %s exists!\n", file_path);
 	}
 
-	snprintf(file_path_bios + selfdir_len, sizeof(file_path_bios) - selfdir_len, "%s", BIOSUPDATE_RELATIVE_PATH);
+	snprintf(file_path_bios, sizeof(file_path_bios), "%s", BIOSUPDATE_ABSOLUTE_PATH);
 	if (!is_file_exist(file_path_bios)) {
 		is_exist_bios = 0;
 		printf("File %s does not exist!\n", file_path_bios);
