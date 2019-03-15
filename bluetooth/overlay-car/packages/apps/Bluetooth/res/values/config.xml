@@ -23,5 +23,5 @@
     <bool name="profile_supported_hid_host">true</bool>
     <bool name="profile_supported_mapmce">true</bool>
     <!-- For enabling the hfp client connection service -->
-    <bool name="hfp_client_connection_service_enabled">false</bool>
+    <bool name="hfp_client_connection_service_enabled">true</bool>
 </resources>
