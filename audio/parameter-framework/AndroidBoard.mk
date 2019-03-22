@@ -927,7 +927,8 @@ LOCAL_SRC_FILES :=  audio_policy_engine_configuration.xml
 LOCAL_REQUIRED_MODULES := \
     audio_policy_engine_product_strategies.xml  \
     audio_policy_engine_criteria.xml \
-    audio_policy_engine_criterion_types.xml
+    audio_policy_engine_criterion_types.xml \
+    audio_policy_engine_volumes.xml 
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
@@ -940,6 +941,15 @@ LOCAL_MODULE_RELATIVE_PATH := .
 LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE_STEM)
 include $(BUILD_PREBUILT)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_engine_volumes.xml
+LOCAL_MODULE_STEM := audio_policy_engine_volumes.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := .
+LOCAL_SRC_FILES := Structure/Policy/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
 
 ######### Policy PFW Settings #########
 include $(CLEAR_VARS)
