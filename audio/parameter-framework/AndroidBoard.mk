@@ -978,6 +978,7 @@ PFW_CRITERIA_FILE := $(TARGET_OUT_VENDOR_ETC)/audio_policy_engine_criteria.xml
 PFW_TOPLEVEL_FILE := $(TARGET_OUT_VENDOR_ETC)/parameter-framework/ParameterFrameworkConfigurationPolicy.xml
 
 PFW_EDD_FILES := \
+        $(LOCAL_PATH)/Settings/Policy/device_for_input_source.pfw \
         $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_media.pfw \
         $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_phone.pfw \
         $(LOCAL_PATH)/Settings/Policy/device_for_product_strategy_sonification.pfw \
