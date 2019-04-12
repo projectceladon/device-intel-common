@@ -40,4 +40,6 @@
 
 #define BLE_VND_INCLUDED TRUE
 
+#define BTM_SSR_INCLUDED FALSE
+
 #endif
