@@ -16,7 +16,7 @@
 
 # For some weird reason, giving the whole path aka system/vendor/...
 # would not work.
-[vendor/bin/hw/android.hardware.audio@2.0-service]
+[vendor/bin/hw/android.hardware.audio.intel@2.0-service]
 mode: 0755
 user: root
 group: shell
