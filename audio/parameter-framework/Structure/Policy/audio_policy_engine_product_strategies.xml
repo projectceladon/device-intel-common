@@ -121,7 +121,7 @@ limitations under the License.
     </ProductStrategy>
 
     <ProductStrategy name="nav_guidance">
-        <AttributesGroup volumeGroup="speech">
+        <AttributesGroup streamType="AUDIO_STREAM_ACCESSIBILITY" volumeGroup="speech">
             <Usage value="AUDIO_USAGE_ASSISTANCE_NAVIGATION_GUIDANCE"/>
         </AttributesGroup>
     </ProductStrategy>
