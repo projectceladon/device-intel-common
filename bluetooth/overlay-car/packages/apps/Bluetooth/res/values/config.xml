@@ -20,8 +20,10 @@
     <bool name="profile_supported_avrcp_controller">true</bool>
     <bool name="profile_supported_pbapclient">true</bool>
     <bool name="profile_supported_opp">true</bool>
-    <bool name="profile_supported_hid_host">true</bool>
+    <bool name="profile_supported_hid_host">false</bool>
     <bool name="profile_supported_mapmce">true</bool>
     <!-- For enabling the hfp client connection service -->
     <bool name="hfp_client_connection_service_enabled">true</bool>
+    <!-- If true, device requests audio focus and start avrcp updates on source start or play -->
+    <bool name="a2dp_sink_automatically_request_audio_focus">true</bool>
 </resources>

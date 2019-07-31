@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/vendor/bin/sh
 
 # Rfkill enables by default all radios it is responsible for at start.
 # It is up to each radio user space SW stack to switch rfkill off at
