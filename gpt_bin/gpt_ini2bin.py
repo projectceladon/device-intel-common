@@ -11,7 +11,9 @@ type_2_guid = {
     'esp' : 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b',
     'linux' : '0fc63daf-8483-4772-8e79-3d69d8477de4',
     'linux-swap' : '0657fd6d-a4ab-43c4-84e5-0933c84b4f4f',
+    'reserved' : '8da63339-0007-60c0-c436-083ac8230908',
 # generated guid for android
+    'bootloader': '2568845D-2332-4675-BC39-8FA5A4748D15',
     'boot' : '49a4d17f-93a3-45c1-a0de-f50b2ebe2599',
     'recovery' : '4177c722-9e92-4aab-8644-43502bfd5506',
     'misc' : 'ef32a33b-a409-486c-9141-9ffb711f6266',
@@ -30,14 +32,14 @@ def copy_section(cfg, a, b):
     for option in cfg.options(a):
         cfg.set(b, option, cfg.get(a, option))
 
-def preparse_slots(cfg, partitions):
+def preparse_slots(cfg, start_parts, slot_group_bsp=[], slot_group_aosp=[], end_parts=[]):
     if not cfg.has_option('base', 'nb_slot'):
-        return partitions
+        return start_parts
 
     nb_slot = cfg.getint('base', 'nb_slot')
 
     parts_with_slot = []
-    for p in partitions:
+    for p in start_parts:
         section = "partition." + p
         if cfg.has_option(section, 'has_slot'):
             for i in range(ord('a'), ord('a') + nb_slot):
@@ -47,9 +49,34 @@ def preparse_slots(cfg, partitions):
 
                 copy_section(cfg, section, new_section)
                 cfg.set(new_section, 'label', cfg.get(section, 'label') + suffix)
-                parts_with_slot.append(new_part);
+                parts_with_slot.append(new_part)
         else:
-            parts_with_slot.append(p);
+            parts_with_slot.append(p)
+
+    for i in range(ord('a'), ord('a') + nb_slot):
+        for p in slot_group_bsp:
+            section = "partition." + p
+            suffix = "_%c" % i
+            new_part = p + suffix
+            new_section = "partition." + new_part
+
+            copy_section(cfg, section, new_section)
+            cfg.set(new_section, 'label', cfg.get(section, 'label') + suffix)
+            parts_with_slot.append(new_part)
+
+    for i in range(ord('a'), ord('a') + nb_slot):
+        for p in slot_group_aosp:
+            section = "partition." + p
+            suffix = "_%c" % i
+            new_part = p + suffix
+            new_section = "partition." + new_part
+
+            copy_section(cfg, section, new_section)
+            cfg.set(new_section, 'label', cfg.get(section, 'label') + suffix)
+            parts_with_slot.append(new_part)
+
+    for p in end_parts:
+        parts_with_slot.append(p)
 
     return parts_with_slot
 
@@ -57,15 +84,30 @@ def preparse_partitions(gpt_in, cfg):
     with open(gpt_in, 'r') as f:
         data = f.read()
 
-    partitions = cfg.get('base', 'partitions').split()
+    start_part = cfg.get('base', 'partitions').split()
+
+    try:
+        slot_group_bsp = cfg.get('base.slot_group_bsp', 'partitions').split()
+    except ConfigParser.NoSectionError:
+        slot_group_bsp = []
+
+    try:
+        slot_group_aosp = cfg.get('base.slot_group_aosp', 'partitions').split()
+    except ConfigParser.NoSectionError:
+        slot_group_aosp = []
+
+    try:
+        end_part = cfg.get('base.end', 'partitions').split()
+    except ConfigParser.NoSectionError:
+        end_part = []
 
     for l in data.split('\n'):
         words = l.split()
         if len(words) > 2:
             if words[0] == 'partitions' and words[1] == '+=':
-                partitions += words[2:]
+                start_part += words[2:]
 
-    return partitions
+    return start_part, slot_group_bsp, slot_group_aosp, end_part
 
 def main():
     if len(sys.argv) != 2:
@@ -79,8 +121,8 @@ def main():
 
     cfg.read(gpt_in)
 
-    part = preparse_partitions(gpt_in, cfg)
-    part = preparse_slots(cfg, part)
+    start_part, slot_group_bsp, slot_group_aosp, end_part = preparse_partitions(gpt_in, cfg)
+    part = preparse_slots(cfg, start_part, slot_group_bsp, slot_group_aosp, end_part)
 
     magic = 0x6a8b0da1
     start_lba = 0
@@ -94,7 +136,7 @@ def main():
     out.write(struct.pack('<I', npart))
     for p in part:
         length = cfg.get('partition.' + p, 'len')
-        out.write(struct.pack('<i', int(length)))
+        out.write(struct.pack('<i', int(length.split(',')[0])))
 
         label = cfg.get('partition.' + p, 'label').encode('utf-16le')
         out.write(zero_pad(label, 36 * 2))
