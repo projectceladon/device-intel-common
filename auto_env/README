@@ -1,0 +1,39 @@
+This folder contains files for booting up Android in Qemu.
+
+Hardware required
+-----------------
+Verified on NUC7i7BNH, you are welcome to try other x86 hardware which supports GVT-g (5th,
+6th, 7th or 8th SoC Generation Intel Core Processor, E3_v4, E3_v5 or E3_v6 Xeon Processor ).
+
+Software required
+-----------------
+Verified on ClearLinux OS 30870 and Ubuntu 18.04.2. Any later version should also work.
+NOTE: Earlier Host OS version probably doesn’t work with the helper scripts to setup
+	the environment, you may need to follow the GVT-g wiki page to setup
+	the KVM/QEMU environment. (https://github.com/intel/gvt-linux/wiki/GVTg_Setup_Guide)
+
+How to start
+------------
+It will setup enviornment automatically on Ubuntu and clearlinux.
+
+	$cp -r $pwd ~/aaas && cd ~/aaas && chmod +x *.sh
+	$sudo ./setup.sh
+	$reboot
+
+The android image in USB could boot by:
+
+	$cd ~/aaas
+	$sudo ./start_android_usb.sh
+
+Android will boot up to UI in a qemu window, and now you could enjoy it.
+
+Files
+-----
+edk2-stable201808.tar.gz 				- source code of OVMF.fd
+igvtg-qemu-stable-2.12.0.tar.gz 		- source code of Qemu
+OVMF.fd 								- bios for android start
+qemu-2.12-gvtg_2.12-gvtg-1_amd64.deb 	- install package of Qemu
+setup.sh 								- shell script for setting enviornment
+setup_clearlinux_env.sh 				- shell script to setup enviornment	on clearlinux
+setup_ubuntu_env.sh 					- shell script to setup enviornment	on Ubuntu
+start_android_usb.sh 					- shell script for booting android VM
