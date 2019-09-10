@@ -59,12 +59,6 @@ user: root
 group: shell
 caps: 0
 
-[vendor/bin/cp_ss]
-mode: 0755
-user: system
-group: system
-caps: 0
-
 [vendor/bin/storageproxyd]
 mode: 0755
 user: system
