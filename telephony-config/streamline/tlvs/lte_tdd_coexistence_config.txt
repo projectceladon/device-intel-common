@@ -1,0 +1,6 @@
+#LTE Coexistence configuration for TDD bands
+nvm:cal_idc.lte_params.lte_b38_41_rx_filter[0,19]={0,2300,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700}
+nvm:cal_idc.lte_params.lte_b38_41_tx_filter[0,19]={0,2300,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700}
+nvm:cal_idc.lte_params.lte_b40_rx_filter[0,19]={0,2300,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700}
+nvm:cal_idc.lte_params.lte_b40_tx_filter[0,19]={0,2300,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700,0,2700}
+nvm:store_nvm_sync(cal_idc)

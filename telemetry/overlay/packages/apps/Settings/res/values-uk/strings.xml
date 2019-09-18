@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Налаштування"</string>
+    <string name="telemetry_info">"Програмному системному забезпеченню Intel необхідний доступ до даних про систему, щоб ви могли зручніше користуватися пристроєм та вчасно отримували інформацію щодо оновлень програмного забезпечення. Ми збиратимемо відомості про програму та збої системи. Ваші особисті дані не збиратимуться."</string>
+    <string name="telemetry_info2">"Компанія Intel піклується про вашу конфіденційність. Щоб дізнатися більше про політику конфіденційності Intel, відвідайте сторінку http://www.intel.ua/content/www/ua/uk/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"Дозволити"</string>
+	<string name="telemetry_notallow">"Не дозволяти"</string>
+	<string name="telemetry_title">"Надання звітних даних"</string>
+	<string name="title_activity_license">"Про надання звітних даних"</string>
+	<string name="title_activity_license_loading">"Завантаження..."</string>
+	<string name="Cancel">"Закрити"</string>
+</resources>

@@ -1,0 +1,4 @@
+# From MOFD PR2.1, SIM_CD is connected on EINT1 instead of EINT3 for SIM detection
+# This avoids a conflict with TDD-LTE on 7260 ES2.01
+nvm:fix_uicc.sim_cd_pin_alternative=0
+nvm:store_nvm_sync(fix_uicc)

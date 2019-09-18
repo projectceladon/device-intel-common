@@ -1,0 +1,5 @@
+persist.ims_support=1
+telephony.test.mode=true
+ro.telephony.tcs.sw_folder=7260_V2_IMS_allbands
+ro.swconf.info=7260_V2_IMS_allbands
+ro.swconf.info.telephony=7260_V2_IMS_allbands

@@ -1,0 +1,3 @@
+# Disable support of srvcc to geran_utran
+nvm:dyn_cps.ue_op_set.srvcc_to_geran_utran_support=0
+nvm:store_nvm_sync(dyn_cps)

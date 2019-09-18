@@ -1,0 +1,5 @@
+<resources>
+    <!-- Configure Group Owner Intent used to perform WiFi Display P2P connection. -->
+    <add-resource type="integer" name="config_groupOwnerIntentWifiDisplay" />
+    <integer name="config_groupOwnerIntentWifiDisplay">14</integer>
+</resources>

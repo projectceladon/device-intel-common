@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<config>
+	<group name="modules">
+		<string key="crm1">crm_sofia.xml</string>
+		<string key="streamline1">streamline_SF_LTE_CONF_1.xml</string>
+		<string key="rpc1">rpc.xml</string>
+	</group>
+</config>

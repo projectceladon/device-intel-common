@@ -1,0 +1,12 @@
+<camera>
+	<prop index="0">
+		<!--- sr300 -->
+		<vendorId value="8086"/>
+		<productId value="0aa2,0aa5"/>
+		<plugin name="sr300"/>
+		<aperture value="2.0"/>
+		<sensorSize value="2.688x1.512"/>
+		<focalLength value="1.935"/>
+	</prop>
+</camera>
+

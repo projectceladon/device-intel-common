@@ -1,0 +1,19 @@
+ExclusiveCriterion  Mode                   :  InCsvCall         InVoipCall       Normal           RingTone
+InclusiveCriterion  TtyDirection           :  Downlink          Uplink
+InclusiveCriterion  RoutageState           :  Configure         Flow             Path
+InclusiveCriterion  ClosingCaptureRoutes   :  AlwaysListening   BtCSV            CompressedMedia  ContextAwareness  DeepMedia  BtComm              HwCodec0IA     HwCodec1IA        Media        HwCodecCSV  ModemMix
+InclusiveCriterion  ClosingPlaybackRoutes  :  AlwaysListening   BtCSV            CompressedMedia  ContextAwareness  DeepMedia  BtComm              HwCodec0IA     HwCodec1IA        Media        HwCodecCSV  ModemMix
+InclusiveCriterion  OpenedCaptureRoutes    :  AlwaysListening   BtCSV            CompressedMedia  ContextAwareness  DeepMedia  BtComm              HwCodec0IA     HwCodec1IA        Media        HwCodecCSV  ModemMix
+InclusiveCriterion  OpenedPlaybackRoutes   :  AlwaysListening   BtCSV            CompressedMedia  ContextAwareness  DeepMedia  BtComm              HwCodec0IA     HwCodec1IA        Media        HwCodecCSV  ModemMix
+InclusiveCriterion  SelectedInputDevices    :  Ambient           AuxDigital       Back             Communication     Headset    Main                ScoHeadset    VoiceCall
+InclusiveCriterion  SelectedOutputDevices   :  A2DP              A2DP_Headphones  A2DP_Speaker     AuxDigital        Earpiece   Headphones          Headset        Ihf               Sco          ScoCarkit  ScoHeadset  _Widi
+InclusiveCriterion  InputSources            :  Camcorder         Default          Mic              None              VoiceCall  VoiceCommunication  VoiceDownlink  VoiceRecognition  VoiceUplink
+ExclusiveCriterion  BandType               :  NB                SuperWB          Unknown          WB
+ExclusiveCriterion  BtHeadsetNrEc          :  False             True
+ExclusiveCriterion  BtHeadsetBandType      :  NB                SuperWB          Unknown          WB
+ExclusiveCriterion  HacSelected            :  False             True
+ExclusiveCriterion  ScreenState            :  Off               On
+ExclusiveCriterion  BypassNonLinearPp      :  Off               On
+ExclusiveCriterion  BypassLinearPp         :  Off               On
+ExclusiveCriterion  MicMuted               :  False             True
+ExclusiveCriterion  ScreenRotation         :  0                 90               180              270

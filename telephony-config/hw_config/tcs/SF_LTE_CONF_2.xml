@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE author [
+	<!ENTITY libs_default SYSTEM "libs_default_sofia.xml" >
+]>
+
+<telephony_config>
+	<modems_info>
+		<modem_info>
+			<tlvs_info>
+				<tlv_info
+					filename="FN5_DVT_0204.tlv"
+				/>
+			</tlvs_info>
+			&libs_default;
+		</modem_info>
+	</modems_info>
+</telephony_config>

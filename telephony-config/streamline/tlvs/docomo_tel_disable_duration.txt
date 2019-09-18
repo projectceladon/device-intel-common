@@ -1,0 +1,2 @@
+nvm:fix_cps.mm.temp_lte_disable_duration=54
+nvm:store_nvm_sync(fix_cps)

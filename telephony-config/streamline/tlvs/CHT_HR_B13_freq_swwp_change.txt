@@ -1,0 +1,3 @@
+#B13 (DPX) frequency sweep change for RF calibration
+nvm:cal_s45_lut.txlte.fcomp.sr_tq_ffreq_9_tbl[0]=7770
+nvm:store_nvm_sync(cal_s45_lut)

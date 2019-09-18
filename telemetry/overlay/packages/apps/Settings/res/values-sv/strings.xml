@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Inställningar"</string>
+    <string name="telemetry_info">"Intel System Software vill samla in systeminformation för att göra din upplevelse bättre och tillhandahålla programuppdateringar till din enhet. Vi samlar in information om program- och systemkrascher. Inga personuppgifter samlas in."</string>
+    <string name="telemetry_info2">"Intel värnar om din sekretess. För mer information om Intels regler för skydd av personuppgifter, besök http://www.intel.se/content/www/se/sv/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"Tillåt"</string>
+	<string name="telemetry_notallow">"Tillåt inte"</string>
+	<string name="telemetry_title">"Datarapportering"</string>
+	<string name="title_activity_license">"Om datarapportering"</string>
+	<string name="title_activity_license_loading">"Läser in..."</string>
+	<string name="Cancel">"Stäng"</string>
+</resources>

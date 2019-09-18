@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Configuració"</string>
+    <string name="telemetry_info">"El programari del sistema Intel vol recollir informació del sistema per millorar la vostra experiència i oferir actualitzacions de programari per al vostre dispositiu. Recollirem informació sobre els errors de l\'aplicació i del sistema. No recollirem informació personal."</string>
+    <string name="telemetry_info2">"Intel valora la vostra privadesa. Per obtenir més informació de les pràctiques de privadesa d\'Intel, visiteu http://www.intel.es/content/www/es/es/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"Permetre"</string>
+	<string name="telemetry_notallow">"No permetre"</string>
+	<string name="telemetry_title">"Informes de dades"</string>
+	<string name="title_activity_license">"Quant als informes de dades"</string>
+	<string name="title_activity_license_loading">"S\'està carregant..."</string>
+	<string name="Cancel">"Tanca"</string>
+</resources>

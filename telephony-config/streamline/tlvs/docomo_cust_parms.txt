@@ -1,0 +1,2 @@
+nvm:cal_prodparm.cust_parms.flex_ver[0,79]="IMC cust tool v0.02 02-Sep-15 11:21:19 AM"
+nvm:store_nvm_sync(cal_prodparm)

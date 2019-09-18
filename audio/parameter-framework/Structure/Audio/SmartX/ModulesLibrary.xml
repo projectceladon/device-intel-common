@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComponentLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../Schemas/ComponentLibrary.xsd">
+    <ComponentTypeSet>
+
+        <ComponentType Name="IasMixerModule">
+            <Component Name="ias_mixer_module" Type="AudioProcessingModule" Mapping="ModuleType:ias.mixer"/>
+        </ComponentType>
+
+        <ComponentType Name="IasVolumeModule">
+            <Component Name="ias_volume_module" Type="AudioProcessingInPlaceModule" Mapping="ModuleType:ias.volume"/>
+        </ComponentType>
+
+
+        <ComponentType Name="MixerInputPinProperties">
+            <IntegerParameter Name="gain" Size="32" Signed="true"
+                              Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=1|pin(String)=%1'"
+                              Min="-200" Max="200"
+                              Description="Gain offset in 1/10th dB for a specific pin.">
+            </IntegerParameter>
+            <IntegerParameter Name="balance" Size="32" Signed="true"
+                              Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=2|pin(String)=%1'"
+                              Min="-1440" Max="1440"
+                              Description="Set a new balance value for a specific input pin. This function is applied to
+                                           an input pin and controls the gain of the left and right speaker channels.
+                                           A value higher than 0 [dB/10] will attenuate the left speaker channels to that it seems
+                                           that the signal comes more from the right side. A value higher or equal than 1440 [dB/10] will
+                                           mute the left side. A value less than 0 [dB/10] will attenuate the right speaker channels
+                                           so that it seems that the signal comes more from the left. A value less or equal than -1440 [dB/10]
+                                           will mute the right side. A value of 0 [dB/10] will center the signal again.">
+            </IntegerParameter>
+            <IntegerParameter Name="fader" Size="32" Signed="true"
+                              Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=3|pin(String)=%1'"
+                              Min="-1440" Max="1440"
+                              Description="Set a new fader value for a specific input pin. This function is applied to an
+                                           input pin and controls the gain of the rear and front speaker channels.
+                                           A value higher than 0 [dB/10] will attenuate the rear speaker channels so that it seems
+                                           that the signal comes more from the front. A value higher or equal then 1440 [dB/10] will mute
+                                           the rear. A value less than 0 [dB/10] will attenuate the front speaker channels to that
+                                           it seems that the signal comes more from the rear. A value less or equal than -1440 [dB/10]
+                                           will mute the front. A value of 0 [dB/10] will center the signal again.">
+            </IntegerParameter>
+        </ComponentType>
+
+
+        <ComponentType Name="VolumeMuteControlProperty">
+            <IntegerParameter Name="params" Size="32" Signed="true" ArrayLength="3"
+                              Mapping="VectInt32RuntimeModuleProperty:'cmd(Int32)=2|pin(String)=%1'"/>
+        </ComponentType>
+
+        <ComponentType Name="VolumeControlProperty">
+            <IntegerParameter Name="volume" Size="32" Signed="true"
+                              Mapping="Int32RuntimeModuleProperty:'cmd(Int32)=1|pin(String)=%1|ramp(Int32Vector)=[100;0]'"
+                              Min="-1440" Max="0"
+                              Description="Pin volume in 1/10th dB. Values less or equal than -1440 will be treated as mute.">
+                <LogarithmicAdaptation LogarithmBase="2" FloorValue="-1440" SlopeNumerator="60" SlopeDenominator="1" Offset="-530"/>
+            </IntegerParameter>
+            <Component Name="mute" Type="VolumeMuteControlProperty"/>
+        </ComponentType>
+    </ComponentTypeSet>
+</ComponentLibrary>

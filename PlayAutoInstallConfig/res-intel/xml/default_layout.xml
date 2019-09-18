@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- Google-specific version of Launcher3/res/xml/default_workspace.xml -->
+<workspace>
+
+  <!-- PlayMyLibrary -->
+  <appwidget
+      packageName="com.android.vending"
+      className="com.google.android.finsky.widget.consumption.NowPlayingWidgetProvider"
+      screen="0"
+      x="0"
+      y="0"
+      spanX="6"
+      spanY="4"
+    />
+
+    <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
+    <!-- Hangouts Gmail Chrome [All Apps] YouTube Photos Camera -->
+
+        <appicon
+           container="hotseat"
+           packageName="com.google.android.talk"
+           className="com.google.android.talk.SigningInActivity"
+           rank="0"
+        />
+
+        <appicon
+           container="hotseat"
+           packageName="com.google.android.gm"
+           className="com.google.android.gm.ConversationListActivityGmail"
+           rank="1"
+        />
+
+        <appicon
+           container="hotseat"
+           packageName="com.android.chrome"
+           className="com.google.android.apps.chrome.Main"
+           rank="2"
+        />
+
+        <appicon
+           container="hotseat"
+           packageName="com.google.android.youtube"
+           className="com.google.android.youtube.app.honeycomb.Shell$HomeActivity"
+           rank="3"
+        />
+
+        <appicon
+           container="hotseat"
+           packageName="com.google.android.apps.photos"
+           className="com.google.android.apps.photos.home.HomeActivity"
+           rank="4"
+        />
+
+        <appicon
+           container="hotseat"
+           packageName="com.google.android.GoogleCamera"
+           className="com.android.camera.CameraActivity"
+           rank="5"
+        />
+
+
+    <!-- In Launcher3, workspaces extend infinitely to the right, incrementing from zero -->
+
+        <!-- Google folder -->
+        <!-- Google, Maps, G+, Calendar, Contacts -->
+
+         <folder
+                title="@string/google_folder_title"
+                screen="0"
+                x="0"
+                y="4">
+
+                <appicon
+                    packageName="com.google.android.googlequicksearchbox"
+                    className="com.google.android.googlequicksearchbox.SearchActivity"
+                />
+
+                <appicon
+                    packageName="com.google.android.apps.maps"
+                    className="com.google.android.maps.MapsActivity"
+                />
+
+                <appicon
+                    packageName="com.google.android.apps.plus"
+                    className="com.google.android.apps.plus.phone.HomeActivity"
+                />
+
+                <appicon
+                    packageName="com.android.contacts"
+                    className="com.android.contacts.activities.PeopleActivity"
+                />
+
+                <appicon
+                    packageName="com.google.android.calendar"
+                    className="com.android.calendar.AllInOneActivity"
+                />
+
+                <appicon
+                    packageName="com.google.android.apps.genie.geniewidget"
+                    className="com.google.android.apps.genie.geniewidget.activities.NewsActivity"
+                />
+
+        </folder>
+
+        <!-- Create folder -->
+        <!-- Drive, Keep -->
+
+        <folder
+               title="@string/create_folder_title"
+               screen="0"
+               x="1"
+               y="4">
+
+              <appicon
+                   packageName="com.google.android.apps.docs"
+                   className="com.google.android.apps.docs.app.NewMainProxyActivity"
+               />
+
+        </folder>
+
+        <!-- Play folder -->
+        <!-- Movies, Music, Games, Books, Newsstand -->
+
+        <folder
+               title="@string/play_folder_title"
+               screen="0"
+               x="4"
+               y="4">
+
+               <appicon
+                    packageName="com.google.android.play.games"
+                    className="com.google.android.gms.games.ui.destination.main.MainActivity"
+               />
+
+               <appicon
+                    packageName="com.google.android.videos"
+                    className="com.google.android.youtube.videos.EntryPoint"
+               />
+
+               <appicon
+                    packageName="com.google.android.music"
+                    className="com.android.music.activitymanagement.TopLevelActivity"
+               />
+
+               <appicon
+                    packageName="com.google.android.apps.books"
+                    className="com.google.android.apps.books.app.BooksActivity"
+               />
+
+               <appicon
+                    packageName="com.google.android.apps.magazines"
+                    className="com.google.apps.dots.android.app.activity.CurrentsStartActivity"
+               />
+         </folder>
+
+         <appicon
+           screen="0"
+           x="5"
+           y="4"
+           packageName="com.android.vending"
+           className="com.android.vending.AssetBrowserActivity"
+        />
+
+    <!-- Any other installed apps will appear in All Apps -->
+
+</workspace>

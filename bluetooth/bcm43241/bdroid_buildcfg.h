@@ -18,8 +18,9 @@
 #define _BDROID_BUILDCFG_H
 
 #define BTM_DEF_LOCAL_NAME "gmin-bluetooth"
-                            // Bluetooth Low Power Mode is supported on BT4.0
-#define HCILP_INCLUDED                 FALSE
+
+// Bluetooth Low Power Mode is supported on BT4.0
+#define HCILP_INCLUDED                 TRUE
 
 /* Default class of device
 * {SERVICE_CLASS, MAJOR_CLASS, MINOR_CLASS}
@@ -35,6 +36,14 @@
 
 #define PRELOAD_START_TIMEOUT_MS 3500
 
+/* Increase Credits for flow control to improve L2CAP throughput */
+#define PORT_RX_BUF_LOW_WM          10
+#define PORT_RX_BUF_HIGH_WM         20
+#define PORT_RX_BUF_CRITICAL_WM     25
+#define PORT_TX_BUF_HIGH_WM         20
+#define PORT_TX_BUF_CRITICAL_WM     25
+
+/* Include BLE Advertising */
 #define BLE_VND_INCLUDED TRUE
 
 #endif

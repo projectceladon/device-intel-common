@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Device configuration</string>
+    <string name="google_folder_title">Google</string>
+    <string name="create_folder_title">Create</string>
+    <string name="play_folder_title">Play</string>
+    <string name="extras_folder_title">Extras</string>
+</resources>

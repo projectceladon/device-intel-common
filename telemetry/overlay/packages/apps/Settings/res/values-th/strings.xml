@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"การตั้งค่า"</string>
+    <string name="telemetry_info">"ซอฟต์แวร์ระบบของ Intel ต้องการเก็บรวบรวมข้อมูลระบบในการยกระดับประสบการณ์และจัดหาการอัพเดตซอฟต์แวร์ให้กับอุปกรณ์ของคุณ เราจะรวบรวมข้อมูลเกี่ยวกับแอปพลิเคชันและความล้มเหลวของระบบ ข้อมูลส่วนตัวจะไม่ถูกเก็บรวบรวมแต่อย่างใด"</string>
+    <string name="telemetry_info2">"Intel ให้ความสำคัญกับความเป็นส่วนตัวของคุณ สำหรับข้อมูลเพิ่มเติมเกี่ยวกับการรักษาความลับของข้อมูลของ Intel โปรดไปที่ http://www.thailand.intel.com/content/www/th/th/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"อนุญาต"</string>
+	<string name="telemetry_notallow">"ไม่อนุญาต"</string>
+	<string name="telemetry_title">"การรายงานข้อมูล"</string>
+	<string name="title_activity_license">"เกี่ยวกับการรายงานข้อมูล"</string>
+	<string name="title_activity_license_loading">"กำลังโหลด..."</string>
+	<string name="Cancel">"ปิด"</string>
+</resources>

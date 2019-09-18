@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"Cài đặt"</string>
+    <string name="telemetry_info">"Phần mềm Hệ thống Intel muốn thu thập thông tin hệ thống để cải thiện trải nghiệm của bạn và cung cấp cập nhật phần mềm cho thiết bị của bạn. Chúng tôi sẽ thu thập thông tin về những sự cố ứng dụng và hệ thống. Không thông tin cá nhân nào được thu thập."</string>
+    <string name="telemetry_info2">"Intel trân trọng quyền riêng tư của bạn. Để biết thêm thông tin về cách thực hiện quyền riêng tư của Intel, vui lòng truy cập http://www.intel.vn/content/www/vn/vi/privacy/intel-online-privacy-notice-summary.html"</string>
+	<string name="telemetry_allow">"Cho phép"</string>
+	<string name="telemetry_notallow">"Không cho phép"</string>
+	<string name="telemetry_title">"Báo cáo dữ liệu"</string>
+	<string name="title_activity_license">"Thông tin về Báo cáo dữ liệu"</string>
+	<string name="title_activity_license_loading">"Đang tải..."</string>
+	<string name="Cancel">"Đóng"</string>
+</resources>

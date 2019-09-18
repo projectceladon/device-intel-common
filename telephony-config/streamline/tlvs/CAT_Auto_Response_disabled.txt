@@ -1,0 +1,3 @@
+# Disable CAT Auto Response.
+nvm:dyn_uta_3.data[59] = 0
+nvm:store_nvm_sync(dyn_uta_3)

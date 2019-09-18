@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"सेटिंग"</string>
+    <string name="telemetry_info">"Intel सिस्टम सॉफ़्टवेयर आपके अनुभव को बेहतर बनाने और आपके डिवाइस पर सॉफ़्टवेयर अपडेट्स प्रदान करने के लिए सिस्टम जानकारी एकत्रित करना चाहता है।. हम अनुप्रयोग और सिस्टम क्रैश के बारे में जानकारी एकत्रित करेंगे. कोई व्यक्तिगत जानकारी एकत्रित नहीं की जाती."</string>
+    <string name="telemetry_info2">"Intel के लिए आपकी गोपनीयता महत्वपूर्ण है. Intel के गोपनीयता अभ्यासों के बारे में अधिक जानकारी के लिए कृपया http://www.intel.com/privacy पर जाएँ"</string>
+	<string name="telemetry_allow">"अनुमति दें"</string>
+	<string name="telemetry_notallow">"अनुमति न दें"</string>
+	<string name="telemetry_title">"डेटा रिपोर्टिंग"</string>
+	<string name="title_activity_license">"डेटा रिपोर्टिंग के बारे में"</string>
+	<string name="title_activity_license_loading">"लोड हो रहा है..."</string>
+	<string name="Cancel">"बंद करें"</string>
+</resources>

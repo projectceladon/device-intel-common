@@ -1,0 +1,9 @@
+#!/bin/bash
+
+>&2 echo -e "ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR\n"
+>&2 echo "ERROR: This version of FlsTool (v2.30) has been deprecated in 1A."
+>&2 echo -e "Please use the following version (v2.36) of the FlsTool instead:\n"
+>&2 echo -e "\t<1A_ROOT>/device/intel-imc/common/tools/FlsTool\n"
+>&2 echo "ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR"
+
+exit 1

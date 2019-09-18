@@ -1,0 +1,3 @@
+nvm:dyn_cps.ps_features.follow_on_attach_req=1
+nvm:dyn_cps.ps_features.disable_umts_duplex_mode_dynamic_switch=1
+nvm:store_nvm_sync(dyn_cps)

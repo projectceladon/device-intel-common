@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TelemetrySetup</string>
+    <string name="action_settings">"הגדרות"</string>
+    <string name="telemetry_info">"תוכנת המערכת של אינטל רוצה לאסוף פרטי מערכת כדי לשפר את חווית המשתמש ולספק עדכוני תוכנה למכשיר שלך. אנו נאסוף מידע על קריסות יישומים ומערכת. לא ייאספו נתונים אישיים כלשהם."</string>
+    <string name="telemetry_info2">"אינטל מעריכה את פרטיותך. למידע נוסף על מדיניות הפרטיות של אינטל, בקר בכתובת http://www.intel.com/privacy"</string>
+	<string name="telemetry_allow">"אפשר"</string>
+	<string name="telemetry_notallow">"אל תאפשר"</string>
+	<string name="telemetry_title">"דיווח על נתונים"</string>
+	<string name="title_activity_license">"אודות דיווח על נתונים"</string>
+	<string name="title_activity_license_loading">"טעינה..."</string>
+	<string name="Cancel">"סגירה"</string>
+</resources>

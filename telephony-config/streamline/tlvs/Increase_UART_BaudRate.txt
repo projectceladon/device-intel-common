@@ -1,0 +1,3 @@
+# Increase UART BaudRate to 3000
+nvm:fix_4g_lte.l1cc_nvm.idc_uartBaudRate.val1=3000
+nvm:store_nvm_sync(fix_4g_lte)

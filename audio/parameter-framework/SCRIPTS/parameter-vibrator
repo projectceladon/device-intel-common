@@ -1,0 +1,15 @@
+#!/system/bin/sh
+socket_opened=$(netstat -lnt | grep -e 0.0.0.0:5003 -e :::5003)
+if [[ ! -z "$socket_opened" ]]
+then
+    if [[ $# -eq 0 ]]
+    then
+        echo "No argument supplied"
+        remote-process localhost 5003 help
+    else
+        remote-process localhost 5003 "$@"
+    fi
+else
+        echo "The vibrator PFW remote-processor is not running"
+fi
+
