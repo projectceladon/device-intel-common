@@ -1,6 +1,9 @@
 Intel adb keys documentation
 ============================
 
+- For security concerns, empty adb keys to avoid the risk of exposure.
+
+- It's better to prepare adb keys locally if necessary.
 If you want to connect to the device without manual secure adb authorization
 please copy gmin_adb_key.priv to ${HOME}/.android/adbkey and the gmin@intel public key
 from adb_keys to ${HOME}/.android/adbkey.pub.
