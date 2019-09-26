@@ -1,5 +1,6 @@
 LOCAL_PATH := $(call my-dir)
 
+ifeq ($(INTEL_USE_COMMON_AUDIO_POLICY_CONFIG),true)
 include $(CLEAR_VARS)
 LOCAL_MODULE := a2dp_audio_policy_configuration.xml
 LOCAL_PROPRIETARY_MODULE := true
@@ -39,3 +40,4 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_OWNER := intel
 include $(BUILD_PREBUILT)
+endif #INTEL_USE_COMMON_AUDIO_POLICY_CONFIG
