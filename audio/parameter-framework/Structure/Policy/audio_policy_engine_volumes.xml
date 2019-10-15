@@ -159,7 +159,7 @@
         <name>phone</name>
         <indexMin>1</indexMin>
         <indexMax>40</indexMax>
-        <volume  deviceCategory="DEVICE_CATEGORY_SPEAKER">
+        <volume deviceCategory="DEVICE_CATEGORY_SPEAKER">
             <point>0,-4200</point>
             <point>33,-2800</point>
             <point>66,-1400</point>
@@ -188,5 +188,26 @@
             <point>100,0</point>
         </volume>
     </volumeGroup>
+
+    <volumeGroup>
+        <name>rerouting</name>
+        <indexMin>0</indexMin>
+        <indexMax>1</indexMax>
+        <volume deviceCategory="DEVICE_CATEGORY_HEADSET">
+            <point>0,0</point>
+            <point>100,0</point>
+        </volume>
+    </volumeGroup>
+
+    <volumeGroup>
+        <name>patch</name>
+        <indexMin>0</indexMin>
+        <indexMax>1</indexMax>
+        <volume deviceCategory="DEVICE_CATEGORY_HEADSET">
+            <point>0,0</point>
+            <point>100,0</point>
+        </volume>
+    </volumeGroup>
+
 </volumeGroups>
 

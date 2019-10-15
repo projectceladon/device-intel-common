@@ -1,10 +1,10 @@
-supDomain: DeviceForProductStrategy
+supDomain: DeviceForStrategy
 
 	supDomain: EnforcedAudible
 
 		domain: UnreachableDevices
 			conf: Calibration
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					# no enforced_audible on remote submix (e.g. WFD)
 					hdmi_arc = 0
 					spdif = 0
@@ -13,8 +13,6 @@ supDomain: DeviceForProductStrategy
 					ip = 0
 					bus = 0
 					fm = 0
-					proxy = 0
-					usb_headset = 0
 					stub = 0
 
 		domain: Speaker
@@ -41,7 +39,7 @@ supDomain: DeviceForProductStrategy
 					# is selected.
 					#
 					ALL
-						#AvailableOutputDevices Excludes RemoteSubmix
+						AvailableOutputDevices Excludes RemoteSubmix
 						AvailableOutputDevices Excludes WiredHeadphone
 						AvailableOutputDevices Excludes Line
 						AvailableOutputDevices Excludes WiredHeadset
@@ -53,19 +51,18 @@ supDomain: DeviceForProductStrategy
 							AvailableOutputDevices Excludes AnlgDockHeadset
 							ForceUseForDock IsNot ForceAnalogDock
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					speaker = 1
 
 			conf: NotSelected
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					speaker = 0
 
 		domain: Device2
 			conf: RemoteSubmix
 				AvailableOutputDevices Includes RemoteSubmix
-				#AvailableOutputDevicesAddresses Includes 0
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 1
 					earpiece = 0
 					wired_headset = 0
@@ -83,12 +80,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dp
 				AvailableOutputDevices Includes BluetoothA2dp
 				ForceUseForMedia IsNot ForceNoBtA2dp
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -106,12 +104,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphones
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 				ForceUseForMedia IsNot ForceNoBtA2dp
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -129,12 +128,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 				ForceUseForMedia IsNot ForceNoBtA2dp
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -152,12 +152,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes WiredHeadphone
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -175,12 +176,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: Line
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes Line
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -198,12 +200,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 1
+					usb_headset = 0
 
 			conf: WiredHeadset
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes WiredHeadset
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 1
@@ -221,12 +224,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: UsbAccessory
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes UsbAccessory
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -244,12 +248,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes UsbDevice
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -267,12 +272,37 @@ supDomain: DeviceForProductStrategy
 					usb_device = 1
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ForceUseForMedia IsNot ForceSpeaker
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
+					remote_submix = 0
+					earpiece = 0
+					wired_headset = 0
+					wired_headphone = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					hdmi = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					telephony_tx = 0
+					line = 0
+					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes DgtlDockHeadset
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -290,12 +320,13 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: Hdmi
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes Hdmi
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -313,13 +344,14 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				ForceUseForMedia IsNot ForceSpeaker
 				ForceUseForDock Is ForceAnalogDock
 				AvailableOutputDevices Includes AnlgDockHeadset
 
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -337,9 +369,10 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
+					usb_headset = 0
 
 			conf: NoDevice
-				component: /Policy/policy/product_strategies/enforced_audible/selected_output_devices/mask
+				component: /Policy/policy/strategies/enforced_audible/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -357,5 +390,4 @@ supDomain: DeviceForProductStrategy
 					usb_device = 0
 					telephony_tx = 0
 					line = 0
-
-
+					usb_headset = 0

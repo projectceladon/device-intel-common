@@ -87,15 +87,10 @@
 			<value literal="BUS00_MEDIA" numerical="1"/>
 			<value literal="BUS01_NAVIGATION" numerical="2"/>
 			<value literal="BUS02_HMI" numerical="4"/>
+			<value literal="BUS04_CALL" numerical="8"/>
 		</values>
 	</criterion_type>
-	<criterion_type name="InputDevicesAddressesType" type="inclusive">
-		<values>
-			<value literal="BUS00_MIC1" numerical="1"/>
-			<value literal="BUS01_MIC2" numerical="2"/>
-			<value literal="tuner0" numerical="4"/>
-		</values>
-	</criterion_type>
+	<criterion_type name="InputDevicesAddressesType" type="inclusive"/>
 	<criterion_type name="AndroidModeType" type="exclusive">
 		<values>
 			<value literal="Normal" numerical="0"/>
