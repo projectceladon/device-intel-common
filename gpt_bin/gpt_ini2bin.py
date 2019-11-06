@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
-import ConfigParser
 import uuid
 import struct
 import sys
+if sys.version_info < (3, 0, 1):
+    import ConfigParser
+else:
+    import configparser
 
 type_2_guid = {
 # official guid for gpt partition type
@@ -23,7 +26,7 @@ type_2_guid = {
 
 def zero_pad(s, size):
     if (len(s) > size):
-        print 'error', len(s)
+        print('error', len(s))
     s += '\0' * (size - len(s))
     return s
 
@@ -86,20 +89,38 @@ def preparse_partitions(gpt_in, cfg):
 
     start_part = cfg.get('base', 'partitions').split()
 
-    try:
-        slot_group_bsp = cfg.get('base.slot_group_bsp', 'partitions').split()
-    except ConfigParser.NoSectionError:
-        slot_group_bsp = []
+    if sys.version_info < (3, 0, 1):
+        try:
+            slot_group_bsp = cfg.get('base.slot_group_bsp', 'partitions').split()
+        except ConfigParser.NoSectionError:
+            slot_group_bsp = []
+    else:
+        try:
+            slot_group_bsp = cfg.get('base.slot_group_bsp', 'partitions').split()
+        except configparser.NoSectionError:
+            slot_group_bsp = []
 
-    try:
-        slot_group_aosp = cfg.get('base.slot_group_aosp', 'partitions').split()
-    except ConfigParser.NoSectionError:
-        slot_group_aosp = []
+    if sys.version_info < (3, 0, 1):
+        try:
+            slot_group_aosp = cfg.get('base.slot_group_aosp', 'partitions').split()
+        except ConfigParser.NoSectionError:
+            slot_group_aosp = []
+    else:
+        try:
+            slot_group_aosp = cfg.get('base.slot_group_aosp', 'partitions').split()
+        except configparser.NoSectionError:
+            slot_group_aosp = []
 
-    try:
-        end_part = cfg.get('base.end', 'partitions').split()
-    except ConfigParser.NoSectionError:
-        end_part = []
+    if sys.version_info < (3, 0, 1):
+        try:
+            end_part = cfg.get('base.end', 'partitions').split()
+        except ConfigParser.NoSectionError:
+            end_part = []
+    else:
+        try:
+            end_part = cfg.get('base.end', 'partitions').split()
+        except configparser.NoSectionError:
+            end_part = []
 
     for l in data.split('\n'):
         words = l.split()
@@ -111,13 +132,16 @@ def preparse_partitions(gpt_in, cfg):
 
 def main():
     if len(sys.argv) != 2:
-        print 'Usage : ', sys.argv[0], 'gpt_in1.ini'
-        print '    write binary to stdout'
+        print('Usage : ', sys.argv[0], 'gpt_in1.ini')
+        print('    write binary to stdout')
         sys.exit(1)
 
     gpt_in = sys.argv[1]
 
-    cfg = ConfigParser.SafeConfigParser()
+    if sys.version_info < (3, 0, 1):
+        cfg = ConfigParser.SafeConfigParser()
+    else:
+        cfg = configparser.SafeConfigParser(strict=False)
 
     cfg.read(gpt_in)
 
