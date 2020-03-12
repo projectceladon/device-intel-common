@@ -17,7 +17,7 @@ import time
 import re
 import random
 
-from cStringIO import StringIO
+from io import StringIO
 
 sys.path.append("device/intel/build/releasetools")
 import intel_common
@@ -28,7 +28,7 @@ _VERIFYTOOL = "device/intel/common/recovery/verify_from_ota"
 
 def hash_sparse_ext4_image(image_name):
 
-  print "TFP: ", image_name
+  print("TFP: ", image_name)
   t = tempfile.NamedTemporaryFile(delete=False)
   OPTIONS.tempfiles.append(t.name)
   t.close()
@@ -43,7 +43,7 @@ def hash_sparse_ext4_image(image_name):
       hc.update(data)
       remain = remain - len(data)
 
-  print "system hash", hc.hexdigest()
+  print("system hash", hc.hexdigest())
   fd.close()
   return hc.hexdigest()
 
@@ -57,12 +57,12 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   bootloader_unzip = zipfile.ZipFile(bootloader_zip_path,"r")
   additional_data_hash = collections.OrderedDict()
 
-  print "bootloader unzip in ", bootloader_unzip_path
+  print("bootloader unzip in ", bootloader_unzip_path)
   curr_loader = "loader.efi"
   loader_filepath = os.path.join(bootloader_unzip_path, curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -72,8 +72,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "bootx64.efi"
   loader_filepath = os.path.join(bootloader_unzip_path, "EFI/BOOT", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -83,8 +83,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "manifest.txt"
   loader_filepath = os.path.join(bootloader_unzip_path, curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -94,8 +94,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "current.fv"
   loader_filepath = os.path.join(bootloader_unzip_path, "capsules",curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -106,8 +106,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "boot.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -117,8 +117,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "recovery.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -128,33 +128,33 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "system.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   additional_data_hash['system'] = str(hash_sparse_ext4_image(loader_filepath))
   loader_file.close()
   return additional_data_hash
 
 def Get_verifydata(info,infoinput):
-  print "Trying to get verify data..."
+  print("Trying to get verify data...")
   variant = None
 
   for app in [_SIMG2IMG, _FASTBOOT, _VERIFYTOOL]:
       if not os.path.exists(app):
-          print "Can't find", app
-          print "Get_verifydata failed"
+          print("Can't find", app)
+          print("Get_verifydata failed")
           return
 
-  print "Extracting bootloader archive..."
+  print("Extracting bootloader archive...")
   additional_data = GetBootloaderImagesfromFls(infoinput,None)
   if not additional_data:
-    print "additional_data is None"
+    print("additional_data is None")
     return
   bootloader_sizes = ""
   imghash_value = "..."
   imghash_bootloader = ""
 
-  for imgname, imgdata in additional_data.iteritems():
+  for imgname, imgdata in additional_data.items():
       if imgname != 'bootloader' and imgname != 'system' and imgname != 'boot' and imgname != 'recovery':
           bootloader_sizes += ":" + str(len(imgdata))
       if imgname != 'system':
