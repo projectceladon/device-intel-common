@@ -17,7 +17,7 @@ import time
 import re
 import random
 
-from cStringIO import StringIO
+from io import StringIO
 
 sys.path.append("device/intel/build/releasetools")
 import intel_common
@@ -33,7 +33,7 @@ tos_patchinfo = None
 
 def hash_sparse_ext4_image(image_name):
 
-  print "TFP: ", image_name
+  print("TFP: ", image_name)
   t = tempfile.NamedTemporaryFile(delete=False)
   OPTIONS.tempfiles.append(t.name)
   t.close()
@@ -48,7 +48,7 @@ def hash_sparse_ext4_image(image_name):
       hc.update(data)
       remain = remain - len(data)
 
-  print "system hash", hc.hexdigest()
+  print("system hash", hc.hexdigest())
   fd.close()
   return hc.hexdigest()
 
@@ -63,8 +63,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "bootloader.img"
   loader_filepath = os.path.join(unpack_dir, "RADIO", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -80,8 +80,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "boot.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -91,8 +91,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "recovery.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   loader_file = open(loader_filepath)
   loader_data = loader_file.read()
@@ -102,8 +102,8 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "system.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   additional_data_hash['system'] = str(hash_sparse_ext4_image(loader_filepath))
 
@@ -126,33 +126,33 @@ def GetBootloaderImagesfromFls(unpack_dir, variant=None):
   curr_loader = "vendor.img"
   loader_filepath = os.path.join(unpack_dir, "IMAGES", curr_loader)
   if not os.path.exists(loader_filepath):
-      print "Can't find ", loader_filepath
-      print "GetBootloaderImagesfromFls failed"
+      print("Can't find ", loader_filepath)
+      print("GetBootloaderImagesfromFls failed")
       return
   additional_data_hash['vendor'] = str(hash_sparse_ext4_image(loader_filepath))
 
   return additional_data_hash
 
 def Get_verifydata(info,infoinput):
-  print "Trying to get verify data..."
+  print("Trying to get verify data...")
   variant = None
 
   for app in [_SIMG2IMG, _FASTBOOT, _VERIFYTOOL, _STRINGS]:
       if not os.path.exists(app):
-          print "Can't find", app
-          print "Get_verifydata failed"
+          print("Can't find", app)
+          print("Get_verifydata failed")
           return
 
-  print "Extracting bootloader archive..."
+  print("Extracting bootloader archive...")
   additional_data = GetBootloaderImagesfromFls(infoinput,None)
   if not additional_data:
-    print "additional_data is None"
+    print("additional_data is None")
     return
   bootloader_sizes = ""
   imghash_value = "..."
   imghash_bootloader = ""
 
-  for imgname, imgdata in additional_data.iteritems():
+  for imgname, imgdata in additional_data.items():
       if imgname != 'system' and imgname != 'boot' and imgname != 'recovery' \
           and imgname != 'vendor' and imgname != 'multiboot' and imgname != 'tos' and imgname != 'firmware':
           bootloader_sizes += ":" + str(len(imgdata))
@@ -185,14 +185,14 @@ def WriteMultiboot(info, multiboot_img):
   try:
     info.script.WriteRawImage("/multiboot", "multiboot.img")
   except (IOError, KeyError):
-    print "no /multiboot partition in target_files; skipping install"
+    print("no /multiboot partition in target_files; skipping install")
 
 def WriteTos(info, tos_img):
   common.ZipWriteStr(info.output_zip, "tos.img", tos_img)
   try:
     info.script.WriteRawImage("/tos", "tos.img")
   except (IOError, KeyError):
-    print "no /tos partition in target_files; skipping install"
+    print("no /tos partition in target_files; skipping install")
 
 def WriteBldr(info, bootloader_img):
   common.ZipWriteStr(info.output_zip, "bootloader.img", bootloader_img)
@@ -211,9 +211,9 @@ def IncrementalOTA_VerifyEnd(info):
               intel_common.ComputeBinOrImgPatches(OPTIONS.source_tmp,
                                                   OPTIONS.target_tmp, "multiboot.img")
       if output_files is None:
-        print "multiboot.img is none, skipping install"
+        print("multiboot.img is none, skipping install")
       else:
-        print "multiboot.img is exist. Add the patch."
+        print("multiboot.img is exist. Add the patch.")
         if not verbatim_targets and m_patch_list:
           (tf,sf) = m_patch_list
           info.script.PatchCheck("%s:%s:%d:%s:%d:%s" %
@@ -227,9 +227,9 @@ def IncrementalOTA_VerifyEnd(info):
               intel_common.ComputeBinOrImgPatches(OPTIONS.source_tmp,
                                                   OPTIONS.target_tmp, "tos.img")
       if output_files is None:
-        print "tos.img is none, skipping install"
+        print("tos.img is none, skipping install")
       else:
-        print "tos.img is exist. Add the patch."
+        print("tos.img is exist. Add the patch.")
         if not verbatim_targets and m_patch_list:
           (tf,sf) = m_patch_list
           info.script.PatchCheck("%s:%s:%d:%s:%d:%s" %
@@ -238,45 +238,45 @@ def IncrementalOTA_VerifyEnd(info):
           tos_patchinfo = (tosimg_type, tosimg_device, sf, tf)
           common.ZipWriteStr(info.output_zip, "patch/tos.img.p", output_files)
   except (IOError, KeyError):
-    print "No multiboot/tos partition in iOTA Verify"
+    print("No multiboot/tos partition in iOTA Verify")
 
 def FullOTA_InstallEnd(info):
   global verify_multiboot
   try:
     bootloader_img = info.input_zip.read("RADIO/bootloader.img")
   except KeyError:
-    print "no bootloader.img in target_files; skipping install"
+    print("no bootloader.img in target_files; skipping install")
   else:
-    print "Add update for bootloader"
+    print("Add update for bootloader")
     WriteBldr(info, bootloader_img)
 
     try:
       multiboot_img = info.input_zip.read("RADIO/multiboot.img")
     except (IOError, KeyError):
-      print "no multiboot.img in target target_files; skipping install"
+      print("no multiboot.img in target target_files; skipping install")
     else:
       fstab = info.script.info.get("fstab", None)
       try:
         if fstab['/multiboot'].device:
-          print "multiboot partition exist and multiboot.img changed; adding it"
+          print("multiboot partition exist and multiboot.img changed; adding it")
           WriteMultiboot(info, multiboot_img)
           verify_multiboot = 1
       except (IOError, KeyError):
-        print "No multiboot partition"
+        print("No multiboot partition")
 
     try:
       tos_img = info.input_zip.read("RADIO/tos.img")
     except (IOError, KeyError):
-      print "no tos.img in target target_files; skipping install"
+      print("no tos.img in target target_files; skipping install")
     else:
       fstab = info.script.info.get("fstab", None)
       try:
         if fstab['/tos'].device:
-          print "tos partition exist and tos.img changed; adding it"
+          print("tos partition exist and tos.img changed; adding it")
           WriteTos(info, tos_img)
           verify_multiboot = 1
       except (IOError, KeyError):
-        print "No tos partition"
+        print("No tos partition")
 
     Get_verifydata(info, info.input_tmp)
 
@@ -290,20 +290,20 @@ def IncrementalOTA_InstallEnd(info):
       source_bootloader_img = None
 
     if source_bootloader_img == target_bootloader_img:
-      print "bootloader.img unchanged; skipping"
+      print("bootloader.img unchanged; skipping")
     else:
-      print "bootloader.img changed; adding it"
+      print("bootloader.img changed; adding it")
       WriteBldr(info, target_bootloader_img)
 
     try:
       multiboot_img = info.target_zip.read("RADIO/multiboot.img")
     except (IOError, KeyError):
-      print "no multiboot.img in target target_files; skipping install"
+      print("no multiboot.img in target target_files; skipping install")
     else:
       fstab = info.script.info.get("fstab", None)
       try:
         if fstab['/multiboot'].device:
-          print "multiboot partition exist and multiboot.img changed; adding it"
+          print("multiboot partition exist and multiboot.img changed; adding it")
           multibootimg_type, multibootimg_device, sf, tf = multiboot_patchinfo
           info.script.ApplyPatch("%s:%s:%d:%s:%d:%s" % (multibootimg_type, multibootimg_device, sf.size,
                                                         sf.sha1, tf.size, tf.sha1),
@@ -311,9 +311,9 @@ def IncrementalOTA_InstallEnd(info):
                                  "patch/multiboot.img.p")
           verify_multiboot = 1
       except (IOError, KeyError):
-        print "No multiboot partition"
+        print("No multiboot partition")
 
     Get_verifydata(info, OPTIONS.target_tmp)
   except KeyError:
-    print "no bootloader.img in target target_files; skipping install"
+    print("no bootloader.img in target target_files; skipping install")
 
