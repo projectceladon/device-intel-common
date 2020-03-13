@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
-import ConfigParser
 import uuid
 import struct
 import sys
+if sys.version_info < (3, 0, 1):
+    import ConfigParser
+else:
+    import configparser
 
 type_2_guid = {
 # official guid for gpt partition type
@@ -21,7 +24,7 @@ type_2_guid = {
 
 def zero_pad(s, size):
     if (len(s) > size):
-        print 'error', len(s)
+        print('error', len(s))
     s += '\0' * (size - len(s))
     return s
 
@@ -69,13 +72,15 @@ def preparse_partitions(gpt_in, cfg):
 
 def main():
     if len(sys.argv) != 2:
-        print 'Usage : ', sys.argv[0], 'gpt_in1.ini'
-        print '    write binary to stdout'
+        print('Usage : ', sys.argv[0], 'gpt_in1.ini')
+        print('    write binary to stdout')
         sys.exit(1)
 
     gpt_in = sys.argv[1]
-
-    cfg = ConfigParser.SafeConfigParser()
+    if sys.version_info < (3, 0, 1):
+        cfg = ConfigParser.SafeConfigParser()
+    else:
+        cfg = configparser.SafeConfigParser()
 
     cfg.read(gpt_in)
 
