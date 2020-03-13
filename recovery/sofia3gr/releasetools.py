@@ -24,7 +24,7 @@ def trigger_fwupdate(info):
 
 # These steps are called in the end of an OTA update
 def FullOTA_InstallEnd(info):
-  print "Intel: vendor specific OTA end hook for full OTA update"
+  print("Intel: vendor specific OTA end hook for full OTA update")
   intel_common.AddFWImageFile(OPTIONS.target_tmp, info.output_zip)
 
   # Set progress bar to end of FLS extraction
@@ -36,7 +36,7 @@ def FullOTA_InstallEnd(info):
 def IncrementalOTA_VerifyEnd(info):
   global patchinfo
   global verbatim
-  print "Calculating fwupdate patch information"
+  print("Calculating fwupdate patch information")
 
   fwu_type, fwu_device = common.GetTypeAndDevice("/fwupdate", OPTIONS.info_dict)
   verbatim, fwu_patch, output_files = intel_common.ComputeFWUpdatePatches(OPTIONS.source_tmp, OPTIONS.target_tmp)
@@ -51,7 +51,7 @@ def IncrementalOTA_VerifyEnd(info):
     common.ZipWriteStr(info.output_zip, "patch/fwu_image.bin.p", output_files)
 
 def IncrementalOTA_InstallEnd(info):
-  print "Intel: vendor specific OTA end hook for incremental OTA update"
+  print("Intel: vendor specific OTA end hook for incremental OTA update")
   if verbatim:
     intel_common.AddFWImageFile(OPTIONS.target_tmp, info.output_zip)
 

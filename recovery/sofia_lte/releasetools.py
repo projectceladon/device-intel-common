@@ -8,7 +8,7 @@
 import common
 import os
 import zipfile
-from cStringIO import StringIO
+from io import StringIO
 
 OPTIONS = common.OPTIONS
 patchinfo = None
@@ -45,7 +45,7 @@ def AddBinaryFiles(info):
 
 #These steps are called in the end of an OTA update
 def FullOTA_InstallEnd(info):
-  print "Intel: vendor specific OTA end hook for full OTA update"
+  print("Intel: vendor specific OTA end hook for full OTA update")
   AddBinaryFiles(info)
 
 
@@ -53,7 +53,7 @@ def FullOTA_InstallEnd(info):
 def IncrementalOTA_VerifyEnd(info):
   global patchinfo
 
-  print "Calculating fwupdate patch information"
+  print("Calculating fwupdate patch information")
   src_fwupdate = get_file_data(OPTIONS.source_tmp, "fwu_image.bin")
   tgt_fwupdate = get_file_data(OPTIONS.target_tmp, "fwu_image.bin")
 
@@ -63,7 +63,7 @@ def IncrementalOTA_VerifyEnd(info):
   tf, sf, d = diffs[0].GetPatch()
   # If the patch size is almost as big as the actual file don't bother
   if d is None or len(d) > tf.size * 0.95:
-    print "Firmware update image will be included verbatim"
+    print("Firmware update image will be included verbatim")
     return
 
   common.ZipWriteStr(info.output_zip, "patch/fwu_image.bin.p", d)
@@ -77,7 +77,7 @@ def IncrementalOTA_VerifyEnd(info):
 
 
 def IncrementalOTA_InstallEnd(info):
-  print "Intel: vendor specific OTA end hook for incremental OTA update"
+  print("Intel: vendor specific OTA end hook for incremental OTA update")
   if not patchinfo:
     AddBinaryFiles(info)
     return
