@@ -11,6 +11,6 @@ LOCAL_MODULE := action-authorization
 LOCAL_SRC_FILES := action-authorization.c
 LOCAL_C_INCLUDES := vendor/intel/external/openssl/include/
 LOCAL_CFLAGS := -Wall -Wextra -Werror
-LOCAL_STATIC_LIBRARIES := libcrypto_static2
+LOCAL_STATIC_LIBRARIES := libcrypto
 
 include $(BUILD_HOST_EXECUTABLE)
