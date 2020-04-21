@@ -21,6 +21,13 @@ FIND_IGNORE_FILES := -not -name "*\ *" -not -name "*LICENSE.*" -not -name "*LICE
 
 LOCAL_FIRMWARES ?= $(filter-out .git/% %.mk,$(subst ./,,$(shell cd $(FIRMWARES_DIR) && find . -type f $(FIND_IGNORE_FILES))))
 
+## List of complete Firmware folders to be copied
+
+LOCAL_FIRMWARE_DIR := \
+    i915
+
+LOCAL_FIRMWARES += $(foreach f,$(LOCAL_FIRMWARE_DIR),$(shell cd $(FIRMWARES_DIR) && find . -type l) )
+
 PRODUCT_COPY_FILES := \
 	    $(foreach f,$(LOCAL_FIRMWARES),$(FIRMWARES_DIR)/$(f):vendor/firmware/$(f))
 
