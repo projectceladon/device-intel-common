@@ -30,6 +30,7 @@
     <string-array name="config_usbDeviceBlacklist" translatable="false">
         <item>"8087:0a2b"</item>
         <item>"8087:0aa7"</item>
+        <item>"8087:0aaa"</item>
     </string-array>
 
 </resources>
