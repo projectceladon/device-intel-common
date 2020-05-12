@@ -17,7 +17,7 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
-#define BTM_DEF_LOCAL_NAME "{{target}}"
+#define BTM_DEF_LOCAL_NAME "celadon"
 
 #define BTA_AV_SINK_INCLUDED TRUE
 #define BLE_VND_INCLUDED FALSE
