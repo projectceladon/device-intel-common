@@ -19,7 +19,7 @@ ifeq ($(INCLUDE_ALL_FIRMWARE), true)
 FIND_IGNORE_FILES := -not -name "*\ *" -not -name "*LICENSE.*" -not -name "*LICENCE.*" \
 	-not -name "*Makefile*" -not -name "*WHENCE" -not -name "*README"
 
-LOCAL_FIRMWARES ?= $(filter-out .git/% %.mk,$(subst ./,,$(shell cd $(FIRMWARES_DIR) && find . -type f $(FIND_IGNORE_FILES))))
+LOCAL_FIRMWARES ?= $(filter-out .git/% %.mk,$(subst ./,,$(shell cd $(FIRMWARES_DIR) && find . -type f,l $(FIND_IGNORE_FILES))))
 
 PRODUCT_COPY_FILES := \
 	    $(foreach f,$(LOCAL_FIRMWARES),$(FIRMWARES_DIR)/$(f):vendor/firmware/$(f))
