@@ -17,7 +17,7 @@
 #ifndef _BDROID_BUILDCFG_H
 #define _BDROID_BUILDCFG_H
 
-#define BTM_DEF_LOCAL_NAME "{{target}}"
+#define BTM_DEF_LOCAL_NAME "celadon"
 
 /* Default class of device
 * {SERVICE_CLASS, MAJOR_CLASS, MINOR_CLASS}
