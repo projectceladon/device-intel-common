@@ -1,5 +1,6 @@
-supDomain: DeviceForProductStrategy
-	supDomain: SonificationRespectful
+domainGroup: DeviceForStrategy
+
+	domainGroup: SonificationRespectful
 		#
 		# Sonificiation Respectful follows:
 		#	- If in call: Strategy sonification (that follows phone strategy in call also...)
@@ -11,9 +12,10 @@ supDomain: DeviceForProductStrategy
 		#	  selected.
 		#
 		# Case of stream active handled programmatically
+
 		domain: UnreachableDevices
-			conf: calibration
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+			conf: Calibration
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					remote_submix = 0
 					hdmi_arc = 0
 					aux_line = 0
@@ -21,10 +23,8 @@ supDomain: DeviceForProductStrategy
 					fm = 0
 					telephony_tx = 0
 					ip = 0
-					proxy = 0
-					usb_headset = 0
+					bus = 0
 					stub = 0
-				/Policy/policy/product_strategies/sonification_respectful/device_address =
 
 		domain: Speakers
 
@@ -38,7 +38,7 @@ supDomain: DeviceForProductStrategy
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					speaker_safe = 1
 					speaker = 0
 
@@ -61,12 +61,12 @@ supDomain: DeviceForProductStrategy
 							TelephonyMode Is InCommunication
 						AvailableOutputDevices Excludes Line
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					speaker_safe = 0
 					speaker = 1
 
 			conf: None
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					speaker_safe = 0
 					speaker = 0
 
@@ -81,7 +81,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dp
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -97,6 +97,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphones
 				#
@@ -108,7 +109,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -124,6 +125,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -135,7 +137,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -151,6 +153,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoCarkit
 				#
@@ -162,7 +165,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForCommunication Is ForceBtSco
 				AvailableOutputDevices Includes BluetoothScoCarkit
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -178,6 +181,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				#
@@ -189,7 +193,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForCommunication Is ForceBtSco
 				AvailableOutputDevices Includes BluetoothScoHeadset
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 1
@@ -205,6 +209,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: BluetoothSco
 				#
@@ -216,7 +221,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForCommunication Is ForceBtSco
 				AvailableOutputDevices Includes BluetoothSco
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 1
 					bluetooth_sco_headset = 0
@@ -232,6 +237,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				ANY
@@ -253,7 +259,7 @@ supDomain: DeviceForProductStrategy
 						ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes WiredHeadphone
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -269,6 +275,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Line
 				ANY
@@ -294,7 +301,7 @@ supDomain: DeviceForProductStrategy
 						ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes Line
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -310,6 +317,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				ANY
@@ -331,7 +339,7 @@ supDomain: DeviceForProductStrategy
 						ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes WiredHeadset
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -347,6 +355,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				ANY
@@ -369,7 +378,7 @@ supDomain: DeviceForProductStrategy
 						AvailableOutputDevices Excludes UsbAccessory
 				AvailableOutputDevices Includes UsbDevice
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -385,6 +394,46 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ANY
+					ALL
+						#
+						# SonificationRespectful Follows Phone strategy if in call
+						#
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+					ALL
+						#
+						# SonificationRespectful Follows Sonification that falls through Media strategy if not in call
+						# SonificationRespectful follows media if music stream is active
+						#
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						ForceUseForMedia IsNot ForceSpeaker
+						AvailableOutputDevices Excludes UsbAccessory
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
+					earpiece = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					bluetooth_a2dp = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					hdmi = 0
+					usb_headset = 1
 
 			conf: UsbAccessory
 				#
@@ -399,7 +448,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes UsbAccessory
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -415,6 +464,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 1
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: DgtlDockHeadset
 				#
@@ -429,7 +479,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes DgtlDockHeadset
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -445,6 +495,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: AuxDigital
 				#
@@ -459,7 +510,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForMedia IsNot ForceSpeaker
 				AvailableOutputDevices Includes Hdmi
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -475,6 +526,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 1
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -490,7 +542,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForDock Is ForceAnalogDock
 				AvailableOutputDevices Includes AnlgDockHeadset
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 0
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -506,6 +558,7 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
+					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -517,7 +570,7 @@ supDomain: DeviceForProductStrategy
 				ForceUseForCommunication IsNot ForceSpeaker
 				AvailableOutputDevices Includes Earpiece
 
-				component: /Policy/policy/product_strategies/sonification_respectful/selected_output_devices/mask
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
 					earpiece = 1
 					bluetooth_sco = 0
 					bluetooth_sco_headset = 0
@@ -533,4 +586,4 @@ supDomain: DeviceForProductStrategy
 					usb_accessory = 0
 					usb_device = 0
 					hdmi = 0
-
+					usb_headset = 0
