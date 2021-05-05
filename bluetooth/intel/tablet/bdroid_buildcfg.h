@@ -40,4 +40,6 @@
 
 #define BTM_SSR_INCLUDED FALSE
 
+#define DISABLE_WBS TRUE
+
 #endif
