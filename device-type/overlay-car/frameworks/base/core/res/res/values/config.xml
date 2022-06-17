@@ -10,4 +10,8 @@
     <bool name="config_useFixedVolume">true</bool>
     <!-- Enable AppWidgetService even the FEATURE_APP_WIDGETS is disable -->
     <bool name="config_enableAppWidgetService">true</bool>
+    <!-- Disables the GnssTimeUpdate service. This is a switch for enabling Gnss time based
+	 suggestions to TimeDetector service. -->
+    <bool name="config_enableGnssTimeUpdateService">false</bool>
 </resources>
+
