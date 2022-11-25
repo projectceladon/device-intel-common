@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ComponentTypeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
-    <ComponentType Name="GhwdParams">
-        <IntegerParameter Name="params" Size="8" ArrayLength="30348" Mapping="ByteControl:%1 hwd 0 mdl params" Description="Hotword Algos Settings."/>
-    </ComponentType>
-</ComponentTypeSet>
-
