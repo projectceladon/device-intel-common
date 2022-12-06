@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 /*
- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
+ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
  * Copyright (C) 2016-2017 Intel Deutschland GmbH
  */
@@ -85,12 +85,6 @@
  *	The result output is sent back in &IWL_MVM_VENDOR_ATTR_FIPS_TEST_RESULT
  *	attribute. In case the function failed to produce an output for the
  *	requested test vector, &IWL_MVM_VENDOR_ATTR_FIPS_TEST_RESULT is not set.
- * @IWL_MVM_VENDOR_CMD_FMAC_CONNECT_PARAMS: set fmac specific parameters for
- *	future connect commands. These parameters will affect all following
- *	connect commands. To clear previous configuration, send the command with
- *	no attributes.
- * @IWL_MVM_VENDOR_CMD_FMAC_CONFIG: set one of the fmac configuration options.
- *	&IWL_MVM_VENDOR_ATTR_FMAC_CONFIG_STR specifies the configuration string.
  * @IWL_MVM_VENDOR_CMD_CSI_EVENT: CSI event, use as a command to enable unicast
  *	reporting to the calling socket
  * @IWL_MVM_VENDOR_CMD_ADD_PASN_STA: add a PASN station for and initiator or
@@ -101,19 +95,6 @@
  *	HLTK for secure LTF bits generation.
  * @IWL_MVM_VENDOR_CMD_REMOVE_PASN_STA: remove the PASN station with the mac
  *	address specified with &IWL_MVM_VENDOR_ATTR_ADDR.
- * @IWL_MVM_VENDOR_CMD_TIME_SYNC_MEASUREMENT_CONFIG: configure TM/FTM
- *	measurement protocol for time synchronization.
- *	&IWL_MVM_VENDOR_ATTR_TIME_SYNC_PROTOCOL_TYPE specifies bitmap of
- *	time sync measurement protocols for which to record timestamps.
- *	&IWL_MVM_VENDOR_ATTR_ADDR specifies peer MAC address.
- * @IWL_MVM_VENDOR_CMD_TIME_SYNC_MSMT_CFM_EVENT: Time Sync measurement
- *	confirmation notification for TM/FTM. Sent on receipt of 802.11 Ack from
- *	peer for the Tx'ed TM/FTM measurement action frame.
- *	&IWL_MVM_VENDOR_ATTR_TIME_SYNC_* specifies the details.
- * @IWL_MVM_VENDOR_CMD_TIME_SYNC_MSMT_EVENT: Time Sync measurement
- *	notification for TM/FTM. Sent on receipt of respective WNM action frame
- *	for TM protocol or public action frame for FTM protocol, from peer device.
- *	&IWL_MVM_VENDOR_ATTR_TIME_SYNC_* specifies the details.
  * @IWL_MVM_VENDOR_CMD_GET_CSME_CONN_INFO: reports CSME connection info.
  * @IWL_MVM_VENDOR_CMD_HOST_GET_OWNERSHIP: host ask for ownership on the device.
  * @IWL_MVM_VENDOR_CMD_ROAMING_FORBIDDEN_EVENT: notifies if roaming is allowed.
@@ -128,6 +109,8 @@
  * @IWL_MVM_VENDOR_CMD_GEO_SAR_GET_TABLE: retrieves the full GEO SAR table.
  *	Contains a &IWL_MVM_VENDOR_ATTR_SAR_TABLE and a
  *	&IWL_MVM_VENDOR_ATTR_GEO_SAR_VER attributes.
+ * @IWL_MVM_VENDOR_CMD_SGOM_GET_TABLE: retrieves the full SGOM table.
+ *	Contains a &IWL_MVM_VENDOR_ATTR_SGOM_TABLE attributes.
  * @IWL_MVM_VENDOR_CMD_GET_FW_VERSION: Driver version
  * @IWL_MVM_VENDOR_CMD_GET_FW_VERSION: Firmware version
  */
@@ -167,25 +150,26 @@ enum iwl_mvm_vendor_cmd {
 	IWL_MVM_VENDOR_CMD_NEIGHBOR_REPORT_RESPONSE		= 0x1f,
 	IWL_MVM_VENDOR_CMD_GET_SAR_GEO_PROFILE			= 0x20,
 	IWL_MVM_VENDOR_CMD_TEST_FIPS				= 0x21,
-	IWL_MVM_VENDOR_CMD_FMAC_CONNECT_PARAMS			= 0x22,
-	IWL_MVM_VENDOR_CMD_FMAC_CONFIG				= 0x23,
+	IWL_MVM_VENDOR_CMD_RES_22				= 0x22,
+	IWL_MVM_VENDOR_CMD_RES_23				= 0x23,
 	IWL_MVM_VENDOR_CMD_CSI_EVENT				= 0x24,
 	IWL_MVM_VENDOR_CMD_ADD_PASN_STA				= 0x25,
 	IWL_MVM_VENDOR_CMD_REMOVE_PASN_STA			= 0x26,
 	IWL_MVM_VENDOR_CMD_RFIM_SET_TABLE			= 0x27,
 	IWL_MVM_VENDOR_CMD_RFIM_GET_TABLE			= 0x28,
 	IWL_MVM_VENDOR_CMD_RFIM_GET_CAPA			= 0x29,
-	IWL_MVM_VENDOR_CMD_TIME_SYNC_MEASUREMENT_CONFIG		= 0x2a,
-	IWL_MVM_VENDOR_CMD_TIME_SYNC_MSMT_CFM_EVENT		= 0x2b,
-	IWL_MVM_VENDOR_CMD_TIME_SYNC_MSMT_EVENT			= 0x2c,
+	/* 0x2a is deprecated */
+	/* 0x2b is deprecated */
+	/* 0x2c is deprecated */
 	IWL_MVM_VENDOR_CMD_GET_CSME_CONN_INFO			= 0x2d,
 	IWL_MVM_VENDOR_CMD_HOST_GET_OWNERSHIP			= 0x30,
 	IWL_MVM_VENDOR_CMD_ROAMING_FORBIDDEN_EVENT		= 0x32,
 	IWL_MVM_VENDOR_CMD_PPAG_GET_TABLE                       = 0x33,
 	IWL_MVM_VENDOR_CMD_SAR_GET_TABLE                        = 0x34,
 	IWL_MVM_VENDOR_CMD_GEO_SAR_GET_TABLE                    = 0x35,
-	IWL_MVM_VENDOR_CMD_GET_FW_VERSION                       = 0x36,
-	IWL_MVM_VENDOR_CMD_GET_DRV_VERSION                      = 0x37,
+	IWL_MVM_VENDOR_CMD_SGOM_GET_TABLE			= 0x36,
+	IWL_MVM_VENDOR_CMD_GET_FW_VERSION                       = 0x37,
+	IWL_MVM_VENDOR_CMD_GET_DRV_VERSION                      = 0x38,
 };
 
 /**
@@ -410,7 +394,6 @@ enum iwl_mvm_vendor_significant_change_result {
  * enum iwl_mvm_vendor_rxfilter_flags - the type of request rxfilter
  *
  * @IWL_MVM_VENDOR_RXFILTER_UNICAST: control unicast Rx filter
- * @IWL_MVM_VENDOR_RXFILTER_BCAST: control broadcast Rx filter
  * @IWL_MVM_VENDOR_RXFILTER_MCAST4: control IPv4 multicast Rx filter
  * @IWL_MVM_VENDOR_RXFILTER_MCAST6: control IPv4 multicast Rx filter
  * @IWL_MVM_VENDOR_RXFILTER_EINVAL: no Rx filter command was set
@@ -418,7 +401,6 @@ enum iwl_mvm_vendor_significant_change_result {
  */
 enum iwl_mvm_vendor_rxfilter_flags {
 	IWL_MVM_VENDOR_RXFILTER_UNICAST = 1 << 0,
-	IWL_MVM_VENDOR_RXFILTER_BCAST = 1 << 1,
 	IWL_MVM_VENDOR_RXFILTER_MCAST4 = 1 << 2,
 	IWL_MVM_VENDOR_RXFILTER_MCAST6 = 1 << 3,
 	IWL_MVM_VENDOR_RXFILTER_EINVAL = 1 << 7,
@@ -632,21 +614,6 @@ enum iwl_vendor_fips_test_vector_hw {
 		NUM_IWL_VENDOR_FIPS_TEST_VECTOR_HW - 1,
 };
 
-/**
- * enum iwl_mvm_vendor_time_sync_protocol_type - bitmap of time sync
- * measurement protocols.
- *
- * @IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_NONE: Disable TM/FTM time sync
- *	measurement protocol.
- * @IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_TM: Timing measurement protocol.
- * @IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_FTM: Fine Timing measurement protocol.
- */
-enum iwl_mvm_vendor_time_sync_protocol_type {
-	IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_NONE,
-	IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_TM = 1,
-	IWL_MVM_VENDOR_TIME_SYNC_PROTOCOL_FTM = 2,
-};
-
 enum iwl_vendor_auth_akm_mode {
 	IWL_VENDOR_AUTH_OPEN,
 	IWL_VENDOR_AUTH_SHARED,
@@ -787,18 +754,6 @@ enum iwl_vendor_auth_akm_mode {
  *	test. &enum iwl_vendor_fips_test_vector_hw.
  * @IWL_MVM_VENDOR_ATTR_FIPS_TEST_VECTOR_HW_GCM: data vector for FIPS GCM HW
  *	test. &enum iwl_vendor_fips_test_vector_hw.
- * @IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_BLACKLIST: an array of BSSIDs to
- *	blocklist. The device shall not try to connect to blocklisted BSSIDs.
- *	This attribute shall not be set if
- *	IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_WHITELIST is set.
- * @IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_WHITELIST: an array of BSSIDs to
- *	passlist. The device shall only try to connect to BSSIDs from the list.
- *	This attribute shall not be set if
- *	IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_BLACKLIST is set.
- * @IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_MAX_RETRIES: number of APs to try
- *	before notifying connection failure.
- * @IWL_MVM_VENDOR_ATTR_FMAC_CONFIG_STR: a key=value string where key is an
- *	fmac configuration option.
  * @IWL_MVM_VENDOR_ATTR_CSI_HDR: CSI header
  * @IWL_MVM_VENDOR_ATTR_CSI_DATA: CSI data
  * @IWL_MVM_VENDOR_ATTR_STA_TK: the TK to use for PMF encryption for the
@@ -809,33 +764,6 @@ enum iwl_vendor_auth_akm_mode {
  * @IWL_MVM_VENDOR_ATTR_STA_CIPHER: the cipher to use for the station with the
  *	mac address specified in &IWL_MVM_VENDOR_ATTR_ADDR.
  *	One of WLAN_CIPHER_SUITE_*.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_PROTOCOL_TYPE: bitmap of time sync
- *	measurement protocols for which to record timestamps,
- *	one of &enum iwl_mvm_vendor_time_sync_protocol_type.
- * @IWL_MVM_VENDOR_ATTR_PAD: attribute used for padding for 64-bit alignment
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_DIALOG_TOKEN: u32 attribute. Measurement
- *	flow dialog token number.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T1: u64 attribute. t1-time of the Tx'ed
- *	 action frame departure on sender side in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T1_MAX_ERROR: u32 attribute. Maximum t1-time
- *	error in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T4: u64 attribute. t4-time of the Rx'ed
- *	action frame's ack arrival on sender side in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T4_MAX_ERROR: u32 attribute. Maximum t4-time
- *	error in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_FUP_DIALOG_TOKEN: u32 attribute. Measurement
- *	 flow previous dialog token number
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T2: u64 attribute. t1-time of the Rx'ed
- *	action frame arrival on receiver side in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T2_MAX_ERROR: u32 attribute. Maximum t1-time
- *	error in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T3: u64 attribute. t4-time of the Tx'ed
- *	action frame's Ack departure on receiver side in units of
- *	10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_T3_MAX_ERROR: u32 attribute. Maximum t4-time
- *	error in units of 10 nano seconds.
- * @IWL_MVM_VENDOR_ATTR_TIME_SYNC_VS_DATA: vendor specific data. This does not
- *	include the IE header.
  * @IWL_MVM_VENDOR_ATTR_ROAMING_FORBIDDEN: u8 attribute. Indicates whether
  *	roaming is forbidden or not. Value 1 means roaming is forbidden,
  *	0 mean roaming is allowed.
@@ -863,6 +791,7 @@ enum iwl_vendor_auth_akm_mode {
  *	iwl_vendor_sar_per_chain_geo_table.
  * @IWL_MVM_VNDOR_ATTR_GEO_SAR_VER: u32 attribute. Contains the GEO SAR
  *	table version
+ * @IWL_MVM_VENDOR_ATTR_SGOM_TABLE: binary attribute.
  * @IWL_MVM_VENDOR_ATTR_DRV_VER: string attribute. Driver version
  * @IWL_MVM_VENDOR_ATTR_FW_VER: string attribute. Firmware version
  *
@@ -944,10 +873,10 @@ enum iwl_mvm_vendor_attr {
 	IWL_MVM_VENDOR_ATTR_FIPS_TEST_VECTOR_HW_AES		= 0x46,
 	IWL_MVM_VENDOR_ATTR_FIPS_TEST_VECTOR_HW_CCM		= 0x47,
 	IWL_MVM_VENDOR_ATTR_FIPS_TEST_VECTOR_HW_GCM		= 0x48,
-	IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_BLACKLIST	= 0x49,
-	IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_WHITELIST	= 0x4a,
-	IWL_MVM_VENDOR_ATTR_FMAC_CONNECT_PARAMS_MAX_RETRIES	= 0x4b,
-	IWL_MVM_VENDOR_ATTR_FMAC_CONFIG_STR			= 0x4c,
+	IWL_MVM_VENDOR_ATTR_RES_49				= 0x49,
+	IWL_MVM_VENDOR_ATTR_RES_4A				= 0x4a,
+	IWL_MVM_VENDOR_ATTR_RES_4B				= 0x4b,
+	IWL_MVM_VENDOR_ATTR_RES_4C				= 0x4c,
 	IWL_MVM_VENDOR_ATTR_CSI_HDR				= 0x4d,
 	IWL_MVM_VENDOR_ATTR_CSI_DATA				= 0x4e,
 	IWL_MVM_VENDOR_ATTR_STA_TK				= 0x4f,
@@ -958,19 +887,19 @@ enum iwl_mvm_vendor_attr {
 	IWL_MVM_VENDOR_ATTR_RFIM_CHANNELS			= 0x54,
 	IWL_MVM_VENDOR_ATTR_RFIM_BANDS				= 0x55,
 	IWL_MVM_VENDOR_ATTR_RFIM_CAPA				= 0x56,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_PROTOCOL_TYPE		= 0x57,
-	IWL_MVM_VENDOR_ATTR_PAD					= 0x58,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_DIALOG_TOKEN		= 0x59,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T1			= 0x5a,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T1_MAX_ERROR		= 0x5b,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T4			= 0x5c,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T4_MAX_ERROR		= 0x5d,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_FUP_DIALOG_TOKEN		= 0x5e,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T2			= 0x5f,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T2_MAX_ERROR		= 0x60,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T3			= 0x61,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_T3_MAX_ERROR		= 0x62,
-	IWL_MVM_VENDOR_ATTR_TIME_SYNC_VS_DATA			= 0x63,
+	/* 0x57 is deprecated */
+	/* 0x58 is deprecated */
+	/* 0x59 is deprecated */
+	/* 0x5a is deprecated */
+	/* 0x5b is deprecated */
+	/* 0x5c is deprecated */
+	/* 0x5d is deprecated */
+	/* 0x5e is deprecated */
+	/* 0x5f is deprecated */
+	/* 0x60 is deprecated */
+	/* 0x61 is deprecated */
+	/* 0x62 is deprecated */
+	/* 0x63 is deprecated */
 	IWL_MVM_VENDOR_ATTR_ROAMING_FORBIDDEN			= 0x64,
 	IWL_MVM_VENDOR_ATTR_AUTH_MODE				= 0x65,
 	IWL_MVM_VENDOR_ATTR_CHANNEL_NUM				= 0x66,
@@ -983,8 +912,9 @@ enum iwl_mvm_vendor_attr {
 	IWL_MVM_VENDOR_ATTR_SAR_VER                             = 0x75,
 	IWL_MVM_VENDOR_ATTR_GEO_SAR_TABLE                       = 0x76,
 	IWL_MVM_VENDOR_ATTR_GEO_SAR_VER                         = 0x77,
-	IWL_MVM_VENDOR_ATTR_FW_VER                              = 0x78,
-	IWL_MVM_VENDOR_ATTR_DRV_VER                             = 0x79,
+	IWL_MVM_VENDOR_ATTR_SGOM_TABLE				= 0x78,
+	IWL_MVM_VENDOR_ATTR_FW_VER                              = 0x79,
+	IWL_MVM_VENDOR_ATTR_DRV_VER                             = 0x80,
 
 	NUM_IWL_MVM_VENDOR_ATTR,
 	MAX_IWL_MVM_VENDOR_ATTR = NUM_IWL_MVM_VENDOR_ATTR - 1,
