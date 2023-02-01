@@ -1,0 +1,380 @@
+
+supDomain: Parameter
+
+	supDomain: InputDevice
+
+		domain: Main
+			conf: Selected
+				ANY
+					ALL
+						SelectedOutputDevices Includes Earpiece
+						ANY
+							Mode Is InVoipCall
+							ALL
+								Mode Is InCsvCall
+								ModemAudioAvailable Is True
+					ALL
+						AlwaysListening Is True
+						LpalDevice Is Main
+					ALL
+						SelectedInputDevices Includes Main
+						ANY
+							Mode Is Normal
+							Mode Is RingTone
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Main = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Main = 0
+
+
+		domain: ScoHeadset
+			conf: Selected
+				ANY
+					ALL
+						Mode Is InCsvCall
+						ModemAudioAvailable Is True
+						ANY
+							SelectedOutputDevices Includes Sco
+							SelectedOutputDevices Includes ScoHeadset
+							SelectedOutputDevices Includes ScoCarkit
+					ALL
+						SelectedInputDevices Includes ScoHeadset
+						ANY
+							Mode Is Normal
+							Mode Is RingTone
+							Mode Is InVoipCall
+					ALL
+						AlwaysListening Is True
+						LpalDevice Is ScoHeadset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					ScoHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					ScoHeadset = 0
+
+		domain: Headset
+			conf: Selected
+				ANY
+					ALL
+						Mode Is InCsvCall
+						ModemAudioAvailable Is True
+						SelectedOutputDevices Includes Headset
+					ALL
+						SelectedInputDevices Includes Headset
+						ANY
+							Mode Is Normal
+							Mode Is RingTone
+							Mode Is InVoipCall
+					ALL
+						AlwaysListening Is True
+						LpalDevice Is Headset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Headset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Headset = 0
+
+		domain: VoiceCall
+			conf: Selected
+				SelectedInputDevices Includes VoiceCall
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					VoiceCall = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					VoiceCall = 0
+
+		domain: Back
+			conf: Selected
+				ANY
+					ALL
+						ANY
+							Mode Is InVoipCall
+							ALL
+								Mode Is InCsvCall
+								ModemAudioAvailable Is True
+						ANY
+							SelectedOutputDevices Includes Headphones
+							SelectedOutputDevices Includes Ihf
+					ALL
+						SelectedInputDevices Includes Back
+						ANY
+							Mode Is Normal
+							Mode Is RingTone
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Back = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Back = 0
+
+		# Ambient mic: activated when we have a dual-mic situation (incall + Earpiece or Ihf or Headphones)
+		domain: Ambient
+			conf: Selected
+				ANY
+					ALL
+						ANY
+							SelectedOutputDevices Includes Earpiece
+							SelectedOutputDevices Includes Ihf
+							SelectedOutputDevices Includes Headphones
+						ANY
+							Mode Is InVoipCall
+							ALL
+								Mode Is InCsvCall
+								ModemAudioAvailable Is True
+
+					ALL
+						SelectedInputDevices Includes Ambient
+						ANY
+							Mode Is Normal
+							Mode Is RingTone
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Ambient = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Ambient = 0
+
+		domain: Communication
+			conf: Selected
+				SelectedInputDevices Includes Communication
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Communication = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Communication = 0
+
+		domain: AuxDigital
+			conf: Selected
+				SelectedInputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AuxDigital = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AuxDigital = 0
+
+		domain: AnlgDockHeadset
+			conf: Selected
+				SelectedInputDevices Includes AnlgDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AnlgDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AnlgDockHeadset = 0
+
+		domain: DgtlDockHeadset
+			conf: Selected
+				SelectedInputDevices Includes DgtlDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					DgtlDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					DgtlDockHeadset = 0
+
+		domain: UsbAccessory
+			conf: Selected
+				SelectedInputDevices Includes UsbAccessory
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					UsbAccessory = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					UsbAccessory = 0
+
+		domain: FmTuner
+			conf: Selected
+				SelectedInputDevices Includes FmTuner
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					FmTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					FmTuner = 0
+
+		domain: TvTuner
+			conf: Selected
+				SelectedInputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					TvTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					TvTuner = 0
+
+		domain: Line
+			conf: Selected
+				SelectedInputDevices Includes Line
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Line = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Line = 0
+
+		domain: Spdif
+			conf: Selected
+				SelectedInputDevices Includes Spdif
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Spdif = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Spdif = 0
+
+		domain: BluetoothA2dp
+			conf: Selected
+				SelectedInputDevices Includes BluetoothA2dp
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					BluetoothA2dp = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					BluetoothA2dp = 0
+
+		domain: Loopback
+			conf: Selected
+				SelectedInputDevices Includes Loopback
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Loopback = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Loopback = 0
+
+	domain: Mode
+
+		conf: RingTone
+			Mode Is RingTone
+
+			component: /Route/route_mgr/criteria/mode
+				mode = RingTone
+
+		conf: InCall
+			Mode Is InCsvCall
+			ModemState Is True
+			ModemAudioAvailable Is True
+
+			component: /Route/route_mgr/criteria/mode
+				mode = InCsvCall
+
+		conf: InIms
+			ALL
+				Mode Is InCsvCall
+				ModemAudioAvailable IsNot True
+				ANY
+					SelectedOutputDevices Is Ihf
+					SelectedOutputDevices Is Headset
+					SelectedOutputDevices Is Headphones
+					SelectedOutputDevices Is Earpiece
+					SelectedOutputDevices Is Sco
+					SelectedOutputDevices Is ScoHeadset
+					SelectedOutputDevices Is ScoCarkit
+
+			component: /Route/route_mgr/criteria/mode
+				mode = InImsCall
+
+		conf: InCommunication
+			ALL
+				Mode Is InVoipCall
+				ANY
+					SelectedOutputDevices Is Ihf
+					SelectedOutputDevices Is Headset
+					SelectedOutputDevices Is Headphones
+					SelectedOutputDevices Is Earpiece
+					SelectedOutputDevices Is Sco
+					SelectedOutputDevices Is ScoHeadset
+					SelectedOutputDevices Is ScoCarkit
+
+			component: /Route/route_mgr/criteria/mode
+				mode = InVoipCall
+
+		conf: Normal
+
+			component: /Route/route_mgr/criteria/mode
+				mode = Normal
+
+
+	domain: Band
+		conf: NB
+			ANY
+				ALL
+					Mode Is InCsvCall
+					ANY
+						ImsBandType Is NB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is NB
+				ALL
+					VoIPBandType Is NB
+					Mode IsNot InCsvCall
+				ALL
+					HfpClientEnable Is True
+					HfpClientBandType Is NB
+
+			component: /Route/route_mgr/criteria/band_type
+				band = NB
+
+		conf: WB
+			ANY
+				ALL
+					Mode Is InCsvCall
+					ANY
+						ImsBandType Is WB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is WB
+				ALL
+					VoIPBandType Is WB
+					Mode IsNot InCsvCall
+				ALL
+					HfpClientEnable Is True
+					HfpClientBandType Is WB
+
+			component: /Route/route_mgr/criteria/band_type
+				band = WB
+
+		conf: SuperWB
+			ANY
+				ALL
+					Mode Is InCsvCall
+					ANY
+						ImsBandType Is SuperWB
+						ALL
+							ModemAudioAvailable Is True
+							CsvBandType Is SuperWB
+				ALL
+					VoIPBandType Is SuperWB
+					Mode IsNot InCsvCall
+
+			component: /Route/route_mgr/criteria/band_type
+				band = SuperWB
+
+		conf: Unknown
+			component: /Route/route_mgr/criteria/band_type
+				band = Unknown
+

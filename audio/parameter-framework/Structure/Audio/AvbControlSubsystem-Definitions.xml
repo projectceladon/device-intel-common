@@ -1,0 +1,22 @@
+<ComponentLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="../../../Schemas/ComponentLibrary.xsd">
+  <ComponentTypeSet>
+
+    <ComponentType Name="NetworkStream">
+        <StringParameter Name="connected_to_local_stream" MaxLength="256"
+                         Description="local stream connected to this network stream" Mapping="NetworkStream"/>
+    </ComponentType>
+
+    <ComponentType Name="TxNetworkStream" Extends="NetworkStream" Mapping="Direction:eIasAvbTransmitToNetwork">
+        <BooleanParameter Name="active" Description="Sets an AVB transmit stream to be active or inactive"
+                          Mapping="TransmitStream"/>
+    </ComponentType>
+
+    <ComponentType Name="RxNetworkStream" Mapping="ReceiveStream,Direction:eIasAvbReceiveFromNetwork"
+                                          Extends="NetworkStream"/>
+
+    <ComponentType Name="LocalAudioStreamFromNetwork" Mapping="LocalAudioStream,Direction:eIasAvbReceiveFromNetwork"/>
+    <ComponentType Name="LocalAudioStreamToNetwork" Mapping="LocalAudioStream,Direction:eIasAvbTransmitToNetwork"/>
+
+  </ComponentTypeSet>
+</ComponentLibrary>
