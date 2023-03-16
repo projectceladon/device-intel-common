@@ -1,7 +1,0 @@
-service aosp-config /sbin/efiprop -e AospCarrierConfig
-    oneshot
-    disabled
-    seclabel u:r:efiprop:s0
-
-on late-init
-    start aosp-config
