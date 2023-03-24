@@ -461,6 +461,12 @@ function ubu_update_wifi_fw(){
     sudo cp linux-firmware/iwlwifi-so-a0-hr-b0-64.ucode /lib/firmware
 }
 
+function setup_remote_infer() {
+    echo "setting up remote inference"
+    source $CIV_WORK_DIR/scripts/setup_ai_dispatcher.sh $1
+    reboot_required=1
+    cd $CIV_WORK_DIR
+}
 
 function show_help() {
     printf "$(basename "$0") [-q] [-u] [--auto-start]\n"
@@ -468,6 +474,7 @@ function show_help() {
     printf "\t-h  show this help message\n"
     printf "\t-u  specify Host OS's UI, support \"headless\" and \"GUI\" eg. \"-u headless\" or \"-u GUI\"\n"
     printf "\t--auto-start auto start CiV guest when Host boot up.\n"
+    printf "\t-i  enable remote inferencing with specific device, if any specific device name is not provided it will use AUTO\n"
 }
 
 function parse_arg() {
@@ -499,6 +506,11 @@ function parse_arg() {
 
             --auto-start)
                 install_auto_start_service "$2" || return -1
+                shift
+                ;;
+
+            -i)
+                setup_remote_infer $2 || return -1
                 shift
                 ;;
 
