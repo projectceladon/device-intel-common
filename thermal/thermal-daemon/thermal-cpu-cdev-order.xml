@@ -9,6 +9,7 @@ The Following cooling device can present
 <!--BEGIN-->
 <CoolingDeviceOrder>
 	<!-- Specify Cooling device order -->
+	<CoolingDevice>TFN1</CoolingDevice>
 	<CoolingDevice>rapl_controller</CoolingDevice>
 	<CoolingDevice>intel_pstate</CoolingDevice>
 	<CoolingDevice>intel_powerclamp</CoolingDevice>
