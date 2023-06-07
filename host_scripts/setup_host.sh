@@ -9,7 +9,7 @@ set -eE
 
 #---------      Global variable     -------------------
 reboot_required=0
-QEMU_REL="qemu-7.0.0"
+QEMU_REL="qemu-7.2.3"
 
 #Directory to keep versions of qemu which can be reused instead of downloading again
 QEMU_CACHE_DIR="$HOME/.cache/civ/qemu"
