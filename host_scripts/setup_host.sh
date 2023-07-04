@@ -204,14 +204,15 @@ function ubu_enable_host_sriov(){
 }
 
 function ubu_update_fw(){
-    FW_REL="linux-firmware-20221109"
+    FW_REL="linux-firmware-20230625"
 
-    [ ! -f $CIV_WORK_DIR/$FW_REL.tar.xz ] && wget "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20221109.tar.gz" -P $CIV_WORK_DIR
+    [ ! -f $CIV_WORK_DIR/$FW_REL.tar.xz ] && wget "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20230625.tar.gz" -P $CIV_WORK_DIR
 
     [ -d $CIV_WORK_DIR/$FW_REL ] && rm -rf $CIV_WORK_DIR/$FW_REL
     tar -xf $CIV_WORK_DIR/$FW_REL.tar.gz
 
     cp -r $CIV_WORK_DIR/$FW_REL/i915/ /lib/firmware/
+    cp $CIV_WORK_DIR/$FW_REL/iwl* /lib/firmware/
 
     cd $CIV_WORK_DIR
     rm -rf $CIV_WORK_DIR/$FW_REL*
@@ -451,14 +452,6 @@ function ubu_update_bt_fw() {
             echo "Host Bluetooth firmware update failed. Run the setup again after cold reboot"
         fi
     fi
-}
-
-function ubu_update_wifi_fw(){
-    if [ -d "linux-firmware" ] ; then
-            rm -rf linux-firmware
-    fi
-    git clone https://kernel.googlesource.com/pub/scm/linux/kernel/git/firmware/linux-firmware
-    sudo cp linux-firmware/iwlwifi-so-a0-hr-b0-64.ucode /lib/firmware
 }
 
 function setup_remote_infer() {
