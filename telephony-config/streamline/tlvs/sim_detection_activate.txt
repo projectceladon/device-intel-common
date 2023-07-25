@@ -1,3 +1,0 @@
-# Activate SIM card detection (in case there is no conflict with 3G-TDSCMA)
-nvm:fix_uicc.sim_cd_disable=0
-nvm:store_nvm_sync(fix_uicc)

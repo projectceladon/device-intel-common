@@ -1,3 +1,0 @@
-# EMM CM Service Request
-nvm:dyn_cps.dam.cservice=5
-nvm:store_nvm_sync(dyn_cps)

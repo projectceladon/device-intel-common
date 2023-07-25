@@ -1,7 +1,0 @@
-# Remove audio tuning in modem
-nvm:fix_aud.aud_nvm_speech_rx[15].dl_nr_index=65535
-nvm:fix_aud.aud_nvm_speech_rx[15].iir_index_vol=65535
-nvm:fix_aud.aud_nvm_speech_rx[15].iir_index_vol_16khz=65535
-nvm:fix_aud.aud_nvm_speech_rx[15].fir_index_vol=65535
-nvm:fix_aud.aud_nvm_speech_rx[15].fir_index_vol_16kHz=65535
-store_nvm_sync(fix_aud)

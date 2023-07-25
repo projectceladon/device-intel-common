@@ -1,3 +1,0 @@
-#Disable disable MO/MT call
-nvm:dyn_cps.ps_features.cs_call_capabilities=0
-nvm:store_nvm_sync(dyn_cps)

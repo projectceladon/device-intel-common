@@ -1,3 +1,0 @@
-# Disable otdoa
-nvm:dyn_cps.r9_classmark_fields.otdoa_support=0
-nvm:store_nvm_sync(dyn_cps)

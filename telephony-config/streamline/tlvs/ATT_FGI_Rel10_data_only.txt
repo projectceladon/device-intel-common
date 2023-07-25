@@ -1,6 +1,0 @@
-#Update FGI to be Rel10 ATT compliant
-#Applicable to data only devices
-dyn_cps.eutran_caps.feature_group_indicators.bitmap_feature_group=0x7E0DFC98
-dyn_cps.eutran_caps.feature_group_indicators.bitmap_feature_group_rel9add=0x80800000
-dyn_cps.eutran_caps.feature_group_indicators.bitmap_feature_group_rel10=0x00360000
-nvm:store_nvm_sync(dyn_cps)

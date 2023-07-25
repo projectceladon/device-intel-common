@@ -1,4 +1,0 @@
-#To apply sim polarity for BXT_EVT(nano SIM Slot)
-nvm:fix_uicc.ccin_polarity=1
-nvm:fix_uicc.cc2in_polarity=1
-nvm:store_nvm_sync(fix_uicc)

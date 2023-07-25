@@ -1,3 +1,0 @@
-#Inverted EINT levels for SIM detection
-nvm:fix_uicc.optional_features4=0x80000001
-nvm:store_nvm_sync(fix_uicc)
