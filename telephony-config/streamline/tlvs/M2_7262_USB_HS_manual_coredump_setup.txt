@@ -1,6 +1,0 @@
-#Disable autosetting.Manual setup  Device/protocol/format : Usb-hs/Ymodem/FCD data format.
-nvm:dyn_coredump.AutosettingEnabled=0
-nvm:dyn_coredump.coredump[0]=29
-nvm:dyn_coredump.coredump[1]=64
-nvm:dyn_coredump.ForceFcdEnabled=1
-nvm:store_nvm_sync(dyn_coredump)

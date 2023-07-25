@@ -1,3 +1,0 @@
-#Update FGI to be Rel9 compliant (without ATT)
-dyn_cps.eutran_caps.feature_group_indicators.bitmap_feature_group=4266655390
-nvm:store_nvm_sync(dyn_cps)

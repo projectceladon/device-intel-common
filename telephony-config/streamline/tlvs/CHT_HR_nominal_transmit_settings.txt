@@ -1,3 +1,0 @@
-# Nominal powers when SAR sensor is disabled
-nvm:fix_s45_lut.txlte.txlte_config_table[0,19].4g_tx_max_pwr={368,368,368,368,368,344,368,368,368,368,368,368,368,368,320,368,368,368,368,0}
-nvm:store_nvm_sync(fix_s45_lut)

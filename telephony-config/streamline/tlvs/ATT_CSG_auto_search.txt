@@ -1,4 +1,0 @@
-# Change CSG auto search params
-nvm:fix_cps.csg_params.auto_search.back_off_time=120
-nvm:fix_cps.csg_params.auto_search.max_search_time=999
-nvm:store_nvm_sync(fix_cps)

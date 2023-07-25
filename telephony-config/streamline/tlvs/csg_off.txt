@@ -1,3 +1,0 @@
-#BZ184091 Remove CSG feature
-nvm:fix_cps_feat_config.features.feat_csg=0
-nvm:store_nvm_sync(fix_cps_feat_config)

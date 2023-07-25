@@ -1,3 +1,0 @@
-# Declare UE CAT4, by default UE is declared CAT6
-nvm:dyn_cps.eutran_caps.ue_category=4
-nvm:store_nvm_sync(dyn_cps)

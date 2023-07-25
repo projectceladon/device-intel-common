@@ -1,4 +1,0 @@
-The log probe configuration files with which device is provisioned.
-
-logprobe-logevent.conf: list of events that non-compliant log probe will
-report by default

@@ -1,3 +1,0 @@
-#Enable UMTS duplex_mode dynamic switch
-nvm:dyn_cps.ps_features.disable_umts_duplex_mode_dynamic_switch=0
-nvm:store_nvm_sync(dyn_cps)
