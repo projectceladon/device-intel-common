@@ -41,7 +41,8 @@ LOCAL_FIRMWARE_PATTERN_IN_DIR := \
     i915/ehl \
     i915/tgl \
     i915/adl \
-    i915/dg2
+    i915/dg2 \
+    i915/mtl
 
 LOCAL_FIRMWARE_SRC += $(foreach f,$(LOCAL_FIRMWARE_PATTERN),$(shell cd $(FIRMWARES_DIR) && find . -iname "*$(f)*" -type f,l ))
 LOCAL_FIRMWARE_SRC += $(foreach f,$(LOCAL_FIRMWARE_DIR),$(shell cd $(FIRMWARES_DIR) && find $(f) -type f,l) )
