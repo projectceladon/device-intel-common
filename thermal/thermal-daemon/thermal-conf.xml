@@ -2,7 +2,7 @@
 <!-- BEGIN -->
 <ThermalConfiguration>
 	<Platform>
-		<Name> RPL i5-1350PRE </Name>
+		<Name> RPL i5-1350-disable-PRE </Name>
 		<ProductName>RPLP LP5 (CPU:RaptorLake)</ProductName>
 		<Preference>QUIET</Preference>
 		<ThermalZones>
