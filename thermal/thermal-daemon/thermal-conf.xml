@@ -2,6 +2,16 @@
 <!-- BEGIN -->
 <ThermalConfiguration>
 	<Platform>
+		<Name> RPL i5-1350PRE </Name>
+		<ProductName>RPLP LP5 (CPU:RaptorLake)</ProductName>
+		<Preference>PERFORMANCE</Preference>
+	</Platform>
+	<Platform>
+		<Name> ADL IVI RVP </Name>
+		<ProductName>CIA1-PC 2</ProductName>
+		<Preference>PERFORMANCE</Preference>
+	</Platform>
+	<Platform>
 		<Name> TGL NUC Qi7 </Name>
 		<ProductName>NUC11PAQi7</ProductName>
 		<Preference>QUIET</Preference>
