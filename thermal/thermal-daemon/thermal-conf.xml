@@ -2,7 +2,6 @@
 <!-- BEGIN -->
 <ThermalConfiguration>
 	<Platform>
-		<Name> TGL NUC Qi7 </Name>
 		<ProductName>NUC11PAQi7</ProductName>
 		<Preference>QUIET</Preference>
 		<ThermalZones>
