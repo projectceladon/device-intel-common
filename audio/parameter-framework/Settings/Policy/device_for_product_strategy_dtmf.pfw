@@ -1,17 +1,16 @@
-supDomain: DeviceForProductStrategies
+supDomain: DeviceForStrategy
+
 	supDomain: Dtmf
+
 		domain: UnreachableDevices
-			conf: calibration
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+			conf: Calibration
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					fm = 0
 					speaker_safe = 0
 					bluetooth_sco_carkit = 0
 					ip = 0
 					bus = 0
-					proxy = 0
-					usb_headset = 0
 					stub = 0
-				/Policy/policy/product_strategies/dtmf/device_address =
 
 		domain: Device2
 			conf: RemoteSubmix
@@ -21,9 +20,8 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes RemoteSubmix
-				#AvailableOutputDevicesAddresses Includes 0
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 1
 					earpiece = 0
 					wired_headset = 0
@@ -41,6 +39,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dp
 				#
@@ -51,7 +50,7 @@ supDomain: DeviceForProductStrategies
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dp
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -69,6 +68,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpHeadphones
 				#
@@ -79,7 +79,7 @@ supDomain: DeviceForProductStrategies
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -97,6 +97,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothA2dpSpeaker
 				#
@@ -107,7 +108,7 @@ supDomain: DeviceForProductStrategies
 				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -125,6 +126,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: ForceSpeakerWhenNotInCall
 				#
@@ -136,7 +138,7 @@ supDomain: DeviceForProductStrategies
 				ForceUseForHdmiSystemAudio IsNot ForceHdmiSystemEnforced
 				AvailableOutputDevices Includes Speaker
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -154,6 +156,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 1
+					usb_headset = 0
 
 			conf: BluetoothScoHeadset
 				#
@@ -165,7 +168,7 @@ supDomain: DeviceForProductStrategies
 				AvailableOutputDevices Includes BluetoothScoHeadset
 				ForceUseForCommunication Is ForceBtSco
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -183,6 +186,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: BluetoothSco
 				#
@@ -194,7 +198,7 @@ supDomain: DeviceForProductStrategies
 				AvailableOutputDevices Includes BluetoothSco
 				ForceUseForCommunication Is ForceBtSco
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -212,6 +216,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: WiredHeadphone
 				ANY
@@ -231,7 +236,7 @@ supDomain: DeviceForProductStrategies
 						TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes WiredHeadphone
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -249,6 +254,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Line
 				ANY
@@ -270,7 +276,7 @@ supDomain: DeviceForProductStrategies
 						TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes Line
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -288,6 +294,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 1
 					speaker = 0
+					usb_headset = 0
 
 			conf: WiredHeadset
 				ANY
@@ -307,7 +314,7 @@ supDomain: DeviceForProductStrategies
 						TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes WiredHeadset
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 1
@@ -325,6 +332,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: UsbDevice
 				ANY
@@ -347,7 +355,7 @@ supDomain: DeviceForProductStrategies
 						ForceUseForCommunication Is ForceSpeaker
 				AvailableOutputDevices Includes UsbDevice
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -365,6 +373,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: UsbAccessory
 				#
@@ -378,7 +387,7 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes UsbAccessory
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -396,6 +405,48 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ANY
+					#
+					# DTMF falls through Phone strategy if in call (widely speaking)
+					#
+					ALL
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+					#
+					# DTMF follows Media strategy if not in call
+					# Media strategy inverts the priority of USB device vs accessory
+					#
+					ALL
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						AvailableOutputDevices Excludes UsbAccessory
+						ForceUseForCommunication Is ForceSpeaker
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
+					remote_submix = 0
+					earpiece = 0
+					wired_headset = 0
+					wired_headphone = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					hdmi = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					telephony_tx = 0
+					line = 0
+					speaker = 0
+					usb_headset = 1
 
 			conf: DgtlDockHeadset
 				#
@@ -408,7 +459,7 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes DgtlDockHeadset
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -426,6 +477,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Hdmi
 				#
@@ -438,7 +490,7 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes Hdmi
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -456,6 +508,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: AnlgDockHeadset
 				#
@@ -470,7 +523,7 @@ supDomain: DeviceForProductStrategies
 				ForceUseForDock Is ForceAnalogDock
 				AvailableOutputDevices Includes AnlgDockHeadset
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -488,6 +541,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Earpiece
 				#
@@ -499,7 +553,7 @@ supDomain: DeviceForProductStrategies
 				AvailableOutputDevices Includes Earpiece
 				ForceUseForCommunication IsNot ForceSpeaker
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 1
 					wired_headset = 0
@@ -517,6 +571,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 			conf: Speaker
 				ANY
@@ -537,7 +592,7 @@ supDomain: DeviceForProductStrategies
 						ForceUseForHdmiSystemAudio IsNot ForceHdmiSystemEnforced
 				AvailableOutputDevices Includes Speaker
 
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -555,9 +610,10 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 1
+					usb_headset = 0
 
 			conf: Default
-				component: /Policy/policy/product_strategies/dtmf/selected_output_devices/mask
+				component: /Policy/policy/strategies/dtmf/selected_output_devices/mask
 					remote_submix = 0
 					earpiece = 0
 					wired_headset = 0
@@ -575,6 +631,7 @@ supDomain: DeviceForProductStrategies
 					telephony_tx = 0
 					line = 0
 					speaker = 0
+					usb_headset = 0
 
 		domain: Arc
 			#
@@ -587,10 +644,10 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes HdmiArc
 
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/hdmi_arc = 1
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/hdmi_arc = 1
 
 			conf: NotSelected
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/hdmi_arc = 0
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/hdmi_arc = 0
 
 		domain: Spdif
 			#
@@ -603,10 +660,10 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes Spdif
 
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/spdif = 1
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/spdif = 1
 
 			conf: NotSelected
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/spdif = 0
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/spdif = 0
 
 		domain: AuxLine
 			#
@@ -619,7 +676,7 @@ supDomain: DeviceForProductStrategies
 				TelephonyMode IsNot InCommunication
 				AvailableOutputDevices Includes AuxLine
 
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/aux_line = 1
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/aux_line = 1
 
 			conf: NotSelected
-				/Policy/policy/product_strategies/dtmf/selected_output_devices/mask/aux_line = 0
+				/Policy/policy/strategies/dtmf/selected_output_devices/mask/aux_line = 0
