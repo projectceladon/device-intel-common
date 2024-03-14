@@ -182,12 +182,12 @@ function ubu_enable_host_gvt(){
 }
 
 function ubu_enable_host_sriov(){
-   if [[ ! `cat /etc/default/grub` =~ "i915.enable_guc=0x7" ]]; then
+   if [[ ! `cat /etc/default/grub` =~ "i915.max_vfs" ]]; then
         read -p "Do you want to update the grub entry in '/etc/default/grub' for enabling SRIOV? [Y/n]" res
         if [ x$res = xn ]; then
             return
         fi
-	sed -i "s/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"i915.enable_guc=0x7 udmabuf.list_limit=8192  /g" /etc/default/grub
+	sed -i "s/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"i915.max_vfs=4 udmabuf.list_limit=8192  /g" /etc/default/grub
         update-grub
 
         echo -e "\nkvmgt\nvfio-iommu-type1\nvfio-mdev\n" >> /etc/initramfs-tools/modules
