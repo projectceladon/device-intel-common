@@ -204,9 +204,9 @@ function ubu_enable_host_sriov(){
 }
 
 function ubu_update_fw(){
-    FW_REL="linux-firmware-20230919"
+    FW_REL="linux-firmware-20240115"
 
-    [ ! -f $CIV_WORK_DIR/$FW_REL.tar.xz ] && wget "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20230919.tar.gz" -P $CIV_WORK_DIR
+    [ ! -f $CIV_WORK_DIR/$FW_REL.tar.xz ] && wget "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20240115.tar.gz" -P $CIV_WORK_DIR
 
     [ -d $CIV_WORK_DIR/$FW_REL ] && rm -rf $CIV_WORK_DIR/$FW_REL
     tar -xf $CIV_WORK_DIR/$FW_REL.tar.gz
