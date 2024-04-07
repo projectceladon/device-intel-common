@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import uuid
 import struct
@@ -27,7 +27,7 @@ type_2_guid = {
 def zero_pad(s, size):
     if (len(s) > size):
         print('error', len(s))
-    s += '\0' * (size - len(s))
+    s += b'\0' * (size - len(s))
     return s
 
 def copy_section(cfg, a, b):
@@ -155,22 +155,22 @@ def main():
     npart = len(part)
 
     out = sys.stdout
-    out.write(struct.pack('<I', magic))
-    out.write(struct.pack('<I', start_lba))
-    out.write(struct.pack('<I', npart))
+    out.buffer.write(struct.pack('<I', magic))
+    out.buffer.write(struct.pack('<I', start_lba))
+    out.buffer.write(struct.pack('<I', npart))
     for p in part:
         length = cfg.get('partition.' + p, 'len')
-        out.write(struct.pack('<i', int(length.split(',')[0])))
+        out.buffer.write(struct.pack('<i', int(length.split(',')[0])))
 
         label = cfg.get('partition.' + p, 'label').encode('utf-16le')
-        out.write(zero_pad(label, 36 * 2))
+        out.buffer.write(zero_pad(label, 36 * 2))
 
         guid_type = cfg.get('partition.' + p, 'type')
         guid_type = uuid.UUID(type_2_guid[guid_type])
-        out.write(guid_type.bytes_le)
+        out.buffer.write(guid_type.bytes_le)
 
         guid = uuid.uuid4()
-        out.write(guid.bytes_le)
+        out.buffer.write(guid.bytes_le)
 
 if __name__ == "__main__":
     main()
