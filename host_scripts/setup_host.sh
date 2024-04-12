@@ -430,12 +430,13 @@ function ubu_update_bt_fw() {
         cd linux-firmware
         # Checkout to specific commit as guest also uses this version. Latest
         # is not taken as firmware update process in the guest is manual
-        git checkout b377ccf4f1ba7416b08c7f1170c3e28a460ac29e
+        git checkout d3cc8b9b304af1671d47726f77177c28067d5c04
         cd -
         sudo cp linux-firmware/intel/ibt-19-0-4* /lib/firmware/intel
         sudo cp linux-firmware/intel/ibt-18-16-1* /lib/firmware/intel
         sudo cp linux-firmware/intel/ibt-0040-0041* /lib/firmware/intel
         sudo cp linux-firmware/intel/ibt-0040-4150* /lib/firmware/intel
+        sudo cp linux-firmware/intel/ibt-0180-0041* /lib/firmware/intel
         ln -sf /lib/firmware/intel/ibt-19-0-4.sfi /lib/firmware/intel/ibt-19-16-0.sfi
         ln -sf /lib/firmware/intel/ibt-19-0-4.ddc /lib/firmware/intel/ibt-19-16-0.ddc
         hcitool cmd 3f 01 01 01 00 00 00 00 00 > /dev/null 2>&1 &
