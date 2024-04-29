@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.networkstack.celadon"
+    android:versionCode="1"
+    android:versionName="1.0">
+    <application android:hasCode="false" />
+    <overlay
+      android:targetPackage="com.android.networkstack"
+      android:isStatic="true"
+      android:targetName="NetworkStackConfig"
+      android:priority="0"/>
+</manifest>
