@@ -1,0 +1,5 @@
+<resources>
+ <string-array translatable="false" name="config_occupant_display_mapping">
+      <item>displayPort=0,displayType=MAIN,occupantZoneId=0,inputTypes=TOUCH_SCREEN|DPAD_KEYS|NAVIGATE_KEYS|ROTARY_NAVIGATION</item>
+    </string-array>
+</resources>
