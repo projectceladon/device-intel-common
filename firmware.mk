@@ -30,11 +30,6 @@ else
 LOCAL_FIRMWARE_DIR := \
     intel
 
-ifeq ($(VM3), true)
-LOCAL_FIRMWARE_DIR += \
-    edid
-endif
-
 ## List of matching patterns of Firmware bins to be copied
 LOCAL_FIRMWARE_PATTERN := \
     iwlwifi
