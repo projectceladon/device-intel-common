@@ -82,7 +82,7 @@ function install_virtual_camera() {
 }
 
 function install_host_service() {
-    sudo apt-get install libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libavresample-dev libavdevice-dev -y
+    sudo apt-get install libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libavdevice-dev -y
     sudo apt-get install ffmpeg -y
     sudo apt-get install build-essential clang -y
 
@@ -93,7 +93,7 @@ function install_host_service() {
     cd host_camera
     git clone https://github.com/projectceladon/host-camera-server.git
     cd host-camera-server
-    git checkout 915388bd22d1582d44fb22dc647bd46a6ab675bc
+    git checkout bc33d989505e61d0be38ecfbf8405f8ccaf4473e
     mkdir build
     cd build
     cmake ..
