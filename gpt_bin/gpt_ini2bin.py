@@ -2,7 +2,6 @@
 
 import uuid
 import struct
-import os
 import sys
 if sys.version_info < (3, 0, 1):
     import ConfigParser
@@ -28,7 +27,7 @@ type_2_guid = {
 def zero_pad(s, size):
     if (len(s) > size):
         print('error', len(s))
-    s += b'\0' * (size - len(s))
+    s += '\0' * (size - len(s))
     return s
 
 def copy_section(cfg, a, b):
@@ -140,9 +139,9 @@ def main():
     gpt_in = sys.argv[1]
 
     if sys.version_info < (3, 0, 1):
-        cfg = ConfigParser.ConfigParser()
+        cfg = ConfigParser.SafeConfigParser()
     else:
-        cfg = configparser.ConfigParser(strict=False)
+        cfg = configparser.SafeConfigParser(strict=False)
 
     cfg.read(gpt_in)
 
@@ -155,7 +154,7 @@ def main():
         start_lba = cfg.getint('base', 'start_lba')
     npart = len(part)
 
-    out = os.fdopen(sys.stdout.fileno(), 'wb')
+    out = sys.stdout
     out.write(struct.pack('<I', magic))
     out.write(struct.pack('<I', start_lba))
     out.write(struct.pack('<I', npart))
