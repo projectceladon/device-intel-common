@@ -17,4 +17,7 @@
 <resources>
     <!-- If true, device requests audio focus and start avrcp updates on source start or play -->
     <bool name="a2dp_sink_automatically_request_audio_focus">true</bool>
+
+    <!-- Max number of connected audio devices supported by Bluetooth stack -->
+    <integer name="config_bluetooth_max_connected_audio_devices">1</integer>
 </resources>
