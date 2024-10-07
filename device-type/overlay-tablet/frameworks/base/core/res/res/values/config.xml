@@ -1,7 +1,8 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <bool name="config_showNavigationBar" translatable="false">true</bool>
     <!--  Maximum number of supported users -->
-    <integer name="config_multiuserMaximumUsers">8</integer>
+    <integer name="config_multiuserMaximumUsers" translatable="false">8</integer>
     <!--  Whether UI for multi user should be shown -->
     <bool name="config_enableMultiUserUI">true</bool>
     <!-- The device supports freeform window management. Windows have title bars and can be moved
