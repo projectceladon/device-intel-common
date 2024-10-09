@@ -459,7 +459,7 @@
 				<TripPoints>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>85000</Temperature>
+						<Temperature>65000</Temperature>
 						<Type>Passive</Type>
 						<CoolingDevice>
 							<Type>rapl_limit_1</Type>
@@ -467,7 +467,7 @@
 					</TripPoint>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>95000</Temperature>
+						<Temperature>75000</Temperature>
 						<Type>Passive</Type>
 						<CoolingDevice>
 							<Type>rapl_limit_2</Type>
@@ -480,7 +480,7 @@
 				<TripPoints>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>100000</Temperature>
+						<Temperature>104000</Temperature>
 						<Type>Critical</Type>
 					</TripPoint>
 				</TripPoints>
@@ -490,18 +490,18 @@
 			<CoolingDevice>
 				<Type>rapl_limit_1</Type>
 				<Path>/sys/devices/virtual/powercap/intel-rapl/intel-rapl:0/constraint_0_power_limit_uw</Path>
-				<MinState>12000000</MinState>
+				<MinState>64000000</MinState>
 				<ReadBack>0</ReadBack>
-				<MaxState>8000000</MaxState>
-				<IncDecStep>-200000</IncDecStep>
+				<MaxState>54000000</MaxState>
+				<IncDecStep>-800000</IncDecStep>
 			</CoolingDevice>
 			<CoolingDevice>
 				<Type>rapl_limit_2</Type>
 				<Path>/sys/devices/virtual/powercap/intel-rapl/intel-rapl:0/constraint_0_power_limit_uw</Path>
-				<MinState>8000000</MinState>
+				<MinState>54000000</MinState>
 				<ReadBack>0</ReadBack>
-				<MaxState>6000000</MaxState>
-				<IncDecStep>-200000</IncDecStep>
+				<MaxState>44000000</MaxState>
+				<IncDecStep>-800000</IncDecStep>
 			</CoolingDevice>
 		</CoolingDevices>
 	</Platform>
