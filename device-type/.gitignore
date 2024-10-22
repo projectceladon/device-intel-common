@@ -1,0 +1,17 @@
+# Ignore all files at the current directory level
+/*
+# Allow subdirectories and their contents
+!*/
+# Allow all files within existing subdirectories
+!*/**
+# Ignore any new directories created at the root level
+/*/
+!.gitignore
+!README
+!core_hardware.xml
+!overlay-car
+!overlay-clamshell
+!overlay-handheld
+!overlay-tablet
+!overlay-tablet-lowram
+
