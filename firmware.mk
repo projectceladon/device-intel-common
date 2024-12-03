@@ -28,7 +28,8 @@ else
 
 ## List of complete Firmware folders to be copied
 LOCAL_FIRMWARE_DIR := \
-    intel
+    intel \
+    rtl_nic
 
 ## List of matching patterns of Firmware bins to be copied
 LOCAL_FIRMWARE_PATTERN := \
