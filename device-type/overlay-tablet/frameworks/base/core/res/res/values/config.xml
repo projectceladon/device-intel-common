@@ -11,4 +11,13 @@
 	 available to the system.-->
     <bool name="config_freeformWindowManagement">true</bool>
 
+    <!-- The default refresh rate for a given device. Set to 0 as it is managed by
+         config_defaultPeakRefreshRate. -->
+    <integer name="config_defaultRefreshRate">0</integer>
+
+    <!-- The default peak refresh rate for a given device. Currently set to an arbitrarily high rate
+         of 1000Hz to include all realistic refresh rates in current and future internal/external
+         displays. -->
+    <integer name="config_defaultPeakRefreshRate">1000</integer>
+
 </resources>
