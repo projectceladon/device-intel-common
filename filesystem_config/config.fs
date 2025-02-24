@@ -33,6 +33,9 @@ value: 5002
 [AID_VENDOR_WLAN_PROV]
 value: 5003
 
+[AID_VENDOR_GNSS]
+value: 5004
+
 #
 # XXX: This patch was found not to be applied: https://android.intel.com/#/c/319973 note that this patch is not needed anymore see the README:
 # build/make/tools/fs_config/README
